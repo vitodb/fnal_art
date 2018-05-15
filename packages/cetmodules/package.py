@@ -1,5 +1,5 @@
 ##############################################################################
-# Copyright (c) 2013-2017, Lawrence Livermore National Security, LLC.
+# Copyright (c) 2013-2018, Lawrence Livermore National Security, LLC.
 # Produced at the Lawrence Livermore National Laboratory.
 #
 # This file is part of Spack.
@@ -22,34 +22,22 @@
 # License along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install cetmodules
-#
-# You can edit this file again by typing:
-#
-#     spack edit cetmodules
-#
-# See the Spack documentation for more information on packaging.
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
 from spack import *
 
 
 class Cetmodules(CMakePackage):
-    """cetmodules is a set of scripts and cmake Modules for use when building art"""
+    """CMake glue modules and scripts required by packages originating at
+    Fermilab and associated experiments and other collaborations.
+    """
 
-    homepage='https://cdcvs.fnal.gov/projects/cetmodules'
+    homepage = 'https://cdcvs.fnal.gov/projects/cetmodules'
 
     version('develop', branch='master',
-        git='https://cdcvs.fnal.gov/projects/cetmodules')
+            git=homepage)
+    version('0.07.00', '60fb6f9ff26605ea4c0648fa43d0a516')
 
-    version(
-        'v0_07_00',
-        git='http://cdcvs.fnal.gov/projects/cetmodules',
-        tag='v0_07_00')
+    depends_on('cmake@3.4:', type='build')
 
+    def url_for_version(self, version):
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetmodules.v{0}.tbz2'
+        return url.format(version.underscored)

@@ -22,21 +22,6 @@
 # License along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install cetlib-except
-#
-# You can edit this file again by typing:
-#
-#     spack edit cetlib-except
-#
-# See the Spack documentation for more information on packaging.
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
 from spack import *
 
 
@@ -46,19 +31,17 @@ class CetlibExcept(CMakePackage):
     homepage='https://cdcvs.fnal.gov/projects/cetlib_except'
 
     version('develop', branch='feature/for_spack',
-        git='https://cdcvs.fnal.gov/projects/cetlib_except')
+            git=homepage)
 
-    ## version(
-    ##    'v0_07_00',
-    ##    git='http://cdcvs.fnal.gov/projects/cetmodules',
-    ##    tag='v0_07_00')
-
+    variant('cxxstd',
+            default='17',
+            values=('14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
 
     depends_on('cetmodules@develop', type='build')
 
     def cmake_args(self):
-        # FIXME: Add arguments other than
-        # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
-        # FIXME: If not needed delete this function
-        args = []
+        args = ['-DCMAKE_CXX_STANDARD={0}'.
+                format(self.spec.variants['cxxstd'].value)]
         return args
