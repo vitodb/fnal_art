@@ -24,7 +24,6 @@
 ##############################################################################
 from spack import *
 
-
 class CetlibExcept(CMakePackage):
     """cetlib_except provides exception libraries."""
 
@@ -45,3 +44,6 @@ class CetlibExcept(CMakePackage):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value)]
         return args
+
+    def setup_environment(self, spack_env, run_env):
+        spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
