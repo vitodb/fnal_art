@@ -30,7 +30,7 @@ class CetlibExcept(CMakePackage):
     homepage='https://cdcvs.fnal.gov/projects/cetlib_except'
 
     version('develop', branch='feature/for_spack',
-            git=homepage)
+            git=homepage, preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -38,7 +38,11 @@ class CetlibExcept(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    depends_on('cetmodules@develop', type='build')
+    depends_on('cetmodules', type='build')
+
+    def url_for_version(self, version):
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -46,4 +50,5 @@ class CetlibExcept(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        # For tests.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))

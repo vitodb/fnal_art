@@ -38,66 +38,45 @@
 # please first remove this boilerplate and all FIXME comments.
 #
 from spack import *
-import os
 
 
-class FhiclCpp(Package):
-    homepage='http://cdcvs.fnal.gov/projects/fhicl-cpp',
+class FhiclCpp(CMakePackage):
+    homepage='https://cdcvs.fnal.gov/projects/fhicl-cpp'
 
-    version(
-        'v4_04_00',
-        git='http://cdcvs.fnal.gov/projects/fhicl-cpp',
-        tag='v4_04_00')
+    version('develop', branch='feature/for_spack',
+            git=homepage, preferred=True)
 
-    version(
-        'v4_03_02',
-        git='http://cdcvs.fnal.gov/projects/fhicl-cpp',
-        tag='v4_03_02')
+    variant('cxxstd',
+            default='17',
+            values=('14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
 
-    depends_on("cmake", type="build")
-    depends_on("cetmodules", type="build")
-    depends_on("cetlib")
-    depends_on("boost")
-    depends_on("sqlite")
-    depends_on("openssl")
+    # Build-only dependencies.
+    depends_on('cmake@3.4:', type='build')
+    depends_on('cetmodules', type='build')
 
-    def install(self, spec, prefix):
-        setups = '%s/../products/setup' % spec['ups'].prefix
-        sfd = '%s/%s/ups/setup_for_development -p ' % (
-            self.stage.path, spec.name)
-        bash = which('bash')
-        cmake_cmd = 'source %s ' % setups + '&& source %s ' % sfd + \
-            '&& cmake %s' % self.stage.source_path + \
-            ' -DCMAKE_INSTALL_PREFIX=%s' % prefix + \
-            ' -DCMAKE_BUILD_TYPE=${CETPKG_TYPE} -DCMAKE_CXX_FLAGS=-std=c++14'
-        build_directory = join_path(self.stage.path, 'spack-build')
-        with working_dir(build_directory, create=True):
-            output = bash(
-                '-c', cmake_cmd,
-                output=str,
-                error=str)
-            print output
-            make('VERBOSE=1')
-            make('install')
-        name_ = str(spec.name).replace('-', '')
-        dst = '%s/../products/%s' % (spec['ups'].prefix, name_)
-        mkdirp(dst)
-        src1 = join_path(prefix, name_, spec.version)
-        src2 = join_path(prefix, name_, '%s.version' % spec.version)
-        dst1 = join_path(dst, spec.version)
-        dst2 = join_path(dst, '%s.version' % spec.version)
-        if os.path.exists(dst1):
-            print 'symbolic link %s already exists' % dst1
-        else:
-            os.symlink(src1, dst1)
-        if os.path.exists(dst2):
-            print 'symbolic link %s already exists' % dst2
-        else:
-            os.symlink(src2, dst2)
-        import glob
-        libdirs=glob.glob('%s'%prefix+'/*/*/*/lib*')
-        for libdir in libdirs:
-            os.symlink(libdir,join_path(prefix,'lib'))
-        incdirs=glob.glob('%s'%prefix+'/*/*/inlude*')
-        for incdir in incdirs:
-            os.symlink(incdir,join_path(prefix,'include'))
+    # Build / link dependencies.
+    depends_on('cetlib')
+    depends_on('boost')
+    depends_on('sqlite')
+    depends_on('openssl')
+    extends('python')
+
+    def url_for_version(self, version):
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format(self.name, version.underscored)
+
+    def cmake_args(self):
+        args = ['-DCMAKE_CXX_STANDARD={0}'.
+                format(self.spec.variants['cxxstd'].value)]
+        return args
+
+    def setup_environment(self, spack_env, run_env):
+        # For tests.
+        spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
+        # For plugin tests.
+        spack_env.prepend_path('CET_PLUGIN_PATH', join_path(self.build_directory, 'lib'))
+
+    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+        spack_env.prepend_path('CET_PLUGIN_PATH', join_path(self.build_directory, 'lib'))

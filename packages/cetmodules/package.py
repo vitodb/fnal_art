@@ -32,12 +32,11 @@ class Cetmodules(CMakePackage):
 
     homepage = 'https://cdcvs.fnal.gov/projects/cetmodules'
 
-    version('develop', branch='master',
-            git=homepage)
-    version('0.07.00', '60fb6f9ff26605ea4c0648fa43d0a516')
+    version('develop', branch='master', git=homepage, preferred=True)
+    version('0.07.00', '60fb6f9ff26605ea4c0648fa43d0a516', extension='tbz2')
 
     depends_on('cmake@3.4:', type='build')
 
     def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetmodules.v{0}.tbz2'
-        return url.format(version.underscored)
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format(self.name, version.underscored)
