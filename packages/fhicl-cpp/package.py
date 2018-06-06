@@ -22,26 +22,20 @@
 # License along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install fhicl-cpp
-#
-# You can edit this file again by typing:
-#
-#     spack edit fhicl-cpp
-#
-# See the Spack documentation for more information on packaging.
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
 from spack import *
 
 
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
+
+
 class FhiclCpp(CMakePackage):
-    homepage='https://cdcvs.fnal.gov/projects/fhicl-cpp'
+    homepage = 'https://cdcvs.fnal.gov/projects/fhicl-cpp'
 
     version('develop', branch='feature/for_spack',
             git=homepage, preferred=True)
@@ -57,6 +51,7 @@ class FhiclCpp(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build / link dependencies.
+    depends_on('cetlib_except')
     depends_on('cetlib')
     depends_on('boost')
     depends_on('sqlite')
@@ -75,8 +70,4 @@ class FhiclCpp(CMakePackage):
     def setup_environment(self, spack_env, run_env):
         # For tests.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
-        # For plugin tests.
-        spack_env.prepend_path('CET_PLUGIN_PATH', join_path(self.build_directory, 'lib'))
-
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
-        spack_env.prepend_path('CET_PLUGIN_PATH', join_path(self.build_directory, 'lib'))
+        sanitize_environments(spack_env, run_env)

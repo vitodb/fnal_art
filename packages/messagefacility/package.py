@@ -34,9 +34,8 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class Gallery(CMakePackage):
-
-    homepage='https://cdcvs.fnal.gov/projects/gallery'
+class Messagefacility(CMakePackage):
+    homepage = 'https://cdcvs.fnal.gov/projects/messagefacility'
 
     version('develop', branch='feature/for_spack',
             git=homepage, preferred=True)
@@ -50,14 +49,15 @@ class Gallery(CMakePackage):
     # Build-only dependencies.
     depends_on('cmake@3.4:', type='build')
     depends_on('cetmodules', type='build')
+    depends_on('catch@2:~single_header', type='build')
 
-    # Build and link dependencies.
-    depends_on('canvas_root_io')
-    depends_on('canvas')
-    depends_on('messagefacility')
-    depends_on('fhicl-cpp')
+    # Build / link dependencies.
+    depends_on('hep_concurrency')
+    depends_on('cetlib_except')
     depends_on('cetlib')
-    depends_on('root+python')
+    depends_on('fhicl-cpp')
+    depends_on('boost')
+    depends_on('sqlite')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -78,15 +78,6 @@ class Gallery(CMakePackage):
 
         # Ensure we can find plugin libraries.
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-
-        # Ensure Root can find headers for autoparsing.
-        for d in self.spec.traverse(root=False, cover='nodes', order='post',
-                                    deptype=('link'), direction='children'):
-            spack_env.prepend_path('ROOT_INCLUDE_PATH',
-                                   str(self.spec[d.name].prefix.include))
-            run_env.prepend_path('ROOT_INCLUDE_PATH',
-                                 str(self.spec[d.name].prefix.include))
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dependent_spec):

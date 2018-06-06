@@ -25,68 +25,78 @@
 from spack import *
 
 
-class Art(Package):
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
 
-    homepage='http://cdcvs.fnal.gov/projects/art',
 
-    version(
-        'v2_06_03',
-        git='http://cdcvs.fnal.gov/projects/art',
-        tag='v2_06_03')
+class Art(CMakePackage):
 
-    variant('nu',default=False, description='Enable nu dependencies')
+    homepage = 'https://cdcvs.fnal.gov/projects/art'
 
-    depends_on("cmake", type="build")
-    depends_on("cetmodules", type="build")
-    depends_on("canvas")
+    version('develop', branch='feature/for_spack',
+            git=homepage, preferred=True)
 
-    def install(self,spec,prefix):
-        mkdirp('%s'%prefix)
-        rsync=which('rsync')
-        rsync('-a', '-v', '%s'%self.stage.source_path, '%s'%prefix)
+    variant('cxxstd',
+            default='17',
+            values=('14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
 
-    def realinstall(self, spec, prefix):
-        cmake = which('cmake')
-        ups = which('ups')
-        setups = '%s/../products/setup' % spec['ups'].prefix
-        sfd = '%s/%s/ups/setup_for_development -p ' % (
-            self.stage.path, spec.name)
-        bash = which('bash')
-        build_directory = join_path(self.stage.path, 'spack-build')
-        with working_dir(build_directory, create=True):
-            output = bash(
-                '-c',
-                'source %s && source %s && cmake %s/%s -DCMAKE_INSTALL_PREFIX=%s -DCMAKE_BUILD_TYPE=%{CETPKG_TYPE} -DCMAKE_CXX_FLAGS=-std=c++14' %
-                (setups,
-                 sfd,
-                 self.stage.path,
-                 spec.name,
-                 self.prefix),
-                output=str,
-                error=str)
-            print output
-            make('VERBOSE=1')
-            make('install')
-        name_ = str(spec.name).replace('-', '')
-        print name_
-        dst = '%s/../products/%s' % (prefix, name_)
-        mkdirp(dst)
-        src1 = join_path(prefix, name_, spec.version)
-        src2 = join_path(prefix, name_, '%s.version' % spec.version)
-        dst1 = join_path(dst, spec.version)
-        dst2 = join_path(dst, '%s.version' % spec.version)
-        if os.path.exists(dst1):
-            print 'symbolic link %s already exists' % dst1
-        else:
-            os.symlink(src1, dst1)
-        if os.path.exists(dst2):
-            print 'symbolic link %s already exists' % dst2
-        else:
-            os.symlink(src2, dst2)
-        ln = which('ln')
-        ln('-s', '%s/%s/%s/*/lib' %
-           (prefix, name_, spec.version), '%s' %
-            prefix)
-        ln('-s', '%s/%s/%s/include' %
-           (prefix, name_, spec.version), '%s' %
-            prefix)
+    # Build-only dependencies.
+    depends_on('cmake@3.4:', type='build')
+    depends_on('cetmodules', type='build')
+    depends_on('catch@2:~single_header', type='build')
+
+    # Build and link dependencies.
+    depends_on('cetlib_except')
+    depends_on('cetlib')
+    depends_on('fhicl-cpp')
+    depends_on('messagefacility')
+    depends_on('canvas')
+    depends_on('canvas_root_io')
+    depends_on('boost')
+    depends_on('tbb')
+    depends_on('root+python')
+    depends_on('clhep')
+    depends_on('sqlite@3.8.2:')
+
+    def url_for_version(self, version):
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format(self.name, version.underscored)
+
+    def cmake_args(self):
+        # Set CMake args.
+        args = ['-DCMAKE_CXX_STANDARD={0}'.
+                format(self.spec.variants['cxxstd'].value)]
+        return args
+
+    def setup_environment(self, spack_env, run_env):
+        # For testing.
+        spack_env.prepend_path('PATH',
+                               join_path(self.build_directory, 'bin'))
+        spack_env.prepend_path('CET_PLUGIN_PATH',
+                               join_path(self.build_directory, 'lib'))
+
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
+            spack_env.prepend_path('ROOT_INCLUDE_PATH',
+                                   str(self.spec[d.name].prefix.include))
+            run_env.prepend_path('ROOT_INCLUDE_PATH',
+                                 str(self.spec[d.name].prefix.include))
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        sanitize_environments(spack_env, run_env)
+
+    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        sanitize_environments(spack_env, run_env)

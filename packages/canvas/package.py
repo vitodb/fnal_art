@@ -23,83 +23,54 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
-import os
 
 
-class Canvas(Package):
-    homepage = 'http://cdcvs.fnal.gov/projects/canvas'
-    url = 'http://cdcvs.fnal.gov/projects/canvas'
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
 
-    version(
-        'v1_06_04',
-        git='http://cdcvs.fnal.gov/projects/canvas',
-        tag='v1_06_04')
 
-    version(
-        'v1_06_03',
-        git='http://cdcvs.fnal.gov/projects/canvas',
-        tag='v1_06_03')
+class Canvas(CMakePackage):
+    homepage = 'https://cdcvs.fnal.gov/projects/canvas'
 
-    variant('nu', default=False, description='Enable nu dependencies')
+    version('develop', branch='feature/for_spack',
+            git=homepage, preferred=True)
 
-    depends_on("cmake", type="build")
-    depends_on("cetmodules", type="build")
-    depends_on("cetlib-except")
-    depends_on("cetlib")
-    depends_on("fhicl-cpp")
-    depends_on("messagefacility@v1_18_04", when='@v1_06_04')
-    depends_on("boost")
-    depends_on("sqlite")
-    depends_on("openssl")
-    depends_on("tbb")
-    depends_on("root")
-    depends_on("cppunit")
+    variant('cxxstd',
+            default='17',
+            values=('14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
 
-    def install(self,spec,prefix):
-        mkdirp('%s'%prefix)
-        rsync=which('rsync')
-        rsync('-a', '-v', '%s'%self.stage.source_path, '%s'%prefix)
+    # Build-only dependencies.
+    depends_on('cmake@3.4:', type='build')
+    depends_on('cetmodules', type='build')
 
-    def realinstall(self, spec, prefix):
-        cmake = which('cmake')
-        ups = which('ups')
-        setups = '%s/../products/setup' % spec['ups'].prefix
-        sfd = '%s/%s/ups/setup_for_development -p ' % (
-            self.stage.path, spec.name)
-        bash = which('bash')
-        build_directory = join_path(self.stage.path, 'spack-build')
-        cmake_cmd = 'source %s &&' % setups + ' source %s &&' % sfd + \
-            ' cmake %s' % (self.stage.source_path) + ' -DCMAKE_INSTALL_PREFIX=%s' % prefix + \
-            ' -DCMAKE_BUILD_TYPE=${CETPKG_TYPE}' + \
-            ' -DCMAKE_CXX_FLAGS=-std=c++14 '
-        with working_dir(build_directory, create=True):
-            output = bash(
-                '-c', cmake_cmd,
-                output=str,
-                error=str)
-            print output
-            make('VERBOSE=1')
-            make('install')
-        name_ = str(spec.name)
-        print name_
-        dst = '%s/../products/%s' % (prefix, name_)
-        mkdirp(dst)
-        src1 = join_path(prefix, name_, spec.version)
-        src2 = join_path(prefix, name_, '%s.version' % spec.version)
-        dst1 = join_path(dst, spec.version)
-        dst2 = join_path(dst, '%s.version' % spec.version)
-        if os.path.exists(dst1):
-            print 'symbolic link %s already exists' % dst1
-        else:
-            os.symlink(src1, dst1)
-        if os.path.exists(dst2):
-            print 'symbolic link %s already exists' % dst2
-        else:
-            os.symlink(src2, dst2)
-        import glob
-        libdirs=glob.glob('%s'%prefix+'/*/*/*/lib*')
-        for libdir in libdirs:
-            os.symlink(libdir,join_path(prefix,'lib'))
-        incdirs=glob.glob('%s'%prefix+'/*/*/*/inlude*')
-        for incdir in incdirs:
-            os.symlink(incdir,join_path(prefix,'include'))
+    depends_on('cetlib_except')
+    depends_on('cetlib')
+    depends_on('fhicl-cpp')
+    depends_on('messagefacility')
+    depends_on('boost')
+    depends_on('tbb')
+    depends_on('root', when='%clang')
+    depends_on('clhep')
+    depends_on('cppunit')
+    depends_on('range-v3')
+
+    def url_for_version(self, version):
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format(self.name, version.underscored)
+
+    def cmake_args(self):
+        args = ['-DCMAKE_CXX_STANDARD={0}'.
+                format(self.spec.variants['cxxstd'].value)]
+        return args
+
+    def setup_environment(self, spack_env, run_env):
+        # For tests.
+        spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
+        sanitize_environments(spack_env, run_env)

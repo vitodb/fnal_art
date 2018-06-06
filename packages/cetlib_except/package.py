@@ -24,10 +24,20 @@
 ##############################################################################
 from spack import *
 
+
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
+
+
 class CetlibExcept(CMakePackage):
     """cetlib_except provides exception libraries."""
 
-    homepage='https://cdcvs.fnal.gov/projects/cetlib_except'
+    homepage = 'https://cdcvs.fnal.gov/projects/cetlib_except'
 
     version('develop', branch='feature/for_spack',
             git=homepage, preferred=True)
@@ -52,3 +62,4 @@ class CetlibExcept(CMakePackage):
     def setup_environment(self, spack_env, run_env):
         # For tests.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
+        sanitize_environments(spack_env, run_env)

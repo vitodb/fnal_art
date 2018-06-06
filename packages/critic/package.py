@@ -34,9 +34,9 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class Gallery(CMakePackage):
+class Critic(CMakePackage):
 
-    homepage='https://cdcvs.fnal.gov/projects/gallery'
+    homepage = 'https://cdcvs.fnal.gov/projects/critic'
 
     version('develop', branch='feature/for_spack',
             git=homepage, preferred=True)
@@ -52,12 +52,12 @@ class Gallery(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
-    depends_on('canvas_root_io')
+    depends_on('boost')
     depends_on('canvas')
-    depends_on('messagefacility')
-    depends_on('fhicl-cpp')
-    depends_on('cetlib')
+    depends_on('gallery')
+    depends_on('art')
     depends_on('root+python')
+    depends_on('python')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'

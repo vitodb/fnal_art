@@ -23,6 +23,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
+from spack.environment import *
 
 
 def sanitize_environments(*args):
@@ -34,9 +35,9 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class Gallery(CMakePackage):
+class HepConcurrency(CMakePackage):
 
-    homepage='https://cdcvs.fnal.gov/projects/gallery'
+    homepage = 'https://cdcvs.fnal.gov/projects/hep_concurrency'
 
     version('develop', branch='feature/for_spack',
             git=homepage, preferred=True)
@@ -51,46 +52,20 @@ class Gallery(CMakePackage):
     depends_on('cmake@3.4:', type='build')
     depends_on('cetmodules', type='build')
 
-    # Build and link dependencies.
-    depends_on('canvas_root_io')
-    depends_on('canvas')
-    depends_on('messagefacility')
-    depends_on('fhicl-cpp')
-    depends_on('cetlib')
-    depends_on('root+python')
+    # Build / link dependencies.
+    depends_on('cppunit')
+    depends_on('tbb')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):
-        # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value)]
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # For testing.
-        spack_env.prepend_path('PATH',
-                               join_path(self.build_directory, 'bin'))
-        spack_env.prepend_path('CET_PLUGIN_PATH',
-                               join_path(self.build_directory, 'lib'))
-
-        # Ensure we can find plugin libraries.
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-
-        # Ensure Root can find headers for autoparsing.
-        for d in self.spec.traverse(root=False, cover='nodes', order='post',
-                                    deptype=('link'), direction='children'):
-            spack_env.prepend_path('ROOT_INCLUDE_PATH',
-                                   str(self.spec[d.name].prefix.include))
-            run_env.prepend_path('ROOT_INCLUDE_PATH',
-                                 str(self.spec[d.name].prefix.include))
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        sanitize_environments(spack_env, run_env)
-
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
-        # Ensure we can find plugin libraries.
-        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # For tests.
+        spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
         sanitize_environments(spack_env, run_env)
