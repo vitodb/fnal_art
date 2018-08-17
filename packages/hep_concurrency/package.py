@@ -24,6 +24,11 @@
 ##############################################################################
 from spack import *
 from spack.environment import *
+import os
+try:
+    from pipes import quote as cmd_quote
+except ImportError:
+    from shlex import quote as cmd_quote
 
 
 def sanitize_environments(*args):
@@ -56,6 +61,11 @@ class HepConcurrency(CMakePackage):
     depends_on('cppunit')
     depends_on('tbb')
 
+    if 'CETPKG_GENERATOR' in os.environ:
+        generator = os.environ['CETPKG_GENERATOR']
+        if generator == 'Ninja':
+            depends_on('ninja', type='build')
+
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
@@ -66,6 +76,12 @@ class HepConcurrency(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # For tests.
+        # PATH for tests.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
+        # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    def do_fake_install(self):
+        cargs = self.std_cmake_args + self.cmake_args()
+        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
+                        ['[/cmake-args]']))

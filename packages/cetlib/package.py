@@ -24,6 +24,11 @@
 ##############################################################################
 from spack import *
 from spack.environment import *
+import os
+try:
+    from pipes import quote as cmd_quote
+except ImportError:
+    from shlex import quote as cmd_quote
 
 
 def sanitize_environments(*args):
@@ -58,7 +63,12 @@ class Cetlib(CMakePackage):
     depends_on('boost')
     depends_on('sqlite')
     depends_on('openssl')
-    extends('perl')  # Module skeletons, etc.
+    depends_on('perl')  # Module skeletons, etc.
+
+    if 'CETPKG_GENERATOR' in os.environ:
+        generator = os.environ['CETPKG_GENERATOR']
+        if generator == 'Ninja':
+            depends_on('ninja', type='build')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -70,9 +80,23 @@ class Cetlib(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # For tests only.
+        # PATH for testing.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
         # For plugin tests (not needed for installed package).
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                join_path(self.build_directory, 'lib'))
+        # Perl modules:
+        spack_env.prepend_path('PERL5LIB',
+                               join_path(self.build_directory, 'perllib'))
+        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+        spack_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+
+    def do_fake_install(self):
+        cargs = self.std_cmake_args + self.cmake_args()
+        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
+                        ['[/cmake-args]']))

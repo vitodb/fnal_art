@@ -23,6 +23,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
+import os
+try:
+    from pipes import quote as cmd_quote
+except ImportError:
+    from shlex import quote as cmd_quote
 
 
 def sanitize_environments(*args):
@@ -56,10 +61,15 @@ class Canvas(CMakePackage):
     depends_on('messagefacility')
     depends_on('boost')
     depends_on('tbb')
-    depends_on('root', when='%clang')
+    depends_on('root+python', when='%clang')
     depends_on('clhep')
     depends_on('cppunit')
     depends_on('range-v3')
+
+    if 'CETPKG_GENERATOR' in os.environ:
+        generator = os.environ['CETPKG_GENERATOR']
+        if generator == 'Ninja':
+            depends_on('ninja', type='build')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -71,6 +81,12 @@ class Canvas(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # For tests.
+        # PATH for tests.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
+        # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    def do_fake_install(self):
+        cargs = self.std_cmake_args + self.cmake_args()
+        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
+                        ['[/cmake-args]']))

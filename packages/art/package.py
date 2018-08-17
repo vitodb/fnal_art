@@ -23,6 +23,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
+import os
+try:
+    from pipes import quote as cmd_quote
+except ImportError:
+    from shlex import quote as cmd_quote
 
 
 def sanitize_environments(*args):
@@ -64,6 +69,12 @@ class Art(CMakePackage):
     depends_on('root+python')
     depends_on('clhep')
     depends_on('sqlite@3.8.2:')
+    depends_on('perl')
+
+    if 'CETPKG_GENERATOR' in os.environ:
+        generator = os.environ['CETPKG_GENERATOR']
+        if generator == 'Ninja':
+            depends_on('ninja', type='build')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -76,15 +87,13 @@ class Art(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # For testing.
+        # PATH for testing.
         spack_env.prepend_path('PATH',
                                join_path(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                join_path(self.build_directory, 'lib'))
-
-        # Ensure we can find plugin libraries.
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
@@ -93,10 +102,24 @@ class Art(CMakePackage):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules:
+        spack_env.prepend_path('PERL5LIB',
+                               join_path(self.build_directory, 'perllib'))
+        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        # Cleaup.
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Perl modules:
+        spack_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    def do_fake_install(self):
+        cargs = self.std_cmake_args + self.cmake_args()
+        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
+                        ['[/cmake-args]']))

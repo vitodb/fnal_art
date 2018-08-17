@@ -23,7 +23,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##############################################################################
 from spack import *
-
+import os
 
 def sanitize_environments(*args):
     for env in args:
@@ -50,6 +50,11 @@ class CetlibExcept(CMakePackage):
 
     depends_on('cetmodules', type='build')
 
+    if 'CETPKG_GENERATOR' in os.environ:
+        generator = os.environ['CETPKG_GENERATOR']
+        if generator == 'Ninja':
+            depends_on('ninja', type='build')
+
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
@@ -62,4 +67,10 @@ class CetlibExcept(CMakePackage):
     def setup_environment(self, spack_env, run_env):
         # For tests.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
+        # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    def do_fake_install(self):
+        cargs = self.std_cmake_args + self.cmake_args()
+        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
+                        ['[/cmake-args]']))
