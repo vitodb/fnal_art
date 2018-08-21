@@ -83,6 +83,11 @@ class FhiclCpp(CMakePackage):
         # Cleanup
         sanitize_environments(spack_env, run_env)
 
+    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+        # Binaries.
+        spack_env.prepend_path('PATH',
+                               join_path(self.build_directory, 'bin'))
+
     def do_fake_install(self):
         cargs = self.std_cmake_args + self.cmake_args()
         print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +

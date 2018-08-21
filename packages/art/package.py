@@ -110,6 +110,9 @@ class Art(CMakePackage):
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+        # Binaries.
+        spack_env.prepend_path('PATH',
+                               join_path(self.build_directory, 'bin'))
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
