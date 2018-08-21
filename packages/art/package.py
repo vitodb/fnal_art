@@ -87,7 +87,7 @@ class Art(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # PATH for testing.
+        # Binaries.
         spack_env.prepend_path('PATH',
                                join_path(self.build_directory, 'bin'))
         # Ensure we can find plugin libraries.
@@ -102,7 +102,7 @@ class Art(CMakePackage):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        # Perl modules:
+        # Perl modules.
         spack_env.prepend_path('PERL5LIB',
                                join_path(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
@@ -116,7 +116,7 @@ class Art(CMakePackage):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        # Perl modules:
+        # Perl modules.
         spack_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
         run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
         # Cleanup.

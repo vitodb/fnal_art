@@ -81,7 +81,7 @@ class Canvas(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # PATH for tests.
+        # Binaries.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)

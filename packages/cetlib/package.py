@@ -80,12 +80,12 @@ class Cetlib(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # PATH for testing.
+        # Binaries.
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
         # For plugin tests (not needed for installed package).
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                join_path(self.build_directory, 'lib'))
-        # Perl modules:
+        # Perl modules.
         spack_env.prepend_path('PERL5LIB',
                                join_path(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
@@ -96,6 +96,7 @@ class Cetlib(CMakePackage):
         # Binaries.
         spack_env.prepend_path('PATH',
                                join_path(self.build_directory, 'bin'))
+        # Perl modules.
         spack_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
         run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
 

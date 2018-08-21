@@ -78,7 +78,7 @@ class Gallery(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # PATH for testing.
+        # Binaries.
         spack_env.prepend_path('PATH',
                                join_path(self.build_directory, 'bin'))
         # Ensure we can find plugin libraries.
