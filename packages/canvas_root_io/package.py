@@ -67,7 +67,7 @@ class CanvasRootIo(CMakePackage):
 
     if 'CETPKG_GENERATOR' in os.environ:
         generator = os.environ['CETPKG_GENERATOR']
-        if generator == 'Ninja':
+        if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
