@@ -71,8 +71,8 @@ class Art(CMakePackage):
     depends_on('sqlite@3.8.2:')
     depends_on('perl')
 
-    if 'CETPKG_GENERATOR' in os.environ:
-        generator = os.environ['CETPKG_GENERATOR']
+    if 'SPACKDEV_GENERATOR' in os.environ:
+        generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
 

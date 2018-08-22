@@ -63,8 +63,8 @@ class FhiclCpp(CMakePackage):
     depends_on('openssl')
     depends_on('python')
 
-    if 'CETPKG_GENERATOR' in os.environ:
-        generator = os.environ['CETPKG_GENERATOR']
+    if 'SPACKDEV_GENERATOR' in os.environ:
+        generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
 
