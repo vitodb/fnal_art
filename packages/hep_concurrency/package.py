@@ -25,10 +25,6 @@
 from spack import *
 from spack.environment import *
 import os
-try:
-    from pipes import quote as cmd_quote
-except ImportError:
-    from shlex import quote as cmd_quote
 
 
 def sanitize_environments(*args):
