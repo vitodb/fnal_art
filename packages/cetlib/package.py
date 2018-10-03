@@ -36,7 +36,7 @@ class Cetlib(CMakePackage):
     depends_on('catch@2:~single_header', type='build')
 
     # Build / link dependencies.
-    depends_on('cetlib_except')
+    depends_on('cetlib-except')
     depends_on('boost')
     depends_on('sqlite')
     depends_on('openssl')

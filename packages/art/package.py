@@ -35,12 +35,12 @@ class Art(CMakePackage):
     depends_on('catch@2:~single_header', type='build')
 
     # Build and link dependencies.
-    depends_on('cetlib_except')
+    depends_on('cetlib-except')
     depends_on('cetlib')
     depends_on('fhicl-cpp')
     depends_on('messagefacility')
     depends_on('canvas')
-    depends_on('canvas_root_io')
+    depends_on('canvas-root-io')
     depends_on('boost')
     depends_on('tbb')
     depends_on('root+python')

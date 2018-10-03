@@ -33,7 +33,7 @@ class FhiclCpp(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build / link dependencies.
-    depends_on('cetlib_except')
+    depends_on('cetlib-except')
     depends_on('cetlib')
     depends_on('boost')
     depends_on('sqlite')

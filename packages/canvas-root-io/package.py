@@ -32,7 +32,7 @@ class CanvasRootIo(CMakePackage):
     depends_on('cmake@3.4:', type='build')
     depends_on('cetmodules', type='build')
 
-    depends_on('cetlib_except')
+    depends_on('cetlib-except')
     depends_on('cetlib')
     depends_on('fhicl-cpp')
     depends_on('messagefacility')

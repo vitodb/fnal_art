@@ -34,7 +34,7 @@ class Gallery(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
-    depends_on('canvas_root_io')
+    depends_on('canvas-root-io')
     depends_on('canvas')
     depends_on('cetlib')
     depends_on('root+python')

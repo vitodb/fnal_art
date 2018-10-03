@@ -16,7 +16,7 @@ def sanitize_environments(*args):
 
 
 class CetlibExcept(CMakePackage):
-    """cetlib_except provides exception libraries."""
+    """cetlib-except provides exception libraries."""
 
     homepage = 'https://cdcvs.fnal.gov/projects/cetlib_except'
 
