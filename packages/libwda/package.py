@@ -58,5 +58,5 @@ class Libwda(MakefilePackage):
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
             make()
-            make('install')
+            make("PREFIX=" + prefix, 'install')
 
