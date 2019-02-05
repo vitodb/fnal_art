@@ -13,4 +13,4 @@ class Geant4G4radiative(Package):
 
     def url_for_version(self, version):
         """Handle version string."""
-        return ("http://scisoft.fnal.gov/scisoft/packages/g4radiative/v%s/g4radiative-%s-noarch.tar.bz2" % (version.underscore,version))
+        return ("http://scisoft.fnal.gov/scisoft/packages/g4radiative/v%s/g4radiative-%s-noarch.tar.bz2" % (version.underscored,version))

@@ -14,5 +14,5 @@ class Geant4G4photon(Package):
 
     def url_for_version(self, version):
         """Handle version string."""
-        return ("http://scisoft.fnal.gov/scisoft/packages/g4photon/v%s/g4photon-%s-noarch.tar.bz2" % (version.underscore,version))
+        return ("http://scisoft.fnal.gov/scisoft/packages/g4photon/v%s/g4photon-%s-noarch.tar.bz2" % (version.underscored,version))
 

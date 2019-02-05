@@ -13,5 +13,5 @@ class Geant4G4emlow(Package):
 
     def url_for_version(self, version):
         """Handle version string."""
-        return ("http://scisoft.fnal.gov/scisoft/packages/g4emlow/v%s/g4emlow-%s-noarch.tar.bz2" % (version.underscore,version))
+        return ("http://scisoft.fnal.gov/scisoft/packages/g4emlow/v%s/g4emlow-%s-noarch.tar.bz2" % (version.underscored,version))
 

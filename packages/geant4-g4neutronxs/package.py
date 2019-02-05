@@ -16,4 +16,4 @@ class Geant4G4neutronxs(Package):
 
     def url_for_version(self, version):
         """Handle version string."""
-        return "http://scisoft.fnal.gov/scisoft/packages/g4neutronxs/v%s/g4neutronxs-%s-noarch.tar.bz2" % (version.underscore,version)
+        return "http://scisoft.fnal.gov/scisoft/packages/g4neutronxs/v%s/g4neutronxs-%s-noarch.tar.bz2" % (version.underscored,version)
