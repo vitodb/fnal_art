@@ -9,7 +9,7 @@ class Geant4G4tendl(Package):
 
     url = "http://scisoft.fnal.gov/scisoft/packages/g4tendl/v1_3/g4tendl-1.3-noarch.tar.bz2"
 
-    version('1.3', 'fd29c45fe2de432f1f67232707b654c0')
+    version('1.3', '803032c96049330405e9f59a85781725')
 
     def install(self, spec, prefix):
         install_tree(self.stage.source_path, prefix)
