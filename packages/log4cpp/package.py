@@ -3,21 +3,20 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 from spack import *
-import os
-import glob
+import os, glob
 
-class Lhapdf(Package):
+class Log4cpp(Package):
+    """A library of C++ classes for flexible logging to files (rolling),
+syslog, IDSA and other destinations. It is modeled after the Log for Java
+ library (http://www.log4j.org), staying as close to their API as is 
+reasonable."""
 
-    homepage = "http://www.hepforge.org/lhapdf"
-    url      = "http://www.hepforge.org/archive/lhapdf/lhapdf-5.9.1.tar.gz"
+    homepage = "https://sourceforge.net/projects/log4cpp/"
+    url      = "https://newcontinuum.dl.sourceforge.net/project/log4cpp/log4cpp-1.1.x%20%28new%29/log4cpp-1.1/log4cpp-1.1.3.tar.gz"
 
-    version('5.9.1', sha256='86b9b046d7f25627ce2aab6847ef1c5534972f4bae18de98225080cf5086919c')
-
-    resource(name='pdfsets', 
-             url='http://scisoft.fnal.gov/scisoft/packages/pdfsets/v5_9_1b/pdfsets-5.9.1b-noarch.tar.bz2',
-             md5='944e1b7f79b1623afeb50441c9bcffb0')
-    
+    version('1.1.3', '74f0fea7931dc1bc4e5cd34a6318cd2a51322041',extension='tar.gz')
 
     def patch(self):
         if os.path.exists('./config/config.sub'):
@@ -26,6 +25,7 @@ class Lhapdf(Package):
         if os.path.exists('./config/config.guess'):
             os.remove('./config/config.guess')
             install(os.path.join(os.path.dirname(__file__), '../../config/config.guess'), './config/config.guess')
+        patch('patch/log4cpp.patch')
 
     variant('cxxstd',
             default='17',
@@ -56,30 +56,12 @@ class Lhapdf(Package):
 
         spack_env.append_flags('CXXFLAGS', cxxstdflag)
 
-
-    @run_before('install')
-    def copy_pdfs(self):
-        mkdirp(join_path(self.spec.prefix.share, 'lhapdf'))
-        for pdfsets in glob.glob('pdfsets/*/PDFsets'):
-            install_tree(pdfsets, join_path(self.spec.prefix.share, 'lhapdf/PDFsets'))
-
     def install(self,spec,prefix):
         with working_dir(join_path(self.stage.path,'spack-build'), create=True):
-           args = ['--prefix={0}'.format(prefix), '--enable-low-memory', '--disable-pyext', '--disable-octave']
+           args = ['--prefix={0}'.format(prefix)]
            configure=which(join_path(self.stage.source_path,'configure'))
            configure(*args)
            make()
            make('check')
            make('install')
-        
 
-    @run_after('install')
-    def copy_examples(self):
-      with working_dir(self.stage.source_path):
-        install_tree('examples', self.prefix.examples)
-      with working_dir(self.prefix.examples):
-        for f in glob.glob('Makefile.*'):
-            os.remove(f)
-        for f in glob.glob('*.py'):
-            os.remove(f)
-        
