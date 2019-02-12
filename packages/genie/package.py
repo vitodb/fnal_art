@@ -27,10 +27,10 @@ global analysis of neutrino scattering data.
     version('2_12_6',  sha256='3b450c609875459798ec98e12cf671cc971cbb13345af6d75bd6278d422f3309')
     version('2_12_4',  sha256='19a4a1633b0847a9f16a44e0c74b9c224ca3bb93975aecf108603c22e807517b')
 
-    depends_on('root')
+    depends_on('root+pythia6')
     depends_on('lhapdf')
-    depends_on('pythia6')
-    depends_on('libxml2')
+    depends_on('pythia6+root')
+    depends_on('libxml2+python')
     depends_on('log4cpp')
 
     variant('cxxstd',
@@ -39,6 +39,7 @@ global analysis of neutrino scattering data.
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('patch/genie-r21210.patch')
 
     def setup_environment(self, spack_env, run_env):
         cxxstd = self.spec.variants['cxxstd'].value
@@ -62,9 +63,20 @@ global analysis of neutrino scattering data.
 
         spack_env.append_flags('CXXFLAGS', cxxstdflag)
 
- 
+        spack_env.set('GENIE',self.stage.source_path)
+        spack_env.set('GENIE_VERSION','v{}'.format(self.version.underscored))
+        spack_env.set('GENIE_INC', '{0}/src'.format(self.stage.source_path))
+        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/src'.format(self.stage.source_path))
+        spack_env.append_path('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
+        spack_env.append_path('PATH', '{0}/bin'.format(self.stage.source_path))
+
+#    def patch(self):
+#        makefileinc = FileFilter('src/Apps/Makefile')
+#        makefileinc.filter('GENIE_LIBS  = ', 'GENIE_LIBS  = -L./lib ')
+
     def install(self, spec, prefix):
-        args = [
+        args = [ 
+                '---prefix={0}'.format(prefix),
                 '--enable-lhapdf',
                 '--enable-rwght',
                 '--enable-fnal',
@@ -73,17 +85,18 @@ global analysis of neutrino scattering data.
                 '--enable-nucleon-decay',
                 '--enable-neutron-osc',
                 '--enable-vle-extension',
-                '--with-pythia6-lib={0}/libpythia.so'.format(self.spec['pythia6'].prefix.lib),
+                '--with-pythia6-lib={0}'.format(self.spec['pythia6'].prefix.lib),
                 '--with-lhapdf-lib={0}'.format(self.spec['lhapdf'].prefix.lib),
-                '--with-lhapdf-inc={0}'.format(self.spec['lhapdf'].prefix.inc),
-                '--with-libxml2-inc={0}'.format(self.spec['libxml2'].prefix.inc),
+                '--with-lhapdf-inc={0}'.format(self.spec['lhapdf'].prefix.include),
+                '--with-libxml2-inc={0}'.format(self.spec['libxml2'].prefix.include),
                 '--with-libxml2-lib={0}'.format(self.spec['libxml2'].prefix.lib),
-                '--with-log4cpp-inc={0}'.format(self.spec['log4cpp'].prefix.inc),
+                '--with-log4cpp-inc={0}'.format(self.spec['log4cpp'].prefix.include),
                 '--with-log4cpp-lib={0}'.format(self.spec['log4cpp'].prefix)
                 ]
-        with working_dir(join_path(self.stage.path,'spack-build'), create=True):
-            configure=which(join_path(self.stage.source_path,'configure'))
-            configure(*args)          
-            make('GOPT_WITH_CXX_USERDEF_FLAGS="{0}"'.format(os.env('CXXFLAGS')))
-            make('check')
-            make('install')
+        configure=Executable('./configure')
+        configure.add_default_env('GENIE',self.stage.source_path)
+        configure(*args)
+        make.add_default_env('GENIE',self.stage.source_path)
+        make.add_default_env('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
+        make('-j1','GOPT_WITH_CXX_USERDEF_FLAGS={0}'.format(os.environ['CXXFLAGS']))
+        make('-j1','install')

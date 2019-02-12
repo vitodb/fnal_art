@@ -1,0 +1,47 @@
+diff -Naur GENIE_R21210/src/Apps/Makefile GENIE_R21210/src/Apps/Makefile
+--- GENIE_R21210/src/Apps/Makefile	2017-11-27 09:47:29.000000000 -0600
++++ GENIE_R21210/src/Apps/Makefile	2018-03-07 12:45:10.043426386 -0600
+@@ -47,13 +47,6 @@
+ endif
+ ifeq ($(strip $(GOPT_ENABLE_NEUTRON_OSC)),YES)
+ TGT_BASE += gevgen_nosc
+-# Require C++11 for NeutronOsc module.
+-GCC_GTEQ_470 := $(shell expr `gcc -dumpversion | sed -e 's/\.\([0-9][0-9]\)/\1/g' -e 's/\.\([0-9]\)/0\1/g' -e 's/^[0-9]\{3,4\}$$/&00/'` \>= 40700)
+-ifeq "$(GCC_GTEQ_470)" "1"
+-        CXXFLAGS += -std=c++11
+-else
+-        CXXFLAGS += -std=c++0x
+-endif
+ endif
+ ifeq ($(strip $(GOPT_ENABLE_FLUX_DRIVERS)),YES)
+ TGT_BASE += gmxpl
+diff -Naur GENIE_R21210/src/NeutronOsc/Makefile GENIE_R21210/src/NeutronOsc/Makefile
+--- GENIE_R21210/src/NeutronOsc/Makefile	2016-08-29 16:58:45.000000000 -0500
++++ GENIE_R21210/src/NeutronOsc/Makefile	2018-03-07 12:42:16.351822010 -0600
+@@ -12,14 +12,6 @@
+ #
+ include $(GENIE)/src/make/Make.include
+ 
+-# Require C++11 for NeutronOsc module.
+-GCC_GTEQ_470 := $(shell expr `gcc -dumpversion | sed -e 's/\.\([0-9][0-9]\)/\1/g' -e 's/\.\([0-9]\)/0\1/g' -e 's/^[0-9]\{3,4\}$$/&00/'` \>= 40700)
+-ifeq "$(GCC_GTEQ_470)" "1"
+-	CXXFLAGS += -std=c++11
+-else
+-	CXXFLAGS += -std=c++0x
+-endif
+-
+ PACKAGE           = NeutronOsc
+ DICTIONARY        = _ROOT_DICT_NeutronOsc
+ LIBNAME           = libGNeutronOsc
+diff -Naur GENIE_R21210/src/PDF/Makefile GENIE_R21210/src/PDF/Makefile
+--- GENIE_R21210/src/PDF/Makefile	2009-01-08 05:59:19.000000000 -0600
++++ GENIE_R21210/src/PDF/Makefile	2018-03-07 12:42:16.351822010 -0600
+@@ -15,7 +15,7 @@
+ PACKAGE           = PDF
+ DICTIONARY        = _ROOT_DICT_PDF
+ LIBNAME           = libGPDF
+-EXTRA_EXT_LIBS    = $(CERN_LIBRARIES) $(LHAPDF_LIBRARIES)
++EXTRA_EXT_LIBS    = $(CERN_LIBRARIES) $(LHAPDF_LIBRARIES) -lPythia6 -lgfortran -lquadmath
+ 
+ all     : rootcint lib lib-link
+ install : install-inc install-lib
