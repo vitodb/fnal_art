@@ -33,8 +33,7 @@ class Lhapdf(Package):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
-    def setup_environment(self, spack_env, run_env):
+    def set_cxxstdflag(self):
         cxxstd = self.spec.variants['cxxstd'].value
         cxxstdflag = ''
         if cxxstd == '98':
@@ -54,7 +53,8 @@ class Lhapdf(Package):
                 "INTERNAL ERROR: cannot accommodate unexpected variant ",
                 "cxxstd={0}".format(spec.variants['cxxstd'].value))
 
-        spack_env.append_flags('CXXFLAGS', cxxstdflag)
+    def setup_environment(self, spack_env, run_env):
+        spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
 
 
     @run_before('install')

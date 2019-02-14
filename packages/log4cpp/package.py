@@ -33,8 +33,7 @@ reasonable."""
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
-    def setup_environment(self, spack_env, run_env):
+    def set_cxxstdflag(self):
         cxxstd = self.spec.variants['cxxstd'].value
         cxxstdflag = ''
         if cxxstd == '98':
@@ -53,8 +52,10 @@ reasonable."""
             tty.die(
                 "INTERNAL ERROR: cannot accommodate unexpected variant ",
                 "cxxstd={0}".format(spec.variants['cxxstd'].value))
+        return cxxstdflag
 
-        spack_env.append_flags('CXXFLAGS', cxxstdflag)
+    def setup_environment(self, spack_env, run_env):
+        spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
 
     def install(self,spec,prefix):
         with working_dir(join_path(self.stage.path,'spack-build'), create=True):

@@ -27,6 +27,8 @@ global analysis of neutrino scattering data.
     version('2_12_6',  sha256='3b450c609875459798ec98e12cf671cc971cbb13345af6d75bd6278d422f3309')
     version('2_12_4',  sha256='19a4a1633b0847a9f16a44e0c74b9c224ca3bb93975aecf108603c22e807517b')
 
+    parallel = False
+
     depends_on('root+pythia6')
     depends_on('lhapdf')
     depends_on('pythia6+root')
@@ -41,7 +43,7 @@ global analysis of neutrino scattering data.
 
     patch('patch/genie-r21210.patch')
 
-    def setup_environment(self, spack_env, run_env):
+    def set_cxxstdflag(self):
         cxxstd = self.spec.variants['cxxstd'].value
         cxxstdflag = ''
         if cxxstd == '98':
@@ -60,9 +62,10 @@ global analysis of neutrino scattering data.
             tty.die(
                 "INTERNAL ERROR: cannot accommodate unexpected variant ",
                 "cxxstd={0}".format(spec.variants['cxxstd'].value))
+        return cxxstdflag
 
-        spack_env.append_flags('CXXFLAGS', cxxstdflag)
-
+    def setup_environment(self, spack_env, run_env):
+        spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
         spack_env.set('GENIE',self.stage.source_path)
         spack_env.set('GENIE_VERSION','v{}'.format(self.version.underscored))
         spack_env.set('GENIE_INC', '{0}/src'.format(self.stage.source_path))
@@ -70,9 +73,15 @@ global analysis of neutrino scattering data.
         spack_env.append_path('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
         spack_env.append_path('PATH', '{0}/bin'.format(self.stage.source_path))
 
-#    def patch(self):
-#        makefileinc = FileFilter('src/Apps/Makefile')
-#        makefileinc.filter('GENIE_LIBS  = ', 'GENIE_LIBS  = -L./lib ')
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
+        spack_env.set('GENIE',dspec['genie'].prefix)
+        spack_env.set('GENIE_VERSION','v{}'.format(dspec['genie'].version.underscored))
+        spack_env.set('GENIE_INC', '{0}/src'.format(dspec['genie'].prefix))
+        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/src'.format(dspec['genie']))
+        spack_env.append_path('LD_LIBRARY_PATH', '{0}/lib'.format(dspec['genie']))
+        spack_env.append_path('PATH', '{0}/bin'.format(dspec['genie']))
+
 
     def install(self, spec, prefix):
         args = [ 
@@ -98,5 +107,5 @@ global analysis of neutrino scattering data.
         configure(*args)
         make.add_default_env('GENIE',self.stage.source_path)
         make.add_default_env('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
-        make('-j1','GOPT_WITH_CXX_USERDEF_FLAGS={0}'.format(os.environ['CXXFLAGS']))
-        make('-j1','install')
+        make('GOPT_WITH_CXX_USERDEF_FLAGS={0}'.format(os.environ['CXXFLAGS']))
+        make('install')
