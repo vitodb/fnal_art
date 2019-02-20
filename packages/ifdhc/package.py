@@ -48,7 +48,9 @@ class Ifdhc(Package):
 
 
     def install(self, spec, prefix):
+        makefile = FileFilter('Makefile')
+        makefile.filter('gcc', '$(CC)')
+        makefile.filter('g\+\+', '$(CXX)')
         make.add_default_env('ARCH', self.set_cxxstdflag())
         make('IFDH_VERSION=v{0}'.format(self.version.underscored))
-        make('install')
-        install_tree(self.stage.source_path, prefix)
+        make('DESTDIR={0}/'.format(prefix), 'install')

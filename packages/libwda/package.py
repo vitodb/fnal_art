@@ -12,14 +12,45 @@ class Libwda(MakefilePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/libwda"
     url      = "http://cdcvs.fnal.gov/projects/ifdhc-libwda"
 
-    version('v2_26_0', git=url, preferred=True)
+    version('2.26.0', git=url, tag='v2_26_0', preferred=True)
 
     parallel = False
+
+    variant('cxxstd',
+            default='17',
+            values=('default', '98', '11', '14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
+    def set_cxxstdflag(self):
+        cxxstd = self.spec.variants['cxxstd'].value
+        cxxstdflag = ''
+        if cxxstd == '98':
+            cxxstdflag = self.compiler.cxx98_flag
+        elif cxxstd == '11':
+            cxxstdflag = self.compiler.cxx11_flag
+        elif cxxstd == '14':
+            cxxstdflag = self.compiler.cxx14_flag
+        elif cxxstd == '17':
+            cxxstdflag = self.compiler.cxx17_flag
+        elif cxxstd == 'default':
+            pass
+        else:
+            # The user has selected a (new?) legal value that we've
+            # forgotten to deal with here.
+            tty.die(
+                "INTERNAL ERROR: cannot accommodate unexpected variant ",
+                "cxxstd={0}".format(spec.variants['cxxstd'].value))
+        return cxxstdflag
 
     build_directory = 'src'
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
-            make()
-            make("PREFIX=" + prefix, 'install')
+            makefile = FileFilter('Makefile')
+            makefile.filter('gcc', '$(CC)')
+            makefile.filter('g\+\+', '$(CXX)')
+            make.add_default_env('ARCH', self.set_cxxstdflag())
+            make('LIBWDA_VERSION=v{0}'.format(self.version.underscored))
+            make('PREFIX={0}'.format(prefix), 'install')
 

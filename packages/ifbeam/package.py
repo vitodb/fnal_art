@@ -50,6 +50,9 @@ class Ifbeam(Package):
 
     def install(self, spec, prefix):
         with working_dir(self.stage.source_path+'/src'):
+            makefile = FileFilter('Makefile')
+            makefile.filter('gcc', '$(CC)')
+            makefile.filter('g\+\+', '$(CXX)')
             make.add_default_env('LIBWDA_FQ_DIR', '{0}'.format(self.spec['libwda'].prefix))
             make.add_default_env('LIBWDA_LIB', '{0}/lib'.format(self.spec['libwda'].prefix))
             make.add_default_env('IFDHC_FQ_DIR', '{0}'.format(self.spec['ifdhc'].prefix))
