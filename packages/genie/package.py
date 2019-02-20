@@ -77,11 +77,15 @@ global analysis of neutrino scattering data.
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
         spack_env.set('GENIE',dspec['genie'].prefix)
         spack_env.set('GENIE_VERSION','v{}'.format(dspec['genie'].version.underscored))
-        spack_env.set('GENIE_INC', '{0}/src'.format(dspec['genie'].prefix))
-        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/src'.format(dspec['genie']))
+        spack_env.set('GENIE_INC', '{0}'.format(dspec['genie'].prefix.include))
+        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/include/GENIE'.format(dspec['genie'].prefix))
         spack_env.append_path('LD_LIBRARY_PATH', '{0}/lib'.format(dspec['genie']))
         spack_env.append_path('PATH', '{0}/bin'.format(dspec['genie']))
 
+    @run_before('install')
+    def create_ver_text(self):
+        with open('%s/VERSION'%self.prefix,'w') as f:
+          f.write('%s\n'%self.version)
 
     def install(self, spec, prefix):
         args = [ 
