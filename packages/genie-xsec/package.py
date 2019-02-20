@@ -53,7 +53,7 @@ class GenieXsec(Package):
              sha256='3e7c117777cb0da6232df1e1fe481fdb2afbfe55639b0d7b4ddf8027954ed1fa')
 
     def install(self, spec, prefix):
-        for val in spec.variants['xsec_name'].value:
-            install_tree('{0}/{2}/v{1}/NULL/{2}'.format(self.stage.source_path,self.version.underscored,val),
-                         '{0}/{1}'.format(prefix,val))
+        val=spec.variants['xsec_name'].value
+        install_tree('{0}/{2}/v{1}/NULL/{2}'.format(self.stage.source_path,self.version.underscored,val),
+                     '{0}/{1}'.format(prefix,val))
 
