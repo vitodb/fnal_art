@@ -67,7 +67,7 @@ global analysis of neutrino scattering data.
     def setup_environment(self, spack_env, run_env):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
         spack_env.set('GENIE',self.stage.source_path)
-        spack_env.set('GENIE_VERSION','v{}'.format(self.version.underscored))
+        spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         spack_env.set('GENIE_INC', '{0}/src'.format(self.stage.source_path))
         spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/src'.format(self.stage.source_path))
         spack_env.append_path('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
@@ -76,7 +76,7 @@ global analysis of neutrino scattering data.
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
         spack_env.set('GENIE',dspec['genie'].prefix)
-        spack_env.set('GENIE_VERSION','v{}'.format(dspec['genie'].version.underscored))
+        spack_env.set('GENIE_VERSION','v{0}'.format(dspec['genie'].version.underscored))
         spack_env.set('GENIE_INC', '{0}'.format(dspec['genie'].prefix.include))
         spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/include/GENIE'.format(dspec['genie'].prefix))
         spack_env.append_path('LD_LIBRARY_PATH', '{0}/lib'.format(dspec['genie']))
