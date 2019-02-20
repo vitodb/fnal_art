@@ -3,24 +3,23 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 from spack import *
 
 
-class Ifbeam(Package):
+class Nucondb(Package):
     """Data handling client code for intensity frontier experiments"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/ifbeam"
-    url      = "http://cdcvs.fnal.gov/projects/ifdhc-ifbeam"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/nucondb"
+    url      = "http://cdcvs.fnal.gov/projects/ifdhc-nucondb"
 
-    version('2.2.13', git=url, tag='v2_2_13')
+    version('2.2.10', git=url, tag='v2_2_10')
 
     parallel = False
 
     depends_on('ifdhc')
     depends_on('libwda')
-    
-    parallel = False 
-
+ 
     variant('cxxstd',
             default='17',
             values=('default', '98', '11', '14', '17'),
@@ -48,11 +47,12 @@ class Ifbeam(Package):
                 "cxxstd={0}".format(spec.variants['cxxstd'].value))
         return cxxstdflag
 
+
     def install(self, spec, prefix):
         with working_dir(self.stage.source_path+'/src'):
             makefile = FileFilter('Makefile')
             makefile.filter('gcc', '$(CC)')
-            makefile.filter('g\+\+', '$(CXX)')
+            makefile.filter('g\+\ +', '$(CXX)')
             make.add_default_env('LIBWDA_FQ_DIR', '{0}'.format(self.spec['libwda'].prefix))
             make.add_default_env('LIBWDA_LIB', '{0}/lib'.format(self.spec['libwda'].prefix))
             make.add_default_env('IFDHC_FQ_DIR', '{0}'.format(self.spec['ifdhc'].prefix))
