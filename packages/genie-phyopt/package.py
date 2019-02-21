@@ -31,8 +31,8 @@ class GeniePhyopt(Package):
              sha256='ff0ecafd9a9455e8c20963c608c666f7229324c3f43e69fa58902584de08532a')
 
     def install(self, spec, prefix):
-        val=self.variants['phyopt_name'].value
-        install_tree('{0}/v{1}/NULL/{2}'.format(self.stage.source_path,
+        val=spec.variants['phyopt_name'].value
+        install_tree('{0}/genie_phyopt/v{1}/NULL/{2}'.format(self.stage.source_path,
                      self.version.underscored,val),
                      '{0}/{1}'.format(prefix,val))
                    
