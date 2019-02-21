@@ -62,7 +62,9 @@ and detector simulation codes. """
         install_tree(self.stage.source_path, prefix)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('CRYHOME',self.prefix)
-        spack_env.set('CRYDATAPATH', self.prefix.data)
-        run_env.set('CRYHOME',self.prefix)
-        run_env.set('CRYDATAPATH', self.prefix.data)
+        spack_env.set('CRYHOME',dspec['cry'].prefix)
+        spack_env.set('CRY_LIB',dspec['cry'].prefix.lib)
+        spack_env.set('CRYDATAPATH', dspec['cry'].prefix.data)
+        run_env.set('CRYHOME',dspec['cry'].prefix)
+        run_env.set('CRY_LIB',dspec['cry'].prefix.lib)
+        run_env.set('CRYDATAPATH', dspec['cry'].prefix.data)

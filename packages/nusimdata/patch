@@ -1,11 +1,12 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 251ea92..8724e55 100644
+index 251ea92..6330930 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -20,16 +20,17 @@ cmake_minimum_required (VERSION 3.3)
+@@ -19,17 +19,7 @@ cmake_minimum_required (VERSION 3.3)
+ 
  project(nusimdata)
  
- # cetbuildtools contains our cmake modules
+-# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
 -    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
@@ -16,21 +17,11 @@ index 251ea92..8724e55 100644
 -                      ${CMAKE_MODULE_PATH})
 -
 -
-+#SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
-+#IF (NOT CETBUILDTOOLS_VERSION)
-+#    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
-+#ENDIF()
-+#
-+#set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
-+#                      $ENV{CETBUILDTOOLS_DIR}/Modules
-+#                      ${CMAKE_MODULE_PATH})
-+#
-+#
 +find_package(cetmodules REQUIRED)
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -42,10 +43,14 @@ cet_set_compiler_flags(DIAGS CAUTIOUS WERROR
+@@ -42,10 +32,12 @@ cet_set_compiler_flags(DIAGS CAUTIOUS WERROR
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -43,46 +34,40 @@ index 251ea92..8724e55 100644
 +find_package( canvas REQUIRED )
 +find_package( cetlib REQUIRED )
 +find_package( cetlib_except REQUIRED )
-+#find_ups_product( dk2nudata v01_05_01 )
-+#find_ups_product( cetbuildtools )
 +find_package( ROOT  REQUIRED  COMPONENTS)
  
  # macros 
  include(CetMake)
-@@ -54,9 +59,9 @@ include(BasicPlugin)
+@@ -54,9 +46,3 @@ include(BasicPlugin)
  
  # source
  add_subdirectory (nusimdata)
 -add_subdirectory (test)
-+#add_subdirectory (test)
- 
- # ups - table and config files
+-
+-# ups - table and config files
 -add_subdirectory(ups)
-+#add_subdirectory(ups)
- # packaging utility
+-# packaging utility
 -include(UseCPack)
-+#include(UseCPack)
 diff --git a/nusimdata/SimulationBase/CMakeLists.txt b/nusimdata/SimulationBase/CMakeLists.txt
-index 63d49ac..920cdd9 100644
+index 63d49ac..633ad31 100644
 --- a/nusimdata/SimulationBase/CMakeLists.txt
 +++ b/nusimdata/SimulationBase/CMakeLists.txt
-@@ -1,7 +1,7 @@
+@@ -1,34 +1,29 @@
  
 -cet_find_library( DK2NU_TREE NAMES dk2nuTree PATHS ENV DK2NUDATA_LIB NO_DEFAULT_PATH )
--include_directories( $ENV{DK2NUDATA_INC} )
++find_library( DK2NU_TREE NAMES dk2nuTree PATHS ENV DK2NUDATA_LIB)
+ include_directories( $ENV{DK2NUDATA_INC} )
 -
-+find_library( DK2NU_TREE NAMES dk2nuTree NO_DEFAULT_PATH)
-+include_directories( ${DK2NUDATA_INC} )
+-# ROOT_BASIC_LIB_LIST is:
+-#   Core RIO Net Imt Hist Graf Graf3d Gpad Tree Rint Postscript
+-#   Matrix Physics MathCore Thread
 +include_directories( ${Boost_INCLUDE_DIR} )
- # ROOT_BASIC_LIB_LIST is:
- #   Core RIO Net Imt Hist Graf Graf3d Gpad Tree Rint Postscript
- #   Matrix Physics MathCore Thread
-@@ -9,26 +9,24 @@ include_directories( $ENV{DK2NUDATA_INC} )
+ 
  set( SIMB_LIBS
                 canvas
                 fhiclcpp
 -               ${DK2NU_TREE}  # additional data objects assoc w/ MCTruth
-+               dk2nuTree  # additional data objects assoc w/ MCTruth
++               ${DK2NU_TREE} # additional data objects assoc w/ MCTruth
                 cetlib
                 cetlib_except
 -               ${ROOT_BASIC_LIB_LIST}
@@ -120,11 +105,9 @@ index 63d49ac..920cdd9 100644
  
  cet_make( LIBRARIES ${SIMB_LIBS}
            NO_DICTIONARY )
-@@ -36,5 +34,5 @@ cet_make( LIBRARIES ${SIMB_LIBS}
+@@ -36,5 +31,3 @@ cet_make( LIBRARIES ${SIMB_LIBS}
  art_dictionary( DICTIONARY_LIBRARIES nusimdata_SimulationBase )
  
  install_headers()
 -install_fhicl()
 -install_source()
-+#install_fhicl()
-+#install_source()

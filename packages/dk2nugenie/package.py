@@ -67,3 +67,6 @@ class Dk2nugenie(Package):
             cmake(*args)
             make('VERBOSE=t', 'all','install')
 
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('DK2NUGENIE_INC',dspec['dk2nugenie'].prefix.include)
+        spack_env.set('DK2NUGENIE_LIB', dspec['dk2nugenie'].prefix.lib)

@@ -56,6 +56,9 @@ class Lhapdf(Package):
     def setup_environment(self, spack_env, run_env):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
 
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('LHAPDF_INC', '{0}'.format(dspec['lhapdf'].prefix.include))
+        spack_env.set('LHAPDF_LIB', '{0}'.format(dspec['lhapdf'].prefix.lib))
 
     @run_before('install')
     def copy_pdfs(self):

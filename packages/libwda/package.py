@@ -54,3 +54,9 @@ class Libwda(MakefilePackage):
             make('LIBWDA_VERSION=v{0}'.format(self.version.underscored))
             make('PREFIX={0}'.format(prefix), 'install')
 
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('LIBWDA_FQ_DIR', '{0}'.format(dspec['libwda'].prefix))
+        spack_env.set('LIBWDA_INC', '{0}'.format(dspec['libwda'].prefix.include))
+        spack_env.set('LIBWDA_LIB', '{0}'.format(dspec['libwda'].prefix.lib))
+
+

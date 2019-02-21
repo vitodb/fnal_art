@@ -54,8 +54,15 @@ reasonable."""
                 "cxxstd={0}".format(spec.variants['cxxstd'].value))
         return cxxstdflag
 
+
     def setup_environment(self, spack_env, run_env):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
+
+
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('LOG4CPP_INC', '{0}'.format(dspec['log4cpp'].prefix.include))
+        spack_env.set('LOG4CPP_LIB', '{0}'.format(dspec['log4cpp'].prefix.lib))
+
 
     def install(self,spec,prefix):
         with working_dir(join_path(self.stage.path,'spack-build'), create=True):

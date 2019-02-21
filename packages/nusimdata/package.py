@@ -36,3 +36,6 @@ class Nusimdata(CMakePackage):
                 format(self.spec['dk2nudata'].prefix.include)]
         return args
 
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('NUSIMDATA_INC',dspec['nusimdata'].prefix.include)
+        spack_env.set('NUSIMDATA_LIB', dspec['nusimdata'].prefix.lib)

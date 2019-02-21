@@ -60,4 +60,7 @@ class Dk2nudata(Package):
         with working_dir('%s/spack-build'%self.stage.path, create=True):
             cmake(*args)
             make('VERBOSE=t', 'all','install')
-        
+
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('DK2NUDATA_INC',dspec['dk2nudata'].prefix.include)
+        spack_env.set('DK2NUDATA_LIB', dspec['dk2nudata'].prefix.lib)
