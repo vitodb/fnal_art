@@ -37,7 +37,11 @@ class ArtdaqCore(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DCANVAS_VERSION=1.2.3',
-                '-DMESSAGEFACILITY_VERSION=1.2.3',
+                '-DCANVAS_VERSION=v3_06_00',
+                '-DMESSAGEFACILITY_VERSION=v2_02_05',
+                '-DBoost_SYSTEM_LIBRARY=-lboost_system-mt',
+                '-DBoost_DATE_TIME_LIBRARY=-lboost_date_time',
+                '-DBoost_FILESYSTEM_LIBRARY=-lboost_filesystem',
+                '-DBoost_THREAD_LIBRARY=-lboost_thread',
                ]
         return args
