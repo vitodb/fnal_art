@@ -61,3 +61,9 @@ class Nucondb(Package):
             make.add_default_env('ARCH', self.set_cxxstdflag())
             make()
             make('DESTDIR=' + prefix, 'install')
+
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('NUCONDB_FQ_DIR', '{0}'.format(dspec['nucondb'].prefix))
+        spack_env.set('NUCONDB_DIR', '{0}'.format(dspec['nucondb'].prefix))
+        spack_env.set('NUCONDB_INC', '{0}/nucondb/src'.format(dspec['nucondb'].prefix.share))
+        spack_env.set('NUCONDB_LIB', '{0}'.format(dspec['nucondb'].prefix.lib))

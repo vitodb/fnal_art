@@ -61,3 +61,9 @@ class Ifbeam(Package):
             make.add_default_env('ARCH', self.set_cxxstdflag())
             make()
             make('DESTDIR=' + prefix, 'install')
+
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('IFBEAM_FQ_DIR', '{0}'.format(dspec['ifbeam'].prefix))
+        spack_env.set('IFBEAM_DIR', '{0}'.format(dspec['ifbeam'].prefix))
+        spack_env.set('IFBEAM_INC', '{0}/ifbeam/src'.format(dspec['ifbeam'].prefix.share))
+        spack_env.set('IFBEAM_LIB', '{0}'.format(dspec['ifbeam'].prefix.lib))

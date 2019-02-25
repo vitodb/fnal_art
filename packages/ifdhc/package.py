@@ -58,7 +58,7 @@ class Ifdhc(Package):
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('IFDHC_FQ_DIR', '{0}'.format(dspec['ifdhc'].prefix))
         spack_env.set('IFDHC_DIR', '{0}'.format(dspec['ifdhc'].prefix))
-        spack_env.set('IFDHC_INC', '{0}'.format(dspec['ifdhc'].prefix.include))
+        spack_env.set('IFDHC_INC', '{0}/ifdhc/src'.format(dspec['ifdhc'].prefix.share))
         spack_env.set('IFDHC_LIB', '{0}'.format(dspec['ifdhc'].prefix.lib))
 
 

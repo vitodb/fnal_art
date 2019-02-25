@@ -1,0 +1,149 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7f63de8..48e6539 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,17 +15,8 @@
+ # use cmake 2.8 or later
+ cmake_minimum_required (VERSION 2.8)
+ 
+-##SET ( CMAKE_VERBOSE_MAKEFILE true )
+-# cetbuildtools contains our cmake modules
+-SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
+-IF (NOT CETBUILDTOOLS_VERSION)
+-    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
+-ENDIF()
+-
+-set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
+-		      $ENV{CETBUILDTOOLS_DIR}/Modules
+-		      ${CMAKE_MODULE_PATH})
+ 
++find_package( cetmodules  )
+ include(CetCMakeEnv)
+ cet_cmake_env()
+ 
+@@ -37,22 +28,23 @@ cet_set_compiler_flags(DIAGS VIGILANT
+ 
+ cet_report_compiler_flags()
+ 
+-find_ups_product( art )
+-find_ups_product( ifdhc  )
+-find_ups_product( ifbeam  )
+-find_ups_product( nucondb  )
+-find_ups_product( libwda  )
+-find_ups_product( cetbuildtools  )
++find_package( art )
++find_package( root )
++find_package( ifdhc  )
++find_package( ifbeam  )
++find_package( nucondb  )
++find_package( libwda  )
+ 
+-if(DEFINED ENV{CETLIB_EXCEPT_DIR})
+-  find_ups_product( cetlib_except )
+-endif()
++find_package( cetlib_except )
++find_package( mesagefacility )
+ 
+ # include search path
+ # decide if we have IFDHC_FQ_DIR or IFDHC_DIR
+ if ( $ENV{IFDHC_FQ_DIR} MATCHES "ifdhc" )
+   message(STATUS "using FQ_DIR")
+-  include_directories($ENV{IFDHC_FQ_DIR}/inc)
++  include_directories($ENV{IFDHC_INC})
++  include_directories($ENV{IFDHC_INC}/ifdh)
++  include_directories($ENV{IFDHC_INC}/util)
+   include_directories($ENV{LIBWDA_FQ_DIR}/include)
+   include_directories($ENV{IFBEAM_FQ_DIR}/include)
+   include_directories($ENV{NUCONDB_FQ_DIR}/include)
+@@ -80,7 +72,7 @@ include(BuildPlugins)
+ 
+ add_subdirectory (src)
+ #add_subdirectory (tests)
+-add_subdirectory (ups)
++#add_subdirectory (ups)
+ 
+ # packaging utility
+-include(UseCPack)
++#include(UseCPack)
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index ec4769d..a27ef5d 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1,16 +1,4 @@
+ 
+-macro( install_ifdh_headers   )
+-  _cet_check_inc_directory()
+-  set(header_install_dir ${${product}_inc_dir} )
+-  message( STATUS "install_ifdh_headers: headers will be installed in ${header_install_dir}" )
+-  FILE(GLOB headers [^.]*.h [^.]*.hh [^.]*.icc )
+-  if( headers )
+-    message( STATUS "installing headers ${headers} in ${header_install_dir}")
+-    INSTALL( FILES ${headers}
+-             DESTINATION ${header_install_dir} )
+-  endif( headers )
+-endmacro( install_ifdh_headers )
+-
+ 
+ # source
+ subdirs (IFDHService)
+diff --git a/src/IFBeamService/CMakeLists.txt b/src/IFBeamService/CMakeLists.txt
+index 66adae2..5c3f592 100644
+--- a/src/IFBeamService/CMakeLists.txt
++++ b/src/IFBeamService/CMakeLists.txt
+@@ -14,6 +14,4 @@ simple_plugin(IFBeam "service"
+               BASENAME_ONLY
+          )
+ 
+-install_ifdh_headers()
+-install_source()
+ 
+diff --git a/src/IFCatalogInterface/CMakeLists.txt b/src/IFCatalogInterface/CMakeLists.txt
+index ea6098f..6e35c8f 100644
+--- a/src/IFCatalogInterface/CMakeLists.txt
++++ b/src/IFCatalogInterface/CMakeLists.txt
+@@ -14,6 +14,4 @@ simple_plugin(IFCatalogInterface "service"
+ 		)
+ include_directories(../IFDHService)
+ 
+-install_ifdh_headers()
+-install_source()
+ 
+diff --git a/src/IFDHService/CMakeLists.txt b/src/IFDHService/CMakeLists.txt
+index 6154868..42c4cdc 100644
+--- a/src/IFDHService/CMakeLists.txt
++++ b/src/IFDHService/CMakeLists.txt
+@@ -12,6 +12,4 @@ simple_plugin(IFDH service
+               BASENAME_ONLY
+              )
+ 
+-install_ifdh_headers()
+-install_source()
+ 
+diff --git a/src/IFFileTransfer/CMakeLists.txt b/src/IFFileTransfer/CMakeLists.txt
+index 856b8c8..cee3313 100644
+--- a/src/IFFileTransfer/CMakeLists.txt
++++ b/src/IFFileTransfer/CMakeLists.txt
+@@ -15,6 +15,4 @@ simple_plugin(IFFileTransfer "service"
+               BASENAME_ONLY
+            )
+ 
+-install_ifdh_headers()
+-install_source()
+ 
+diff --git a/src/bin/CMakeLists.txt b/src/bin/CMakeLists.txt
+index a8ce56a..e69de29 100644
+--- a/src/bin/CMakeLists.txt
++++ b/src/bin/CMakeLists.txt
+@@ -1 +0,0 @@
+-install_scripts()
+diff --git a/src/nucondbService/CMakeLists.txt b/src/nucondbService/CMakeLists.txt
+index 1d2c403..25b95a0 100644
+--- a/src/nucondbService/CMakeLists.txt
++++ b/src/nucondbService/CMakeLists.txt
+@@ -13,6 +13,4 @@ simple_plugin(nucondb "service"
+               BASENAME_ONLY
+         )
+ 
+-install_ifdh_headers()
+-install_source()
+ 
