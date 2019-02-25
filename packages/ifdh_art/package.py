@@ -37,12 +37,16 @@ from the ifdhc package."""
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DIFBEAM={0}/libifbeam.so'.
-                format(self.spec['ifbeam'].prefix.lib),
-                '-DNUCONDB={0}/libnucondb.so'.
-                format(self.spec['nucondb'].prefix.lib),
-                '-DMF_MESSAGELOGGER={0}/libMF_MessageLogger.so'.
-                format(self.spec['messagefacility'].prefix.lib),
+                '-DIFDHC_DIR={0}'.
+                format(self.spec['ifdhc'].prefix),
+                '-DIFBEAM_DIR={0}'.
+                format(self.spec['ifbeam'].prefix),
+                '-DNUCONDB_DIR={0}'.
+                format(self.spec['nucondb'].prefix),
+                '-DLIBWDA_DIR={0}'.
+                format(self.spec['libwda'].prefix),
+                '-Dheader_install_dir={0}'.
+                format(self.spec.prefix.include),
                 '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
                ]
         return args
