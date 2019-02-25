@@ -33,7 +33,9 @@ class Nusimdata(CMakePackage):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
                 '-DDK2NUDATA_INC={0}'.
-                format(self.spec['dk2nudata'].prefix.include)]
+                format(self.spec['dk2nudata'].prefix.include),
+                '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
+               ]
         return args
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):

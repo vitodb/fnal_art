@@ -41,5 +41,8 @@ from the ifdhc package."""
                 format(self.spec['ifbeam'].prefix.lib),
                 '-DNUCONDB={0}/libnucondb.so'.
                 format(self.spec['nucondb'].prefix.lib),
+                '-DMF_MESSAGELOGGER={0}/libMF_MessageLogger.so'.
+                format(self.spec['messagefacility'].prefix.lib),
+                '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
                ]
         return args
