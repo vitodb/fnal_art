@@ -16,11 +16,14 @@ def sanitize_environments(*args):
 
 
 class Critic(CMakePackage):
+    """Compatibility tests for the art and gallery applications of the art
+    suite.
+    """
 
-    homepage = 'https://cdcvs.fnal.gov/projects/critic'
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/critic', preferred=True)
 
     variant('cxxstd',
             default='17',

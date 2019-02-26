@@ -17,11 +17,14 @@ def sanitize_environments(*args):
 
 
 class Art(CMakePackage):
+    """The eponymous package of the art suite; art is an event-processing
+    framework for particle physics experiments.
+    """
 
-    homepage = 'https://cdcvs.fnal.gov/projects/art'
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/art', preferred=True)
 
     variant('cxxstd',
             default='17',

@@ -17,10 +17,14 @@ def sanitize_environments(*args):
 
 
 class FhiclCpp(CMakePackage):
-    homepage = 'https://cdcvs.fnal.gov/projects/fhicl-cpp'
+    """A C++ implementation of the FHiCL configuration language for the art
+    suite.
+    """
+
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/fhicl-cpp', preferred=True)
 
     variant('cxxstd',
             default='17',

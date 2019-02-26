@@ -17,10 +17,13 @@ def sanitize_environments(*args):
 
 
 class Messagefacility(CMakePackage):
-    homepage = 'https://cdcvs.fnal.gov/projects/messagefacility'
+    """A configurable message logging facility for the art suite."""
+
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/messagefacility',
+            preferred=True)
 
     variant('cxxstd',
             default='17',

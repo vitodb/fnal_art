@@ -17,10 +17,13 @@ def sanitize_environments(*args):
 
 
 class CanvasRootIo(CMakePackage):
-    homepage = 'https://cdcvs.fnal.gov/projects/canvas_root_io'
+    """A Root I/O library for the art suite."""
+
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/canvas_root_io',
+            preferred=True)
 
     variant('cxxstd',
             default='17',

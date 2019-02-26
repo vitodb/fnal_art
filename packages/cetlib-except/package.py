@@ -16,12 +16,13 @@ def sanitize_environments(*args):
 
 
 class CetlibExcept(CMakePackage):
-    """cetlib-except provides exception libraries."""
+    """Exception libraries for the art suite."""
 
-    homepage = 'https://cdcvs.fnal.gov/projects/cetlib_except'
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/cetlib_except',
+            preferred=True)
 
     variant('cxxstd',
             default='17',

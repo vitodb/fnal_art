@@ -19,11 +19,13 @@ def sanitize_environments(*args):
 
 
 class HepConcurrency(CMakePackage):
+    """A concurrency library for the art suite."""
 
-    homepage = 'https://cdcvs.fnal.gov/projects/hep_concurrency'
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/hep_concurrency',
+            preferred=True)
 
     variant('cxxstd',
             default='17',
