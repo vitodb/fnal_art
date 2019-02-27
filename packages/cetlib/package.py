@@ -38,7 +38,7 @@ class Cetlib(CMakePackage):
     # Build / link dependencies.
     depends_on('cetlib_except')
     depends_on('boost')
-    depends_on('sqlite')
+    depends_on('sqlite@3.8.2:')
     depends_on('openssl')
     depends_on('perl')  # Module skeletons, etc.
 

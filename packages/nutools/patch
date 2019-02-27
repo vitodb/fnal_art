@@ -1,0 +1,335 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d2f7234..82df28c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -19,16 +19,7 @@ cmake_minimum_required (VERSION 3.3)
+ 
+ project(nutools)
+ 
+-# cetbuildtools contains our cmake modules
+-SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
+-IF (NOT CETBUILDTOOLS_VERSION)
+-    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
+-ENDIF()
+-
+-set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
+-                      $ENV{CETBUILDTOOLS_DIR}/Modules
+-                      ${CMAKE_MODULE_PATH})
+-
++find_package(cetmodules)
+ include(CetCMakeEnv)
+ cet_cmake_env()
+ 
+@@ -40,20 +31,23 @@ cet_set_compiler_flags(DIAGS CAUTIOUS WERROR
+                                        -Wno-unused-local-typedefs -Wno-variadic-macros)
+ cet_report_compiler_flags()
+ 
+-# these are minimum required versions, not the actual product versions
+-find_ups_product( art )
+-find_ups_product( genie )
+-find_ups_product( dk2nudata )
+-find_ups_product( dk2nugenie )
+-find_ups_product( libwda )
+-find_ups_product( postgresql )
+-find_ups_product( nusimdata )
+-find_ups_product( cetlib )
+-find_ups_product( cetlib_except )
+-find_ups_geant4( )
+-find_ups_product( cetbuildtools )
+-
+-message(STATUS "ROOTSYS is ${ROOTSYS}")
++find_package( canvas_root_io REQUIRED)
++find_package( ROOT REQUIRED COMPONENTS)
++find_package( art REQUIRED)
++find_package( genie )
++find_package( dk2nudata )
++find_package( dk2nugenie )
++find_package( libwda )
++find_package( postgresql )
++find_package( nusimdata )
++find_package( cetlib REQUIRED)
++find_package( cetlib_except REQUIRED)
++find_package( fhiclcpp REQUIRED)
++find_package( messagefacility REQUIRED)
++find_package( Boost COMPONENTS date_time filesystem program_options regex system unit_test_framework REQUIRED)
++find_package( Geant4 REQUIRED)
++
++message(STATUS "ROOTSYS is $ENV{ROOTSYS}")
+ 
+ ## find_library directives
+ # other dependencies
+@@ -101,12 +95,12 @@ cet_find_library( GREGISTRY NAMES GRegistry PATHS ENV GENIE_LIB NO_DEFAULT_PATH
+ # prior to GENIE R-2_9_0 Sehgal's name was spelled incorrectly
+ # so if minor version # is 8 or less use GReinSeghal, otherwise GReinSehgal
+ # parse_ups_version returns VMAJ, VMIN, and VPRJ
+-parse_ups_version( ${GENIE_VERSION} )
++#parse_ups_version( ${GENIE_VERSION} )
+ set ( GRSSPELLING GReinSehgal )
+-if ( ${VMAJ} EQUAL 2 AND ${VMIN} LESS 9 )
+-  set ( GRSSPELLING GReinSeghal )
+-endif ( ${VMAJ} EQUAL 2 AND ${VMIN} LESS 9 )
+-message(STATUS "GENIE version ${GENIE_VERSION} major ${VMAJ} minor ${VMIN} ${GRSSPELLING}")
++#if ( ${VMAJ} EQUAL 2 AND ${VMIN} LESS 9 )
++#  set ( GRSSPELLING GReinSeghal )
++#endif ( ${VMAJ} EQUAL 2 AND ${VMIN} LESS 9 )
++#message(STATUS "GENIE version ${GENIE_VERSION} major ${VMAJ} minor ${VMIN} ${GRSSPELLING}")
+ cet_find_library( GREINSEHGAL NAMES ${GRSSPELLING} PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+ 
+ cet_find_library( GUTILS NAMES GUtils PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+@@ -176,6 +170,7 @@ include_directories( $ENV{IFDH_ART_FQ_DIR}/inc )
+ include(ArtMake)
+ include(ArtDictionary)
+ include(BuildPlugins)
++set( ROOTCLING ${ROOT_rootcling_CMD} )
+ include(CetRootCint)
+ 
+ # include search path
+@@ -194,11 +189,11 @@ endif()
+ # source
+ add_subdirectory (nutools)
+ add_subdirectory (tools)
+-add_subdirectory (test)
++#add_subdirectory (test)
+ 
+ # ups - table and config files
+-add_subdirectory(ups)
++#add_subdirectory(ups)
+ 
+ # packaging utility
+-include(UseCPack)
++#include(UseCPack)
+ 
+diff --git a/nutools/EventDisplayBase/CMakeLists.txt b/nutools/EventDisplayBase/CMakeLists.txt
+index b3c80d2..5aec56d 100644
+--- a/nutools/EventDisplayBase/CMakeLists.txt
++++ b/nutools/EventDisplayBase/CMakeLists.txt
+@@ -1,6 +1,8 @@
+ 
+ set( PACKAGE EventDisplayBase )
+ FILE( GLOB src_files *.cxx )
++INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
++INCLUDE_DIRECTORIES(${ART_INCLUDE_DIR})
+ 
+ set( EVD_LIBS ${ART_FRAMEWORK_SERVICES_REGISTRY}
+               ${ART_FRAMEWORK_CORE}
+@@ -48,10 +50,10 @@ art_make_library( SOURCE ${src_files} ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE}Cint
+                   LIBRARIES nusimdata_SimulationBase ${EVD_LIBS} )
+ 
+ set( EVD_SERVICE_LIBS nutools_EventDisplayBase ${EVD_LIBS} )
+-simple_plugin( EventDisplay service ${EVD_SERVICE_LIBS} )
+-simple_plugin( ScanOptions  service ${EVD_SERVICE_LIBS} )
+-simple_plugin( Colors       service ${EVD_SERVICE_LIBS} )
++simple_plugin( EventDisplay "service" ${EVD_SERVICE_LIBS} )
++simple_plugin( ScanOptions  "service" ${EVD_SERVICE_LIBS} )
++simple_plugin( Colors       "service" ${EVD_SERVICE_LIBS} )
+ 
+ install_headers()
+-install_fhicl()
+-install_source()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/EventGeneratorBase/CMakeLists.txt b/nutools/EventGeneratorBase/CMakeLists.txt
+index 4db35ba..80ed697 100644
+--- a/nutools/EventGeneratorBase/CMakeLists.txt
++++ b/nutools/EventGeneratorBase/CMakeLists.txt
+@@ -12,8 +12,8 @@ simple_plugin( GeneratedEventTimestamp "plugin"
+              )
+ 
+ install_headers()
+-install_fhicl()
+-install_source()
++#install_fhicl()
++#install_source()
+ 
+ add_subdirectory(CRY)
+ add_subdirectory(GENIE)
+diff --git a/nutools/EventGeneratorBase/CRY/CMakeLists.txt b/nutools/EventGeneratorBase/CRY/CMakeLists.txt
+index 9fb9755..dbed7b9 100644
+--- a/nutools/EventGeneratorBase/CRY/CMakeLists.txt
++++ b/nutools/EventGeneratorBase/CRY/CMakeLists.txt
+@@ -13,5 +13,5 @@ art_make( LIB_LIBRARIES nusimdata_SimulationBase
+ 
+ 
+ install_headers()
+-install_fhicl()
+-install_source()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/EventGeneratorBase/GENIE/CMakeLists.txt b/nutools/EventGeneratorBase/GENIE/CMakeLists.txt
+index eb3601b..c3f480f 100644
+--- a/nutools/EventGeneratorBase/GENIE/CMakeLists.txt
++++ b/nutools/EventGeneratorBase/GENIE/CMakeLists.txt
+@@ -29,5 +29,5 @@ art_make( LIB_LIBRARIES nusimdata_SimulationBase
+ 
+ 
+ install_headers()
+-install_fhicl()
++#install_fhicl()
+ install_source()
+diff --git a/nutools/EventGeneratorBase/GiBUU/CMakeLists.txt b/nutools/EventGeneratorBase/GiBUU/CMakeLists.txt
+index 9d5e6f2..86cf7dd 100644
+--- a/nutools/EventGeneratorBase/GiBUU/CMakeLists.txt
++++ b/nutools/EventGeneratorBase/GiBUU/CMakeLists.txt
+@@ -18,5 +18,5 @@ art_make( LIB_LIBRARIES nutools_EventGeneratorBase_GENIE
+                         ${ROOT_BASIC_LIB_LIST} )
+ 
+ install_headers()
+-install_fhicl()
+-install_source()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/EventGeneratorBase/test/CMakeLists.txt b/nutools/EventGeneratorBase/test/CMakeLists.txt
+index 98c0d8e..7aab886 100644
+--- a/nutools/EventGeneratorBase/test/CMakeLists.txt
++++ b/nutools/EventGeneratorBase/test/CMakeLists.txt
+@@ -33,5 +33,5 @@ art_make( MODULE_LIBRARIES nusimdata_SimulationBase
+                         )
+ 
+ install_headers()
+-install_fhicl()
+-install_source( EXTRAS README )
++#install_fhicl()
++#install_source( EXTRAS README )
+diff --git a/nutools/G4Base/CMakeLists.txt b/nutools/G4Base/CMakeLists.txt
+index 53bcf81..1656ee7 100644
+--- a/nutools/G4Base/CMakeLists.txt
++++ b/nutools/G4Base/CMakeLists.txt
+@@ -31,5 +31,5 @@ art_make( LIB_LIBRARIES nusimdata_SimulationBase
+                         )
+ 
+ install_headers()
+-install_fhicl()
+-install_source()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/IFDatabase/CMakeLists.txt b/nutools/IFDatabase/CMakeLists.txt
+index 194a653..59acbdd 100644
+--- a/nutools/IFDatabase/CMakeLists.txt
++++ b/nutools/IFDatabase/CMakeLists.txt
+@@ -5,7 +5,7 @@ cet_find_library( LIBWDA NAMES wda PATHS ENV LIBWDA_LIB NO_DEFAULT_PATH )
+ cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
+ find_library( CURL NAMES curl )
+ 
+-include_directories( $ENV{LIBWDA_FQ_DIR}/include )
++include_directories( $ENV{LIBWDA_INC} )
+ 
+ art_make_library( SOURCE ${src_files} #${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE}Cint.cc
+                   LIBRARIES     ${LIBWDA}
+@@ -54,6 +54,6 @@ simple_plugin( DBI "service"
+                cetlib_except
+              )
+ 
+-install_headers()
+-install_fhicl()
+-install_source()
++#install_headers()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/MagneticField/CMakeLists.txt b/nutools/MagneticField/CMakeLists.txt
+index 5e74909..5007c39 100644
+--- a/nutools/MagneticField/CMakeLists.txt
++++ b/nutools/MagneticField/CMakeLists.txt
+@@ -7,6 +7,6 @@ simple_plugin( MagneticField service
+                ${ROOT_BASIC_LIB_LIST}
+                ${ROOT_GEOM} )
+ 
+-install_headers()
+-install_fhicl()
+-install_source()
++#install_headers()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/NuBeamWeights/CMakeLists.txt b/nutools/NuBeamWeights/CMakeLists.txt
+index e35bd4f..2572618 100644
+--- a/nutools/NuBeamWeights/CMakeLists.txt
++++ b/nutools/NuBeamWeights/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ 
+ art_make( LIB_LIBRARIES ${ROOT_BASIC_LIB_LIST} )
+ 
+-install_headers()
+-install_fhicl()
+-install_source()
++#install_headers()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/NuReweight/CMakeLists.txt b/nutools/NuReweight/CMakeLists.txt
+index a11200b..317dd1e 100644
+--- a/nutools/NuReweight/CMakeLists.txt
++++ b/nutools/NuReweight/CMakeLists.txt
+@@ -11,8 +11,8 @@ art_make( LIB_LIBRARIES
+                         )
+ # message("######### ROOT_BASIC_LIB_LIST ${ROOT_BASIC_LIB_LIST}")
+ 
+-install_headers()
+-install_fhicl()
++#install_headers()
++#install_fhicl()
+ install_source()
+ 
+ add_subdirectory(art)
+diff --git a/nutools/NuReweight/art/CMakeLists.txt b/nutools/NuReweight/art/CMakeLists.txt
+index 4a535b4..6a4a4ed 100644
+--- a/nutools/NuReweight/art/CMakeLists.txt
++++ b/nutools/NuReweight/art/CMakeLists.txt
+@@ -40,6 +40,6 @@ simple_plugin( ReweightAna module nutools_NuReweight_art
+                                   nusimdata_SimulationBase
+                                  ${NURW_LIBS} )
+ 
+-install_headers()
+-install_fhicl()
+-install_source()
++#install_headers()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/ParticleNavigation/CMakeLists.txt b/nutools/ParticleNavigation/CMakeLists.txt
+index fc27314..9b7d52e 100644
+--- a/nutools/ParticleNavigation/CMakeLists.txt
++++ b/nutools/ParticleNavigation/CMakeLists.txt
+@@ -18,6 +18,6 @@ art_make( NO_PLUGINS
+ 			${ROOT_BASIC_LIB_LIST}
+         )
+ 
+-install_headers()
+-install_fhicl()
+-install_source()
++#install_headers()
++#install_fhicl()
++#install_source()
+diff --git a/nutools/RandomUtils/CMakeLists.txt b/nutools/RandomUtils/CMakeLists.txt
+index 26da8b4..56e1230 100644
+--- a/nutools/RandomUtils/CMakeLists.txt
++++ b/nutools/RandomUtils/CMakeLists.txt
+@@ -17,6 +17,6 @@ art_make(
+ )
+ 
+ 
+-install_source()
+-install_headers()
+-install_fhicl()
++#install_source()
++#install_headers()
++#install_fhicl()
+diff --git a/nutools/RandomUtils/Providers/CMakeLists.txt b/nutools/RandomUtils/Providers/CMakeLists.txt
+index 4c2cfe8..88e11b0 100644
+--- a/nutools/RandomUtils/Providers/CMakeLists.txt
++++ b/nutools/RandomUtils/Providers/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ # currently only headers here
+ 
+-install_source()
+-install_headers()
+-install_fhicl()
++#install_source()
++#install_headers()
++#install_fhicl()
+diff --git a/tools/CMakeLists.txt b/tools/CMakeLists.txt
+index 4b465c4..454780d 100644
+--- a/tools/CMakeLists.txt
++++ b/tools/CMakeLists.txt
+@@ -17,4 +17,4 @@ CONFIGURE_FILE ( ${CMAKE_CURRENT_SOURCE_DIR}/setup_cetbuildtools.csh.in
+                  ${CMAKE_CURRENT_BINARY_DIR}/setup_cetbuildtools.csh @ONLY )
+ CONFIGURE_FILE ( ${CMAKE_CURRENT_SOURCE_DIR}/setup_cetbuildtools.sh.in
+                  ${CMAKE_CURRENT_BINARY_DIR}/setup_cetbuildtools.sh @ONLY )
+-install_scripts( LIST ${CMAKE_CURRENT_BINARY_DIR}/setup_cetbuildtools.csh ${CMAKE_CURRENT_BINARY_DIR}/setup_cetbuildtools.sh )
++#install_scripts( LIST ${CMAKE_CURRENT_BINARY_DIR}/setup_cetbuildtools.csh ${CMAKE_CURRENT_BINARY_DIR}/setup_cetbuildtools.sh )

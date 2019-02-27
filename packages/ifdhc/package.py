@@ -5,7 +5,6 @@
 
 from spack import *
 
-
 class Ifdhc(Package):
     """Data handling client code for intensity frontier experiments"""
 
@@ -53,7 +52,8 @@ class Ifdhc(Package):
         makefile.filter('g\+\+', '$(CXX)')
         make.add_default_env('ARCH', self.set_cxxstdflag())
         make('IFDH_VERSION=v{0}'.format(self.version.underscored))
-        make('DESTDIR={0}/'.format(prefix), 'install')
+        make('install')
+        install_tree(self.stage.source_path, prefix)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('IFDHC_FQ_DIR', '{0}'.format(dspec['ifdhc'].prefix))

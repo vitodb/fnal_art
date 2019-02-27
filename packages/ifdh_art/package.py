@@ -23,6 +23,7 @@ from the ifdhc package."""
     patch('patch')
 
     depends_on('art')
+    depends_on('canvas_root_io')
     depends_on('root')
     depends_on('fhicl-cpp')
     depends_on('cetlib')
@@ -50,3 +51,11 @@ from the ifdhc package."""
                 '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
                ]
         return args
+
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set('IFDH_ART_FQ_DIR', '{0}'.format(dspec['ifdh_art'].prefix))
+        spack_env.set('IFDH_ART_DIR', '{0}'.format(dspec['ifdh_art'].prefix))
+        spack_env.set('IFDH_ART_INC', '{0}/ifdh_art/src'.format(dspec['ifdh_art'].prefix.share))
+        spack_env.set('IFDH_ART_LIB', '{0}'.format(dspec['ifdh_art'].prefix.lib))
+
+

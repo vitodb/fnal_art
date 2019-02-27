@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 7f63de8..c04e1c9 100644
+index 7f63de8..1d686fb 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -15,17 +15,8 @@
@@ -21,7 +21,7 @@ index 7f63de8..c04e1c9 100644
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -37,38 +28,38 @@ cet_set_compiler_flags(DIAGS VIGILANT
+@@ -37,41 +28,40 @@ cet_set_compiler_flags(DIAGS VIGILANT
  
  cet_report_compiler_flags()
  
@@ -36,6 +36,7 @@ index 7f63de8..c04e1c9 100644
 -  find_ups_product( cetlib_except )
 -endif()
 +find_package( art REQUIRED)
++find_package( canvas_root_io REQUIRED)
 +find_package( ROOT  REQUIRED)
 +find_package( ifdhc )
 +find_package( ifbeam )
@@ -46,22 +47,24 @@ index 7f63de8..c04e1c9 100644
  
  # include search path
  # decide if we have IFDHC_FQ_DIR or IFDHC_DIR
- if ( $ENV{IFDHC_FQ_DIR} MATCHES "ifdhc" )
+-if ( $ENV{IFDHC_FQ_DIR} MATCHES "ifdhc" )
++if ( ${IFDHC_FQ_DIR} MATCHES "ifdhc" )
    message(STATUS "using FQ_DIR")
 -  include_directories($ENV{IFDHC_FQ_DIR}/inc)
-+  include_directories($ENV{IFDHC_FQ_DIR}/share/ifdhc/src/ifdh)
-+  include_directories($ENV{IFDHC_FQ_DIR}/share/ifdhc/src/util)
-   include_directories($ENV{LIBWDA_FQ_DIR}/include)
-   include_directories($ENV{IFBEAM_FQ_DIR}/include)
-   include_directories($ENV{NUCONDB_FQ_DIR}/include)
+-  include_directories($ENV{LIBWDA_FQ_DIR}/include)
+-  include_directories($ENV{IFBEAM_FQ_DIR}/include)
+-  include_directories($ENV{NUCONDB_FQ_DIR}/include)
++  include_directories(${IFDHC_FQ_DIR}/inc)
++  include_directories(${LIBWDA_FQ_DIR}/include)
++  include_directories(${IFBEAM_FQ_DIR}/include)
++  include_directories(${NUCONDB_FQ_DIR}/include)
  else()
    message(STATUS "using DIR")
 -  include_directories($ENV{IFDHC_DIR}/inc)
 -  include_directories($ENV{LIBWDA_DIR}/include)
 -  include_directories($ENV{IFBEAM_DIR}/include)
 -  include_directories($ENV{NUCONDB_DIR}/include)
-+  include_directories(${IFDHC_DIR}/share/ifdhc/src/ifdh)
-+  include_directories(${IFDHC_DIR}/share/ifdhc/src/util)
++  include_directories(${IFDHC_DIR}/inc)
 +  include_directories(${LIBWDA_DIR}/include)
 +  include_directories(${IFBEAM_DIR}/include)
 +  include_directories(${NUCONDB_DIR}/include)
@@ -78,8 +81,12 @@ index 7f63de8..c04e1c9 100644
 +cet_find_library( WDA     NAMES wda     PATHS ${LIBWDA_DIR}/lib  NO_DEFAULT_PATH )
  
  # SQLite
- cet_find_library(SQLITE3 NAMES sqlite3 PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
-@@ -80,7 +71,7 @@ include(BuildPlugins)
+-cet_find_library(SQLITE3 NAMES sqlite3 PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
++cet_find_library(SQLITE3 NAMES sqlite3 PATHS  ${SQLITE_LIB} NO_DEFAULT_PATH)
+ 
+ # macros for art_dictionary and simple_plugin
+ include(ArtDictionary)
+@@ -80,7 +70,7 @@ include(BuildPlugins)
  
  add_subdirectory (src)
  #add_subdirectory (tests)
