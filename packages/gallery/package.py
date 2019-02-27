@@ -17,11 +17,15 @@ def sanitize_environments(*args):
 
 
 class Gallery(CMakePackage):
+    """A library to allow reading of Root output files produced by the art
+    suite.
+    """
 
-    homepage='https://cdcvs.fnal.gov/projects/gallery'
+    homepage='http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/gallery',
+            preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -34,7 +38,7 @@ class Gallery(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
-    depends_on('canvas_root_io')
+    depends_on('canvas-root-io')
     depends_on('canvas')
     depends_on('cetlib')
     depends_on('root+python')

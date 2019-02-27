@@ -18,11 +18,12 @@ def sanitize_environments(*args):
 
 
 class Cetlib(CMakePackage):
+    """A utility library for the art suite."""
 
-    homepage = 'https://cdcvs.fnal.gov/projects/cetlib'
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/cetlib', preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -36,7 +37,7 @@ class Cetlib(CMakePackage):
     depends_on('catch@2:~single_header', type='build')
 
     # Build / link dependencies.
-    depends_on('cetlib_except')
+    depends_on('cetlib-except')
     depends_on('boost')
     depends_on('sqlite@3.8.2:')
     depends_on('openssl')

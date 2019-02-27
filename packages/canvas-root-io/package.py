@@ -17,10 +17,13 @@ def sanitize_environments(*args):
 
 
 class CanvasRootIo(CMakePackage):
-    homepage = 'https://cdcvs.fnal.gov/projects/canvas_root_io'
+    """A Root I/O library for the art suite."""
+
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/canvas_root_io',
+            preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -32,7 +35,7 @@ class CanvasRootIo(CMakePackage):
     depends_on('cmake@3.4:', type='build')
     depends_on('cetmodules', type='build')
 
-    depends_on('cetlib_except')
+    depends_on('cetlib-except')
     depends_on('cetlib')
     depends_on('fhicl-cpp')
     depends_on('messagefacility')

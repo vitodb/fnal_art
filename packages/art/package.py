@@ -17,11 +17,14 @@ def sanitize_environments(*args):
 
 
 class Art(CMakePackage):
+    """The eponymous package of the art suite; art is an event-processing
+    framework for particle physics experiments.
+    """
 
-    homepage = 'https://cdcvs.fnal.gov/projects/art'
+    homepage = 'http://art.fnal.gov/'
 
     version('develop', branch='feature/for_spack',
-            git=homepage, preferred=True)
+            git='https://cdcvs.fnal.gov/projects/art', preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -35,12 +38,12 @@ class Art(CMakePackage):
     depends_on('catch@2:~single_header', type='build')
 
     # Build and link dependencies.
-    depends_on('cetlib_except')
+    depends_on('cetlib-except')
     depends_on('cetlib')
     depends_on('fhicl-cpp')
     depends_on('messagefacility')
     depends_on('canvas')
-    depends_on('canvas_root_io')
+    depends_on('canvas-root-io')
     depends_on('boost')
     depends_on('tbb')
     depends_on('root+python')
