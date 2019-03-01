@@ -22,7 +22,7 @@ class Nusimdata(CMakePackage):
 
     patch('patch')
 
-    depends_on('canvas_root_io')
+    depends_on('canvas-root-io')
     depends_on('canvas')
     depends_on('root')
     depends_on('boost')
