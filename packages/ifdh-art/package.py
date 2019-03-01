@@ -53,9 +53,9 @@ from the ifdhc package."""
         return args
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('IFDH_ART_FQ_DIR', '{0}'.format(dspec['ifdh_art'].prefix))
-        spack_env.set('IFDH_ART_DIR', '{0}'.format(dspec['ifdh_art'].prefix))
-        spack_env.set('IFDH_ART_INC', '{0}/ifdh_art/src'.format(dspec['ifdh_art'].prefix.share))
-        spack_env.set('IFDH_ART_LIB', '{0}'.format(dspec['ifdh_art'].prefix.lib))
+        spack_env.set('IFDH_ART_FQ_DIR', '{0}'.format(dspec['ifdh-art'].prefix))
+        spack_env.set('IFDH_ART_DIR', '{0}'.format(dspec['ifdh-art'].prefix))
+        spack_env.set('IFDH_ART_INC', '{0}/ifdh-art/src'.format(dspec['ifdh-art'].prefix.share))
+        spack_env.set('IFDH_ART_LIB', '{0}'.format(dspec['ifdh-art'].prefix.lib))
 
 
