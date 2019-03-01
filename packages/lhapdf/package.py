@@ -14,11 +14,6 @@ class Lhapdf(Package):
 
     version('5.9.1', sha256='86b9b046d7f25627ce2aab6847ef1c5534972f4bae18de98225080cf5086919c')
 
-    resource(name='pdfsets', 
-             url='http://scisoft.fnal.gov/scisoft/packages/pdfsets/v5_9_1b/pdfsets-5.9.1b-noarch.tar.bz2',
-             md5='944e1b7f79b1623afeb50441c9bcffb0')
-    
-
     def patch(self):
         if os.path.exists('./config/config.sub'):
             os.remove('./config/config.sub')
@@ -32,6 +27,8 @@ class Lhapdf(Package):
             values=('default', '98', '11', '14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    depends_on('pdfsets')
 
     def set_cxxstdflag(self):
         cxxstd = self.spec.variants['cxxstd'].value
@@ -52,6 +49,7 @@ class Lhapdf(Package):
             tty.die(
                 "INTERNAL ERROR: cannot accommodate unexpected variant ",
                 "cxxstd={0}".format(spec.variants['cxxstd'].value))
+        return cxxstdflag
 
     def setup_environment(self, spack_env, run_env):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
@@ -60,21 +58,31 @@ class Lhapdf(Package):
         spack_env.set('LHAPDF_INC', '{0}'.format(dspec['lhapdf'].prefix.include))
         spack_env.set('LHAPDF_LIB', '{0}'.format(dspec['lhapdf'].prefix.lib))
 
-    @run_before('install')
-    def copy_pdfs(self):
-        mkdirp(join_path(self.spec.prefix.share, 'lhapdf'))
-        for pdfsets in glob.glob('pdfsets/*/PDFsets'):
-            install_tree(pdfsets, join_path(self.spec.prefix.share, 'lhapdf/PDFsets'))
-
     def install(self,spec,prefix):
-        with working_dir(join_path(self.stage.path,'spack-build'), create=True):
+        with working_dir(self.stage.source_path):
            args = ['--prefix={0}'.format(prefix), '--enable-low-memory', '--disable-pyext', '--disable-octave']
-           configure=which(join_path(self.stage.source_path,'configure'))
+           configure=Executable('./configure')
            configure(*args)
            make()
            make('check')
            make('install')
         
+    @run_after('install')
+    def link_pdfs(self):
+        mkdirp(join_path(self.spec.prefix.share, 'lhapdf/PDFsets'))
+        pdfs = ['CT10.LHgrid',
+                'cteq61.LHgrid',
+                'cteq61.LHpdf',
+                'GRV98lo.LHgrid',
+                'GRV98nlo.LHgrid',
+                'GRVG0.LHgrid',
+                'GRVG1.LHgrid',
+                'GRVPI0.LHgrid',
+                'GRVPI1.LHgrid']
+        for pdf in pdfs:
+            os.symlink('{0}/PDFsets/{1}'.format(self.spec['pdfsets'].prefix, pdf), 
+                       '{0}/lhapdf/PDFsets/{1}'.format(self.spec.prefix.share,pdf))
+
 
     @run_after('install')
     def copy_examples(self):
