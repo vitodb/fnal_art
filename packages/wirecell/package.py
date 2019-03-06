@@ -13,8 +13,7 @@ class Wirecell(Package):
 
     homepage = "http://wirecell.github.io"
 
-    version('dev', git="https://github.com/WireCell/wire-cell-build.git", submodules=True)
-    version('0.6.2', git="https://github.com/WireCell/wire-cell-build.git", tag="0.6.2", submodules=True)
+    version('0.10.9', git="https://github.com/WireCell/wire-cell-build.git", tag="0.10.9", submodules=True)
 
     depends_on("jsoncpp")
     depends_on("jsonnet")
@@ -37,16 +36,17 @@ class Wirecell(Package):
         cfg = "wcb"
         cfg += " --prefix=%s" % prefix
         cfg += " --boost-mt"
-        cfg += " --boost-libs=%s/lib --boost-includes=%s/include" % \
-               (spec["boost"].prefix, spec["boost"].prefix)
+        cfg += " --boost-libs=%s --boost-includes=%s" % \
+               (spec["boost"].prefix.lib, spec["boost"].prefix.include)
         cfg += " --with-root=%s" % spec["root"].prefix
         cfg += " --with-eigen=%s" % spec["eigen"].prefix
+        cfg += " --with-eigen-include=%s" % spec["eigen"].prefix.include.eigen3
         cfg += " --with-jsoncpp=%s" % spec["jsoncpp"].prefix
         cfg += " --with-jsonnet=%s" % spec["jsonnet"].prefix
 #        cfg += " --with-tbb=%s" % spec["tbb"].prefix
         cfg += " --with-tbb=false" # for now
         cfg += " --with-fftw=%s" % spec["fftw"].prefix
-
+        cfg += " --build-debug=-std=c++17"
 
         cfg += " configure"
         python(*cfg.split())
