@@ -1,0 +1,36 @@
+diff -Naur marley-1.0.0/build/Makefile marley-1.0.0/build/Makefile
+--- marley-1.0.0/build/Makefile	2017-08-23 02:19:52.000000000 -0500
++++ marley-1.0.0/build/Makefile	2018-04-30 15:22:32.091863232 -0500
+@@ -27,7 +27,7 @@
+ ifneq ($(MAKECMDGOALS),uninstall)
+  
+   # Use g++ as the default compiler
+-  CXX = g++
++  CXX ?= g++
+   CXXFLAGS += -I$(INCLUDE_DIR) -Wall -Wextra -Wpedantic
+   CXXFLAGS += -Werror -Wno-error=unused-parameter -Wcast-align
+ 
+@@ -106,7 +106,7 @@
+ $(ROOT_OBJ_DICT):
+ 	$(RM) marley_root_dict*.*
+ 	$(ROOTCLING) -f marley_root_dict.cc -c $(ROOT_DICT_INCLUDES)
+-	$(CXX) $(ROOT_CXXFLAGS) $(CXXFLAGS) -fPIC -o $(ROOT_OBJ_DICT) -c \
++	$(CXX) $(ROOT_CXXFLAGS) $(CXXFLAGS) -I$(INCLUDE_DIR) -fPIC -o $(ROOT_OBJ_DICT) -c \
+ 	  marley_root_dict.cc
+ 	$(RM) marley_root_dict.cc
+   
+@@ -170,7 +170,7 @@
+ 	cp -r ../structure $(DESTDIR)$(datadir)/marley
+ 	cp -r ../examples $(DESTDIR)$(datadir)/marley
+ 	cp -r ../include/marley $(DESTDIR)$(incdir)
+-	ldconfig
++	##ldconfig
+ 
+ uninstall:
+ 	$(RM) $(DESTDIR)$(bindir)/marley
+@@ -179,4 +179,4 @@
+ 	$(RM) $(DESTDIR)$(libdir)/marley_root_dict_rdict.pcm
+ 	$(RM) -r $(DESTDIR)$(datadir)/marley
+ 	$(RM) -r $(DESTDIR)$(incdir)/marley
+-	ldconfig
++	##ldconfig

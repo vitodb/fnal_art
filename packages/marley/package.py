@@ -7,12 +7,22 @@ from spack import *
 
 
 class Marley(Package):
+    """A Monte Carlo event generator for tens-of-MeV neutrino-nucleus
+       interactions in liquid argon"""
 
-    homepage = "http://www.example.com"
-    url      = "http://www.example.com/example-1.2.3.tar.gz"
+    homepage = "httpd://github.com/sjgardiner/marley"
+    url      = "https://github.com/sjgardiner/marley/archive/v1.0.0.tar.gz"
 
-    version('0.0', '')
+    version('1.0.0', sha256='4dea9918cff0aed3b9c38f74351c373c32235496ca6e321078f2c7b56bce719e')
+
+    depends_on('root')
+
+    patch('marley-1.0.0.patch', when='@1.0.0')
 
     def install(self, spec, prefix):
-        make()
-        make('install')
+        with working_dir('build'):
+            make('CXXFLAGS=-std=c++17 -I../include')
+            make('prefix={0}'.format(prefix), 'install')
+
+    def setup_environment(self, spack_env, run_env):
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', '{0}/include'.format(self.stage.source_path))
