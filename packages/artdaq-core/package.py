@@ -27,6 +27,7 @@ class ArtdaqCore(CMakePackage):
     patch('patch')
 
     depends_on('cetmodules', type='build')
+    depends_on('art')
     depends_on('canvas-root-io')
     depends_on('canvas')
     depends_on('messagefacility')

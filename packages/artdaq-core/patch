@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 50326e6..7404bf9 100644
+index 50326e6..0e17382 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -18,43 +18,42 @@ cmake_minimum_required (VERSION 2.8)
+@@ -18,43 +18,44 @@ cmake_minimum_required (VERSION 2.8)
  
  project(artdaq-core)
  # cetbuildtools contains our cmake modules
@@ -56,6 +56,8 @@ index 50326e6..7404bf9 100644
 -string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "$ENV{MESSAGEFACILITY_VERSION}")
 +find_package( Boost COMPONENTS date_time filesystem program_options
 +              regex system unit_test_framework REQUIRED)
++find_package( art REQUIRED)
++find_package( canvas_root_io REQUIRED)
 +find_package( canvas REQUIRED)
 +find_package( cetlib REQUIRED )
 +find_package( clhep )
@@ -71,7 +73,7 @@ index 50326e6..7404bf9 100644
  list(GET MESSAGEFACILITY_VERSION_LIST 0 MESSAGEFACILITY_MAJOR_VERSION)
  list(GET MESSAGEFACILITY_VERSION_LIST 1 MESSAGEFACILITY_MINOR_VERSION)
  list(GET MESSAGEFACILITY_VERSION_LIST 2 MESSAGEFACILITY_PATCH_VERSION)
-@@ -62,7 +61,7 @@ list(GET MESSAGEFACILITY_VERSION_LIST 2 MESSAGEFACILITY_PATCH_VERSION)
+@@ -62,7 +63,7 @@ list(GET MESSAGEFACILITY_VERSION_LIST 2 MESSAGEFACILITY_PATCH_VERSION)
  message("-DMESSAGEFACILITY_HEX_VERSION=0x${MESSAGEFACILITY_MAJOR_VERSION}${MESSAGEFACILITY_MINOR_VERSION}${MESSAGEFACILITY_PATCH_VERSION}")
  add_definitions(-DMESSAGEFACILITY_HEX_VERSION=0x${MESSAGEFACILITY_MAJOR_VERSION}${MESSAGEFACILITY_MINOR_VERSION}${MESSAGEFACILITY_PATCH_VERSION})
  
@@ -80,7 +82,7 @@ index 50326e6..7404bf9 100644
  list(GET CANVAS_VERSION_LIST 0 CANVAS_MAJOR_VERSION)
  list(GET CANVAS_VERSION_LIST 1 CANVAS_MINOR_VERSION)
  list(GET CANVAS_VERSION_LIST 2 CANVAS_PATCH_VERSION)
-@@ -71,12 +70,12 @@ message("-DCANVAS_HEX_VERSION=0x${CANVAS_MAJOR_VERSION}${CANVAS_MINOR_VERSION}${
+@@ -71,12 +72,12 @@ message("-DCANVAS_HEX_VERSION=0x${CANVAS_MAJOR_VERSION}${CANVAS_MINOR_VERSION}${
  add_definitions(-DCANVAS_HEX_VERSION=0x${CANVAS_MAJOR_VERSION}${CANVAS_MINOR_VERSION}${CANVAS_PATCH_VERSION})
  
  # as of art v2_11_00, messagefacility has a single library
@@ -98,7 +100,7 @@ index 50326e6..7404bf9 100644
  
  # Debug streamer.
  string(TOUPPER ${CMAKE_BUILD_TYPE} BTYPE_UC)
-@@ -106,16 +105,16 @@ include(CetMake)
+@@ -106,16 +107,16 @@ include(CetMake)
  include(BasicPlugin)
  
  # testing
