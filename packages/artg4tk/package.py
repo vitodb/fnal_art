@@ -28,5 +28,7 @@ class Artg4tk(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
+                '-Dartg4tk_fcl_dir={0}/fhicl'.
+                format(self.spec.prefix.share),
                ]
         return args
