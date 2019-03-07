@@ -3,40 +3,27 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-# ----------------------------------------------------------------------------
-# If you submit this package back to Spack as a pull request,
-# please first remove this boilerplate and all FIXME comments.
-#
-# This is a template package file for Spack.  We've put "FIXME"
-# next to all the things you'll want to change. Once you've handled
-# them, you can save this file and test your package like this:
-#
-#     spack install pandora
-#
-# You can edit this file again by typing:
-#
-#     spack edit pandora
-#
-# See the Spack documentation for more information on packaging.
-# ----------------------------------------------------------------------------
-
 from spack import *
 
 
-class Pandora(Package):
-    """FIXME: Put a proper description of your package here."""
+class Pandora(CMakePackage):
+    """PandoraPFA Multi-algorithm pattern recognition"""
 
-    # FIXME: Add a proper url for your package's homepage here.
-    homepage = "http://www.example.com"
-    url      = "http://www.example.com/example-1.2.3.tar.gz"
+    homepage = "https://github.com/PandoraPFA"
 
-    # FIXME: Add proper versions and checksums here.
-    version('1.2.3', '0123456789abcdef0123456789abcdef')
+    version('03.11.01', git='https://github.com/PandoraPFA/PandoraPFA', tag='v03-11-01')
+ 
+    variant('cxxstd',
+            default='17',
+            values=('14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
 
-    # FIXME: Add dependencies if required.
-    # depends_on('foo')
+    depends_on('root')
 
-    def install(self, spec, prefix):
-        # FIXME: Unknown build system
-        make()
-        make('install')
+    def cmake_args(self):
+        args = ['-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
+                '-DCMAKE_CXX_FLAGS=-std=c++17 -Wno-implicit-fallthrough',
+                '-DCMAKE_MODULE_PATH={0}/etc/cmake'.format(self.spec['root'].prefix),
+                '-DPANDORA_MONITORING=ON', '-DPANDORA_EXAMPLE_CONTENT=OFF', '-DPANDORA_LAR_CONTENT=OFF' '-DPANDORA_LC_CONTENT=OFF']
+        return args
