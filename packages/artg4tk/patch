@@ -1,1 +1,61 @@
-
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 3a63ad8..6e8d5b4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -16,12 +16,13 @@ cmake_minimum_required (VERSION 3.7)
+ project(artg4tk)
+ 
+ # cetbuildtools contains our cmake modules
+-find_package(cetbuildtools REQUIRED)
+-
+-list(APPEND CMAKE_MODULE_PATH
+-  $ENV{CANVAS_ROOT_IO_DIR}/Modules
+-  $ENV{ART_DIR}/Modules)
+-
++#find_package(cetbuildtools REQUIRED)
++#
++#list(APPEND CMAKE_MODULE_PATH
++#  $ENV{CANVAS_ROOT_IO_DIR}/Modules
++#  $ENV{ART_DIR}/Modules)
++#
++find_package(cetmodules REQUIRED)
+ include(CetCMakeEnv)
+ cet_cmake_env()
+ 
+@@ -35,15 +36,15 @@ cet_report_compiler_flags()
+ 
+ # Locate some UPS areas and setup include paths
+ # These are needed for Art stuff
+-
+-find_ups_product(cetbuildtools)
+-#
+-find_ups_product(xerces_c)
+-find_ups_product(art)
+-find_ups_product(canvas)
+-find_ups_product(fhiclcpp)
+-find_ups_product(messagefacility)
+-find_ups_geant4()
++find_package(art REQUIRED)
++find_package(canvas_root_io REQUIRED)
++find_package(canvas REQUIRED)
++find_package(fhiclcpp REQUIRED)
++find_package(messagefacility REQUIRED)
++find_package(Geant4 REQUIRED COMPONENTS)
++find_package(XercesC)
++include(${Geant4_USE_FILE})
++set(G4_LIB_LIST ${XercesC_LIBRARY_RELEASE};${Geant4_LIBRARIES})
+ 
+ # macros for dictionary and simple_plugin
+ include(ArtDictionary)
+@@ -57,9 +58,9 @@ add_subdirectory( examples )
+ 
+ # ups - table and config files
+ 
+-add_subdirectory(ups)
++#add_subdirectory(ups)
+ 
+ 
+ # packaging utility
+ 
+-include(UseCPack)
++#include(UseCPack)

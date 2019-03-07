@@ -34,7 +34,10 @@ class Nusimdata(CMakePackage):
                 format(self.spec.variants['cxxstd'].value),
                 '-DDK2NUDATA_INC={0}'.
                 format(self.spec['dk2nudata'].prefix.include),
-                '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
+                '-DDK2NUDATA_LIB={0}'.
+                format(self.spec['dk2nudata'].prefix.lib),
+                '-Dnusimdata_fcl_dir={0}/fhicl'.
+                format(self.spec['dk2nudata'].prefix),
                ]
         return args
 
