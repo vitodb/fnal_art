@@ -23,9 +23,6 @@ class Nusimdata(CMakePackage):
     patch('patch')
 
     depends_on('canvas-root-io')
-    depends_on('canvas')
-    depends_on('root')
-    depends_on('boost')
     depends_on('dk2nudata')
     depends_on('cetmodules', type='build')
 
@@ -44,3 +41,4 @@ class Nusimdata(CMakePackage):
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('NUSIMDATA_INC',dspec['nusimdata'].prefix.include)
         spack_env.set('NUSIMDATA_LIB', dspec['nusimdata'].prefix.lib)
+        spack_env.append_path('ROOT_INCLUDE_PATH', dspec['nusimdata'].prefix.include)

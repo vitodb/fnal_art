@@ -29,10 +29,12 @@ class Lardataalg(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
+                '-Dlardataalg_fcl_dir={0}/share'.
+                format(self.spec.prefix.share),
                ]
         return args
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('LARDATAALG_INC',dspec['lardataalg'].prefix.include)
+        spack_env.append_path('ROOT_INCLUDE_PATH',dspec['lardataalg'].prefix.include)
         spack_env.set('LARDATAALG_LIB', dspec['lardataalg'].prefix.lib)

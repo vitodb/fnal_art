@@ -1,1 +1,138 @@
-
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b19e352..b25c1e1 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -18,16 +18,7 @@ cmake_minimum_required (VERSION 3.3)
+ 
+ project(lardataobj)
+ 
+-# cetbuildtools contains our cmake modules
+-SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
+-IF (NOT CETBUILDTOOLS_VERSION)
+-    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
+-ENDIF()
+-
+-set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
+-		      $ENV{CETBUILDTOOLS_DIR}/Modules
+-		      ${CMAKE_MODULE_PATH})
+-
++find_package(cetmodules)
+ include(CetCMakeEnv)
+ cet_cmake_env()
+ 
+@@ -41,13 +32,17 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+ cet_report_compiler_flags()
+ 
+ # these are minimum required versions, not the actual product versions
+-find_ups_product( canvas )
+-find_ups_product( larcoreobj )
+-find_ups_product( larcorealg )
+-find_ups_product( nusimdata )
+-find_ups_boost( )
+-find_ups_root( )
+-find_ups_product( cetbuildtools )
++find_package( canvas REQUIRED)
++find_package( canvas_root_io REQUIRED)
++find_package( cetlib REQUIRED)
++find_package( cetlib_except REQUIRED)
++find_package( messagefacility REQUIRED)
++find_package( fhiclcpp REQUIRED)
++find_package( larcoreobj )
++find_package( larcorealg )
++find_package( nusimdata )
++find_package( Boost REQUIRED)
++find_package( ROOT REQUIRED COMPONENTS)
+ 
+ # macros for artdaq_dictionary and simple_plugin
+ include(ArtDictionary)
+@@ -58,10 +53,4 @@ include(BasicPlugin)
+ add_subdirectory(lardataobj)
+ 
+ # tests
+-add_subdirectory(test)
+-
+-# ups - table and config files
+-add_subdirectory(ups)
+-
+-# packaging utility
+-include(UseCPack)
++#add_subdirectory(test)
+diff --git a/lardataobj/AnalysisBase/CMakeLists.txt b/lardataobj/AnalysisBase/CMakeLists.txt
+index 3654687..0a7c2e9 100644
+--- a/lardataobj/AnalysisBase/CMakeLists.txt
++++ b/lardataobj/AnalysisBase/CMakeLists.txt
+@@ -3,7 +3,7 @@ cet_make( LIBRARIES canvas
+ 		    MF_MessageLogger
+ 		    
+ 		    cetlib cetlib_except
+-		    ${ROOT_BASIC_LIB_LIST}
++		    ${ROOT_LIBRARIES}
+                     NO_DICTIONARY )
+ 
+ art_dictionary( DICTIONARY_LIBRARIES lardataobj_AnalysisBase  nusimdata_SimulationBase)
+diff --git a/lardataobj/MCBase/CMakeLists.txt b/lardataobj/MCBase/CMakeLists.txt
+index 7debaa6..f8404b9 100644
+--- a/lardataobj/MCBase/CMakeLists.txt
++++ b/lardataobj/MCBase/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ 
+ cet_make( LIBRARIES nusimdata_SimulationBase
+-		    ${ROOT_BASIC_LIB_LIST}
+-                    ${ROOT_EG}
++		    ${ROOT_LIBRARIES}
++                    ROOT::EG
+                     NO_DICTIONARY )
+ 
+ art_dictionary( DICTIONARY_LIBRARIES lardataobj_MCBase )
+diff --git a/lardataobj/RawData/CMakeLists.txt b/lardataobj/RawData/CMakeLists.txt
+index ad73868..cd5851e 100644
+--- a/lardataobj/RawData/CMakeLists.txt
++++ b/lardataobj/RawData/CMakeLists.txt
+@@ -6,9 +6,9 @@ cet_make( LIBRARIES larcoreobj_SummaryData
+ 		    MF_MessageLogger
+ 		    
+ 		    cetlib cetlib_except
+-                    ${Boost_SYSTEM_LIBRARY}
+-		    ${ROOT_BASIC_LIB_LIST}
+-                    ${ROOT_EG}
++                    ${Boost_System_LIBRARY}
++		    ${ROOT_LIBRARIES}
++                    ROOT::EG
+                     NO_DICTIONARY )
+ 
+ art_dictionary( DICTIONARY_LIBRARIES lardataobj_RawData )
+diff --git a/lardataobj/RecoBase/CMakeLists.txt b/lardataobj/RecoBase/CMakeLists.txt
+index 8e800c1..da874d0 100644
+--- a/lardataobj/RecoBase/CMakeLists.txt
++++ b/lardataobj/RecoBase/CMakeLists.txt
+@@ -4,10 +4,10 @@ cet_make( LIBRARIES lardataobj_RawData
+ 		    MF_MessageLogger
+ 		    
+ 		    cetlib cetlib_except
+-		    ${ROOT_MATHCORE}
+-		    ${ROOT_GENVECTOR}
+-		    ${ROOT_PHYSICS}
+-		    ${ROOT_MATRIX}
++		    ROOT::MathCore
++		    ROOT::GenVector
++		    ROOT::Physics
++		    ROOT::Matrix
+ 		    NO_DICTIONARY )
+ 
+ art_dictionary( DICTIONARY_LIBRARIES lardataobj_RecoBase )
+diff --git a/lardataobj/Simulation/CMakeLists.txt b/lardataobj/Simulation/CMakeLists.txt
+index 41a9d9f..d73a35d 100644
+--- a/lardataobj/Simulation/CMakeLists.txt
++++ b/lardataobj/Simulation/CMakeLists.txt
+@@ -4,9 +4,9 @@ cet_make( LIBRARIES nusimdata_SimulationBase
+                     MF_MessageLogger
+                     
+                     cetlib cetlib_except
+-                    ${ROOT_BASIC_LIB_LIST}
++                    ${ROOT_LIBRARIES}
+           NO_DICTIONARY 
+-                    ${ROOT_BASIC_LIB_LIST}
++                    ${ROOT_LIBRARIES}
+ )
+ 
+ art_dictionary( DICTIONARY_LIBRARIES lardataobj_Simulation )

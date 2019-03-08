@@ -1,1 +1,135 @@
-
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f847d74..437955a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -18,16 +18,7 @@ cmake_minimum_required (VERSION 3.3)
+ 
+ project(larcorealg)
+ 
+-# cetbuildtools contains our cmake modules
+-SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
+-IF (NOT CETBUILDTOOLS_VERSION)
+-    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
+-ENDIF()
+-
+-set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
+-		      $ENV{CETBUILDTOOLS_DIR}/Modules
+-		      ${CMAKE_MODULE_PATH})
+-
++find_package(cetmodules)
+ include(CetCMakeEnv)
+ cet_cmake_env()
+ 
+@@ -41,11 +32,13 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+ cet_report_compiler_flags()
+ 
+ # these are minimum required versions, not the actual product versions
+-find_ups_product( canvas )
+-find_ups_product( cetbuildtools )
+-find_ups_product( larcoreobj )
+-find_ups_root( )
+-
++find_package( cetlib REQUIRED)
++find_package( cetlib_except REQUIRED)
++find_package( messagefacility REQUIRED)
++find_package( fhiclcpp REQUIRED)
++find_package( canvas REQUIRED)
++find_package( canvas_root_io REQUIRED)
++find_package(ROOT REQUIRED)
+ # macros for artdaq_dictionary and simple_plugin
+ include(ArtDictionary)
+ include(CetMake)
+@@ -55,10 +48,4 @@ include(BasicPlugin)
+ add_subdirectory(larcorealg)
+ 
+ # tests 
+-add_subdirectory(test)
+-
+-# ups - table and config files
+-add_subdirectory(ups)
+-
+-# packaging utility
+-include(UseCPack)
++#add_subdirectory(test)
+diff --git a/larcorealg/GeoAlgo/CMakeLists.txt b/larcorealg/GeoAlgo/CMakeLists.txt
+index c963d95..00c34b7 100644
+--- a/larcorealg/GeoAlgo/CMakeLists.txt
++++ b/larcorealg/GeoAlgo/CMakeLists.txt
+@@ -1,8 +1,8 @@
+ # define ROOTLIB
+ 
+-set( ROOTLIB -L$ENV{ROOTSYS}/lib -lCore -lRIO -lNet -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -lMathCore -lThread -pthread -lm -ldl)
++set( ROOTLIB ROOT::Core ROOT::RIO ROOT::Net ROOT::Hist ROOT::Graf ROOT::Graf3d ROOT::Gpad ROOT::Tree ROOT::Rint ROOT::Postscript ROOT::Matrix ROOT::Physics ROOT::MathCore ROOT::Thread -pthread -lm -ldl)
+ 
+-link_libraries( ${LIB_NAME} -L$ENV{BOOST_LIB} ${ROOTLIB} )
++link_libraries( ${LIB_NAME} ${ROOTLIB} ${ROOT_LIBRARIES})
+ 
+ cet_make( LIBRARIES NO_DICTIONARY )
+ 
+diff --git a/larcorealg/Geometry/CMakeLists.txt b/larcorealg/Geometry/CMakeLists.txt
+index 39112ef..8b24898 100644
+--- a/larcorealg/Geometry/CMakeLists.txt
++++ b/larcorealg/Geometry/CMakeLists.txt
+@@ -5,12 +5,12 @@ cet_make( LIBRARIES
+   ${FHICLCPP}
+   cetlib cetlib_except
+   ${CLHEP}
+-  ${ROOT_BASIC_LIB_LIST}
+-  ${ROOT_GEOM}
+-  ${ROOT_XMLIO}
+-  ${ROOT_GDML}
+-  ${ROOT_EG}
+-  ${ROOT_GENVECTOR}
++  ${ROOT_LIBRARIES}
++  ROOT::Geom
++  ROOT::XMLIO
++  ROOT::Gdml
++  ROOT::EG
++  ROOT::GenVector
+   )
+ 
+ install_headers()
+diff --git a/test/CoreUtils/CMakeLists.txt b/test/CoreUtils/CMakeLists.txt
+index cdf492d..ddadb58 100644
+--- a/test/CoreUtils/CMakeLists.txt
++++ b/test/CoreUtils/CMakeLists.txt
+@@ -20,8 +20,8 @@ cet_test( NumericUtils_test USE_BOOST_UNIT )
+ cet_test( DereferenceIterator_test USE_BOOST_UNIT )
+ cet_test( DumpUtils_test
+   LIBRARIES
+-    ${ROOT_CORE}
+-    ${ROOT_PHYSICS}
++    ROOT::Core
++    ROOT::Physics
+   USE_BOOST_UNIT
+   )
+ cet_test( SortByPointers_test USE_BOOST_UNIT )
+diff --git a/test/Geometry/CMakeLists.txt b/test/Geometry/CMakeLists.txt
+index 848a6e6..4a79232 100644
+--- a/test/Geometry/CMakeLists.txt
++++ b/test/Geometry/CMakeLists.txt
+@@ -2,9 +2,9 @@ cet_enable_asserts()
+ 
+ cet_test( geo_vectors_utils_test
+   LIBRARIES
+-    ${ROOT_CORE}
+-    ${ROOT_PHYSICS}
+-    ${ROOT_GENVECTOR}
++    ROOT::Core
++    ROOT::Physics
++    ROOT::GenVector}
+   USE_BOOST_UNIT
+   )
+ 
+diff --git a/ups/CMakeLists.txt b/ups/CMakeLists.txt
+index fe33cc7..fc562d5 100644
+--- a/ups/CMakeLists.txt
++++ b/ups/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ 
+ # create package configuration and version files
+ 
+-process_ups_files()
++#process_ups_files()
+ 
+ cet_cmake_config()
