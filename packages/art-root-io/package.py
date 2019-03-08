@@ -16,16 +16,13 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class FhiclCpp(CMakePackage):
-    """A C++ implementation of the FHiCL configuration language for the art
-    suite.
+class ArtRootIo(CMakePackage):
+    """Root-based input/output for the art suite.
     """
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/fhicl-cpp'
+    git_base = 'https://cdcvs.fnal.gov/projects/art_root_io'
 
-    version('MVP', branch='feature/for_spack',
-            git=git_base, preferred=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
 
@@ -36,19 +33,21 @@ class FhiclCpp(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cmake@3.4:', type='build', when='@MVP')
-    depends_on('cmake@3.11:', type='build', when='@MVP1a')
+    depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules', type='build')
-    depends_on('py-pybind11', type='build', when='@MVP1a')
+    depends_on('catch@2:~single_header', type='build')
 
-    # Build / link dependencies.
+    # Build and link dependencies.
+    depends_on('root+python')
+    depends_on('art')
     depends_on('boost')
+    depends_on('canvas')
+    depends_on('canvas-root-io')
     depends_on('cetlib')
-    depends_on('cetlib-except')
-    depends_on('hep-concurrency', when='@MVP1a')
-    depends_on('sqlite')
-    depends_on('openssl', when='@MVP')
-    depends_on('python')
+    depends_on('fhicl-cpp')
+    depends_on('hep-concurrency')
+    depends_on('messagefacility')
+    depends_on('sqlite@3.8.2:')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -60,17 +59,36 @@ class FhiclCpp(CMakePackage):
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):
+        # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value)]
         return args
 
     def setup_environment(self, spack_env, run_env):
-        # Path for tests.
-        spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
-        # Cleanup
+        # Binaries.
+        spack_env.prepend_path('PATH',
+                               join_path(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH',
+                               join_path(self.build_directory, 'lib'))
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
+            spack_env.prepend_path('ROOT_INCLUDE_PATH',
+                                   str(self.spec[d.name].prefix.include))
+            run_env.prepend_path('ROOT_INCLUDE_PATH',
+                                 str(self.spec[d.name].prefix.include))
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Cleanup.
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
         # Binaries.
         spack_env.prepend_path('PATH',
                                join_path(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Cleanup.
+        sanitize_environments(spack_env, run_env)

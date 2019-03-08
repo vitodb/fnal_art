@@ -20,10 +20,12 @@ class Canvas(CMakePackage):
     """The underpinnings for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
+    git_base = 'https://cdcvs.fnal.gov/projects/canvas'
 
-    version('develop', branch='feature/for_spack',
-            git='https://cdcvs.fnal.gov/projects/canvas',
-            preferred=True)
+    version('MVP', branch='feature/for_spack',
+            git=git_base, preferred=True)
+    version('MVP1a', branch='feature/Spack-MVP1a',
+            git=git_base, preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -32,19 +34,20 @@ class Canvas(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cmake@3.4:', type='build')
+    depends_on('cmake@3.4:', type='build', when='@MVP')
+    depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules', type='build')
 
-    depends_on('cetlib-except')
-    depends_on('cetlib')
-    depends_on('fhicl-cpp')
-    depends_on('messagefacility')
-    depends_on('boost')
-    depends_on('tbb')
-    depends_on('root+python', when='%clang')
     depends_on('clhep')
+    depends_on('boost')
+    depends_on('cetlib')
+    depends_on('cetlib-except')
     depends_on('cppunit')
+    depends_on('fhicl-cpp')
+    depends_on('hep-concurrency', when='@MVP1a')
+    depends_on('messagefacility')
     depends_on('range-v3')
+    depends_on('tbb', when='@MVP')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -65,8 +68,3 @@ class Canvas(CMakePackage):
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-
-    def do_fake_install(self):
-        cargs = self.std_cmake_args + self.cmake_args()
-        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
-                        ['[/cmake-args]']))

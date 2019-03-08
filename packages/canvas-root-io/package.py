@@ -20,10 +20,12 @@ class CanvasRootIo(CMakePackage):
     """A Root I/O library for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
+    git_base = 'https://cdcvs.fnal.gov/projects/canvas_root_io'
 
-    version('develop', branch='feature/for_spack',
-            git='https://cdcvs.fnal.gov/projects/canvas_root_io',
-            preferred=True)
+    version('MVP', branch='feature/for_spack',
+            git=git_base, preferred=True)
+    version('MVP1a', branch='feature/Spack-MVP1a',
+            git=git_base, preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -32,18 +34,21 @@ class CanvasRootIo(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cmake@3.4:', type='build')
+    depends_on('cmake@3.4:', type='build', when='@MVP')
+    depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules', type='build')
 
-    depends_on('cetlib-except')
-    depends_on('cetlib')
-    depends_on('fhicl-cpp')
-    depends_on('messagefacility')
-    depends_on('canvas')
-    depends_on('boost')
-    depends_on('tbb')
-    depends_on('root+python')
+    # Build and link dependencies.
     depends_on('clhep')
+    depends_on('root+python')
+    depends_on('boost')
+    depends_on('canvas')
+    depends_on('cetlib')
+    depends_on('cetlib-except')
+    depends_on('fhicl-cpp')
+    depends_on('hep-concurrency', when='@MVP1a')
+    depends_on('messagefacility')
+    depends_on('tbb', when='@MVP')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -85,8 +90,3 @@ class CanvasRootIo(CMakePackage):
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-
-    def do_fake_install(self):
-        cargs = self.std_cmake_args + self.cmake_args()
-        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
-                        ['[/cmake-args]']))

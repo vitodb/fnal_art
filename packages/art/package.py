@@ -22,9 +22,12 @@ class Art(CMakePackage):
     """
 
     homepage = 'http://art.fnal.gov/'
+    git_base = 'https://cdcvs.fnal.gov/projects/art'
 
-    version('develop', branch='feature/for_spack',
-            git='https://cdcvs.fnal.gov/projects/art', preferred=True)
+    version('MVP', branch='feature/for_spack',
+            git=git_base, preferred=True)
+    version('MVP1a', branch='feature/Spack-MVP1a',
+            git=git_base, preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -33,22 +36,23 @@ class Art(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cmake@3.4:', type='build')
+    depends_on('cmake@3.4:', type='build', when='@MVP')
+    depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules', type='build')
-    depends_on('catch@2:~single_header', type='build')
+    depends_on('catch@2.3.0:~single_header', type='build')
 
     # Build and link dependencies.
-    depends_on('cetlib-except')
-    depends_on('cetlib')
-    depends_on('fhicl-cpp')
-    depends_on('messagefacility')
-    depends_on('canvas')
-    depends_on('canvas-root-io')
-    depends_on('boost')
-    depends_on('tbb')
-    depends_on('root+python')
     depends_on('clhep')
-    depends_on('sqlite@3.8.2:')
+    depends_on('boost')
+    depends_on('canvas')
+    depends_on('cetlib')
+    depends_on('cetlib-except')
+    depends_on('fhicl-cpp')
+    depends_on('hep-concurrency', when='@MVP1a')
+    depends_on('messagefacility')
+    depends_on('tbb')
+    depends_on('root+python', when='@MVP')
+    depends_on('sqlite@3.8.2:', when='@MVP')
     depends_on('perl')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
@@ -101,8 +105,3 @@ class Art(CMakePackage):
         run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-
-    def do_fake_install(self):
-        cargs = self.std_cmake_args + self.cmake_args()
-        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
-                        ['[/cmake-args]']))
