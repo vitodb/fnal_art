@@ -12,7 +12,7 @@ def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
                     'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
-                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+                    'CMAKE_INSTALL_RPATH', 'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
             env.prune_duplicate_paths(var)
             env.deprioritize_system_paths(var)
 
@@ -21,9 +21,12 @@ class Cetlib(CMakePackage):
     """A utility library for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
+    git_base = 'https://cdcvs.fnal.gov/projects/cetlib'
 
-    version('develop', branch='feature/for_spack',
-            git='https://cdcvs.fnal.gov/projects/cetlib', preferred=True)
+    version('MVP', branch='feature/for_spack',
+            git=git_base, preferred=True)
+    version('MVP1a', branch='feature/Spack-MVP1a',
+            git=git_base, preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -32,15 +35,18 @@ class Cetlib(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cmake@3.4:', type='build')
+    depends_on('cmake@3.4:', type='build', when='@MVP')
+    depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules', type='build')
-    depends_on('catch@2:~single_header', type='build')
+    depends_on('catch@2.3.0:~single_header', type='build')
 
     # Build / link dependencies.
-    depends_on('cetlib-except')
     depends_on('boost')
     depends_on('sqlite@3.8.2:')
+    depends_on('cetlib-except')
+    depends_on('hep-concurrency', when='@MVP1a')
     depends_on('openssl')
+    depends_on('sqlite')
     depends_on('perl')  # Module skeletons, etc.
 
     if 'SPACKDEV_GENERATOR' in os.environ:
@@ -77,8 +83,3 @@ class Cetlib(CMakePackage):
         # Perl modules.
         spack_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
         run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
-
-    def do_fake_install(self):
-        cargs = self.std_cmake_args + self.cmake_args()
-        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
-                        ['[/cmake-args]']))

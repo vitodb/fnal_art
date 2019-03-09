@@ -13,7 +13,7 @@ def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
                     'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
-                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+                    'CMAKE_INSTALL_RPATH', 'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
             env.prune_duplicate_paths(var)
             env.deprioritize_system_paths(var)
 
@@ -22,10 +22,13 @@ class HepConcurrency(CMakePackage):
     """A concurrency library for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
+    git_base = 'https://cdcvs.fnal.gov/projects/hep_concurrency'
 
-    version('develop', branch='feature/for_spack',
-            git='https://cdcvs.fnal.gov/projects/hep_concurrency',
-            preferred=True)
+    version('MVP', branch='feature/for_spack',
+            git=git_base, preferred=True)
+    version('MVP1a', branch='feature/Spack-MVP1a',
+            git=git_base, preferred=True)
+
 
     variant('cxxstd',
             default='17',
@@ -34,7 +37,8 @@ class HepConcurrency(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cmake@3.4:', type='build')
+    depends_on('cmake@3.4:', type='build', when='@MVP')
+    depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules', type='build')
 
     # Build / link dependencies.
@@ -60,8 +64,3 @@ class HepConcurrency(CMakePackage):
         spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-
-    def do_fake_install(self):
-        cargs = self.std_cmake_args + self.cmake_args()
-        print('\n'.join(['[cmake-args {0}]'.format(self.name)] + cargs +
-                        ['[/cmake-args]']))
