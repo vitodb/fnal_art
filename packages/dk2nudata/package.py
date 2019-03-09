@@ -6,7 +6,7 @@
 from spack import *
 
 
-class Dk2nudata(Package):
+class Dk2nudata(CMakePackage):
     """This package consolidates the disparate formats of neutrino beam simulation "flux" files.
 """
 
@@ -50,16 +50,17 @@ class Dk2nudata(Package):
                 "cxxstd={0}".format(spec.variants['cxxstd'].value))
         return cxxstdflag
 
-
-    def install(self, spec, prefix):
-        args = ['-DCMAKE_INSTALL_PREFIX=%s'%prefix,
+    def cmake_args(self):
+        prefix=self.spec.prefix
+        args = [
                 '-DWITH_GENIE=OFF',
                 '-DTBB_LIBRARY=%s'%self.spec['intel-tbb'].prefix.lib,
                 '%s/dk2nu' % self.stage.source_path]
-        cmake = which('cmake')
+        return args
+
+    def build(self, spec, prefix):
         with working_dir('%s/spack-build'%self.stage.path, create=True):
-            cmake(*args)
-            make('VERBOSE=t', 'all','install')
+            make('VERBOSE=t', 'all')
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('DK2NUDATA_INC',dspec['dk2nudata'].prefix.include)

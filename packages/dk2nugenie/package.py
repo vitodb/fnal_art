@@ -7,7 +7,7 @@
 from spack import *
 
 
-class Dk2nugenie(Package):
+class Dk2nugenie(CMakePackage):
     """This package consolidates the disparate formats of neutrino beam simulation "flux" files.
 """
     homepage = "https://cdcvs.fnal.gov/redmine/projects/dk2nu"
@@ -55,17 +55,19 @@ class Dk2nugenie(Package):
         cmakelists=FileFilter('{0}/dk2nu/genie/CMakeLists.txt'.format(self.stage.source_path))
         cmakelists.filter('\$\{GENIE\}/src', '${GENIE}/include/GENIE')
 
-    def install(self, spec, prefix):
+    def cmake_args(self):
+        prefix=self.prefix
         args = ['-DCMAKE_INSTALL_PREFIX=%s'%prefix,
                 '-DGENIE_ONLY=ON',
                 '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['intel-tbb'].prefix.lib,
                 '-DGENIE_INC=%s/GENIE'%self.spec['genie'].prefix.include,
                 '-DDK2NUDATA_DIR=%s'%self.spec['dk2nudata'].prefix.lib ,
                 '%s/dk2nu' % self.stage.source_path ]
-        cmake = which('cmake')
+        return args
+
+    def build(self, spec, prefix):
         with working_dir('%s/spack-build'%self.stage.path, create=True):
-            cmake(*args)
-            make('VERBOSE=t', 'all','install')
+            make('VERBOSE=t', 'all')
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('DK2NUGENIE_INC',dspec['dk2nugenie'].prefix.include)
