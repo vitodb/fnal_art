@@ -12,15 +12,13 @@ class Larsoftobj(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoftobj"
     url      = "http://cdcvs.fnal.gov/projects/larsoftobj"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/larsoftobj', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larsoftobj', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-    patch('patch')
 
     depends_on('gallery')
     depends_on('lardataobj')

@@ -12,7 +12,7 @@ class Nusimdata(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nusimdata"
     url      = "http://cdcvs.fnal.gov/projects/nusimdata"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/nusimdata', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/nusimdata', branch='feature/Spack-MVP1a', preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -20,7 +20,18 @@ class Nusimdata(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('patch')
+
+    # Build and link dependencies.
+    depends_on('clhep')
+    depends_on('root+python')
+    depends_on('boost')
+    depends_on('canvas')
+    depends_on('cetlib')
+    depends_on('cetlib-except')
+    depends_on('fhicl-cpp')
+    depends_on('hep-concurrency')
+    depends_on('messagefacility')
+    depends_on('tbb')
 
     depends_on('canvas-root-io')
     depends_on('dk2nudata')
@@ -33,8 +44,8 @@ class Nusimdata(CMakePackage):
                 format(self.spec['dk2nudata'].prefix.include),
                 '-DDK2NUDATA_LIB={0}'.
                 format(self.spec['dk2nudata'].prefix.lib),
-                '-Dnusimdata_fcl_dir={0}/fhicl'.
-                format(self.spec['dk2nudata'].prefix),
+                '-Dnusimdata_fcl_dir={0}/fcl'.
+                format(self.spec.prefix),
                ]
         return args
 
@@ -42,3 +53,7 @@ class Nusimdata(CMakePackage):
         spack_env.set('NUSIMDATA_INC',dspec['nusimdata'].prefix.include)
         spack_env.set('NUSIMDATA_LIB', dspec['nusimdata'].prefix.lib)
         spack_env.append_path('ROOT_INCLUDE_PATH', dspec['nusimdata'].prefix.include)
+
+    @run_after('install')
+    def create_dirs(self):
+        mkdirp('{0}/fcl'.format(self.spec.prefix))

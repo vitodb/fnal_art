@@ -12,7 +12,7 @@ class Larexamples(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larexamples"
     url      = "http://cdcvs.fnal.gov/projects/larexamples"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/larexamples', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larexamples', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
@@ -20,15 +20,12 @@ class Larexamples(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('patch')
-
     depends_on('larsim')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
                ]
         return args
 

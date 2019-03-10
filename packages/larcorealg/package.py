@@ -12,7 +12,7 @@ class Larcorealg(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcorealg"
     url      = "http://cdcvs.fnal.gov/projects/larcorealg"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/larcorealg', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcorealg', branch='feature/Spack-MVP1a', preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -20,7 +20,6 @@ class Larcorealg(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('patch')
 
     depends_on('larcoreobj')
     depends_on('cetmodules', type='build')
@@ -29,9 +28,9 @@ class Larcorealg(CMakePackage):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
                 '-Dlarcorealg_gdml_dir={0}/gdml'.
-                format(self.spec.prefix.share),
-                '-Dlarcorealg_fcl_dir={0}/fhicl'.
-                format(self.spec.prefix.share),
+                format(self.spec.prefix),
+                '-Dlarcorealg_fcl_dir={0}/fcl'.
+                format(self.spec.prefix),
                ]
         return args
 

@@ -12,15 +12,13 @@ class Larwirecell(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larwirecell"
     url      = "http://cdcvs.fnal.gov/projects/larwirecell"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/larwirecell', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larwirecell', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-    patch('patch')
 
     depends_on('larevt')
     depends_on('wirecell')

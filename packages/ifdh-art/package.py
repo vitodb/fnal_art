@@ -13,7 +13,7 @@ from the ifdhc package."""
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
     url      = "http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
@@ -48,7 +48,6 @@ from the ifdhc package."""
                 format(self.spec['libwda'].prefix),
                 '-Dheader_install_dir={0}'.
                 format(self.spec.prefix.include),
-                '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
                ]
         return args
 

@@ -12,7 +12,7 @@ class Larcoreobj(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcoreobj"
     url      = "http://cdcvs.fnal.gov/projects/larcoreobj"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/larcoreobj', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcoreobj', branch='feature/Spack-MVP1a', preferred=True)
 
     variant('cxxstd',
             default='17',
@@ -20,8 +20,17 @@ class Larcoreobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('patch')
 
+    depends_on('clhep')
+    depends_on('root+python')
+    depends_on('boost')
+    depends_on('canvas')
+    depends_on('cetlib')
+    depends_on('cetlib-except')
+    depends_on('fhicl-cpp')
+    depends_on('hep-concurrency')
+    depends_on('messagefacility')
+    depends_on('tbb')
     depends_on('canvas-root-io')
     depends_on('cetmodules', type='build')
 

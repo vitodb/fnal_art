@@ -20,8 +20,6 @@ class Larpandoracontent(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('patch')
-
     depends_on('cetmodules', type='build')
     depends_on('eigen')
     depends_on('pandora')

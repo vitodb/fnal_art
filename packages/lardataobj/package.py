@@ -12,7 +12,7 @@ class Lardataobj(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataobj"
     url      = "http://cdcvs.fnal.gov/projects/lardataobj"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/lardataobj', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/lardataobj', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
@@ -20,7 +20,17 @@ class Lardataobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('patch')
+    depends_on('clhep')
+    depends_on('root+python')
+    depends_on('boost')
+    depends_on('canvas')
+    depends_on('cetlib')
+    depends_on('cetlib-except')
+    depends_on('fhicl-cpp')
+    depends_on('hep-concurrency')
+    depends_on('messagefacility')
+    depends_on('tbb')
+    depends_on('canvas-root-io')
 
     depends_on('nusimdata')
     depends_on('larcoreobj')
@@ -30,13 +40,18 @@ class Lardataobj(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-Dlardataobj_fcl_dir={0}/fhicl'.
-                format(self.spec.prefix.share),
+                '-Dlardataobj_fcl_dir={0}/fcl'.
+                format(self.spec.prefix),
                 '-Dlardataobj_gdml_dir={0}/gdml'.
-                format(self.spec.prefix.share),
+                format(self.spec.prefix),
                ]
         return args
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('LARDATAOBJ_INC',dspec['lardataobj'].prefix.include)
         spack_env.set('LARDATAOBJ_LIB', dspec['lardataobj'].prefix.lib)
+
+    @run_after('install')
+    def create_dirs(self):
+        mkdirp('{0}/fcl'.format(self.spec.prefix))
+        mkdirp('{0}/gdml'.format(self.spec.prefix))

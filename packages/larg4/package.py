@@ -12,15 +12,13 @@ class Larg4(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larg4"
     url      = "http://cdcvs.fnal.gov/projects/larg4"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/larg4', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larg4', branch='Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-    patch('patch')
 
     depends_on('artg4tk')
     depends_on('larevt')

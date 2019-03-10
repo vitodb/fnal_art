@@ -12,7 +12,7 @@ class Lardataalg(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataalg"
     url      = "http://cdcvs.fnal.gov/projects/lardataalg"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/lardataalg', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/lardataalg', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
@@ -20,17 +20,29 @@ class Lardataalg(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('patch')
+    depends_on('clhep')
+    depends_on('root+python')
+    depends_on('boost')
+    depends_on('canvas')
+    depends_on('cetlib')
+    depends_on('cetlib-except')
+    depends_on('fhicl-cpp')
+    depends_on('hep-concurrency')
+    depends_on('messagefacility')
+    depends_on('tbb')
+    depends_on('canvas-root-io')
 
-    depends_on('lardataobj')
+    depends_on('nusimdata')
+    depends_on('larcoreobj')
     depends_on('larcorealg')
+    depends_on('lardataobj')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-Dlardataalg_fcl_dir={0}/share'.
-                format(self.spec.prefix.share),
+                '-Dlardataalg_fcl_dir={0}/fcl'.
+                format(self.spec.prefix),
                ]
         return args
 

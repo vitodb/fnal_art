@@ -12,15 +12,13 @@ class Lareventdisplay(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lareventdisplay"
     url      = "http://cdcvs.fnal.gov/projects/lareventdisplay"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/lareventdisplay', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/lareventdisplay', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-    patch('patch')
 
     depends_on('larreco')
     depends_on('cetmodules', type='build')

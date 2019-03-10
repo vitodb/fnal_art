@@ -12,15 +12,13 @@ class Larevt(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larevt"
     url      = "http://cdcvs.fnal.gov/projects/larevt"
 
-    version('develop', git='http://cdcvs.fnal.gov/projects/larevt', branch='develop')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larevt', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-    patch('patch')
 
     depends_on('libwda')
     depends_on('lardata')
@@ -29,7 +27,6 @@ class Larevt(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
                ]
         return args
 

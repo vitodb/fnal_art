@@ -12,7 +12,7 @@ class Nutools(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nutools/wiki"
     url      = "http://cdcvs.fnal.gov/projects/nutools/"
 
-    version('2.24.01', '7146414c5afe62c869c4a6284e66e11cd95ee341e44f913c42e405694ed0e9d8', extension='.tbz2')
+    version('MVP1a', git="http://cdcvs.fnal.gov/projects/nutools", branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
@@ -23,26 +23,26 @@ class Nutools(CMakePackage):
     patch('patch')
 
     depends_on('cetmodules', type='build')
-#    depends_on('cetlib-except')
-#    depends_on('cetlib')
-#    depends_on('fhicl-cpp')
-#    depends_on('messagefacility')
-#    depends_on('canvas')
-#    depends_on('canvas-root-io')
-#    depends_on('boost')
-#    depends_on('tbb')
-#    depends_on('root+python')
-#    depends_on('clhep')
-#    depends_on('sqlite@3.8.2:')
-#    depends_on('perl')
-#    depends_on('pythia6')
-#    depends_on('libwda')
-#    depends_on('postgresql-client')
-#    depends_on('libxml2')
+    depends_on('cetlib-except')
+    depends_on('cetlib')
+    depends_on('fhicl-cpp')
+    depends_on('messagefacility')
+    depends_on('canvas')
+    depends_on('canvas-root-io')
+    depends_on('boost')
+    depends_on('tbb')
+    depends_on('root+python')
+    depends_on('clhep')
+    depends_on('sqlite@3.8.2:')
+    depends_on('perl')
+    depends_on('pythia6')
+    depends_on('libwda')
+    depends_on('postgresql-client')
+    depends_on('libxml2')
     depends_on('art')
     depends_on('nusimdata')
     depends_on('dk2nugenie')
-    depends_on('geant4')
+    depends_on('geant4@:10.03.p99~data')
     depends_on('cry')
     depends_on('ifdh-art')
 
@@ -56,10 +56,9 @@ class Nutools(CMakePackage):
                 format(self.spec.variants['cxxstd'].value),
                 '-DROOTSYS={0}'.
                 format(self.spec['root'].prefix),
-                '-DROOT_BASIC_LIB_LIST=Core;RIO;Net;Imt;Hist;Graf;Graf3d;Gpad;Tree;Rint;Postscript;Matrix;Physics;MathCore;Thread'
                ] 
         return args
 
-#    def setup_environment(self, spack_env, run_env):
-#        spack_env.set('PYLIB', self.spec['pythia6'].prefix.lib)
-#        spack_env.set('POSTGRESQL_LIBRARIES', self.spec['postgresql-client'].prefix.lib)
+    def setup_environment(self, spack_env, run_env):
+        spack_env.set('PYLIB', self.spec['pythia6'].prefix.lib)
+        spack_env.set('POSTGRESQL_LIBRARIES', self.spec['postgresql-client'].prefix.lib)
