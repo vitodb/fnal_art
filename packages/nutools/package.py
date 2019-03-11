@@ -20,8 +20,6 @@ class Nutools(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('patch')
-
     depends_on('cetmodules', type='build')
     depends_on('cetlib-except')
     depends_on('cetlib')
@@ -42,7 +40,8 @@ class Nutools(CMakePackage):
     depends_on('art')
     depends_on('nusimdata')
     depends_on('dk2nugenie')
-    depends_on('geant4@:10.03.p99~data')
+    depends_on('geant4~data')
+    depends_on('xerces-c')
     depends_on('cry')
     depends_on('ifdh-art')
 
@@ -56,6 +55,28 @@ class Nutools(CMakePackage):
                 format(self.spec.variants['cxxstd'].value),
                 '-DROOTSYS={0}'.
                 format(self.spec['root'].prefix),
+                '-Dnutools_fcl_dir=fcl'.
+                format(self.spec['root'].prefix),
+                '-DGENIE_INC={0}'.
+                format(self.spec['genie'].prefix.include),
+                '-DCRYHOME={0}'.
+                format(self.spec['cry'].prefix),
+                '-DLOG4CPP_INC={0}'.
+                format(self.spec['log4cpp'].prefix.include),
+                '-DIFDH_ART_INC={0}'.
+                format(self.spec['ifdh-art'].prefix.include),
+                '-DIFDHC_INC={0}'.
+                format(self.spec['ifdhc'].prefix.include),
+                '-DDK2NUGENIE_INC={0}'.
+                format(self.spec['dk2nugenie'].prefix.include),
+                '-DDK2NUDATA_INC={0}'.
+                format(self.spec['dk2nudata'].prefix.include),
+                '-DXERCES_C_INC={0}'.
+                format(self.spec['xerces-c'].prefix.include),
+                '-DLIBXML2_INC={0}'.
+                format(self.spec['libxml2'].prefix.include),
+                '-DLIBWDA_INC={0}'.
+                format(self.spec['libwda'].prefix.include),
                ] 
         return args
 

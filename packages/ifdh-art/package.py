@@ -20,7 +20,6 @@ from the ifdhc package."""
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-    patch('patch')
 
     depends_on('art')
     depends_on('canvas-root-io')
@@ -46,7 +45,7 @@ from the ifdhc package."""
                 format(self.spec['nucondb'].prefix),
                 '-DLIBWDA_DIR={0}'.
                 format(self.spec['libwda'].prefix),
-                '-Dheader_install_dir={0}'.
+                '-Difdh_art_header_dir={0}'.
                 format(self.spec.prefix.include),
                ]
         return args
@@ -56,5 +55,3 @@ from the ifdhc package."""
         spack_env.set('IFDH_ART_DIR', '{0}'.format(dspec['ifdh-art'].prefix))
         spack_env.set('IFDH_ART_INC', '{0}/ifdh-art/src'.format(dspec['ifdh-art'].prefix.share))
         spack_env.set('IFDH_ART_LIB', '{0}'.format(dspec['ifdh-art'].prefix.lib))
-
-
