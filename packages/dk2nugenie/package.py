@@ -50,17 +50,22 @@ class Dk2nugenie(CMakePackage):
                 "INTERNAL ERROR: cannot accommodate unexpected variant ",
                 "cxxstd={0}".format(spec.variants['cxxstd'].value))
         return cxxstdflag
+    
 
     def patch(self):
+        patch('dk2nu.patch', when='^genie@3.00.00:', working_dir='v{0}'.format(self.version))
         cmakelists=FileFilter('{0}/dk2nu/genie/CMakeLists.txt'.format(self.stage.source_path))
         cmakelists.filter('\$\{GENIE\}/src', '${GENIE}/include/GENIE')
-
+        cmakelists.filter('\$ENV', '$')
+        cmakelists.filter('execute_process', '#execute_process')
     def cmake_args(self):
         prefix=self.prefix
         args = ['-DCMAKE_INSTALL_PREFIX=%s'%prefix,
                 '-DGENIE_ONLY=ON',
                 '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['intel-tbb'].prefix.lib,
                 '-DGENIE_INC=%s/GENIE'%self.spec['genie'].prefix.include,
+                '-DGENIE=%s'%self.spec['genie'].prefix,
+                '-DGENIE_VERSION=%s'%self.spec['genie'].version,
                 '-DDK2NUDATA_DIR=%s'%self.spec['dk2nudata'].prefix.lib ,
                 '%s/dk2nu' % self.stage.source_path ]
         return args
