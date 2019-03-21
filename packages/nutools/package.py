@@ -35,7 +35,7 @@ class Nutools(CMakePackage):
     depends_on('perl')
     depends_on('pythia6')
     depends_on('libwda')
-    depends_on('postgresql-client')
+    depends_on('postgresql')
     depends_on('libxml2')
     depends_on('art')
     depends_on('nusimdata')
@@ -44,6 +44,11 @@ class Nutools(CMakePackage):
     depends_on('xerces-c')
     depends_on('cry')
     depends_on('ifdh-art')
+    depends_on('ifdhc')
+    depends_on('ifbeam')
+    depends_on('nucondb')
+    depends_on('libwda')
+
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -59,14 +64,14 @@ class Nutools(CMakePackage):
                 format(self.spec['root'].prefix),
                 '-DGENIE_INC={0}'.
                 format(self.spec['genie'].prefix.include),
-                '-DCRYHOME={0}'.
+                '-DCRYHOME={0}/src'.
                 format(self.spec['cry'].prefix),
                 '-DLOG4CPP_INC={0}'.
                 format(self.spec['log4cpp'].prefix.include),
                 '-DIFDH_ART_INC={0}'.
                 format(self.spec['ifdh-art'].prefix.include),
-                '-DIFDHC_INC={0}'.
-                format(self.spec['ifdhc'].prefix.include),
+                '-DIFDHC_INC={0}/inc'.
+                format(self.spec['ifdhc'].prefix),
                 '-DDK2NUGENIE_INC={0}'.
                 format(self.spec['dk2nugenie'].prefix.include),
                 '-DDK2NUDATA_INC={0}'.
@@ -79,7 +84,3 @@ class Nutools(CMakePackage):
                 format(self.spec['libwda'].prefix.include),
                ] 
         return args
-
-    def setup_environment(self, spack_env, run_env):
-        spack_env.set('PYLIB', self.spec['pythia6'].prefix.lib)
-        spack_env.set('POSTGRESQL_LIBRARIES', self.spec['postgresql-client'].prefix.lib)

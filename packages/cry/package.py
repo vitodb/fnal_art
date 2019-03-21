@@ -54,6 +54,8 @@ and detector simulation codes. """
     def install(self, spec, prefix):
         makefile = FileFilter('Makefile.common')
         makefile.filter('CXX = .*', 'CXX = c++')
+        with open('Makefile.local', 'w') as f:
+            f.write('CXXFLAGS += -fPIC')
         make()
         for f in glob.glob('src/*.o'):
             os.remove(f)
