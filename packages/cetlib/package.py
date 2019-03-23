@@ -28,6 +28,8 @@ class Cetlib(CMakePackage):
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
 
+    #patch('cetlib-catch2.patch', when='@MVP1a')
+
     variant('cxxstd',
             default='17',
             values=('14', '17'),
@@ -38,7 +40,8 @@ class Cetlib(CMakePackage):
     depends_on('cmake@3.4:', type='build', when='@MVP')
     depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules', type='build')
-    depends_on('catch@2.3.0:~single_header', type='build')
+    #depends_on('catch@2.3.0:~single_header', type='build')
+    depends_on('catch@2.3.0:~single_header')
 
     # Build / link dependencies.
     depends_on('boost')

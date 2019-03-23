@@ -6,6 +6,15 @@
 from spack import *
 
 
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
+
+
 class Nusimdata(CMakePackage):
     """Nusimdata"""
 
@@ -44,16 +53,39 @@ class Nusimdata(CMakePackage):
                 format(self.spec['dk2nudata'].prefix.include),
                 '-DDK2NUDATA_LIB={0}'.
                 format(self.spec['dk2nudata'].prefix.lib),
-                '-Dnusimdata_fcl_dir={0}/fcl'.
-                format(self.spec.prefix),
                ]
         return args
+
+    def setup_environment(self, spack_env, run_env):
+        # Binaries.
+        spack_env.prepend_path('PATH',
+                               join_path(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH',
+                               join_path(self.build_directory, 'lib'))
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
+            spack_env.prepend_path('ROOT_INCLUDE_PATH',
+                                   str(self.spec[d.name].prefix.include))
+            run_env.prepend_path('ROOT_INCLUDE_PATH',
+                                 str(self.spec[d.name].prefix.include))
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB',
+                               join_path(self.build_directory, 'perllib'))
+        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        # Cleaup.
+        sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('NUSIMDATA_INC',dspec['nusimdata'].prefix.include)
         spack_env.set('NUSIMDATA_LIB', dspec['nusimdata'].prefix.lib)
         spack_env.append_path('ROOT_INCLUDE_PATH', dspec['nusimdata'].prefix.include)
 
+    # install_fhicl() is callled but there are no fcl files to install
+    # however nusimdataConfig.cmake does a set and check on nusimdata_fcl_dir
     @run_after('install')
     def create_dirs(self):
         mkdirp('{0}/fcl'.format(self.spec.prefix))

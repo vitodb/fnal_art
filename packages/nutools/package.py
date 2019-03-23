@@ -6,6 +6,15 @@
 from spack import *
 
 
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
+
+
 class Nutools(CMakePackage):
     """Nutools"""
 
@@ -27,6 +36,7 @@ class Nutools(CMakePackage):
     depends_on('messagefacility')
     depends_on('canvas')
     depends_on('canvas-root-io')
+    depends_on('art-root-io')
     depends_on('boost')
     depends_on('tbb')
     depends_on('root+python')
@@ -60,8 +70,6 @@ class Nutools(CMakePackage):
                 format(self.spec.variants['cxxstd'].value),
                 '-DROOTSYS={0}'.
                 format(self.spec['root'].prefix),
-                '-Dnutools_fcl_dir=fcl'.
-                format(self.spec['root'].prefix),
                 '-DGENIE_INC={0}'.
                 format(self.spec['genie'].prefix.include),
                 '-DCRYHOME={0}/src'.
@@ -80,7 +88,31 @@ class Nutools(CMakePackage):
                 format(self.spec['xerces-c'].prefix.include),
                 '-DLIBXML2_INC={0}'.
                 format(self.spec['libxml2'].prefix.include),
-                '-DLIBWDA_INC={0}'.
-                format(self.spec['libwda'].prefix.include),
+                '-DLIBWDA_INC={0}/inc'.
+                format(self.spec['libwda'].prefix),
                ] 
         return args
+
+    def setup_environment(self, spack_env, run_env):
+        # Binaries.
+        spack_env.prepend_path('PATH',
+                               join_path(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH',
+                               join_path(self.build_directory, 'lib'))
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
+            spack_env.prepend_path('ROOT_INCLUDE_PATH',
+                                   str(self.spec[d.name].prefix.include))
+            run_env.prepend_path('ROOT_INCLUDE_PATH',
+                                 str(self.spec[d.name].prefix.include))
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB',
+                               join_path(self.build_directory, 'perllib'))
+        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        # Cleaup.
+        sanitize_environments(spack_env, run_env)
+

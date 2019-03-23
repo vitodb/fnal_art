@@ -33,6 +33,29 @@ class Lardata(CMakePackage):
                ]
         return args
 
+    def setup_environment(self, spack_env, run_env):
+        # Binaries.
+        spack_env.prepend_path('PATH',
+                               join_path(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH',
+                               join_path(self.build_directory, 'lib'))
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
+            spack_env.prepend_path('ROOT_INCLUDE_PATH',
+                                   str(self.spec[d.name].prefix.include))
+            run_env.prepend_path('ROOT_INCLUDE_PATH',
+                                 str(self.spec[d.name].prefix.include))
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB',
+                               join_path(self.build_directory, 'perllib'))
+        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        # Cleaup.
+        sanitize_environments(spack_env, run_env)
+
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('LARDATA_INC',dspec['lardata'].prefix.include)
         spack_env.set('LARDATA_LIB', dspec['lardata'].prefix.lib)
