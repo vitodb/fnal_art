@@ -63,5 +63,8 @@ class Dk2nudata(CMakePackage):
             make('VERBOSE=t', 'all')
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('DK2NUDATA_INC',dspec['dk2nudata'].prefix.include)
-        spack_env.set('DK2NUDATA_LIB', dspec['dk2nudata'].prefix.lib)
+        spack_env.set('DK2NUDATA_INC',self.prefix.include)
+        spack_env.set('DK2NUDATA_LIB', self.prefix.lib)
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)

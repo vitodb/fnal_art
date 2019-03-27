@@ -39,5 +39,17 @@ class Larsoft(CMakePackage):
         return args
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LARSOFT_INC',dspec['larsoft'].prefix.include)
-        spack_env.set('LARSOFT_LIB', dspec['larsoft'].prefix.lib)
+        spack_env.set('LARSOFT_INC',self.prefix.include)
+        spack_env.set('LARSOFT_LIB', self.prefix.lib)
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        spack_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
+        run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
+        spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+        run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))

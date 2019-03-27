@@ -47,7 +47,7 @@ class Pdfsets(Package):
         run_env.set('LHAPATH','{0}/PDFsets'.format(self.spec['pdfsets'].prefix))
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LHAPATH','{0}/PDFsets'.format(dspec['pdfsets'].prefix))
+        spack_env.set('LHAPATH','{0}/PDFsets'.format(self.prefix))
         run_env.set('LHAPATH','{0}/PDFsets'.format(self.spec['pdfsets'].prefix))
 
 

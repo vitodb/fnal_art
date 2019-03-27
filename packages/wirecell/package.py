@@ -19,7 +19,7 @@ class Wirecell(Package):
     depends_on("jsonnet")
 
     depends_on("fftw")
-    depends_on("eigen+fftw@3.3.4")
+    depends_on("eigen+fftw")
 
 
     # Do not currently make use of TBB.  When we get back to this,
@@ -28,7 +28,7 @@ class Wirecell(Package):
     depends_on("root@6:")
 
     # match what is listed in wire-cell-build/wscript
-    depends_on("boost+graph+iostreams+filesystem+system+thread+program_options")
+    depends_on("boost")
 
 
     def install(self, spec, prefix):

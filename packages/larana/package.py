@@ -6,6 +6,15 @@
 from spack import *
 
 
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
+
+
 class Larana(CMakePackage):
     """Larana"""
 
@@ -20,6 +29,13 @@ class Larana(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    depends_on('tbb')
+    depends_on('clhep')
+    depends_on('root')
+    depends_on('geant4')
+    depends_on('boost')
+    depends_on('art')
+    depends_on('canvas-root-io')
     depends_on('larreco')
     depends_on('cetmodules', type='build')
 
@@ -53,5 +69,16 @@ class Larana(CMakePackage):
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LARANA_INC',dspec['larana'].prefix.include)
-        spack_env.set('LARANA_LIB', dspec['larana'].prefix.lib)
+        spack_env.set('LARANA_INC',self.prefix.include)
+        spack_env.set('LARANA_LIB', self.prefix.lib)
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        spack_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
+        run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
+        spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+        run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))

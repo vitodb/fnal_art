@@ -36,6 +36,10 @@ class Larevt(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
+                '-DLIBWDA_INC_DIR={0}'.
+                format(self.spec['libwda'].prefix.include),
+                '-DLIBWDA_LIB={0}'.
+                format(self.spec['libwda'].prefix.lib),
                ]
         return args
 
@@ -59,9 +63,28 @@ class Larevt(CMakePackage):
         spack_env.prepend_path('PERL5LIB',
                                join_path(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        # Set path to find fhicl files
+        spack_env.prepend_path('FHICL_INCLUDE_PATH',
+                               join_path(self.build_directory, 'job'))
+        run_env.prepend_path('FHICL_INCLUDE_PATH', join_path(self.prefix, 'job'))
+        # Set path to find gdml files
+        spack_env.prepend_path('FW_SEARCH_PATH',
+                               join_path(self.build_directory, 'job'))
+        run_env.prepend_path('FW_SEARCH_PATH', join_path(self.prefix, 'job'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LAREVT_INC',dspec['larevt'].prefix.include)
-        spack_env.set('LAREVT_LIB', dspec['larevt'].prefix.lib)
+        spack_env.set('LAREVT_INC',self.prefix.include)
+        spack_env.set('LAREVT_LIB', self.prefix.lib)
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        spack_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
+        run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
+        spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+        run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))

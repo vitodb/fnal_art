@@ -76,14 +76,14 @@ global analysis of neutrino scattering data.
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
-        spack_env.set('GENIE',dspec['genie'].prefix)
-        spack_env.set('GENIE_VERSION','v{0}'.format(dspec['genie'].version.underscored))
-        spack_env.set('GENIE_DIR', '{0}'.format(dspec['genie'].prefix))
-        spack_env.set('GENIE_INC', '{0}'.format(dspec['genie'].prefix.include))
-        spack_env.set('GENIE_LIB', '{0}'.format(dspec['genie'].prefix.lib))
-        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/GENIE'.format(dspec['genie'].prefix.include))
-        spack_env.append_path('LD_LIBRARY_PATH', '{0}'.format(dspec['genie'].prefix.lib))
-        spack_env.append_path('PATH', '{0}'.format(dspec['genie'].prefix.bin))
+        spack_env.set('GENIE',self.prefix)
+        spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
+        spack_env.set('GENIE_DIR', '{0}'.format(self.prefix))
+        spack_env.set('GENIE_INC', '{0}'.format(self.prefix.include))
+        spack_env.set('GENIE_LIB', '{0}'.format(self.prefix.lib))
+        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/GENIE'.format(self.prefix.include))
+        spack_env.append_path('LD_LIBRARY_PATH', '{0}'.format(self.prefix.lib))
+        spack_env.append_path('PATH', '{0}'.format(self.prefix.bin))
 
     @run_before('install')
     def create_ver_text(self):
@@ -101,7 +101,7 @@ global analysis of neutrino scattering data.
                 '--enable-neutron-osc',
                 '--enable-vle-extension',
                 '--with-pythia6-lib={0}'.format(self.spec['pythia6'].prefix.lib),
-                '--with-libxml2-inc={0}'.format(self.spec['libxml2'].prefix.include),
+                '--with-libxml2-inc={0}/libxml2'.format(self.spec['libxml2'].prefix.include),
                 '--with-libxml2-lib={0}'.format(self.spec['libxml2'].prefix.lib),
                 '--with-log4cpp-inc={0}'.format(self.spec['log4cpp'].prefix.include),
                 '--with-log4cpp-lib={0}'.format(self.spec['log4cpp'].prefix)
@@ -127,3 +127,10 @@ global analysis of neutrino scattering data.
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.append_path('ROOT_INCLUDE_PATH', '{0}'
                               .format( self.prefix.include ))
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)

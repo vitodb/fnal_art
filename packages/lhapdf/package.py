@@ -55,8 +55,8 @@ class Lhapdf(Package):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LHAPDF_INC', '{0}'.format(dspec['lhapdf'].prefix.include))
-        spack_env.set('LHAPDF_LIB', '{0}'.format(dspec['lhapdf'].prefix.lib))
+        spack_env.set('LHAPDF_INC', '{0}'.format(self.prefix.include))
+        spack_env.set('LHAPDF_LIB', '{0}'.format(self.prefix.lib))
 
     def install(self,spec,prefix):
         with working_dir(self.stage.source_path):

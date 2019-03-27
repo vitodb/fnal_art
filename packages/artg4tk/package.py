@@ -12,7 +12,7 @@ class Artg4tk(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
     url      = "http://cdcvs.fnal.gov/projects/artg4tk/"
 
-    version('develop', git = url, branch="develop")
+    version('9.02.01p', git = url, commit='27b106c1b0ee1c0fde1da7a5018d10523dc0d8cb')
 
     variant('cxxstd',
             default='17',
@@ -22,7 +22,8 @@ class Artg4tk(CMakePackage):
     patch('patch')
 
     depends_on('cetmodules', type='build')
-    depends_on('art')
+    depends_on('art-root-io')
+    depends_on('canvas-root-io')
     depends_on('geant4')
  
     def cmake_args(self):
