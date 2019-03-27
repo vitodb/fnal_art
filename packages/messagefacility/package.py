@@ -81,8 +81,10 @@ class Messagefacility(CMakePackage):
 
     def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
         # Binaries.
-        spack_env.prepend_path('PATH',
-                               join_path(self.build_directory, 'bin'))
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)

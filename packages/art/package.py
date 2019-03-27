@@ -95,11 +95,14 @@ class Art(CMakePackage):
 
     def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
         # Binaries.
-        spack_env.prepend_path('PATH',
-                               join_path(self.build_directory, 'bin'))
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
         run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
