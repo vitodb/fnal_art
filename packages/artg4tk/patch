@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index e06542d..2a243f3 100644
+index e06542d..069ebe5 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -1,40 +1,49 @@
+@@ -1,40 +1,48 @@
  cmake_minimum_required(VERSION 3.7)
  
 -project(artg4tk)
@@ -53,16 +53,19 @@ index e06542d..2a243f3 100644
 +find_package(canvas REQUIRED)
 +find_package(fhiclcpp REQUIRED)
 +find_package(messagefacility REQUIRED)
++find_package(cetlib REQUIRED)
++find_package(cetlib_except REQUIRED)
++find_package(hep_concurrency REQUIRED)
 +find_package(CLHEP REQUIRED)
 +find_package(Geant4 REQUIRED COMPONENTS ui_all vis_all)
-+find_package(XercesC)
-+find_package(ROOT REQUIRED COMPONENTS
++find_package(ROOT REQUIRED COMPONENTS)
++find_package(Boost REQUIRED COMPONENTS system filesystem)
 +include(${Geant4_USE_FILE})
  
  include(ArtDictionary)
  include(ArtMake)
  include(BuildPlugins)
- include(UseCPack)
+-include(UseCPack)
  
 -add_subdirectory(artg4tk)
 -add_subdirectory(examples)
@@ -78,24 +81,34 @@ index e06542d..2a243f3 100644
 +
 +add_subdirectory( cmakeConfig )
 +
-+# packaging utility
-+
-+#include(UseCPack)
 diff --git a/artg4tk/Analysis/CMakeLists.txt b/artg4tk/Analysis/CMakeLists.txt
-index b0a5ad0..497edaf 100644
+index b0a5ad0..107f4fa 100644
 --- a/artg4tk/Analysis/CMakeLists.txt
 +++ b/artg4tk/Analysis/CMakeLists.txt
-@@ -13,9 +13,9 @@ art_make(
+@@ -2,8 +2,8 @@ art_make(
+   MODULE_LIBRARIES
+     art_Framework_Core
+     art_Framework_Principal
+-    art_Framework_Services_Optional
+-    art_Framework_Services_Optional_TFileService_service
++    art_root_io_tfile_support ${ROOT_Core_LIBRARY}
++    art_root_io_TFileService_service
+     art_Framework_Services_Registry
+     artg4tk_DataProducts_EventGenerators
+     art_Persistency_Provenance
+@@ -12,10 +12,10 @@ art_make(
+     ${Boost_SYSTEM_LIBRARY}
      canvas
      cetlib_except
-     clhep
+-    clhep
 -    ${ROOT_CORE}
++    CLHEP
 +    ${ROOT_Core_LIBRARY}
      fhiclcpp
 -    ${G4ZLIB}
 -    ${ROOT_HIST}
 -    ${ROOT_TREE}
-+    G4zlib
++    ${Geant4_LIBRARIES} 
 +    ${ROOT_Hist_LIBRARY}
 +    ${ROOT_Tree_LIBRARY}
  )
@@ -236,11 +249,11 @@ index 18604d9..1e1071c 100644
  #include "art/Framework/Principal/Provenance.h"
  // artg4 includes:
 diff --git a/artg4tk/CMakeLists.txt b/artg4tk/CMakeLists.txt
-index e07d05f..30c0405 100644
+index e07d05f..f4f98b1 100644
 --- a/artg4tk/CMakeLists.txt
 +++ b/artg4tk/CMakeLists.txt
 @@ -1,3 +1,4 @@
-+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-shadow -Wno-unused-parameter -Wno-ignored-qualifiers -Wno-misleading-indentation -Wno-maybe-uninitialized -Wno-overloaded-virtual")
++set(CMAKE_CXX_FLAGS "${Geant4_CXX_FLAGS} -Wno-shadow -Wno-unused-parameter -Wno-ignored-qualifiers -Wno-misleading-indentation -Wno-maybe-uninitialized -Wno-overloaded-virtual")
  add_subdirectory(actionBase)
  add_subdirectory(Analysis)
  add_subdirectory(Core)
@@ -257,6 +270,19 @@ index 9fb9ee8..056c74b 100644
  )
  
  install_headers()
+diff --git a/artg4tk/DataProducts/EventGenerators/CMakeLists.txt b/artg4tk/DataProducts/EventGenerators/CMakeLists.txt
+index 563a445..f364044 100644
+--- a/artg4tk/DataProducts/EventGenerators/CMakeLists.txt
++++ b/artg4tk/DataProducts/EventGenerators/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ art_make(
+   LIB_LIBRARIES
+     canvas
+-    clhep
++    CLHEP
+ )
+ 
+ install_headers()
 diff --git a/artg4tk/DataProducts/G4DetectorHits/CMakeLists.txt b/artg4tk/DataProducts/G4DetectorHits/CMakeLists.txt
 index b538d42..f6336fc 100644
 --- a/artg4tk/DataProducts/G4DetectorHits/CMakeLists.txt
@@ -269,6 +295,18 @@ index b538d42..f6336fc 100644
  )
  
  install_headers()
+diff --git a/artg4tk/EventGenerators/CMakeLists.txt b/artg4tk/EventGenerators/CMakeLists.txt
+index 9cfe5d4..6d0019e 100644
+--- a/artg4tk/EventGenerators/CMakeLists.txt
++++ b/artg4tk/EventGenerators/CMakeLists.txt
+@@ -9,6 +9,6 @@ art_make(
+     ${Boost_SYSTEM_LIBRARY}
+     canvas
+     cetlib_except
+-    clhep
++    CLHEP
+     fhiclcpp
+ )
 diff --git a/artg4tk/ExpDataAccess/CMakeLists.txt b/artg4tk/ExpDataAccess/CMakeLists.txt
 index f9ce49d..824134b 100644
 --- a/artg4tk/ExpDataAccess/CMakeLists.txt
@@ -297,10 +335,10 @@ index 8dfb4da..148fcb9 100644
  #include "TCanvas.h"
  
 diff --git a/artg4tk/G4PhysModelParamStudy/AnalysisBase/CMakeLists.txt b/artg4tk/G4PhysModelParamStudy/AnalysisBase/CMakeLists.txt
-index a613c4d..47777fa 100644
+index a613c4d..d27f445 100644
 --- a/artg4tk/G4PhysModelParamStudy/AnalysisBase/CMakeLists.txt
 +++ b/artg4tk/G4PhysModelParamStudy/AnalysisBase/CMakeLists.txt
-@@ -1,10 +1,3 @@
+@@ -1,17 +1,10 @@
 -find_program(ROOT_CONFIG_EXECUTABLE root-config PATHS ${ROOTSYS}/bin $ENV{ROOTSYS}/bin)
 -
 -execute_process(
@@ -311,7 +349,8 @@ index a613c4d..47777fa 100644
  
  art_make(
    LIB_LIBRARIES
-@@ -12,6 +5,6 @@ art_make(
+-    art_Framework_Services_Optional_TFileService_service
++    art_root_io_TFileService_service
      artg4tk_ExpDataAccess
      artg4tk_G4PhysModelParamStudy_AnalysisProducts
      artg4tk_G4PhysModelParamStudy_AnalysisProducts_dict
@@ -411,11 +450,14 @@ index 6a00263..1aa3f23 100644
  #include <vector>
  #include <iostream>
 diff --git a/artg4tk/G4PhysModelParamStudy/AnalysisModules/CMakeLists.txt b/artg4tk/G4PhysModelParamStudy/AnalysisModules/CMakeLists.txt
-index 405892d..e4a8c98 100644
+index 405892d..dd0ead4 100644
 --- a/artg4tk/G4PhysModelParamStudy/AnalysisModules/CMakeLists.txt
 +++ b/artg4tk/G4PhysModelParamStudy/AnalysisModules/CMakeLists.txt
-@@ -3,5 +3,5 @@ art_make(
-     art_Framework_Services_Optional_TFileService_service
+@@ -1,7 +1,7 @@
+ art_make(
+   MODULE_LIBRARIES
+-    art_Framework_Services_Optional_TFileService_service
++    art_root_io_TFileService_service
      artg4tk_G4PhysModelParamStudy_AnalysisBase
      artg4tk_G4PhysModelParamStudy_StatAnalysisTools
 -    ${G4_LIB_LIST}
@@ -454,17 +496,21 @@ index 6ca7679..4477233 100644
 +    ${Geant4_LIBRARIES}
  )
 diff --git a/artg4tk/G4PhysModelParamStudy/RooMUTools/CMakeLists.txt b/artg4tk/G4PhysModelParamStudy/RooMUTools/CMakeLists.txt
-index b73d09d..93f9a3c 100644
+index b73d09d..a78fd66 100644
 --- a/artg4tk/G4PhysModelParamStudy/RooMUTools/CMakeLists.txt
 +++ b/artg4tk/G4PhysModelParamStudy/RooMUTools/CMakeLists.txt
-@@ -1,7 +1,6 @@
+@@ -1,10 +1,9 @@
  find_library(ROOMULIB NAMES plotutils PATHS $ENV{ROOMU_SYS}/lib NO_DEFAULT_PATH)
  
  include_directories($ENV{ROOMU_SYS})
 -
  art_make(
    MODULE_LIBRARIES
-     art_Framework_Services_Optional_TFileService_service
+-    art_Framework_Services_Optional_TFileService_service
++    art_root_io_TFileService_service
+     artg4tk_G4PhysModelParamStudy_AnalysisBase
+     ${ROOMULIB}
+ )
 diff --git a/artg4tk/G4PhysModelParamStudy/RooMUTools/RooMUHistSummary_module.cc b/artg4tk/G4PhysModelParamStudy/RooMUTools/RooMUHistSummary_module.cc
 index e65bd7f..15e10be 100644
 --- a/artg4tk/G4PhysModelParamStudy/RooMUTools/RooMUHistSummary_module.cc
@@ -479,18 +525,24 @@ index e65bd7f..15e10be 100644
  // Root 
  //
 diff --git a/artg4tk/geantInit/CMakeLists.txt b/artg4tk/geantInit/CMakeLists.txt
-index 4a91dd9..866a630 100644
+index 4a91dd9..4b1a390 100644
 --- a/artg4tk/geantInit/CMakeLists.txt
 +++ b/artg4tk/geantInit/CMakeLists.txt
-@@ -7,11 +7,11 @@ art_make(
+@@ -3,15 +3,15 @@ art_make(
+     art_Framework_Services_Registry
+     artg4tk_services_ActionHolder_service
+     artg4tk_services_DetectorHolder_service
+-    ${Boost_SYSTEM_LIBRARY}
++    ${Boost_system_LIBRARY}
      canvas
      cetlib_except
-     clhep
+-    clhep
 -    ${G4EVENT}
 -    ${G4GLOBAL}
 -    ${G4INTERCOMS}
 -    ${G4RUN}
 -    ${G4TRACKING}
++    CLHEP
 +    G4event
 +    G4global
 +    G4intercoms
@@ -500,12 +552,21 @@ index 4a91dd9..866a630 100644
  
  install_headers()
 diff --git a/artg4tk/pluginActions/PrimaryEvent/CMakeLists.txt b/artg4tk/pluginActions/PrimaryEvent/CMakeLists.txt
-index f6eb146..f1b5a88 100644
+index f6eb146..7118323 100644
 --- a/artg4tk/pluginActions/PrimaryEvent/CMakeLists.txt
 +++ b/artg4tk/pluginActions/PrimaryEvent/CMakeLists.txt
-@@ -11,7 +11,7 @@ art_make(
+@@ -5,13 +5,13 @@ art_make(
+     artg4tk_actionBase
+     artg4tk_services_ActionHolder_service
+     art_Persistency_Provenance
+-    ${Boost_FILESYSTEM_LIBRARY}
+-    ${Boost_SYSTEM_LIBRARY}
++    ${Boost_filesystem_LIBRARY}
++    ${Boost_system_LIBRARY}
+     canvas
      cetlib_except
-     clhep
+-    clhep
++    CLHEP
      fhiclcpp
 -    ${G4GLOBAL}
 -    ${G4PARTICLES}
@@ -514,27 +575,62 @@ index f6eb146..f1b5a88 100644
      MF_MessageLogger
  )
 diff --git a/artg4tk/pluginActions/general/CMakeLists.txt b/artg4tk/pluginActions/general/CMakeLists.txt
-index 2d2b9a7..82c3c88 100644
+index 2d2b9a7..915d2f3 100644
 --- a/artg4tk/pluginActions/general/CMakeLists.txt
 +++ b/artg4tk/pluginActions/general/CMakeLists.txt
-@@ -9,8 +9,8 @@ art_make(
+@@ -3,14 +3,14 @@ art_make(
+     art_Framework_Services_Registry
+     artg4tk_actionBase
+     artg4tk_services_ActionHolder_service
+-    ${Boost_FILESYSTEM_LIBRARY}
+-    ${Boost_SYSTEM_LIBRARY}
++    ${Boost_filesystem_LIBRARY}
++    ${Boost_system_LIBRARY}
+     canvas
      cetlib_except
-     clhep
+-    clhep
++    CLHEP
      fhiclcpp
 -    ${G4EVENT}
 -    ${G4GLOBAL}
 -    ${G4PARTICLES}
 -    ${G4RUN}
-+    G4evenT
++    G4event
 +    G4global
 +    G4particles
 +    G4run
  )
+diff --git a/artg4tk/pluginActions/myKiller/CMakeLists.txt b/artg4tk/pluginActions/myKiller/CMakeLists.txt
+index c96905e..f78f7f8 100644
+--- a/artg4tk/pluginActions/myKiller/CMakeLists.txt
++++ b/artg4tk/pluginActions/myKiller/CMakeLists.txt
+@@ -3,11 +3,11 @@ art_make(
+     art_Framework_Services_Registry
+     artg4tk_actionBase
+     artg4tk_services_ActionHolder_service
+-    ${Boost_FILESYSTEM_LIBRARY}
+-    ${Boost_SYSTEM_LIBRARY}
++    ${Boost_filesystem_LIBRARY}
++    ${Boost_system_LIBRARY}
+     canvas
+     cetlib_except
+-    clhep
++    CLHEP
+     fhiclcpp
+     MF_MessageLogger
+ )
 diff --git a/artg4tk/pluginActions/myparticleGun/CMakeLists.txt b/artg4tk/pluginActions/myparticleGun/CMakeLists.txt
-index d6f4787..2a61d19 100644
+index d6f4787..f0ce8cd 100644
 --- a/artg4tk/pluginActions/myparticleGun/CMakeLists.txt
 +++ b/artg4tk/pluginActions/myparticleGun/CMakeLists.txt
-@@ -8,7 +8,7 @@ art_make(
+@@ -3,12 +3,12 @@ art_make(
+     art_Framework_Services_Registry
+     artg4tk_actionBase
+     artg4tk_services_ActionHolder_service
+-    ${Boost_FILESYSTEM_LIBRARY}
+-    ${Boost_SYSTEM_LIBRARY}
++    ${Boost_filesystem_LIBRARY}
++    ${Boost_system_LIBRARY}
      canvas
      cetlib_except
      fhiclcpp
@@ -545,12 +641,21 @@ index d6f4787..2a61d19 100644
      MF_MessageLogger
  )
 diff --git a/artg4tk/pluginActions/physicsList/CMakeLists.txt b/artg4tk/pluginActions/physicsList/CMakeLists.txt
-index 20de73b..77c8c48 100644
+index 20de73b..7125187 100644
 --- a/artg4tk/pluginActions/physicsList/CMakeLists.txt
 +++ b/artg4tk/pluginActions/physicsList/CMakeLists.txt
-@@ -8,8 +8,8 @@ art_make(
+@@ -2,14 +2,14 @@ art_make(
+   SERVICE_LIBRARIES
+     art_Framework_Services_Registry
+     artg4tk_services_PhysicsListHolder_service
+-    ${Boost_FILESYSTEM_LIBRARY}
+-    ${Boost_SYSTEM_LIBRARY}
++    ${Boost_filesystem_LIBRARY}
++    ${Boost_system_LIBRARY}
+     canvas
      cetlib_except
-     clhep
+-    clhep
++    CLHEP
      fhiclcpp
 -    ${G4PHYSICSLISTS}
 -    ${G4RUN}
@@ -560,13 +665,14 @@ index 20de73b..77c8c48 100644
  
  install_headers()
 diff --git a/artg4tk/pluginDetectors/gdml/CMakeLists.txt b/artg4tk/pluginDetectors/gdml/CMakeLists.txt
-index 4dfc27d..baaed65 100644
+index 4dfc27d..d9a05ce 100644
 --- a/artg4tk/pluginDetectors/gdml/CMakeLists.txt
 +++ b/artg4tk/pluginDetectors/gdml/CMakeLists.txt
-@@ -2,15 +2,15 @@ art_make(
+@@ -1,16 +1,15 @@
+ art_make(
    LIB_LIBRARIES
      artg4tk_DataProducts_G4DetectorHits
-     clhep
+-    clhep
 -    ${G4DIGITS_HITS}
 -    ${G4EVENT}
 -    ${G4GEOMETRY}
@@ -576,21 +682,24 @@ index 4dfc27d..baaed65 100644
 -    ${G4PERSISTENCY}
 -    ${G4TRACK}
 -    ${XERCESC}
++    CLHEP
 +    G4digits_hits
-+    G4evenT
++    G4event
 +    G4geometry
 +    G4global
 +    G4graphics_reps
 +    G4particles
 +    G4persistency
 +    G4track
-+    xerces_c
    SERVICE_LIBRARIES
      art_Framework_Core
      art_Framework_Principal
-@@ -25,13 +25,13 @@ art_make(
+@@ -23,15 +22,14 @@ art_make(
+     ${Boost_SYSTEM_LIBRARY}
+     canvas
      cetlib_except
-     clhep
+-    clhep
++    CLHEP
      fhiclcpp
 -    ${G4DIGITS_HITS}
 -    ${G4GEOMETRY}
@@ -604,18 +713,33 @@ index 4dfc27d..baaed65 100644
 +    G4persistency
      MF_MessageLogger
 -    ${XERCESC}
-+    xerces_c
  )
  
  install_headers()
+diff --git a/artg4tk/services/CMakeLists.txt b/artg4tk/services/CMakeLists.txt
+index 28e6f83..c900eed 100644
+--- a/artg4tk/services/CMakeLists.txt
++++ b/artg4tk/services/CMakeLists.txt
+@@ -2,8 +2,8 @@ art_make(
+   SERVICE_LIBRARIES
+     art_Framework_Core
+     art_Persistency_Provenance
+-    ${Boost_FILESYSTEM_LIBRARY}
+-    ${Boost_SYSTEM_LIBRARY}
++    ${Boost_filesystem_LIBRARY}
++    ${Boost_system_LIBRARY}
+     canvas
+     cetlib_except
+     fhiclcpp
 diff --git a/artg4tk/util/CMakeLists.txt b/artg4tk/util/CMakeLists.txt
-index 96433aa..65d6cef 100644
+index 96433aa..f5e0695 100644
 --- a/artg4tk/util/CMakeLists.txt
 +++ b/artg4tk/util/CMakeLists.txt
 @@ -1,6 +1,7 @@
  art_make(
    LIB_LIBRARIES
-     ${G4GRAPHICS_REPS}
+-    ${G4GRAPHICS_REPS}
++    G4graphics_reps
 +    ${Geant4_LIBRARIES}
      cetlib_except
  )
