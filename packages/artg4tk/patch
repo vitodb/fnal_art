@@ -758,6 +758,13 @@ index 96433aa..f5e0695 100644
      cetlib_except
  )
  
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..3fa02ca
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1 @@
++cet_cmake_config()
 diff --git a/examples/CMakeLists.txt b/examples/CMakeLists.txt
 index dd654d5..f6df0ed 100644
 --- a/examples/CMakeLists.txt
