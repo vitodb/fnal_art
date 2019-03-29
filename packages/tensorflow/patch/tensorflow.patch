@@ -1,0 +1,131 @@
+diff -Naur old/tensorflow-1.12.0/tensorflow/contrib/makefile/compile_linux_protobuf.sh new/tensorflow-1.12.0/tensorflow/contrib/makefile/compile_linux_protobuf.sh
+--- old/tensorflow-1.12.0/tensorflow/contrib/makefile/compile_linux_protobuf.sh	2018-11-02 01:35:10.000000000 +0000
++++ new/tensorflow-1.12.0/tensorflow/contrib/makefile/compile_linux_protobuf.sh	2019-03-21 21:17:17.871389914 +0000
+@@ -47,7 +47,7 @@
+ 
+ make clean
+ 
+-make -j"${JOB_COUNT}"
++env CC=gcc CXX=g++ FC=gfortran make -j"${JOB_COUNT}"
+ if [ $? -ne 0 ]
+ then
+   echo "make command failed."
+diff -Naur old/tensorflow-1.12.0/tensorflow/contrib/makefile/compile_nsync.sh new/tensorflow-1.12.0/tensorflow/contrib/makefile/compile_nsync.sh
+--- old/tensorflow-1.12.0/tensorflow/contrib/makefile/compile_nsync.sh	2018-11-02 01:35:10.000000000 +0000
++++ new/tensorflow-1.12.0/tensorflow/contrib/makefile/compile_nsync.sh	2019-03-19 15:09:04.505391858 +0000
+@@ -107,7 +107,8 @@
+         # Get Makefile for target.
+         case "$target_platform" in
+         linux)  makefile='
+-                        CC=${CC_PREFIX} g++
++                        CXX=g++ -fPIC
++                        CC=${CC_PREFIX} g++ -fPIC
+                         PLATFORM_CPPFLAGS=-DNSYNC_USE_CPP11_TIMEPOINT -DNSYNC_ATOMIC_CPP11 \
+                                           -I../../platform/c++11.futex \
+                                           -I../../platform/c++11 -I../../platform/gcc \
+diff -Naur old/tensorflow-1.12.0/tensorflow/contrib/makefile/Makefile new/tensorflow-1.12.0/tensorflow/contrib/makefile/Makefile
+--- old/tensorflow-1.12.0/tensorflow/contrib/makefile/Makefile	2018-11-02 01:35:10.000000000 +0000
++++ new/tensorflow-1.12.0/tensorflow/contrib/makefile/Makefile	2019-03-21 21:17:17.871389914 +0000
+@@ -74,12 +74,12 @@
+ 
+ # Settings for the host compiler.
+ HOST_CXX := $(CC_PREFIX) gcc
+-HOST_CXXFLAGS := --std=c++11
++HOST_CXXFLAGS := --std=c++14
+ HOST_LDOPTS :=
+ ifeq ($(HAS_GEN_HOST_PROTOC),true)
+ 	HOST_LDOPTS += -L$(MAKEFILE_DIR)/gen/protobuf-host/lib
+ endif
+-HOST_LDOPTS += -L/usr/local/lib
++##HOST_LDOPTS += -L/usr/local/lib
+ 
+ HOST_INCLUDES := \
+ -I. \
+@@ -97,7 +97,7 @@
+ endif
+ # This is at the end so any globally-installed frameworks like protobuf don't
+ # override local versions in the source tree.
+-HOST_INCLUDES += -I/usr/local/include
++##HOST_INCLUDES += -I/usr/local/include
+ 
+ HOST_LIBS := \
+ $(HOST_NSYNC_LIB) \
+@@ -182,12 +182,12 @@
+ OPTFLAGS := -O2
+ 
+ ifneq ($(TARGET),ANDROID)
+-  OPTFLAGS += -march=native
++  OPTFLAGS += -march=core2
+ endif
+ 
+-CXXFLAGS := --std=c++11 -DIS_SLIM_BUILD -fno-exceptions -DNDEBUG $(OPTFLAGS)
+-LDFLAGS := \
+--L/usr/local/lib
++CXXFLAGS := --std=c++14 -DIS_SLIM_BUILD -fno-exceptions -DNDEBUG $(OPTFLAGS)
++##LDFLAGS := \
++##-L/usr/local/lib
+ DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
+ 
+ INCLUDES := \
+@@ -206,7 +206,7 @@
+ endif
+ # This is at the end so any globally-installed frameworks like protobuf don't
+ # override local versions in the source tree.
+-INCLUDES += -I/usr/local/include
++##INCLUDES += -I/usr/local/include
+ 
+ LIBS := \
+ $(TARGET_NSYNC_LIB) \
+@@ -223,6 +223,13 @@
+ 
+ $(info PROTOC = "$(PROTOC)")
+ $(info CC_PREFIX = "$(CC_PREFIX)")
++$(info HOST_CXX = "$(HOST_CXX)")
++$(info HOST_CXXFLAGS = "$(HOST_CXXFLAGS)")
++$(info CXXFLAGS = "$(CXXFLAGS)")
++
++#save LD_LIBRARY_PATH for later use
++MY_LIBRARY_PATH:=$(LD_LIBRARY_PATH)
++$(info MY_LIBRARY_PATH = "$(MY_LIBRARY_PATH)")
+ 
+ PROTOCFLAGS :=
+ AR := ar
+@@ -241,12 +248,13 @@
+ ifeq ($(TARGET),LINUX)
+ ifeq ($(HAS_GEN_HOST_PROTOC),true)
+ 	LIBFLAGS += -L$(MAKEFILE_DIR)/gen/protobuf-host/lib
+-	export LD_LIBRARY_PATH=$(MAKEFILE_DIR)/gen/protobuf-host/lib
++	export LD_LIBRARY_PATH=$(MAKEFILE_DIR)/gen/protobuf-host/lib:$(MY_LIBRARY_PATH)
+ endif
+ 	CXXFLAGS += -fPIC
+ 	LIBFLAGS += -Wl,--allow-multiple-definition -Wl,--whole-archive
+ 	LDFLAGS := -Wl,--no-whole-archive
+ endif
++$(info LD_LIBRARY_PATH = "$(LD_LIBRARY_PATH)")
+ # If we're on Linux, also link in the dl library.
+ ifeq ($(TARGET),LINUX)
+ 	LIBS += -ldl -lpthread
+diff -Naur old/tensorflow-1.12.0/tensorflow/contrib/makefile/sub_makefiles/so/Makefile.in new/tensorflow-1.12.0/tensorflow/contrib/makefile/sub_makefiles/so/Makefile.in
+--- old/tensorflow-1.12.0/tensorflow/contrib/makefile/sub_makefiles/so/Makefile.in	2018-11-02 01:35:10.000000000 +0000
++++ new/tensorflow-1.12.0/tensorflow/contrib/makefile/sub_makefiles/so/Makefile.in	2019-03-21 21:17:17.871389914 +0000
+@@ -21,7 +21,7 @@
+ # $(pwd)/tensorflow/contrib/makefile/sub_makefiles/so/Makefile.in \
+ # (optional: NDK_ROOT=<ndk_root>) tensorflow-core.so
+ 
+-SO_NAME := tensorflow-core.so
++SO_NAME := libtensorflow-core.so
+ SO_PATH := $(LIBDIR)$(SO_NAME)
+ 
+ $(SO_PATH): $(LIB_OBJS)
+diff -Naur old/tensorflow-1.12.0/tensorflow/core/platform/default/mutex.h new/tensorflow-1.12.0/tensorflow/core/platform/default/mutex.h
+--- old/tensorflow-1.12.0/tensorflow/core/platform/default/mutex.h	2018-11-02 01:35:10.000000000 +0000
++++ new/tensorflow-1.12.0/tensorflow/core/platform/default/mutex.h	2019-03-14 19:18:26.000000000 +0000
+@@ -23,6 +23,8 @@
+ #include <condition_variable>
+ #include <mutex>
+ #include "tensorflow/core/platform/thread_annotations.h"
++#include "tensorflow/contrib/makefile/downloads/nsync/public/nsync_cv.h"
++#include "tensorflow/contrib/makefile/downloads/nsync/public/nsync_mu.h"
+ 
+ namespace tensorflow {
+ 
