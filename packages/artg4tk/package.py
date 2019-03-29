@@ -12,19 +12,20 @@ class Artg4tk(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
     url      = "http://cdcvs.fnal.gov/projects/artg4tk/"
 
-    version('9.02.01p', git = url, commit='27b106c1b0ee1c0fde1da7a5018d10523dc0d8cb')
+    version('MVP1a', git = url, branch = 'feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-    patch('patch')
 
     depends_on('cetmodules', type='build')
     depends_on('art-root-io')
     depends_on('canvas-root-io')
     depends_on('geant4')
+    depends_on('root')
+    depends_on('boost')
  
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
