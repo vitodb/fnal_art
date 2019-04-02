@@ -29,26 +29,11 @@ class Lardata(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    depends_on('postgresql')
-    depends_on('range-v3')
     depends_on('nutools')
     depends_on('larcore')
-    depends_on('larcorealg')
-    depends_on('larcoreobj')
     depends_on('lardataobj')
     depends_on('lardataalg')
-    depends_on('clhep')
-    depends_on('root+python')
-    depends_on('boost')
-    depends_on('canvas')
-    depends_on('cetlib')
-    depends_on('cetlib-except')
-    depends_on('fhicl-cpp')
-    depends_on('hep-concurrency')
-    depends_on('messagefacility')
-    depends_on('tbb')
-    depends_on('canvas-root-io')
-    depends_on('art')
+    depends_on('range-v3')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):

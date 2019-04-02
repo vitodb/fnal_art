@@ -29,13 +29,6 @@ class Larana(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    depends_on('tbb')
-    depends_on('clhep')
-    depends_on('root')
-    depends_on('geant4')
-    depends_on('boost')
-    depends_on('art')
-    depends_on('canvas-root-io')
     depends_on('larreco')
     depends_on('cetmodules', type='build')
 

@@ -22,12 +22,6 @@ from the ifdhc package."""
             description='Use the specified C++ standard when building.')
 
     depends_on('art')
-    depends_on('canvas-root-io')
-    depends_on('root')
-    depends_on('fhicl-cpp')
-    depends_on('cetlib')
-    depends_on('cetlib-except')
-    depends_on('messagefacility')
     depends_on('ifdhc')
     depends_on('ifbeam')
     depends_on('nucondb')

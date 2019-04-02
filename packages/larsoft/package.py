@@ -6,6 +6,15 @@
 from spack import *
 
 
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
+
+
 class Larsoft(CMakePackage):
     """Larsoft"""
 
@@ -38,6 +47,7 @@ class Larsoft(CMakePackage):
                ]
         return args
 
+
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('LARSOFT_INC',self.prefix.include)
         spack_env.set('LARSOFT_LIB', self.prefix.lib)
@@ -53,3 +63,4 @@ class Larsoft(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+        sanitize_environments(spack_env, run_env)

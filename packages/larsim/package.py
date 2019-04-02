@@ -29,20 +29,13 @@ class Larsim(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    depends_on('larsoft-data')
+    depends_on('larevt')
     depends_on('marley')
     depends_on('genie')
     depends_on('ifdhc')
-    depends_on('boost')
-    depends_on('geant4')
     depends_on('xerces-c')
     depends_on('libxml2')
-    depends_on('root')
-    depends_on('canvas-root-io')
-    depends_on('art-root-io')
-    depends_on('art')
-    depends_on('larevt')
-    depends_on('larsoft-data')
-    depends_on('nutools')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
