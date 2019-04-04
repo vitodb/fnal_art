@@ -20,7 +20,7 @@ class CanvasRootIo(CMakePackage):
     """A Root I/O library for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/canvas_root_io'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/canvas_root_io'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)

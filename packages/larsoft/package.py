@@ -19,9 +19,9 @@ class Larsoft(CMakePackage):
     """Larsoft"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoft"
-    url      = "http://cdcvs.fnal.gov/projects/larsoft"
+    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larsoft"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larsoft', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larsoft', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',

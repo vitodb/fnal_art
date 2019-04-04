@@ -19,9 +19,9 @@ class Larreco(CMakePackage):
     """Larreco"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larreco"
-    url      = "http://cdcvs.fnal.gov/projects/larreco"
+    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larreco"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larreco', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larreco', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',

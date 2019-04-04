@@ -11,7 +11,7 @@ class IfdhArt(CMakePackage):
 from the ifdhc package."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
+    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/ifdh-art/ifdh_art.git"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
 

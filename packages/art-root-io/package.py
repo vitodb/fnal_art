@@ -21,7 +21,7 @@ class ArtRootIo(CMakePackage):
     """
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/art_root_io'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/art_root_io'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)

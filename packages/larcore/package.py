@@ -18,9 +18,9 @@ class Larcore(CMakePackage):
     """Larcore"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcore"
-    url      = "http://cdcvs.fnal.gov/projects/larcore"
+    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larcore"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcore', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larcore', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',

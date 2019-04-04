@@ -20,7 +20,7 @@ class Messagefacility(CMakePackage):
     """A configurable message logging facility for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/messagefacility'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/messagefacility'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)

@@ -20,7 +20,7 @@ class Canvas(CMakePackage):
     """The underpinnings for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/canvas'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/canvas'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)

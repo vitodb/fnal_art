@@ -19,9 +19,9 @@ class Lareventdisplay(CMakePackage):
     """Lareventdisplay"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lareventdisplay"
-    url      = "http://cdcvs.fnal.gov/projects/lareventdisplay"
+    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/lareventdisplay"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/lareventdisplay', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/lareventdisplay', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',

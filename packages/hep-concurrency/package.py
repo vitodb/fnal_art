@@ -22,7 +22,7 @@ class HepConcurrency(CMakePackage):
     """A concurrency library for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/hep_concurrency'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/hep_concurrency'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)

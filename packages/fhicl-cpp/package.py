@@ -22,7 +22,7 @@ class FhiclCpp(CMakePackage):
     """
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/fhicl-cpp'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/fhicl-cpp'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)

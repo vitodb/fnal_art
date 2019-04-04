@@ -15,7 +15,7 @@ class ArtdaqCore(CMakePackage):
  format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/artdaq-core/"
+    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/artdaq-core/"
 
     version('develop', git = url, branch="develop")
 

@@ -19,7 +19,7 @@ class CetlibExcept(CMakePackage):
     """Exception libraries for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/cetlib_except'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/cetlib_except'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)

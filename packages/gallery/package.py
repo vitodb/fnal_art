@@ -22,7 +22,7 @@ class Gallery(CMakePackage):
     """
 
     homepage='http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/gallery'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/gallery'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)

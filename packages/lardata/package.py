@@ -19,9 +19,9 @@ class Lardata(CMakePackage):
     """Lardata"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardata"
-    url      = "http://cdcvs.fnal.gov/projects/lardata"
+    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/lardata"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/lardata', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/lardata', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',

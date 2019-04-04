@@ -21,7 +21,7 @@ class Critic(CMakePackage):
     """
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/critic'
+    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/critic'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)
