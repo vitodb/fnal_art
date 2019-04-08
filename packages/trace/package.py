@@ -11,7 +11,7 @@ class Trace(CMakePackage):
     """TRACE is yet another logging (time stamp) tool, but it allows 
 fast and/or slow logging - dynamically (you choose)."""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/trace/wiki"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/trace/wiki"
     url      = "http://cdcvs.fnal.gov/projects/trace-git/"
 
     parallel = False 

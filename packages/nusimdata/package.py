@@ -18,10 +18,10 @@ def sanitize_environments(*args):
 class Nusimdata(CMakePackage):
     """Nusimdata"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/nusimdata"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/nusimdata"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/nusimdata"
+    url      = "http://cdcvs.fnal.gov/projects/nusimdata"
 
-    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/nusimdata', branch='feature/Spack-MVP1a', preferred=True)
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/nusimdata', branch='feature/Spack-MVP1a', preferred=True)
 
     variant('cxxstd',
             default='17',

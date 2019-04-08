@@ -10,8 +10,8 @@ class IfdhArt(CMakePackage):
     """The ifdh_art package provides ART service access to the libraries 
 from the ifdhc package."""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/ifdh-art/ifdh_art.git"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
+    url      = "http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
 

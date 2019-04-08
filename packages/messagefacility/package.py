@@ -20,7 +20,7 @@ class Messagefacility(CMakePackage):
     """A configurable message logging facility for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/messagefacility'
+    git_base = 'http://cdcvs.fnal.gov/projects/messagefacility'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)
@@ -55,7 +55,7 @@ class Messagefacility(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

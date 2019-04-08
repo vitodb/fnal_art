@@ -9,7 +9,7 @@ from spack import *
 class Ifbeam(Package):
     """Data handling client code for intensity frontier experiments"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/ifbeam"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/ifbeam"
     url      = "http://cdcvs.fnal.gov/projects/ifdhc-ifbeam"
 
     version('2.2.13', git=url, tag='v2_2_13')

@@ -8,7 +8,7 @@ from spack import *
 class Ifdhc(Package):
     """Data handling client code for intensity frontier experiments"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdhc"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/ifdhc"
     url      = "http://cdcvs.fnal.gov/projects/ifdhc/ifdhc.git"
 
     version('2.3.10', git='http://cdcvs.fnal.gov/projects/ifdhc/ifdhc.git', tag='v2_3_10')

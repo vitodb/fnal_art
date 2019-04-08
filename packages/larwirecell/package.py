@@ -18,10 +18,10 @@ def sanitize_environments(*args):
 class Larwirecell(CMakePackage):
     """Larwirecell"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/larwirecell"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larwirecell"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/larwirecell"
+    url      = "http://cdcvs.fnal.gov/projects/larwirecell"
 
-    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larwirecell', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larwirecell', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',

@@ -22,7 +22,7 @@ class HepConcurrency(CMakePackage):
     """A concurrency library for the art suite."""
 
     homepage = 'http://art.fnal.gov/'
-    git_base = 'ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/hep_concurrency'
+    git_base = 'http://cdcvs.fnal.gov/projects/hep_concurrency'
 
     version('MVP', branch='feature/for_spack',
             git=git_base, preferred=True)
@@ -51,7 +51,7 @@ class HepConcurrency(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

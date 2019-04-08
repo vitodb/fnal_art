@@ -18,10 +18,10 @@ def sanitize_environments(*args):
 class Larcoreobj(CMakePackage):
     """Larcoreobj"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/larcoreobj"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larcoreobj"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/larcoreobj"
+    url      = "http://cdcvs.fnal.gov/projects/larcoreobj"
 
-    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larcoreobj', branch='feature/Spack-MVP1a', preferred=True)
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcoreobj', branch='feature/Spack-MVP1a', preferred=True)
 
     variant('cxxstd',
             default='17',

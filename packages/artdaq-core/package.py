@@ -14,8 +14,8 @@ class ArtdaqCore(CMakePackage):
  and art module configuration, and the writing of event data to disk in ROOT
  format."""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/artdaq-core/"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
+    url      = "http://cdcvs.fnal.gov/projects/artdaq-core/"
 
     version('develop', git = url, branch="develop")
 

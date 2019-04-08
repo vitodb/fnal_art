@@ -9,8 +9,8 @@ from spack import *
 class Artg4tk(CMakePackage):
     """Artg4tk """
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/artg4tk/"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
+    url      = "http://cdcvs.fnal.gov/projects/artg4tk/"
 
     version('MVP1a', git = url, branch = 'feature/Spack-MVP1a')
 

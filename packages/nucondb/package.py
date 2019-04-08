@@ -10,7 +10,7 @@ from spack import *
 class Nucondb(Package):
     """Data handling client code for intensity frontier experiments"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/nucondb"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/nucondb"
     url      = "http://cdcvs.fnal.gov/projects/ifdhc-nucondb"
 
     version('2.2.10', git=url, tag='v2_2_10')

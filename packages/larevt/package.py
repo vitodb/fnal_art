@@ -18,10 +18,10 @@ def sanitize_environments(*args):
 class Larevt(CMakePackage):
     """Larevt"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/larevt"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larevt"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/larevt"
+    url      = "http://cdcvs.fnal.gov/projects/larevt"
 
-    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larevt', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larevt', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',

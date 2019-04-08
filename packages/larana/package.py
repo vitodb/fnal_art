@@ -18,10 +18,10 @@ def sanitize_environments(*args):
 class Larana(CMakePackage):
     """Larana"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/larana"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larana"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/larana"
+    url      = "http://cdcvs.fnal.gov/projects/larana"
 
-    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larana', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larana', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',

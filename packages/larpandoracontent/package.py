@@ -9,10 +9,10 @@ from spack import *
 class Larpandoracontent(CMakePackage):
     """Larpandoracontent"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larpandoracontent"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
+    url      = "http://cdcvs.fnal.gov/projects/larpandoracontent"
 
-    version('3.14.05', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larpandoracontent', branch='v03_14_05')
+    version('3.14.05', git='http://cdcvs.fnal.gov/projects/larpandoracontent', branch='v03_14_05')
 
     variant('cxxstd',
             default='17',

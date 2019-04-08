@@ -18,10 +18,10 @@ def sanitize_environments(*args):
 class Larpandora(CMakePackage):
     """Larpandora"""
 
-    homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandora"
-    url      = "ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larpandora"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandora"
+    url      = "http://cdcvs.fnal.gov/projects/larpandora"
 
-    version('MVP1a', git='ssh://p-larsoft@cdcvs.fnal.gov/cvs/projects/larpandora', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larpandora', branch='feature/Spack-MVP1a')
 
     variant('cxxstd',
             default='17',
