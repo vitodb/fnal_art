@@ -15,6 +15,7 @@ class Cetmodules(CMakePackage):
 
     version('develop', branch='develop', git=homepage)
     version('master', branch='master', git=homepage)
+    version('1.00.00', sha256='67438bb1ee9acdaadb6e245ff670463c4603c3283c69b3c9d1a04d6ee9a3fd16', extension='tbz2')
     version('0.07.00', '60fb6f9ff26605ea4c0648fa43d0a516', extension='tbz2')
 
     depends_on('cmake@3.4:', type='build')
