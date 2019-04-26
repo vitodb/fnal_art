@@ -38,7 +38,7 @@ class Gallery(CMakePackage):
     # Build-only dependencies.
     depends_on('cmake@3.4:', type='build', when='@MVP')
     depends_on('cmake@3.11:', type='build', when='@MVP1a')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@1.01.01:', type='build')
 
     # Build and link dependencies.
     depends_on('canvas-root-io')
