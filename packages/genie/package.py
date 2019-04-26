@@ -67,23 +67,31 @@ global analysis of neutrino scattering data.
 
     def setup_environment(self, spack_env, run_env):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
-        spack_env.set('GENIE',self.stage.source_path)
         spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
-        spack_env.set('GENIE_INC', '{0}/src'.format(self.stage.source_path))
-        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/src'.format(self.stage.source_path))
-        spack_env.append_path('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
-        spack_env.append_path('PATH', '{0}/bin'.format(self.stage.source_path))
+#        spack_env.set('GENIE_INC', '{0}/src'.format(self.stage.source_path))
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
+            spack_env.prepend_path('ROOT_INCLUDE_PATH',
+                                   str(self.spec[d.name].prefix.include))
+            run_env.prepend_path('ROOT_INCLUDE_PATH',
+                                 str(self.spec[d.name].prefix.include))
+#        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/src'.format(self.stage.source_path))
+#        spack_env.append_path('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
+#        spack_env.append_path('PATH', '{0}/bin'.format(self.stage.source_path))
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
         spack_env.set('GENIE',self.prefix)
         spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
-        spack_env.set('GENIE_DIR', '{0}'.format(self.prefix))
-        spack_env.set('GENIE_INC', '{0}'.format(self.prefix.include))
-        spack_env.set('GENIE_LIB', '{0}'.format(self.prefix.lib))
+        spack_env.set('GENIE_DIR', self.prefix)
+        spack_env.set('GENIE_INC', self.prefix.include)
+        spack_env.set('GENIE_LIB', self.prefix.lib)
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
         spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/GENIE'.format(self.prefix.include))
-        spack_env.append_path('LD_LIBRARY_PATH', '{0}'.format(self.prefix.lib))
-        spack_env.append_path('PATH', '{0}'.format(self.prefix.bin))
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        spack_env.append_path('LD_LIBRARY_PATH', self.prefix.lib)
 
     @run_before('install')
     def create_ver_text(self):
@@ -117,20 +125,9 @@ global analysis of neutrino scattering data.
 
         configure=Executable('./configure')
         configure.add_default_env('GENIE',self.stage.source_path)
-        configure.add_default_env('ROOTSYS',self.spec['root'].prefix)
+#        configure.add_default_env('ROOTSYS',self.spec['root'].prefix)
         configure(*args)
         make.add_default_env('GENIE',self.stage.source_path)
         make.add_default_env('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
         make('GOPT_WITH_CXX_USERDEF_FLAGS={0}'.format(os.environ['CXXFLAGS']))
         make('install')
-
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.append_path('ROOT_INCLUDE_PATH', '{0}'
-                              .format( self.prefix.include ))
-        spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
-        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        # Ensure we can find plugin libraries.
-        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
