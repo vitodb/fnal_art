@@ -23,6 +23,3 @@ class Marley(Package):
         with working_dir('build'):
             make('CXXFLAGS=-std=c++17 -I../include')
             make('prefix={0}'.format(prefix), 'install')
-
-    def setup_environment(self, spack_env, run_env):
-        spack_env.prepend_path('ROOT_INCLUDE_PATH', '{0}/include'.format(self.stage.source_path))
