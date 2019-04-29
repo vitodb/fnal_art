@@ -21,7 +21,7 @@ class Nutools(CMakePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/nutools/wiki"
     url      = "http://cdcvs.fnal.gov/projects/nutools/"
 
-    version('MVP1a', git="http://cdcvs.fnal.gov/projects/nutools", branch='feature/Spack-MVP1a')
+    version('MVP1a', git="http://cdcvs.fnal.gov/projects/nutools", branch='feature/MVP1a')
 
     variant('cxxstd',
             default='17',

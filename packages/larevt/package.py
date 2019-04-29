@@ -21,7 +21,7 @@ class Larevt(CMakePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larevt"
     url      = "http://cdcvs.fnal.gov/projects/larevt"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larevt', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larevt', branch='feature/MVP1a')
 
     variant('cxxstd',
             default='17',

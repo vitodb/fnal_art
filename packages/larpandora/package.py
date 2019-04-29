@@ -21,7 +21,7 @@ class Larpandora(CMakePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandora"
     url      = "http://cdcvs.fnal.gov/projects/larpandora"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larpandora', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larpandora', branch='feature/MVP1a')
 
     variant('cxxstd',
             default='17',

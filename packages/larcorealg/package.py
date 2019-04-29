@@ -21,7 +21,7 @@ class Larcorealg(CMakePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larcorealg"
     url      = "http://cdcvs.fnal.gov/projects/larcorealg"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcorealg', branch='feature/Spack-MVP1a', preferred=True)
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcorealg', branch='feature/MVP1a', preferred=True)
 
     variant('cxxstd',
             default='17',

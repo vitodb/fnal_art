@@ -21,7 +21,7 @@ class Larg4(CMakePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larg4"
     url      = "http://cdcvs.fnal.gov/projects/larg4"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larg4', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larg4', branch='feature/MVP1a')
 
     variant('cxxstd',
             default='17',

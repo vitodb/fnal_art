@@ -21,7 +21,7 @@ class Larwirecell(CMakePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larwirecell"
     url      = "http://cdcvs.fnal.gov/projects/larwirecell"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larwirecell', branch='feature/Spack-MVP1a')
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larwirecell', branch='feature/MVP1a')
 
     variant('cxxstd',
             default='17',

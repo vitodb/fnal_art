@@ -21,7 +21,7 @@ class Larcoreobj(CMakePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larcoreobj"
     url      = "http://cdcvs.fnal.gov/projects/larcoreobj"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcoreobj', branch='feature/Spack-MVP1a', preferred=True)
+    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcoreobj', branch='feature/MVP1a', preferred=True)
 
     variant('cxxstd',
             default='17',
