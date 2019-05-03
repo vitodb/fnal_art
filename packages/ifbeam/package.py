@@ -10,9 +10,13 @@ class Ifbeam(Package):
     """Data handling client code for intensity frontier experiments"""
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/ifbeam"
-    url      = "http://cdcvs.fnal.gov/projects/ifdhc-ifbeam"
 
-    version('2.2.13', git=url, tag='v2_2_13')
+    version('2.3.0',
+            sha256='4b6a29443b631957ca2a7712b5c577620c6543e542ee9c77d246cef1e10f7324',
+            extension='tbz2')
+    version('2.2.13',
+            sha256='b341ffc73421b7187b06c205f9feaccf117bdba06509e9b1b8f491fdc182029c',
+            extension='tbz2')
 
     parallel = False
 
@@ -27,38 +31,29 @@ class Ifbeam(Package):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    def set_cxxstdflag(self):
-        cxxstd = self.spec.variants['cxxstd'].value
-        cxxstdflag = ''
-        if cxxstd == '98':
-            cxxstdflag = self.compiler.cxx98_flag
-        elif cxxstd == '11':
-            cxxstdflag = self.compiler.cxx11_flag
-        elif cxxstd == '14':
-            cxxstdflag = self.compiler.cxx14_flag
-        elif cxxstd == '17':
-            cxxstdflag = self.compiler.cxx17_flag
-        elif cxxstd == 'default':
-            pass
-        else:
-            # The user has selected a (new?) legal value that we've
-            # forgotten to deal with here.
-            tty.die(
-                "INTERNAL ERROR: cannot accommodate unexpected variant ",
-                "cxxstd={0}".format(spec.variants['cxxstd'].value))
-        return cxxstdflag
+    def url_for_version(self, version):
+        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format('ifdhc-' + self.name, version.underscored)
 
     def install(self, spec, prefix):
         with working_dir(self.stage.source_path+'/src'):
             makefile = FileFilter('Makefile')
             makefile.filter('gcc', '$(CC)')
             makefile.filter('g\+\+', '$(CXX)')
-            make.add_default_env('LIBWDA_FQ_DIR', '{0}'.format(self.spec['libwda'].prefix))
-            make.add_default_env('LIBWDA_LIB', '{0}/lib'.format(self.spec['libwda'].prefix))
-            make.add_default_env('IFDHC_FQ_DIR', '{0}'.format(self.spec['ifdhc'].prefix))
-            make.add_default_env('IFDHC_LIB', '{0}/lib'.format(self.spec['ifdhc'].prefix))
-            make.add_default_env('IFDHC_INC', '{0}/inc'.format(self.spec['ifdhc'].prefix))
-            make.add_default_env('ARCH', self.set_cxxstdflag())
+            make.add_default_env('LIBWDA_FQ_DIR',
+                                 '{0}'.format(self.spec['libwda'].prefix))
+            make.add_default_env('LIBWDA_LIB',
+                                 '{0}/lib'.format(self.spec['libwda'].prefix))
+            make.add_default_env('IFDHC_FQ_DIR',
+                                 '{0}'.format(self.spec['ifdhc'].prefix))
+            make.add_default_env('IFDHC_LIB',
+                                 '{0}/lib'.format(self.spec['ifdhc'].prefix))
+            make.add_default_env('IFDHC_INC',
+                                 '{0}/inc'.format(self.spec['ifdhc'].prefix))
+            cxxstd_flag\
+                = '' if self.spec.variants['cxxstd'].value == 'default' else \
+                'cxx{0}_flag'.format(self.spec.variants['cxxstd'].value)
+            make.add_default_env('ARCH', getattr(self.compiler, cxxstd_flag))
             make()
             make('DESTDIR=' + prefix, 'install')
 
