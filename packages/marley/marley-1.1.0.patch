@@ -1,0 +1,16 @@
+diff -Naur marley-1.1.0/build/Makefile marley-1.1.0/build/Makefile
+--- marley-1.1.0/build/Makefile	2019-03-19 14:33:18.000000000 -0500
++++ marley-1.1.0/build/Makefile	2019-03-19 14:42:01.732771963 -0500
+@@ -193,7 +193,6 @@
+ 	cp -r ../structure $(DESTDIR)$(datadir)/marley
+ 	cp -r ../examples $(DESTDIR)$(datadir)/marley
+ 	cp -r ../include/marley $(DESTDIR)$(incdir)
+-	ldconfig
+ 
+ uninstall:
+ 	$(RM) $(DESTDIR)$(bindir)/marley
+@@ -203,4 +202,3 @@
+ 	$(RM) $(DESTDIR)$(libdir)/marley_root_dict_rdict.pcm
+ 	$(RM) -r $(DESTDIR)$(datadir)/marley
+ 	$(RM) -r $(DESTDIR)$(incdir)/marley
+-	ldconfig
