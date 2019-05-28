@@ -24,11 +24,10 @@ class HepConcurrency(CMakePackage):
     homepage = 'http://art.fnal.gov/'
     git_base = 'http://cdcvs.fnal.gov/projects/hep_concurrency'
 
-    version('MVP', branch='feature/for_spack',
-            git=git_base, preferred=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
-
+    version('MVP', branch='feature/for_spack', git=git_base)
+    version('develop', branch='develop', git=git_base)
 
     variant('cxxstd',
             default='17',
@@ -51,8 +50,10 @@ class HepConcurrency(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
+        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{package}.{v}{version}.tbz2'
+        return url.format(package='hep_concurrency',
+                          v='v' if type(version.version[0]) == int else '',
+                          version=version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

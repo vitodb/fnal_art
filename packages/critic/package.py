@@ -23,10 +23,10 @@ class Critic(CMakePackage):
     homepage = 'http://art.fnal.gov/'
     git_base = 'http://cdcvs.fnal.gov/projects/critic'
 
-    version('MVP', branch='feature/for_spack',
-            git=git_base, preferred=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
+    version('MVP', branch='feature/for_spack', git=git_base)
+    version('develop', branch='develop', git=git_base)
 
     variant('cxxstd',
             default='17',
@@ -40,7 +40,7 @@ class Critic(CMakePackage):
     depends_on('cetmodules@1.01.01:', type='build')
 
     # Build and link dependencies.
-    depends_on('clhep', when='@MVP1a')
+    depends_on('clhep@2.4.1.0:', when='@MVP1a')
     depends_on('art')
     depends_on('art-root-io', when='@MVP1a')
     depends_on('boost')

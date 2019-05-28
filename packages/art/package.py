@@ -26,8 +26,8 @@ class Art(CMakePackage):
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack',
-            git=git_base)
+    version('MVP', branch='feature/for_spack', git=git_base)
+    version('develop', branch='develop', git=git_base)
 
     variant('cxxstd',
             default='17',

@@ -25,6 +25,7 @@ class ArtRootIo(CMakePackage):
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
+    version('develop', branch='develop', git=git_base)
 
     variant('cxxstd',
             default='17',

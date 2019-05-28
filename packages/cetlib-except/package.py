@@ -21,10 +21,10 @@ class CetlibExcept(CMakePackage):
     homepage = 'http://art.fnal.gov/'
     git_base = 'http://cdcvs.fnal.gov/projects/cetlib_except'
 
-    version('MVP', branch='feature/for_spack',
-            git=git_base, preferred=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
+    version('MVP', branch='feature/for_spack', git=git_base)
+    version('develop', branch='develop', git=git_base)
 
     variant('cxxstd',
             default='17',
