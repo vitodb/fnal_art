@@ -81,7 +81,6 @@ global analysis of neutrino scattering data.
 #        spack_env.append_path('PATH', '{0}/bin'.format(self.stage.source_path))
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
         spack_env.set('GENIE',self.prefix)
         spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         spack_env.set('GENIE_DIR', self.prefix)

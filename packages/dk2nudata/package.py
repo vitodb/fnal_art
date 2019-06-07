@@ -21,34 +21,8 @@ class Dk2nudata(CMakePackage):
     depends_on('libxml2')
     depends_on('log4cpp')
  
-    variant('cxxstd',
-            default='17',
-            values=('default', '98', '11', '14', '17'),
-            multi=False,
-            description='Use the specified C++ standard when building.')
-
     parallel = False
 
-    def set_cxxstdflag(self):
-        cxxstd = self.spec.variants['cxxstd'].value
-        cxxstdflag = ''
-        if cxxstd == '98':
-            cxxstdflag = self.compiler.cxx98_flag
-        elif cxxstd == '11':
-            cxxstdflag = self.compiler.cxx11_flag
-        elif cxxstd == '14':
-            cxxstdflag = self.compiler.cxx14_flag
-        elif cxxstd == '17':
-            cxxstdflag = self.compiler.cxx17_flag
-        elif cxxstd == 'default':
-            pass
-        else:
-            # The user has selected a (new?) legal value that we've
-            # forgotten to deal with here.
-            tty.die(
-                "INTERNAL ERROR: cannot accommodate unexpected variant ",
-                "cxxstd={0}".format(spec.variants['cxxstd'].value))
-        return cxxstdflag
 
     def cmake_args(self):
         prefix=self.spec.prefix

@@ -22,35 +22,8 @@ class Dk2nugenie(CMakePackage):
     depends_on('genie')
     depends_on('dk2nudata')
 
-    variant('cxxstd',
-            default='17',
-            values=('default', '98', '11', '14', '17'),
-            multi=False,
-            description='Use the specified C++ standard when building.')
-
     parallel = False
 
-    def set_cxxstdflag(self):
-        cxxstd = self.spec.variants['cxxstd'].value
-        cxxstdflag = ''
-        if cxxstd == '98':
-            cxxstdflag = self.compiler.cxx98_flag
-        elif cxxstd == '11':
-            cxxstdflag = self.compiler.cxx11_flag
-        elif cxxstd == '14':
-            cxxstdflag = self.compiler.cxx14_flag
-        elif cxxstd == '17':
-            cxxstdflag = self.compiler.cxx17_flag
-        elif cxxstd == 'default':
-            pass
-        else:
-            # The user has selected a (new?) legal value that we've
-            # forgotten to deal with here.
-            tty.die(
-                "INTERNAL ERROR: cannot accommodate unexpected variant ",
-                "cxxstd={0}".format(spec.variants['cxxstd'].value))
-        return cxxstdflag
-    
 
     def patch(self):
         patch('dk2nu.patch', when='^genie@3.00.00:', working_dir='v{0}'.format(self.version))
@@ -67,7 +40,8 @@ class Dk2nugenie(CMakePackage):
                 '-DGENIE=%s'%self.spec['genie'].prefix,
                 '-DGENIE_VERSION=%s'%self.spec['genie'].version,
                 '-DDK2NUDATA_DIR=%s'%self.spec['dk2nudata'].prefix.lib ,
-                '%s/dk2nu' % self.stage.source_path ]
+                '%s/dk2nu' % self.stage.source_path]
+
         return args
 
     def build(self, spec, prefix):
