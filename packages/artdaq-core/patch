@@ -59,14 +59,14 @@ index 50326e6..0e17382 100644
 +find_package( art REQUIRED)
 +find_package( canvas_root_io REQUIRED)
 +find_package( canvas REQUIRED)
-+find_package( cetlib REQUIRED )
-+find_package( clhep )
++find_package( cetlib REQUIRED)
++find_package( clhep REQUIRED)
 +find_package( fhiclcpp REQUIRED)
 +find_package( messagefacility REQUIRED )
 +find_package( sqlite )
-+find_package( tbb )
++find_package( tbb REQUIRED)
 +find_package( ROOT REQUIRED)
-+find_package( trace )
++find_package( trace REQUIRED)
 +
 +
 +string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "${MESSAGEFACILITY_VERSION}")
@@ -104,8 +104,7 @@ index 50326e6..0e17382 100644
  include(BasicPlugin)
  
  # testing
--add_subdirectory(test)
-+#add_subdirectory(test)
+ add_subdirectory(test)
  
  # source
  add_subdirectory(artdaq-core)

@@ -14,6 +14,10 @@ class Cetmodules(CMakePackage):
     homepage = 'http://cdcvs.fnal.gov/projects/cetmodules'
 
     version('develop', branch='develop', git=homepage)
+    version('1.02.03', sha256='04cf68a443e7701985e9e72fcc26e5fdfa46304b01c9295a4f0b526eeafa1b63', extension='tbz2')
+    version('1.02.02', sha256='b7bd22219afe34942d29287df4d864eb1a6114eed0ebf2c5d3912884d6c2594a', extension='tbz2')
+    version('1.02.01', sha256='6357771a5dd56dc25f0211d491d30cea6fe48114a18ef82e17f848a04d0cbc88', extension='tbz2')
+    version('1.02.00', sha256='1a72b77730efd5efff56218f950917c3c3b6b4f157d4b16c1d1bb4e40cbd760f', extension='tbz2')
     version('1.01.03', sha256='6f9168e7f638aa6e7b7798fac384a38f825518e7599e24daeaf0551b6dc3f0fd', extension='tbz2')
     version('1.01.02', sha256='dddc8992f011fec77d152990dc89ac1027b280bb31c3e5ac093b2945847d74c7', extension='tbz2')
     version('1.01.01', sha256='0b7e28d4c29c9941a6960609e8ab4aa33f90736ef1dc81fc7b1b520e99ee0ae7', extension='tbz2')
@@ -21,7 +25,8 @@ class Cetmodules(CMakePackage):
     version('1.00.00', sha256='67438bb1ee9acdaadb6e245ff670463c4603c3283c69b3c9d1a04d6ee9a3fd16', extension='tbz2')
     version('0.07.00', '60fb6f9ff26605ea4c0648fa43d0a516', extension='tbz2')
 
-    depends_on('cmake@3.4:', type='build')
+    depends_on('cmake@3.11:', type='build', when='@:1.01.99')
+    depends_on('cmake@3.12:', type='build', when='@1.02.00:')
 
     def url_for_version(self, version):
         url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'

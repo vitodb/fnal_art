@@ -34,7 +34,7 @@ class Larcore(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value),
+                format(self.spec.variants['cxxstd'].value)
                ]
         return args
 
@@ -70,8 +70,6 @@ class Larcore(CMakePackage):
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LARCORE_INC',self.prefix.include)
-        spack_env.set('LARCORE_LIB', self.prefix.lib)
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)

@@ -35,12 +35,7 @@ class Larevt(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value),
-                '-DLIBWDA_INC_DIR={0}'.
-                format(self.spec['libwda'].prefix.include),
-                '-DLIBWDA_LIB={0}'.
-                format(self.spec['libwda'].prefix.lib),
-               ]
+                format(self.spec.variants['cxxstd'].value)               ]
         return args
 
     def setup_environment(self, spack_env, run_env):
@@ -75,8 +70,6 @@ class Larevt(CMakePackage):
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LAREVT_INC',self.prefix.include)
-        spack_env.set('LAREVT_LIB', self.prefix.lib)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)

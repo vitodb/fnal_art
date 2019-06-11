@@ -34,7 +34,7 @@ class Larana(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value),
+                format(self.spec.variants['cxxstd'].value)
                ]
         return args
 

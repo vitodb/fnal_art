@@ -15,6 +15,12 @@ class Jsonnet(Package):
     version('0.12.0', sha256='9285f44f73a61fbfb61b3447a622e8aff0c61580c61c4a92f69d463ea7f1624a')
     version('0.11.2', sha256='c7c33f159a9391e90ab646b3b5fd671dab356d8563dc447ee824ecd77f4609f8')
 
+    variant('cxxstd',
+            default='17',
+            values=('11', '14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
     #depends_on('bazel', type='build')
 
     def install(self, spec, prefix):
@@ -32,3 +38,11 @@ class Jsonnet(Package):
         mkdirp(prefix.include)
         install("include/libjsonnet.h", prefix.include)
         install("include/libjsonnet++.h", prefix.include)
+
+    def setup_environment(self, spack_env, run_env):
+        for cflag in ('-O3', '-DNDEBUG', '-g', '-fno-omit-frame-pointer'):
+            spack_env.append_flags('CFLAGS_LOCAL', cflag)
+        cxxstd = self.spec.variants['cxxstd'].value
+        cxxstdflag = '' if cxxstd == 'default' else \
+                     getattr(self.compiler, 'cxx{0}_flag'.format(cxxstd))
+        spack_env.append_flags('CXXFLAGS_LOCAL', cxxstdflag)

@@ -39,7 +39,7 @@ class Larg4(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value),
+                format(self.spec.variants['cxxstd'].value)
                ]
         return args
 
@@ -75,8 +75,6 @@ class Larg4(CMakePackage):
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LARG4_INC',self.prefix.include)
-        spack_env.set('LARG4_LIB', self.prefix.lib)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)

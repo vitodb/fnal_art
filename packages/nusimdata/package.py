@@ -37,12 +37,7 @@ class Nusimdata(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value),
-                '-DDK2NUDATA_INC={0}'.
-                format(self.spec['dk2nudata'].prefix.include),
-                '-DDK2NUDATA_LIB={0}'.
-                format(self.spec['dk2nudata'].prefix.lib),
-               ]
+                format(self.spec.variants['cxxstd'].value)               ]
         return args
 
     def setup_environment(self, spack_env, run_env):
@@ -69,8 +64,6 @@ class Nusimdata(CMakePackage):
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('NUSIMDATA_INC',self.prefix.include)
-        spack_env.set('NUSIMDATA_LIB', self.prefix.lib)
         spack_env.append_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)

@@ -35,7 +35,3 @@ class Larpandoracontent(CMakePackage):
                 '-DPandoraMonitoring_DIR={0}/cmakemodules'.format(self.spec['pandora'].prefix),
                ]
         return args
-
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LARPANDORACONTENT_INC', self.prefix.include)
-        spack_env.set('LARPANDORACONTENT_LIB', self.prefix.lib)

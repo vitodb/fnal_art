@@ -55,31 +55,7 @@ class Nutools(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value),
-                '-DROOTSYS={0}'.
-                format(self.spec['root'].prefix),
-                '-DGENIE_VERSION=v{0}'.
-                format(self.spec['genie'].version.underscored),
-                '-DGENIE_INC={0}'.
-                format(self.spec['genie'].prefix.include),
-                '-DCRYHOME={0}/src'.
-                format(self.spec['cry'].prefix),
-                '-DLOG4CPP_INC={0}'.
-                format(self.spec['log4cpp'].prefix.include),
-                '-DIFDH_ART_INC={0}'.
-                format(self.spec['ifdh-art'].prefix.include),
-                '-DIFDHC_INC={0}/inc'.
-                format(self.spec['ifdhc'].prefix),
-                '-DDK2NUGENIE_INC={0}'.
-                format(self.spec['dk2nugenie'].prefix.include),
-                '-DDK2NUDATA_INC={0}'.
-                format(self.spec['dk2nudata'].prefix.include),
-                '-DXERCES_C_INC={0}'.
-                format(self.spec['xerces-c'].prefix.include),
-                '-DLIBXML2_INC={0}'.
-                format(self.spec['libxml2'].prefix.include),
-                '-DLIBWDA_INC={0}/inc'.
-                format(self.spec['libwda'].prefix),
+                format(self.spec.variants['cxxstd'].value)
                ] 
         return args
 

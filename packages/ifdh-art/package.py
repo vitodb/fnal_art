@@ -26,22 +26,11 @@ from the ifdhc package."""
     depends_on('ifbeam')
     depends_on('nucondb')
     depends_on('libwda')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@1.02.03:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value),
-                '-DIFDHC_DIR={0}'.
-                format(self.spec['ifdhc'].prefix),
-                '-DIFBEAM_DIR={0}'.
-                format(self.spec['ifbeam'].prefix),
-                '-DNUCONDB_DIR={0}'.
-                format(self.spec['nucondb'].prefix),
-                '-DLIBWDA_DIR={0}'.
-                format(self.spec['libwda'].prefix),
-                '-Difdh_art_header_dir={0}'.
-                format(self.spec.prefix.include),
-               ]
+                format(self.spec.variants['cxxstd'].value)               ]
         return args
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
