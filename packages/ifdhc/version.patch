@@ -1,0 +1,14 @@
+diff --git a/util/Makefile b/util/Makefile
+index 37fc671..50a4019 100644
+--- a/util/Makefile
++++ b/util/Makefile
+@@ -19,7 +19,8 @@ clean:
+ # overwrite version.h with actual git version if git describe works
+ # otherwise leave it (i.e. for exported code)
+ ifdh_version.h: FORCE
+-	echo '#define IFDH_VERSION "'`git describe --tags --match 'v*'`'"' > $@.new && mv $@.new $@ || true
++	f=$$(git describe --tags --match 'v*' 2>/dev/null); \
++   [[ -z "$${f}" ]] || echo '#define IFDH_VERSION "'"$${f}"'"' > $@
+ 
+ FORCE:
+ 
