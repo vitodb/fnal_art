@@ -7,7 +7,7 @@ from spack import *
 import os
 import glob
 
-class Lhapdf(Package):
+class Lhapdf(AutotoolsPackage):
 
     homepage = "http://www.hepforge.org/lhapdf"
     url      = "http://www.hepforge.org/archive/lhapdf/lhapdf-5.9.1.tar.gz"
@@ -30,25 +30,9 @@ class Lhapdf(Package):
 
     depends_on('pdfsets')
 
-    def setup_environment(self, spack_env, run_env):
-        cxxstd_flag\
-            = '' if self.spec.variants['cxxstd'].value == 'default' else \
-            'cxx{0}_flag'.format(self.spec.variants['cxxstd'].value)
-        spack_env.append_flags('CXXFLAGS', getattr(self.compiler, self.cxxstd_flag))
+    def configure_args(self):
+        return ('--enable-low-memory', '--disable-pyext', '--disable-octave')
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LHAPDF_INC', '{0}'.format(self.prefix.include))
-        spack_env.set('LHAPDF_LIB', '{0}'.format(self.prefix.lib))
-
-    def install(self,spec,prefix):
-        with working_dir(self.stage.source_path):
-           args = ['--prefix={0}'.format(prefix), '--enable-low-memory', '--disable-pyext', '--disable-octave']
-           configure=Executable('./configure')
-           configure(*args)
-           make()
-           make('check')
-           make('install')
-        
     @run_after('install')
     def link_pdfs(self):
         mkdirp(join_path(self.spec.prefix.share, 'lhapdf/PDFsets'))
@@ -65,7 +49,6 @@ class Lhapdf(Package):
             os.symlink('{0}/PDFsets/{1}'.format(self.spec['pdfsets'].prefix, pdf), 
                        '{0}/lhapdf/PDFsets/{1}'.format(self.spec.prefix.share,pdf))
 
-
     @run_after('install')
     def copy_examples(self):
       with working_dir(self.stage.source_path):
@@ -76,3 +59,8 @@ class Lhapdf(Package):
         for f in glob.glob('*.py'):
             os.remove(f)
         
+    def setup_environment(self, spack_env, run_env):
+        cxxstd_flag\
+            = '' if self.spec.variants['cxxstd'].value == 'default' else \
+            'cxx{0}_flag'.format(self.spec.variants['cxxstd'].value)
+        spack_env.append_flags('CXXFLAGS', getattr(self.compiler, cxxstd_flag))
