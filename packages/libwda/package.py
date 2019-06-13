@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-
+import os
 
 class Libwda(MakefilePackage):
     """Fermilab Web Data Access library"""
@@ -26,9 +26,11 @@ class Libwda(MakefilePackage):
     depends_on('openssl')
     depends_on('pcre')
 
+    patch('version.patch', level=1)
+
     @property
     def build_targets(self):
-        return ('LIBWDA_VERSION=v{0}'.format(self.version.underscored))
+        return ('LIBWDA_VERSION=v{0}'.format(self.version.underscored),)
 
     @property
     def install_targets(self):
@@ -40,7 +42,7 @@ class Libwda(MakefilePackage):
 
     @run_before('build')
     def filter_makefile(self):
-        makefile = FileFilter('Makefile')
+        makefile = FileFilter(os.path.join('src', 'Makefile'))
         makefile.filter('gcc', '$(CC)')
 
 

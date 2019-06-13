@@ -1,0 +1,15 @@
+diff --git a/src/Makefile b/src/Makefile
+index 9837db9..b8c55f2 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -70,7 +70,9 @@ $(SHLIB): $(OBJ) $(UTLOBJ)
+ endif
+ 
+ wda_version.h: FORCE
+-	test -d ../.git && echo '#define WDA_VERSION "'`git describe --tags --match 'wda*'`'"' > $@.new && mv $@.new $@ || true
++	test -d ../.git && \
++    echo '#define WDA_VERSION "'`git describe --tags --match 'wda*'`'"' > $@.new && mv $@.new $@ || \
++    echo '#define WDA_VERSION "'`echo wda_$(LIBWDA_VERSION)`'"' > $@
+ 
+ FORCE:
+ 
