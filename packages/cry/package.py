@@ -8,7 +8,7 @@ import os
 import glob
 
 
-class Cry(Package):
+class Cry(MakefilePackage):
     """Generates correlated cosmic-ray particle showers at one of three 
 elevations (sea level, 2100m, and 11300m) for use as input to transport 
 and detector simulation codes. """
@@ -26,42 +26,25 @@ and detector simulation codes. """
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    def set_cxxstdflag(self):
+
+    @run_before('build')
+    def filter_makefile(self):
+        makefile = FileFilter('Makefile.common')
+        makefile.filter('CXX = .*', '')
         cxxstd = self.spec.variants['cxxstd'].value
-        cxxstdflag = ''
-        if cxxstd == '98':
-            cxxstdflag = self.compiler.cxx98_flag
-        elif cxxstd == '11':
-            cxxstdflag = self.compiler.cxx11_flag
-        elif cxxstd == '14':
-            cxxstdflag = self.compiler.cxx14_flag
-        elif cxxstd == '17':
-            cxxstdflag = self.compiler.cxx17_flag
-        elif cxxstd == 'default':
-            pass
-        else:
-            # The user has selected a (new?) legal value that we've
-            # forgotten to deal with here.
-            tty.die(
-                "INTERNAL ERROR: cannot accommodate unexpected variant ",
-                "cxxstd={0}".format(spec.variants['cxxstd'].value))
-        return cxxstdflag
-
-    def setup_environment(self, spack_env, run_env):
-        spack_env.append_flags('CXXFLAGS', self.set_cxxstdflag())
-
+        cxxstdflag = '' if cxxstd == 'default' else \
+                     getattr(self.compiler, 'cxx{0}_flag'.format(cxxstd))
+        with open('Makefile.local', 'w') as f:
+            f.write('CXXFLAGS += -O3 -g -DNDEBUG -fno-omit-frame-pointer -fPIC \\\n')
+            f.write('            {0}\n'.format(cxxstdflag))
 
     def install(self, spec, prefix):
-        makefile = FileFilter('Makefile.common')
-        makefile.filter('CXX = .*', 'CXX = c++')
-        with open('Makefile.local', 'w') as f:
-            f.write('CXXFLAGS += -fPIC')
-        make()
-        for f in glob.glob('src/*.o'):
-            os.remove(f)
-        setup = FileFilter('setup')
-        setup.filter('^cd ".*', 'cd "%s"' % prefix)
-        install_tree(self.stage.source_path, prefix)
+        with working_dir(self.build_directory):
+            for f in glob.glob('src/*.o'):
+                os.remove(f)
+            setup = FileFilter('setup')
+            setup.filter('^cd ".*', 'cd "%s"' % prefix)
+            install_tree(self.stage.source_path, prefix)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('CRYHOME',self.prefix)
@@ -73,5 +56,5 @@ and detector simulation codes. """
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.src)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.src)
