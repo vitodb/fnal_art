@@ -15,6 +15,14 @@ class Dk2nugenie(CMakePackage):
 
     version('01_07_02',  svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
 
+    # Variant is still important even though it's not passed to compiler
+    # flags (use of ROOT, etc.).
+    variant('cxxstd',
+            default='11',
+            values=('11', '14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
     depends_on('cmake', type='build')
     depends_on('root')
     depends_on('libxml2')
@@ -24,13 +32,13 @@ class Dk2nugenie(CMakePackage):
 
     parallel = False
 
-
     def patch(self):
         patch('dk2nu.patch', when='^genie@3.00.00:', working_dir='v{0}'.format(self.version))
         cmakelists=FileFilter('{0}/dk2nu/genie/CMakeLists.txt'.format(self.stage.source_path))
         cmakelists.filter('\$\{GENIE\}/src', '${GENIE}/include/GENIE')
         cmakelists.filter('\$ENV', '$')
         cmakelists.filter('execute_process', '#execute_process')
+
     def cmake_args(self):
         prefix=self.prefix
         args = ['-DCMAKE_INSTALL_PREFIX=%s'%prefix,
@@ -47,12 +55,3 @@ class Dk2nugenie(CMakePackage):
     def build(self, spec, prefix):
         with working_dir('%s/spack-build'%self.stage.path, create=True):
             make('VERBOSE=t', 'all')
-
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('DK2NUGENIE_INC',self.prefix.include)
-        spack_env.set('DK2NUGENIE_LIB', self.prefix.lib)
-        # Ensure we can find plugin libraries.
-        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)

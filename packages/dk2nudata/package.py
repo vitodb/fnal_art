@@ -15,6 +15,14 @@ class Dk2nudata(CMakePackage):
 
     version('01_07_02', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
 
+    # Variant is still important even though it's not passed to compiler
+    # flags (use of ROOT, etc.).
+    variant('cxxstd',
+            default='11',
+            values=('11', '14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
     depends_on('cmake', type='build')
     depends_on('root')
     depends_on('intel-tbb')
