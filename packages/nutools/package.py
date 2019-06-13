@@ -52,11 +52,11 @@ class Nutools(CMakePackage):
         url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
-
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)
-               ] 
+                format(self.spec.variants['cxxstd'].value),
+                '-DGENIE_VERSION={0}'.format(os.environ['GENIE_VERSION'])
+               ]
         return args
 
     def setup_environment(self, spack_env, run_env):
@@ -83,8 +83,6 @@ class Nutools(CMakePackage):
         sanitize_environments(spack_env, run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('NUTOOLS_INC',self.prefix.include)
-        spack_env.set('NUTOOLS_LIB', self.prefix.lib)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
