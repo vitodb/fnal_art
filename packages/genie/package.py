@@ -57,7 +57,6 @@ global analysis of neutrino scattering data.
 
     def configure_args(self):
         args = [
-                '---prefix={0}'.format(self.prefix),
                 '--enable-rwght',
                 '--enable-fnal',
                 '--enable-atmo',
@@ -104,6 +103,7 @@ global analysis of neutrino scattering data.
     def setup_environment(self, spack_env, run_env):
         run_env.set('GENIE', self.prefix)
         spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
+        run_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
@@ -114,10 +114,14 @@ global analysis of neutrino scattering data.
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('GENIE',self.prefix)
+        spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         run_env.set('GENIE', self.prefix)
+        run_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         spack_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('PATH', self.prefix.bin)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/GENIE'.format(self.prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.append_path('ROOT_INCLUDE_PATH', '{0}/GENIE'.format(self.prefix.include))
         spack_env.append_path('LD_LIBRARY_PATH', self.prefix.lib)
 
