@@ -34,10 +34,6 @@ reasonable."""
         spack_env.append_flags('CXXFLAGS', cxxstdflag)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('LOG4CPP_INC', '{0}'.format(self.prefix.include))
-        spack_env.set('LOG4CPP_LIB', '{0}'.format(self.prefix.lib))
         spack_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('PATH', self.prefix.bin)
-        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
 
