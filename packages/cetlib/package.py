@@ -65,14 +65,14 @@ class Cetlib(CMakePackage):
 
     def setup_environment(self, spack_env, run_env):
         # Binaries.
-        spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
+        spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # For plugin tests (not needed for installed package).
         spack_env.prepend_path('CET_PLUGIN_PATH',
-                               join_path(self.build_directory, 'lib'))
+                               os.path.join(self.build_directory, 'lib'))
         # Perl modules.
         spack_env.prepend_path('PERL5LIB',
-                               join_path(self.build_directory, 'perllib'))
-        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+                               os.path.join(self.build_directory, 'perllib'))
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
 
@@ -81,5 +81,5 @@ class Cetlib(CMakePackage):
         spack_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('PATH', self.prefix.bin)
         # Perl modules.
-        spack_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
-        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))

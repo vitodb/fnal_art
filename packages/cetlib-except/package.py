@@ -52,6 +52,6 @@ class CetlibExcept(CMakePackage):
 
     def setup_environment(self, spack_env, run_env):
         # For tests.
-        spack_env.prepend_path('PATH', join_path(self.build_directory, 'bin'))
+        spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)

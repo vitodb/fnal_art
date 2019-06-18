@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-
+import os
 
 def sanitize_environments(*args):
     for env in args:
@@ -41,10 +41,10 @@ class Lareventdisplay(CMakePackage):
     def setup_environment(self, spack_env, run_env):
         # Binaries.
         spack_env.prepend_path('PATH',
-                               join_path(self.build_directory, 'bin'))
+                               os.path.join(self.build_directory, 'bin'))
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
-                               join_path(self.build_directory, 'lib'))
+                               os.path.join(self.build_directory, 'lib'))
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
@@ -56,16 +56,16 @@ class Lareventdisplay(CMakePackage):
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB',
-                               join_path(self.build_directory, 'perllib'))
-        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+                               os.path.join(self.build_directory, 'perllib'))
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Set path to find fhicl files
         spack_env.prepend_path('FHICL_INCLUDE_PATH',
-                               join_path(self.build_directory, 'job'))
-        run_env.prepend_path('FHICL_INCLUDE_PATH', join_path(self.prefix, 'job'))
+                               os.path.join(self.build_directory, 'job'))
+        run_env.prepend_path('FHICL_INCLUDE_PATH', os.path.join(self.prefix, 'job'))
         # Set path to find gdml files
         spack_env.prepend_path('FW_SEARCH_PATH',
-                               join_path(self.build_directory, 'job'))
-        run_env.prepend_path('FW_SEARCH_PATH', join_path(self.prefix, 'job'))
+                               os.path.join(self.build_directory, 'job'))
+        run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
 

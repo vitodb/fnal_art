@@ -35,7 +35,7 @@ class Lhapdf(AutotoolsPackage):
 
     @run_after('install')
     def link_pdfs(self):
-        mkdirp(join_path(self.spec.prefix.share, 'lhapdf/PDFsets'))
+        mkdirp(os.path.join(self.spec.prefix.share, 'lhapdf/PDFsets'))
         pdfs = ['CT10.LHgrid',
                 'cteq61.LHgrid',
                 'cteq61.LHpdf',

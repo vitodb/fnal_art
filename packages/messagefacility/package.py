@@ -67,15 +67,15 @@ class Messagefacility(CMakePackage):
     def setup_environment(self, spack_env, run_env):
         # Binaries.
         spack_env.prepend_path('PATH',
-                               join_path(self.build_directory, 'bin'))
+                               os.path.join(self.build_directory, 'bin'))
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
-                               join_path(self.build_directory, 'lib'))
+                               os.path.join(self.build_directory, 'lib'))
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB',
-                               join_path(self.build_directory, 'perllib'))
-        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+                               os.path.join(self.build_directory, 'perllib'))
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
 
@@ -89,7 +89,7 @@ class Messagefacility(CMakePackage):
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Perl modules.
-        spack_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
-        run_env.prepend_path('PERL5LIB', join_path(self.prefix, 'perllib'))
+        spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)

@@ -64,10 +64,10 @@ class Gallery(CMakePackage):
     def setup_environment(self, spack_env, run_env):
         # Binaries.
         spack_env.prepend_path('PATH',
-                               join_path(self.build_directory, 'bin'))
+                               os.path.join(self.build_directory, 'bin'))
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
-                               join_path(self.build_directory, 'lib'))
+                               os.path.join(self.build_directory, 'lib'))
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
