@@ -36,11 +36,15 @@ class Larsim(CMakePackage):
     depends_on('ifdhc')
     depends_on('xerces-c')
     depends_on('libxml2')
+    depends_on('clhep')
+    depends_on('nutools')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)               ]
+                format(self.spec.variants['cxxstd'].value),
+                '-DGENIE_VERSION=v{0}'.format(self.spec['genie'].version.underscored)
+        ]
         return args
 
     def setup_environment(self, spack_env, run_env):
