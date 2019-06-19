@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import os
 
 class Ifdhc(MakefilePackage):
     """Data handling client code for intensity frontier experiments"""
@@ -33,6 +34,11 @@ class Ifdhc(MakefilePackage):
     patch('version.patch', level=1, when='@:2.4.5')
 
     parallel = False
+
+    def patch(self):
+        for hfile in (os.path.join('ifdh', 'ifdh.h'),
+                      os.path.join('numsg', 'numsg.h')):
+            filter_file(r'^(\s*#\s*include\s+["<])../util/', r'\1', hfile)
 
     def url_for_version(self, version):
         url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
