@@ -31,6 +31,7 @@ class Larexamples(CMakePackage):
 
     depends_on('larsim')
     depends_on('cetmodules', type='build')
+    depends_on('larsoft-data', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
