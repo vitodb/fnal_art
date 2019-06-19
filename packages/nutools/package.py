@@ -55,7 +55,7 @@ class Nutools(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DGENIE_VERSION={0}'.format(os.environ['GENIE_VERSION'])
+                '-DGENIE_VERSION=v{0}'.format(self.spec['genie'].version.underscored)
                ]
         return args
 
