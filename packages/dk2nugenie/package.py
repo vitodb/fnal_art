@@ -39,6 +39,8 @@ class Dk2nugenie(CMakePackage):
         cmakelists.filter('\$ENV', '$')
         cmakelists.filter('execute_process', '#execute_process')
 
+    root_cmakelists_dir = 'dk2nu'
+
     def cmake_args(self):
         prefix=self.prefix
         args = ['-DCMAKE_INSTALL_PREFIX=%s'%prefix,
@@ -47,8 +49,7 @@ class Dk2nugenie(CMakePackage):
                 '-DGENIE_INC=%s/GENIE'%self.spec['genie'].prefix.include,
                 '-DGENIE=%s'%self.spec['genie'].prefix,
                 '-DGENIE_VERSION=%s'%self.spec['genie'].version,
-                '-DDK2NUDATA_DIR=%s'%self.spec['dk2nudata'].prefix.lib ,
-                '%s/dk2nu' % self.stage.source_path]
+                '-DDK2NUDATA_DIR=%s'%self.spec['dk2nudata'].prefix.lib ]
 
         return args
 

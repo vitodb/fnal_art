@@ -31,20 +31,16 @@ class Dk2nudata(CMakePackage):
  
     parallel = False
 
-
+    root_cmakelists_dir = 'dk2nu'
+    
     def cmake_args(self):
         prefix=self.spec.prefix
         args = [
                 '-DWITH_GENIE=OFF',
-                '-DTBB_LIBRARY=%s'%self.spec['intel-tbb'].prefix.lib,
-                '%s/dk2nu' % self.stage.source_path]
+                '-DTBB_LIBRARY=%s'%self.spec['intel-tbb'].prefix.lib]
         return args
 
     def build(self, spec, prefix):
         with working_dir('%s/spack-build'%self.stage.path, create=True):
             make('VERBOSE=t', 'all')
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        # Ensure we can find plugin libraries.
-        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
