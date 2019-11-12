@@ -44,3 +44,8 @@ class Dk2nudata(CMakePackage):
         with working_dir('%s/spack-build'%self.stage.path, create=True):
             make('VERBOSE=t', 'all')
 
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+
