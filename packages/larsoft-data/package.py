@@ -9,8 +9,7 @@ import os
 class LarsoftData(Package):
     """LarsoftData"""
 
-    homepage = "http://www.example.com"
-    version('1.02.01', '9b3e5d763f4a44f0fae7a2b59d583a8b25054f7f06645fa48e331377cf33baca', extension='bzip2')
+    version('1.02.01', '9b3e5d763f4a44f0fae7a2b59d583a8b25054f7f06645fa48e331377cf33baca')
 
     def url_for_version(self, version):
         url = 'http://scisoft.fnal.gov/scisoft/packages/larsoft_data/v{0}/larsoft_data-{1}-noarch.tar.bz2'

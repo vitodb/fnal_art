@@ -16,7 +16,7 @@ reasonable."""
     homepage = "https://sourceforge.net/projects/log4cpp/"
     url      = "https://newcontinuum.dl.sourceforge.net/project/log4cpp/log4cpp-1.1.x%20%28new%29/log4cpp-1.1/log4cpp-1.1.3.tar.gz"
 
-    version('1.1.3', '74f0fea7931dc1bc4e5cd34a6318cd2a51322041',extension='tar.gz')
+    version('1.1.3', '74f0fea7931dc1bc4e5cd34a6318cd2a51322041')
 
     def patch(self):
         patch('patch/log4cpp.patch')

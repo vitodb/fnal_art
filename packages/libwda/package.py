@@ -13,9 +13,7 @@ class Libwda(MakefilePackage):
     git_base = "http://cdcvs.fnal.gov/projects/ifdhc-libwda"
 
     version('develop', git=git_base, branch='develop')
-    version('2.26.0',
-            sha256='4df374bbf36030241a9714d5e08cd9b2b5e1b3374da1a97ec793cd37eba40fc2',
-            extension='tbz2')
+    version('2.26.0', sha256='4df374bbf36030241a9714d5e08cd9b2b5e1b3374da1a97ec793cd37eba40fc2')
 
     parallel = False
 

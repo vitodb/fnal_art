@@ -11,12 +11,8 @@ class Ifbeam(MakefilePackage):
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/ifbeam"
 
-    version('2.3.0',
-            sha256='4b6a29443b631957ca2a7712b5c577620c6543e542ee9c77d246cef1e10f7324',
-            extension='tbz2')
-    version('2.2.13',
-            sha256='b341ffc73421b7187b06c205f9feaccf117bdba06509e9b1b8f491fdc182029c',
-            extension='tbz2')
+    version('2.3.0', sha256='4b6a29443b631957ca2a7712b5c577620c6543e542ee9c77d246cef1e10f7324')
+    version('2.2.13', sha256='b341ffc73421b7187b06c205f9feaccf117bdba06509e9b1b8f491fdc182029c')
 
     parallel = False 
 

@@ -13,11 +13,9 @@ class Nucondb(MakefilePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/nucondb"
 
     version('2.3.0',
-            sha256='e2e30acc10cabd4e6fc0784c41dfcf2b372dfbf003a42bd80210ebb8c81d057f',
-            extension='tbz2')
+            sha256='e2e30acc10cabd4e6fc0784c41dfcf2b372dfbf003a42bd80210ebb8c81d057f')
     version('2.2.10',
-            sha256='d90d471ee1db823260035986284623eea0e84944039e69d9fd95bf8749d2a736',
-            extension='tbz2')
+            sha256='d90d471ee1db823260035986284623eea0e84944039e69d9fd95bf8749d2a736')
 
     parallel = False
 
