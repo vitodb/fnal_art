@@ -16,13 +16,11 @@ fast and/or slow logging - dynamically (you choose)."""
 
     parallel = False 
 
-    version('3.14.00', git=git_base, branch='feature/cetmodules', preferred=True)
-
     depends_on('cetmodules', type='build')
 
     def url_for_version(self, version):
         url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
+        return url.format(self.name + '-git', version.underscored)
 
     def cmake_args(self):
         args = ['-Dproduct=trace',
