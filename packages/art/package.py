@@ -39,7 +39,7 @@ class Art(CMakePackage):
     depends_on('cmake@3.4:', type='build', when='@MVP')
     depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules@1.01.01:', type='build')
-    depends_on('catch@2.3.0:~single_header', type='build')
+    depends_on('catch2@2.3.0:~single_header', type='build')
 
     # Build and link dependencies.
     depends_on('clhep')
