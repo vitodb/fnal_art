@@ -33,17 +33,17 @@ class Pandora(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
-                '-DCMAKE_CXX_FLAGS=-std=c++17 -Wno-implicit-fallthrough',
+                '-DCMAKE_CXX_FLAGS=-Wno-implicit-fallthrough',
                 '-DCMAKE_MODULE_PATH={0}/etc/cmake'.format(self.spec['root'].prefix),
                 '-DPANDORA_MONITORING=ON', '-DPANDORA_EXAMPLE_CONTENT=OFF',
-                '-DPANDORA_LC_CONTENT=OFF','-DPANDORA_LAR_CONTENT=OFF', '-DBUILD_CXX1Y=1' ]
+                '-DPANDORA_LC_CONTENT=OFF','-DPANDORA_LAR_CONTENT=OFF']
         return args
 
     @run_after('install')
     def install_modules(self):
         install_tree('cmakemodules', '{0}/cmakemodules'.format(self.prefix))
         for f in glob.glob('{0}/*.cmake'.format(self.prefix)):
-            wrongp='{0}/PandoraPFA/cmakemodules'.format(self.stage.path)      
+            wrongp='{0}/spack-src/cmakemodules'.format(self.stage.path)
             rightp='{0}/cmakemodules'.format(self.prefix)
             filter_file(wrongp, rightp, f, backup=False) 
 
