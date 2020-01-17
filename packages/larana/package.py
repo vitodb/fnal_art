@@ -22,6 +22,11 @@ class Larana(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larana"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larana', branch='feature/MVP1a')
+    version('08.13.03', tag='v08_13_03', git='http://cdcvs.fnal.gov/projects/larana')
+    version('08.14.00', tag='v08_14_00', git='http://cdcvs.fnal.gov/projects/larana')
+    version('08.14.01', tag='v08_14_01', git='http://cdcvs.fnal.gov/projects/larana')
+    version('08.15.00', tag='v08_15_00', git='http://cdcvs.fnal.gov/projects/larana')
+    version('08.15.01', tag='v08_15_01', git='http://cdcvs.fnal.gov/projects/larana')
 
     variant('cxxstd',
             default='17',

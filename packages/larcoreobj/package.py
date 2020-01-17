@@ -23,6 +23,11 @@ class Larcoreobj(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larcoreobj"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcoreobj', branch='feature/MVP1a', preferred=True)
+    version('1.23.00.01', tag='v1_23_00_01', git='http://cdcvs.fnal.gov/projects/larcoreobj')
+    version('1.23.00.02', tag='v1_23_00_02', git='http://cdcvs.fnal.gov/projects/larcoreobj')
+    version('1.23.00', tag='v1_23_00', git='http://cdcvs.fnal.gov/projects/larcoreobj')
+    version('1.24.00', tag='v1_24_00', git='http://cdcvs.fnal.gov/projects/larcoreobj')
+    version('1.24.01', tag='v1_24_01', git='http://cdcvs.fnal.gov/projects/larcoreobj')
 
     variant('cxxstd',
             default='17',

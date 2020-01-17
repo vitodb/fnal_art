@@ -26,6 +26,10 @@ class Messagefacility(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
+    version('2.03.00', tag='v2_03_00', git=git_base)
+    version('2.03.01', tag='v2_03_01', git=git_base)
+    version('2.04.03', tag='v2_04_03', git=git_base)
+    version('2.05.00', tag='v2_05_00', git=git_base)
 
     variant('cxxstd',
             default='17',
@@ -37,7 +41,7 @@ class Messagefacility(CMakePackage):
     depends_on('cmake@3.4:', type='build', when='@MVP')
     depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules@1.01.01:', type='build')
-    depends_on('catch2@2.3.0:~single_header', type='build')
+    depends_on('catch@2.3.0:~single_header', type='build')
 
     # Build / link dependencies.
     depends_on('cetlib-except')

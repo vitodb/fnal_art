@@ -14,6 +14,8 @@ from the ifdhc package."""
     url      = "http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
+    version('2.10.01', git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_01')
+    version('2.10.00', git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_00')
 
     variant('cxxstd',
             default='17',

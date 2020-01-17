@@ -23,6 +23,10 @@ class Larpandora(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larpandora"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larpandora', branch='feature/MVP1a')
+    version('08.09.00', tag='v08_09_00', git='http://cdcvs.fnal.gov/projects/larpandora')
+    version('08.09.01', tag='v08_09_01', git='http://cdcvs.fnal.gov/projects/larpandora')
+    version('08.10.00', tag='v08_10_00', git='http://cdcvs.fnal.gov/projects/larpandora')
+    version('08.10.01', tag='v08_10_01', git='http://cdcvs.fnal.gov/projects/larpandora')
 
     variant('cxxstd',
             default='17',

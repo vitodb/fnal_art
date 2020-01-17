@@ -22,6 +22,10 @@ class Nutools(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/nutools/"
 
     version('MVP1a', git="http://cdcvs.fnal.gov/projects/nutools", branch='feature/MVP1a')
+    version('3.04.02', tag='v3_04_02', git="http://cdcvs.fnal.gov/projects/nutools")
+    version('3.04.03', tag='v3_04_03', git="http://cdcvs.fnal.gov/projects/nutools")
+    version('3.05.00', tag='v3_05_00', git="http://cdcvs.fnal.gov/projects/nutools")
+    version('3.05.01', tag='v3_05_01', git="http://cdcvs.fnal.gov/projects/nutools")
 
     variant('cxxstd',
             default='17',

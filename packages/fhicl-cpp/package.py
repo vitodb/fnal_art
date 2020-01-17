@@ -28,6 +28,10 @@ class FhiclCpp(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
+    version('4.09.02', tag='v4_09_02', git=git_base)
+    version('4.09.03', tag='v4_09_03', git=git_base)
+    version('4.10.00', tag='v4_10_00', git=git_base)
+    version('4.11.00', tag='v4_11_00', git=git_base)
 
     variant('cxxstd',
             default='17',

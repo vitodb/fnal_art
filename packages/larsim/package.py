@@ -22,6 +22,10 @@ class Larsim(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larsim"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larsim', branch='feature/MVP1a')
+    version('08.17.00', tag='v08_17_00', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('08.17.01', tag='v08_17_01', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('08.18.00', tag='v08_18_00', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('08.18.01', tag='v08_18_01', git='http://cdcvs.fnal.gov/projects/larsim')
 
     variant('cxxstd',
             default='17',

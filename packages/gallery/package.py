@@ -29,6 +29,11 @@ class Gallery(CMakePackage):
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
 
+    version('1.12.07', tag='v1_12_07', git=git_base)
+    version('1.13.00', tag='v1_13_00', git=git_base)
+    version('1.13.01', tag='v1_13_01', git=git_base)
+    version('1.14.00', tag='v1_14_00', git=git_base)
+
     variant('cxxstd',
             default='17',
             values=('14', '17'),

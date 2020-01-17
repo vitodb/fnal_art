@@ -14,6 +14,11 @@ class Dk2nudata(CMakePackage):
     url      = "http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
     version('01_07_02', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
+    version('01.08.00b', tag='v01_08_00b', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
+    version('01.08.00c', tag='v01_08_00c', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
+    version('01.08.00d', tag='v01_08_00d', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
+    version('01.08.00e', tag='v01_08_00e', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
+    version('01.08.00', tag='v01_08_00', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
 
     # Variant is still important even though it's not passed to compiler
     # flags (use of ROOT, etc.).

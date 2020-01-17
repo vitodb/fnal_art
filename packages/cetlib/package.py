@@ -27,6 +27,16 @@ class Cetlib(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
+    version('3.04.00', tag='v3_04_00', git=git_base)
+    version('3.05.00', tag='v3_05_00', git=git_base)
+    version('3.05.01', tag='v3_05_01', git=git_base)
+    version('3.07.02', tag='v3_07_02', git=git_base)
+    version('3.08.00', tag='v3_08_00', git=git_base)
+    version('3.04.00', tag='v3_04_00', git=git_base)
+    version('3.05.00', tag='v3_05_00', git=git_base)
+    version('3.05.01', tag='v3_05_01', git=git_base)
+    version('3.07.02', tag='v3_07_02', git=git_base)
+    version('3.08.00', tag='v3_08_00', git=git_base)
 
     variant('cxxstd',
             default='17',
@@ -38,7 +48,7 @@ class Cetlib(CMakePackage):
     depends_on('cmake@3.4:', type='build', when='@MVP')
     depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules@1.01.01:', type='build')
-    depends_on('catch2@2.3.0:~single_header', type=('build', 'link'))
+    depends_on('catch@2.3.0:~single_header', type=('build', 'link'))
 
     # Build / link dependencies.
     depends_on('boost')

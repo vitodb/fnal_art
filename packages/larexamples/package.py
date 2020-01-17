@@ -22,6 +22,9 @@ class Larexamples(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larexamples"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larexamples', branch='feature/MVP1a')
+    version('08.04.01', tag='v08_04_01', git='http://cdcvs.fnal.gov/projects/larexamples')
+    version('08.05.00', tag='v08_05_00', git='http://cdcvs.fnal.gov/projects/larexamples')
+    version('08.05.01', tag='v08_05_01', git='http://cdcvs.fnal.gov/projects/larexamples')
 
     variant('cxxstd',
             default='17',

@@ -28,6 +28,16 @@ class Art(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
+    version('3.02.03', tag='v3_02_03', git=git_base)
+    version('3.02.04', tag='v3_02_04', git=git_base)
+    version('3.02.05', tag='v3_02_05', git=git_base)
+    version('3.02.06', tag='v3_02_06', git=git_base)
+    version('3.03.01', tag='v3_03_01', git=git_base)
+    version('3.02.03', tag='v3_02_03', git=git_base)
+    version('3.02.04', tag='v3_02_04', git=git_base)
+    version('3.02.05', tag='v3_02_05', git=git_base)
+    version('3.02.06', tag='v3_02_06', git=git_base)
+    version('3.03.01', tag='v3_03_01', git=git_base)
 
     variant('cxxstd',
             default='17',
@@ -39,7 +49,7 @@ class Art(CMakePackage):
     depends_on('cmake@3.4:', type='build', when='@MVP')
     depends_on('cmake@3.11:', type='build', when='@MVP1a')
     depends_on('cetmodules@1.01.01:', type='build')
-    depends_on('catch2@2.3.0:~single_header', type='build')
+    depends_on('catch@2.3.0:~single_header', type='build')
 
     # Build and link dependencies.
     depends_on('clhep')

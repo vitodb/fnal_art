@@ -28,6 +28,8 @@ class HepConcurrency(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
+    version('1.04.00', tag='v1_04_00', git=git_base)
+    version('1.03.04', tag='v1_03_04', git=git_base)
 
     variant('cxxstd',
             default='17',

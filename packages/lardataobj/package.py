@@ -23,6 +23,10 @@ class Lardataobj(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/lardataobj"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/lardataobj', branch='feature/MVP1a')
+    version('1.33.00', tag='v1_33_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
+    version('1.34.00', tag='v1_34_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
+    version('1.35.00', tag='v1_35_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
+    version('1.36.00', tag='v1_36_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
 
     variant('cxxstd',
             default='17',

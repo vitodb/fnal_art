@@ -22,6 +22,11 @@ class Larcore(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larcore"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcore', branch='feature/MVP1a')
+    version('08.07.00', tag='v08_07_00', git='http://cdcvs.fnal.gov/projects/larcore')
+    version('08.07.01', tag='v08_07_01', git='http://cdcvs.fnal.gov/projects/larcore')
+    version('08.08.00', tag='v08_08_00', git='http://cdcvs.fnal.gov/projects/larcore')
+    version('08.08.01', tag='v08_08_01', git='http://cdcvs.fnal.gov/projects/larcore')
+    version('08.09.00', tag='v08_09_00', git='http://cdcvs.fnal.gov/projects/larcore')
 
     variant('cxxstd',
             default='17',

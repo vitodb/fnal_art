@@ -22,6 +22,10 @@ class Nusimdata(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/nusimdata"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/nusimdata', branch='feature/MVP1a', preferred=True)
+    version('1.19.01', tag='v1_19_01', git='http://cdcvs.fnal.gov/projects/nusimdata')
+    version('1.19.02', tag='v1_19_02', git='http://cdcvs.fnal.gov/projects/nusimdata')
+    version('1.20.00', tag='v1_20_00', git='http://cdcvs.fnal.gov/projects/nusimdata')
+    version('1.20.01', tag='v1_20_01', git='http://cdcvs.fnal.gov/projects/nusimdata')
 
     variant('cxxstd',
             default='17',

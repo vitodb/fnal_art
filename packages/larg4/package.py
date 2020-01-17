@@ -23,6 +23,10 @@ class Larg4(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larg4"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larg4', branch='feature/MVP1a')
+    version('08.08.00', tag='v08_08_00', git='http://cdcvs.fnal.gov/projects/larg4')
+    version('08.08.01', tag='v08_08_01', git='http://cdcvs.fnal.gov/projects/larg4')
+    version('08.09.00', tag='v08_09_00', git='http://cdcvs.fnal.gov/projects/larg4')
+    version('08.10.00', tag='v08_10_00', git='http://cdcvs.fnal.gov/projects/larg4')
 
     variant('cxxstd',
             default='17',

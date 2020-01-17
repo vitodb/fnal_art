@@ -23,6 +23,10 @@ class Larevt(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larevt"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larevt', branch='feature/MVP1a')
+    version('08.08.00', tag='v08_08_00', git='http://cdcvs.fnal.gov/projects/larevt')
+    version('08.08.01', tag='v08_08_01', git='http://cdcvs.fnal.gov/projects/larevt')
+    version('08.09.00', tag='v08_09_00', git='http://cdcvs.fnal.gov/projects/larevt')
+    version('08.09.01', tag='v08_09_01', git='http://cdcvs.fnal.gov/projects/larevt')
 
     variant('cxxstd',
             default='17',

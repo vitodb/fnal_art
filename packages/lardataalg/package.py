@@ -23,6 +23,11 @@ class Lardataalg(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/lardataalg"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/lardataalg', branch='feature/MVP1a')
+    version('1.01.01', tag='v1_01_01', git='http://cdcvs.fnal.gov/projects/lardataalg')
+    version('1.01.02', tag='v1_01_02', git='http://cdcvs.fnal.gov/projects/lardataalg')
+    version('1.01.03', tag='v1_01_03', git='http://cdcvs.fnal.gov/projects/lardataalg')
+    version('1.02.00', tag='v1_02_00', git='http://cdcvs.fnal.gov/projects/lardataalg')
+    version('1.02.01', tag='v1_02_01', git='http://cdcvs.fnal.gov/projects/lardataalg')
 
     variant('cxxstd',
             default='17',

@@ -23,6 +23,10 @@ class Larreco(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larreco"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larreco', branch='feature/MVP1a')
+    version('08.25.00', tag='v08_25_00', git='http://cdcvs.fnal.gov/projects/larreco')
+    version('08.25.01', tag='v08_25_01', git='http://cdcvs.fnal.gov/projects/larreco')
+    version('08.26.00', tag='v08_26_00', git='http://cdcvs.fnal.gov/projects/larreco')
+    version('08.26.01', tag='v08_26_01', git='http://cdcvs.fnal.gov/projects/larreco')
 
     variant('cxxstd',
             default='17',

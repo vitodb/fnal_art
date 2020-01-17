@@ -22,6 +22,9 @@ class Larwirecell(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larwirecell"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larwirecell', branch='feature/MVP1a')
+    version('08.10.01', tag='v08_10_01', git='http://cdcvs.fnal.gov/projects/larwirecell')
+    version('08.11.00', tag='v08_11_00', git='http://cdcvs.fnal.gov/projects/larwirecell')
+    version('08.11.01', tag='v08_11_01', git='http://cdcvs.fnal.gov/projects/larwirecell')
 
     variant('cxxstd',
             default='17',

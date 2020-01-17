@@ -22,6 +22,9 @@ class Larsoft(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larsoft"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larsoft', branch='feature/MVP1a')
+    version('08.38.01', tag='v08_38_01', git='http://cdcvs.fnal.gov/projects/larsoft')
+    version('08.39.00', tag='v08_39_00', git='http://cdcvs.fnal.gov/projects/larsoft')
+    version('08.40.00', tag='v08_40_00', git='http://cdcvs.fnal.gov/projects/larsoft')
 
     variant('cxxstd',
             default='17',

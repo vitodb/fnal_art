@@ -13,6 +13,10 @@ class Larpandoracontent(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larpandoracontent"
 
     version('3.14.05', git='http://cdcvs.fnal.gov/projects/larpandoracontent', branch='v03_14_05')
+    version('03.15.09', tag='v03_15_09', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
+    version('03.15.10', tag='v03_15_10', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
+    version('03.15.11', tag='v03_15_11', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
+    version('03.15.12', tag='v03_15_12', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
 
     variant('cxxstd',
             default='17',

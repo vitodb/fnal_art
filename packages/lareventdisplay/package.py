@@ -22,6 +22,10 @@ class Lareventdisplay(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/lareventdisplay"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/lareventdisplay', branch='feature/MVP1a')
+    version('08.10.00', tag='v08_10_00', git='http://cdcvs.fnal.gov/projects/lareventdisplay')
+    version('08.10.01', tag='v08_10_01', git='http://cdcvs.fnal.gov/projects/lareventdisplay')
+    version('08.11.00', tag='v08_11_00', git='http://cdcvs.fnal.gov/projects/lareventdisplay')
+    version('08.11.01', tag='v08_11_01', git='http://cdcvs.fnal.gov/projects/lareventdisplay')
 
     variant('cxxstd',
             default='17',

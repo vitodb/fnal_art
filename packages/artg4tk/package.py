@@ -13,6 +13,16 @@ class Artg4tk(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/artg4tk/"
 
     version('MVP1a', git = url, branch = 'feature/Spack-MVP1a')
+    version('09.04.04', tag='v09_04_04', git=url)
+    version('09.05.00', tag='v09_05_00', git=url)
+    version('09.05.01', tag='v09_05_01', git=url)
+    version('09.05.02', tag='v09_05_02', git=url)
+    version('09.06.00', tag='v09_06_00', git=url)
+    version('09.04.04', tag='v09_04_04', git=url)
+    version('09.05.00', tag='v09_05_00', git=url)
+    version('09.05.01', tag='v09_05_01', git=url)
+    version('09.05.02', tag='v09_05_02', git=url)
+    version('09.06.00', tag='v09_06_00', git=url)
 
     variant('cxxstd',
             default='17',

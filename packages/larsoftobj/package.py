@@ -22,6 +22,9 @@ class Larsoftobj(CMakePackage):
     url      = "http://cdcvs.fnal.gov/projects/larsoftobj"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/larsoftobj', branch='feature/MVP1a')
+    version('1.48.00', tag='v1_48_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
+    version('1.49.00', tag='v1_49_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
+    version('1.50.00', tag='v1_50_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
 
     variant('cxxstd',
             default='17',

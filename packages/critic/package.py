@@ -27,6 +27,11 @@ class Critic(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
+    version('v2_01_01', tag='v2_01_01', git=git_base)
+    version('v2_01_02', tag='v2_01_02', git=git_base)
+    version('v2_01_03', tag='v2_01_03', git=git_base)
+    version('v2_01_04', tag='v2_01_04', git=git_base)
+    version('v2_02_00', tag='v2_02_00', git=git_base)
 
     variant('cxxstd',
             default='17',
