@@ -41,3 +41,4 @@ from the ifdhc package."""
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         spack_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('PATH', self.prefix.bin)
+    patch('ifdh_art.unups.patch')

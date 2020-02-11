@@ -39,3 +39,4 @@ class Larpandoracontent(CMakePackage):
                 '-DPandoraMonitoring_DIR={0}/cmakemodules'.format(self.spec['pandora'].prefix),
                ]
         return args
+    patch('larpandoracontent.unups.patch')

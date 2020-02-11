@@ -82,3 +82,4 @@ class Nusimdata(CMakePackage):
     @run_after('install')
     def create_dirs(self):
         mkdirp('{0}/fcl'.format(self.spec.prefix))
+    patch('nusimdata.unups.patch')

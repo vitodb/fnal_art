@@ -95,3 +95,4 @@ class Gallery(CMakePackage):
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+    patch('gallery.unups.patch')

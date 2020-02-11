@@ -32,11 +32,8 @@ class Cetlib(CMakePackage):
     version('3.05.01', tag='v3_05_01', git=git_base)
     version('3.07.02', tag='v3_07_02', git=git_base)
     version('3.08.00', tag='v3_08_00', git=git_base)
-    version('3.04.00', tag='v3_04_00', git=git_base)
-    version('3.05.00', tag='v3_05_00', git=git_base)
-    version('3.05.01', tag='v3_05_01', git=git_base)
-    version('3.07.02', tag='v3_07_02', git=git_base)
-    version('3.08.00', tag='v3_08_00', git=git_base)
+
+    patch('cetlib.unups.patch')
 
     variant('cxxstd',
             default='17',
@@ -54,7 +51,7 @@ class Cetlib(CMakePackage):
     depends_on('boost')
     depends_on('sqlite@3.8.2:')
     depends_on('cetlib-except')
-    depends_on('hep-concurrency', when='@MVP1a')
+    depends_on('hep-concurrency', when='@3.0.5:')
     depends_on('openssl')
     depends_on('sqlite')
     depends_on('perl')  # Module skeletons, etc.

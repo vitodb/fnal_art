@@ -42,3 +42,4 @@ class Artg4tk(CMakePackage):
                 format(self.spec.variants['cxxstd'].value)
                ]
         return args
+    patch('artg4tk.unups.patch')

@@ -78,3 +78,4 @@ class Canvas(CMakePackage):
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+    patch('canvas.unups.patch')

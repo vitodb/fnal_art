@@ -37,6 +37,8 @@ class HepConcurrency(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('hep_concurrency.unups.patch')
+
     # Build-only dependencies.
     depends_on('cmake@3.4:', type='build', when='@MVP')
     depends_on('cmake@3.11:', type='build', when='@MVP1a')
@@ -60,6 +62,7 @@ class HepConcurrency(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value)]
+        args.append('-DCMAKE_PROJECT_VERSION={0}'.format(self.spec.version))
         return args
 
     def setup_environment(self, spack_env, run_env):

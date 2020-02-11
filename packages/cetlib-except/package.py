@@ -26,6 +26,7 @@ class CetlibExcept(CMakePackage):
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
     version('1.04.00', tag='v1_04_00', git=git_base)
+    patch('cetlib_except.unups.patch')
 
     variant('cxxstd',
             default='17',
@@ -43,8 +44,8 @@ class CetlibExcept(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
+        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib_except.v{0}.tbz2'
+        return url.format(version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

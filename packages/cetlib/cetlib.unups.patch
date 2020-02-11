@@ -1,0 +1,28 @@
+--- spack-src/CMakeLists.txt.orig	2020-01-24 12:49:19.421730665 -0600
++++ spack-src/CMakeLists.txt	2020-01-24 12:52:59.813060985 -0600
+@@ -24,7 +24,7 @@
+ project(cetlib)
+ 
+ # cetbuildtools contains our cmake modules
+-find_package(cetbuildtools 7.13.01 REQUIRED)
++find_package(cetmodules 1.01.01 REQUIRED)
+ 
+ include(CetCMakeEnv)
+ cet_cmake_env()
+@@ -69,10 +69,11 @@
+ # ----------------------------------------------------------------------
+ # Describe build prerequisites:
+ 
+-find_ups_boost(BOOST_TARGETS v1_50_0)
+-find_ups_product(sqlite)
+-find_ups_product(cetlib_except v1_01_00)
+-find_ups_product(catch v1_11_0)
+-find_ups_product(hep_concurrency)
++find_package(Boost REQUIRED COMPONENTS filesystem regex)
++find_library(SQLITE3 NAMES sqlite3 REQUIRED)
++find_package(cetlib_except REQUIRED)
++find_package(Catch2 REQUIRED)
++find_package(hep_concurrency REQUIRED)
++cet_cmake_config()
+ 
+ # SQLite

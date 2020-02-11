@@ -98,3 +98,4 @@ class Critic(CMakePackage):
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+    patch('critic.unups.patch')
