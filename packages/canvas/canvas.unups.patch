@@ -92,3 +92,17 @@ index 4cc3c9f..4f7fb7d 100644
 -# packaging utility
 -include(UseCPack)
 +cet_cmake_config()
+diff --git a/canvas/CMakeLists.txt b/canvas/CMakeLists.txt
+index 1b7c673..7185e70 100644
+--- a/canvas/CMakeLists.txt
++++ b/canvas/CMakeLists.txt
+@@ -23,7 +23,8 @@ cet_make(LIBRARY_NAME canvas
+   cetlib_except
+   hep_concurrency
+   Boost::date_time
+-  ${CLHEP}
++  CLHEP::Matrix
++  CLHEP::Vector
+   ${CMAKE_DL_LIBS}
+   NO_DICTIONARY)
+ 

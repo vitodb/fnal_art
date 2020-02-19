@@ -10,7 +10,7 @@ index 029b9d5..6aa3f13 100644
 +cmake_minimum_required (VERSION 3.11...3.14 FATAL_ERROR)
  
 -project(messagefacility)
-+project(messagefacility VERSION 2.04.03 LANGUAGES CXX)
++project(messagefacility VERSION 2.06.00 LANGUAGES CXX)
  
 -# cetbuildtools contains our cmake modules
 -find_package(cetbuildtools 7.13.01 REQUIRED)
@@ -84,4 +84,47 @@ index 029b9d5..6aa3f13 100644
 -# This step enables building the package tarball
 -# packaging utility
 -include(UseCPack)
-+cet_cmake_config()
++add_subdirectory(cmakeConfig)
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..fc83687
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,2 @@
++# Create package configuration and version files.
++cet_cmake_config(CONFIG_FRAGMENTS messagefacility-fragment.cmake.in)
+diff --git a/cmakeConfig/messagefacility-fragment.cmake.in b/cmakeConfig/messagefacility-fragment.cmake.in
+new file mode 100644
+index 0000000..124bbed
+--- /dev/null
++++ b/cmakeConfig/messagefacility-fragment.cmake.in
+@@ -0,0 +1,3 @@
++find_package(cetlib_except REQUIRED)
++find_package(cetlib REQUIRED)
++find_package(fhiclcpp REQUIRED)
+diff --git a/xcompile/CMakeLists.txt b/xcompile/CMakeLists.txt
+index ea1507f..799e3dc 100644
+--- a/xcompile/CMakeLists.txt
++++ b/xcompile/CMakeLists.txt
+@@ -1,4 +1,4 @@
+ INSTALL (FILES
+     LinuxPPC.cmake
+-    DESTINATION ${product}/${version}/source/xcompile
++    DESTINATION source/xcompile
+     )
+--- a/messagefacility/Utilities/CMakeLists.txt	2020-02-17 10:29:56.822780697 -0600
++++ b/messagefacility/Utilities/CMakeLists.txt	2020-02-17 10:30:22.567110377 -0600
+@@ -6,7 +6,6 @@
+   COMMAND strip -S $<TARGET_FILE:mf_catch_main>
+   COMMENT "Stripping messagefacility-Catch main library"
+   )
+-_cet_check_lib_directory()
+ cet_add_to_library_list(mf_catch_main)
+ install(TARGETS mf_catch_main ARCHIVE DESTINATION ${${product}_lib_dir})
+
+--- a/perllib/CetSkelPlugins/CMakeLists.txt	2020-02-17 10:48:46.508360927 -0600
++++ b/perllib/CetSkelPlugins/CMakeLists.txt	2020-02-17 10:49:09.183770304 -0600
+@@ -1 +1,3 @@
++ find_package(cetlib REQUIRED)
++ set(cetlib_PLUGINVERSIONINFO_PM_IN "${cetlib_DIR}/../../../perllib/PluginVersionInfo.pm.in")
+ install_perllib()

@@ -1,15 +1,21 @@
---- spack-src/CMakeLists.txt.orig	2020-01-24 12:49:19.421730665 -0600
-+++ spack-src/CMakeLists.txt	2020-01-24 12:52:59.813060985 -0600
-@@ -24,7 +24,7 @@
- project(cetlib)
+--- spack-src/CMakeLists.txt.orig	2019-11-12 15:59:08.000000000 -0600
++++ spack-src/CMakeLists.txt	2020-02-13 14:45:23.000000000 -0600
+@@ -21,11 +21,12 @@
+ # ----------------------------------------------------------------------
+ # Describe product:
+ 
+-project(cetlib)
++project(cetlib VERSION 3.09.00 )
  
  # cetbuildtools contains our cmake modules
 -find_package(cetbuildtools 7.13.01 REQUIRED)
-+find_package(cetmodules 1.01.01 REQUIRED)
++find_package(cetmodules)
  
++ include(FindPkgConfig)
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -69,10 +69,11 @@
+ 
+@@ -69,14 +70,15 @@
  # ----------------------------------------------------------------------
  # Describe build prerequisites:
  
@@ -26,3 +32,60 @@
 +cet_cmake_config()
  
  # SQLite
+-cet_find_library(SQLITE3 NAMES sqlite3_ups PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
++find_library(SQLITE3 NAMES libsqlite3 PATHS SQLITE_LIBDIR)
+ # find openSSL
+ # when building on macOS, use CommonCrypto
+ if(NOT APPLE)
+@@ -88,12 +88,10 @@
+ 
+ add_subdirectory( ${PROJECT_NAME} )  # source code
+ add_subdirectory( perllib )          # Modular plugin skeleton generator
+-add_subdirectory( ups )              # ups files
+ 
+ # ----------------------------------------------------------------------
+ # Packaging utility
+ 
+-include(UseCPack)
+ 
+ #
+ # ======================================================================
+--- spack-src/perllib/CMakeLists.txt.orig	2020-02-14 12:09:18.000000000 -0600
++++ spack-src/perllib/CMakeLists.txt	2020-02-14 12:08:47.000000000 -0600
+@@ -1,4 +1,9 @@
++cet_project_var(PLUGINVERSIONINFO_PM_IN
++  TYPE FILEPATH
++  DOCSTRING "Location of Perl PluginVersionInfo.pm.in template file"
++  perllib/PluginVersionInfo.pm.in
++)
+ install(FILES PluginVersionInfo.pm.in
+-  DESTINATION ${${product}_perllib})
++  DESTINATION perllib)
+ cet_script(cetskelgen)
+ add_subdirectory(CetSkel)
+
+
+--- tmp/perllib/CetSkel/cetskelgen/CMakeLists.txt.orig	2020-02-14 12:46:11.000000000 -0600
++++ tmp/perllib/CetSkel/cetskelgen/CMakeLists.txt	2020-02-14 12:45:46.000000000 -0600
+@@ -1,3 +1,3 @@
+ configure_file(VersionInfo.pm.in ${CMAKE_CURRENT_BINARY_DIR}/VersionInfo.pm @ONLY)
+ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/VersionInfo.pm
+-  DESTINATION ${${product}_perllib}/CetSkel/cetskelgen)
++  DESTINATION perllib/CetSkel/cetskelgen)
+diff --git a/perllib/PluginVersionInfo.pm.in b/perllib/PluginVersionInfo.pm.in
+index 86c5f2e..26e9066 100644
+--- a/perllib/PluginVersionInfo.pm.in
++++ b/perllib/PluginVersionInfo.pm.in
+@@ -1,9 +1,9 @@
+ use strict;
+ 
+-package CetSkelPlugins::@product@::PluginVersionInfo;
++package CetSkelPlugins::@PROJECT_NAME@::PluginVersionInfo;
+ 
+-sub product { return "@product@"; }
++sub product { return "@PROJECT_NAME@"; }
+ 
+-sub version { return "@version@"; }
++sub version { return "@PROJECT_VERSION@"; }
+ 
+ 1;

@@ -39,6 +39,8 @@ class Art(CMakePackage):
     version('3.02.06', tag='v3_02_06', git=git_base)
     version('3.03.01', tag='v3_03_01', git=git_base)
 
+    patch('art.unups.patch')
+
     variant('cxxstd',
             default='17',
             values=('14', '17'),
