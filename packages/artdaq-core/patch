@@ -2,40 +2,22 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 50326e6..0e17382 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -18,43 +18,44 @@ cmake_minimum_required (VERSION 2.8)
+@@ -16,12 +16,8 @@
+ # use cmake 2.8 or later
+ cmake_minimum_required (VERSION 2.8)
  
- project(artdaq-core)
- # cetbuildtools contains our cmake modules
+-project(artdaq-core)
+-# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
 -    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
 -ENDIF()
-+#SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
-+#IF (NOT CETBUILDTOOLS_VERSION)
-+#    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
-+#ENDIF()
++project(artdaq-core VERSION 3.05.11 LANGUAGE CXX)
++find_package(cetmodules)
  
  # Modules moved from canvas to canvas_root_io when canvas_root_io was introduced
--set(CMAKE_MODULE_PATH
--  $ENV{CANVAS_ROOT_IO_DIR}/Modules
--  $ENV{CANVAS_DIR}/Modules
--	$ENV{CETBUILDTOOLS_DIR}/Modules
--	${CMAKE_MODULE_PATH})
--
-+#set(CMAKE_MODULE_PATH
-+#  $ENV{CANVAS_ROOT_IO_DIR}/Modules
-+#  $ENV{CANVAS_DIR}/Modules
-+#	$ENV{CETBUILDTOOLS_DIR}/Modules
-+#	${CMAKE_MODULE_PATH})
-+find_package(cetmodules)
- include(CetCMakeEnv)
- cet_cmake_env()
- 
- cet_set_compiler_flags(DIAGS VIGILANT
-   WERROR
-   NO_UNDEFINED
--  EXTRA_FLAGS -pedantic
-+  EXTRA_FLAGS -pedantic -Wno-maybe-uninitialized
+ set(CMAKE_MODULE_PATH
+@@ -40,18 +36,16 @@
  )
  
  # these are minimum required versions, not the actual product versions
@@ -51,62 +33,20 @@ index 50326e6..0e17382 100644
 -find_ups_product( tbb v4_1 )
 -find_ups_root( v5_34_20 )
 -find_ups_product( TRACE v3_03_00 )
--
--
--string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "$ENV{MESSAGEFACILITY_VERSION}")
-+find_package( Boost COMPONENTS date_time filesystem program_options
-+              regex system unit_test_framework REQUIRED)
-+find_package( art REQUIRED)
-+find_package( canvas_root_io REQUIRED)
-+find_package( canvas REQUIRED)
-+find_package( cetlib REQUIRED)
-+find_package( clhep REQUIRED)
-+find_package( fhiclcpp REQUIRED)
-+find_package( messagefacility REQUIRED )
++find_package( Boost)
++find_package( canvas )
++find_package( cetlib )
++find_package( clhep )
++find_package( fhiclcpp )
++find_package( messagefacility )
 +find_package( sqlite )
-+find_package( tbb REQUIRED)
-+find_package( ROOT REQUIRED)
-+find_package( trace REQUIRED)
-+
-+
-+string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "${MESSAGEFACILITY_VERSION}")
- list(GET MESSAGEFACILITY_VERSION_LIST 0 MESSAGEFACILITY_MAJOR_VERSION)
- list(GET MESSAGEFACILITY_VERSION_LIST 1 MESSAGEFACILITY_MINOR_VERSION)
- list(GET MESSAGEFACILITY_VERSION_LIST 2 MESSAGEFACILITY_PATCH_VERSION)
-@@ -62,7 +63,7 @@ list(GET MESSAGEFACILITY_VERSION_LIST 2 MESSAGEFACILITY_PATCH_VERSION)
- message("-DMESSAGEFACILITY_HEX_VERSION=0x${MESSAGEFACILITY_MAJOR_VERSION}${MESSAGEFACILITY_MINOR_VERSION}${MESSAGEFACILITY_PATCH_VERSION}")
- add_definitions(-DMESSAGEFACILITY_HEX_VERSION=0x${MESSAGEFACILITY_MAJOR_VERSION}${MESSAGEFACILITY_MINOR_VERSION}${MESSAGEFACILITY_PATCH_VERSION})
++find_package( tbb )
++find_package( root )
++find_package( trace )
  
--string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" CANVAS_VERSION_LIST "$ENV{CANVAS_VERSION}")
-+string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" CANVAS_VERSION_LIST "${CANVAS_VERSION}")
- list(GET CANVAS_VERSION_LIST 0 CANVAS_MAJOR_VERSION)
- list(GET CANVAS_VERSION_LIST 1 CANVAS_MINOR_VERSION)
- list(GET CANVAS_VERSION_LIST 2 CANVAS_PATCH_VERSION)
-@@ -71,12 +72,12 @@ message("-DCANVAS_HEX_VERSION=0x${CANVAS_MAJOR_VERSION}${CANVAS_MINOR_VERSION}${
- add_definitions(-DCANVAS_HEX_VERSION=0x${CANVAS_MAJOR_VERSION}${CANVAS_MINOR_VERSION}${CANVAS_PATCH_VERSION})
  
- # as of art v2_11_00, messagefacility has a single library
--check_ups_version(messagefacility $ENV{MESSAGEFACILITY_VERSION} v2_02_00 PRODUCT_MATCHES_VAR ONE_MF_LIBRARY)
--if(ONE_MF_LIBRARY)
-+#check_ups_version(messagefacility $ENV{MESSAGEFACILITY_VERSION} v2_02_00 PRODUCT_MATCHES_VAR ONE_MF_LIBRARY)
-+#if(ONE_MF_LIBRARY)
-     set( MESSAGEFACILITY_LIBS MF_MessageLogger)
--else()
--    set( MESSAGEFACILITY_LIBS MF_MessageLogger MF_Utilities)
--endif()
-+#else()
-+#    set( MESSAGEFACILITY_LIBS MF_MessageLogger MF_Utilities)
-+#endif()
- 
- # Debug streamer.
- string(TOUPPER ${CMAKE_BUILD_TYPE} BTYPE_UC)
-@@ -106,16 +107,16 @@ include(CetMake)
- include(BasicPlugin)
- 
- # testing
- add_subdirectory(test)
- 
- # source
+ string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "$ENV{MESSAGEFACILITY_VERSION}")
+@@ -112,7 +106,7 @@
  add_subdirectory(artdaq-core)
  
  # ups - table and config files
@@ -114,31 +54,10 @@ index 50326e6..0e17382 100644
 +#add_subdirectory(ups)
  
  # doc - Documentation
--add_subdirectory(doc)
-+#add_subdirectory(doc)
+ if ( NOT DEFINED ENV{DISABLE_DOXYGEN} )
+@@ -120,4 +114,4 @@
+ endif()
  
  # packaging utility
 -include(UseCPack)
-+#include(UseCPack)
-diff --git a/artdaq-core/Core/CMakeLists.txt b/artdaq-core/Core/CMakeLists.txt
-index 4dad53c..2d96d6a 100644
---- a/artdaq-core/Core/CMakeLists.txt
-+++ b/artdaq-core/Core/CMakeLists.txt
-@@ -15,7 +15,7 @@ cet_make(
-   pthread
-   ${MF_MESSAGELOGGER}
-   ${Boost_THREAD_LIBRARY}
--  ${Boost_SYSTEM_LIBRARY} 
-+  ${Boost_SYSTEM_LIBRARY}
-   )
- 
- install_headers()
-diff --git a/artdaq-core/Data/CMakeLists.txt b/artdaq-core/Data/CMakeLists.txt
-index fe015d3..4ed8515 100644
---- a/artdaq-core/Data/CMakeLists.txt
-+++ b/artdaq-core/Data/CMakeLists.txt
-@@ -1,3 +1,4 @@
-+include_directories(${Boost_INCLUDE_DIR})
- cet_make(
- NO_DICTIONARY
-   LIBRARIES
++cet_cmake_config()
