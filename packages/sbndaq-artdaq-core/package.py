@@ -20,7 +20,7 @@ class SbndaqArtdaqCore(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-    patch('sbnd-artdaq-unups.patch')
+    patch('sbndaq-artdaq-core-unups.patch')
 
     depends_on('cetmodules', type='build')
     depends_on('artdaq-core')
