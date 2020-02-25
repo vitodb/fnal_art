@@ -15,7 +15,7 @@ index 9046c98..9d9486e 100644
 -# cetbuildtools contains our cmake modules
 -find_package(cetbuildtools 7.13.01 REQUIRED)
 +# cetmodules contains our cmake modules
-+find_package(cetmodules 1.01.01 REQUIRED)
++find_package(cetmodules REQUIRED)
  
  list(APPEND CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules)
  
