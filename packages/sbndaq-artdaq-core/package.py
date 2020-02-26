@@ -25,7 +25,7 @@ class SbndaqArtdaqCore(CMakePackage):
     depends_on('cetmodules', type='build')
     depends_on('artdaq-core')
     depends_on('cetlib')
-    depends_on('cetlib_except')
+    depends_on('cetlib-except')
     depends_on('boost')
     depends_on('trace')
  
