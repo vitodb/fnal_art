@@ -28,7 +28,7 @@ class Nug4(CMakePackage):
     version('1.03.01', tag='v1_03_01', git=git_base)
     version('1.03.00', tag='v1_03_00', git=git_base)
 
-    patch('nugen.unups.patch')
+    patch('nug4.unups.patch')
 
     variant('cxxstd',
             default='17',
