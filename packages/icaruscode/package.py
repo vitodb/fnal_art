@@ -21,7 +21,7 @@ class Icaruscode(CMakePackage):
     framework for particle physics experiments.
     """
 
-    homepage = 'https://cdcvs.fnal.gov/redmine/projects/icaruscode"
+    homepage = 'https://cdcvs.fnal.gov/redmine/projects/icaruscode'
     git_base = 'http://cdcvs.fnal.gov/projects/icaruscode'
 
     version('develop', branch='develop', git=git_base)
@@ -43,11 +43,11 @@ class Icaruscode(CMakePackage):
     depends_on('cetmodules@1.01.01:', type='build')
 
     # Build and link dependencies.
-    depends_on('art_root_io', type=('build','run'))
+    depends_on('art-root-io', type=('build','run'))
     depends_on('art', type=('build','run'))
     depends_on('boost', type=('build','run'))
     depends_on('eigen', type=('build','run'))
-    depends_on('ifdh_art', type=('build','run'))
+    depends_on('ifdh-art', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))
     depends_on('larcore', type=('build','run'))
@@ -58,10 +58,10 @@ class Icaruscode(CMakePackage):
     depends_on('larreco', type=('build','run'))
     depends_on('larsim', type=('build','run'))
     depends_on('nug4', type=('build','run'))
-    depends_on('nurandom', type=('build','run'))
+    # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
-    depends_on('cppsgl', type=('build','run'))
+    depends_on('cppgsl', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

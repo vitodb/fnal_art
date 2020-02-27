@@ -39,7 +39,7 @@ class Nug4(CMakePackage):
     # Build-only dependencies.
     depends_on('cetmodules@1.01.01:', type='build')
     depends_on('art')
-    depends_on('art_root_io')
+    depends_on('art-root-io')
     depends_on('nusimdata')
     depends_on('cetlib')
     depends_on('cetlib-except')
