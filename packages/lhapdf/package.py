@@ -10,7 +10,15 @@ import glob
 class Lhapdf(AutotoolsPackage):
 
     homepage = "http://www.hepforge.org/lhapdf"
-    url      = "http://www.hepforge.org/archive/lhapdf/lhapdf-5.9.1.tar.gz"
+    url      = "https://lhapdf.hepforge.org/downloads/?f=lhapdf-5.9.1.tar.gz"
+
+    def url_for_version(self, version):
+        # between 5.x and 6.x they went to upper case names in the URLs
+        if str(version)[0] < '6':
+            urlf = "https://lhapdf.hepforge.org/downloads/?f=lhapdf-%s.tar.gz"
+        else:
+            urlf = "https://lhapdf.hepforge.org/downloads/?f=LHAPDF-%s.tar.gz"
+        return urlf % version
 
     version('5.9.1', sha256='86b9b046d7f25627ce2aab6847ef1c5534972f4bae18de98225080cf5086919c')
 
