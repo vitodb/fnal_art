@@ -44,15 +44,15 @@ class FhiclCpp(CMakePackage):
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules@1.01.01:', type='build')
-    depends_on('py-pybind11', type='build', when='@MVP1a')
+    depends_on('py-pybind11', type='build')
 
     # Build / link dependencies.
     depends_on('boost')
     depends_on('cetlib')
     depends_on('cetlib-except')
-    depends_on('hep-concurrency', when='@MVP1a')
+    depends_on('hep-concurrency')
     depends_on('sqlite')
-    depends_on('openssl', when='@MVP')
+    depends_on('openssl')
     depends_on('python')
 
     if 'SPACKDEV_GENERATOR' in os.environ:

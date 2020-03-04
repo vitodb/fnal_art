@@ -1,10 +1,10 @@
---- CMakeLists.txt.orig	2020-03-03 22:24:52.086737138 -0600
-+++ CMakeLists.txt	2020-03-03 22:27:11.081519728 -0600
-@@ -15,10 +15,10 @@
- #  make package (builds distribution tarfile)
+--- a/CMakeLists.txt	2020-03-03 22:24:52.086737138 -0600
++++ b/CMakeLists.txt	2020-03-03 22:27:11.081519728 -0600
+@@ -16,10 +16,10 @@
  
- cmake_minimum_required(VERSION 3.12...3.14 FATAL_ERROR)
--project(fhiclcpp LANGUAGES CXX C)
+ cmake_minimum_required(VERSION 3.11)  # use cmake 3.11 or later
+ 
+-project(fhiclcpp)
 +project(fhiclcpp VERSION 4.11.00 LANGUAGES CXX C)
  
  # cetbuildtools contains our cmake modules
@@ -26,7 +26,7 @@
 +find_package(cetlib)
 +find_package(python)
 +find_package(sqlite)
-+find_package(Boost)
++find_package(Boost COMPONENTS program_options)
  
  # SQLite
  cet_find_library(SQLITE3 NAMES sqlite3_ups PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
