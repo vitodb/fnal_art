@@ -25,7 +25,7 @@
 +find_package(cetlib_except)
 +find_package(cetlib)
 +find_package(python)
-+find_package(sqlite)
++find_library(SQLITE3 NAMES sqlite3)
 +find_package(Boost COMPONENTS program_options)
  
  # SQLite

@@ -2,13 +2,11 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 7f63de8..017aa30 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -12,20 +12,13 @@
- #  make package (builds distribution tarfile)
+@@ -13,18 +13,13 @@
  # ======================================================================
  
--# use cmake 2.8 or later
+ # use cmake 2.8 or later
 -cmake_minimum_required (VERSION 2.8)
-+# use cmake 3.11 or later
 +cmake_minimum_required (VERSION 3.11)
  
 -##SET ( CMAKE_VERBOSE_MAKEFILE true )
@@ -18,16 +16,14 @@ index 7f63de8..017aa30 100644
 -    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
 -ENDIF()
  
--set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
--		      $ENV{CETBUILDTOOLS_DIR}/Modules
--		      ${CMAKE_MODULE_PATH})
-+project(ifdh_art VERSION 2.08.00 LANGUAGES CXX )
+ set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
+ 		      $ENV{CETBUILDTOOLS_DIR}/Modules
+ 		      ${CMAKE_MODULE_PATH})
++find_package( cetmodules  )
  
-+find_package(cetmodules 1.02.03)
  include(CetCMakeEnv)
  cet_cmake_env()
- 
-@@ -37,50 +30,22 @@ cet_set_compiler_flags(DIAGS VIGILANT
+@@ -37,29 +32,17 @@
  
  cet_report_compiler_flags()
  
@@ -37,17 +33,7 @@ index 7f63de8..017aa30 100644
 -find_ups_product( nucondb  )
 -find_ups_product( libwda  )
 -find_ups_product( cetbuildtools  )
-+cet_find_simple_package(ifbeam)
-+cet_find_simple_package(ifdh INCPATH_SUFFIXES inc)
-+cet_find_simple_package(nucondb)
-+cet_find_simple_package(wda)
-+cet_find_simple_package(sqlite3)
-+find_package(cetlib_except REQUIRED)
-+find_package(art REQUIRED)
- 
--if(DEFINED ENV{CETLIB_EXCEPT_DIR})
--  find_ups_product( cetlib_except )
--endif()
+-find_ups_product( cetlib_except )
 -
 -# include search path
 -# decide if we have IFDHC_FQ_DIR or IFDHC_DIR
@@ -64,28 +50,27 @@ index 7f63de8..017aa30 100644
 -  include_directories($ENV{IFBEAM_DIR}/include)
 -  include_directories($ENV{NUCONDB_DIR}/include)
 -endif()
--
--#ifdhc
--cet_find_library( IFDH    NAMES ifdh    PATHS ENV IFDHC_LIB   NO_DEFAULT_PATH )
--cet_find_library( IFBEAM  NAMES ifbeam  PATHS ENV IFBEAM_LIB  NO_DEFAULT_PATH )
--cet_find_library( NUCONDB NAMES nucondb PATHS ENV NUCONDB_LIB NO_DEFAULT_PATH )
--cet_find_library( WDA     NAMES wda     PATHS ENV LIBWDA_LIB  NO_DEFAULT_PATH )
--
--# SQLite
--cet_find_library(SQLITE3 NAMES sqlite3 PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
--
--# macros for art_dictionary and simple_plugin
--include(ArtDictionary)
-+# macros
- include(ArtMake)
- include(BuildPlugins)
++find_package( art )
++find_package( ifdhc  )
++find_package( ifbeam  )
++find_package( nucondb  )
++find_package( libwda  )
++find_package( cetlib_except )
++
++include_directories($ENV{IFDHC_FQ_DIR}/inc)
++include_directories($ENV{LIBWDA_FQ_DIR}/include)
++include_directories($ENV{IFBEAM_FQ_DIR}/include)
++include_directories($ENV{NUCONDB_FQ_DIR}/include)
+ 
+ #ifdhc
+ cet_find_library( IFDH    NAMES ifdh    PATHS ENV IFDHC_LIB   NO_DEFAULT_PATH )
+@@ -76,7 +59,7 @@
  
  add_subdirectory (src)
  #add_subdirectory (tests)
 -add_subdirectory (ups)
 +#add_subdirectory (ups)
-+cet_cmake_config()
-
+ 
  # packaging utility
 -include(UseCPack)
-+#include(UseCPack)
++cet_cmake_config()
