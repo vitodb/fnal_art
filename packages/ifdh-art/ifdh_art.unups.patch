@@ -1,7 +1,5 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 7f63de8..017aa30 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
+--- a/CMakeLists.txt	2020-03-09 11:23:51.311433781 -0500
++++ b/CMakeLists.txt	2020-03-09 11:26:55.329234123 -0500
 @@ -13,18 +13,13 @@
  # ======================================================================
  
@@ -23,7 +21,7 @@ index 7f63de8..017aa30 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -37,29 +32,17 @@
+@@ -37,46 +32,38 @@
  
  cet_report_compiler_flags()
  
@@ -56,15 +54,35 @@ index 7f63de8..017aa30 100644
 +find_package( nucondb  )
 +find_package( libwda  )
 +find_package( cetlib_except )
++find_package( Boost COMPONENTS System Fileystem )
++set( Boost_FILESYSTEM_LIBRARY Boost::Filesystem)
++set( Boost_SYSTEM_LIBRARY Boost::System)
 +
-+include_directories($ENV{IFDHC_FQ_DIR}/inc)
-+include_directories($ENV{LIBWDA_FQ_DIR}/include)
-+include_directories($ENV{IFBEAM_FQ_DIR}/include)
-+include_directories($ENV{NUCONDB_FQ_DIR}/include)
++
++#include_directories($ENV{IFDHC_FQ_DIR}/inc)
++#include_directories($ENV{LIBWDA_FQ_DIR}/include)
++#include_directories($ENV{IFBEAM_FQ_DIR}/include)
++#include_directories($ENV{NUCONDB_FQ_DIR}/include)
  
  #ifdhc
- cet_find_library( IFDH    NAMES ifdh    PATHS ENV IFDHC_LIB   NO_DEFAULT_PATH )
-@@ -76,7 +59,7 @@
+-cet_find_library( IFDH    NAMES ifdh    PATHS ENV IFDHC_LIB   NO_DEFAULT_PATH )
+-cet_find_library( IFBEAM  NAMES ifbeam  PATHS ENV IFBEAM_LIB  NO_DEFAULT_PATH )
+-cet_find_library( NUCONDB NAMES nucondb PATHS ENV NUCONDB_LIB NO_DEFAULT_PATH )
+-cet_find_library( WDA     NAMES wda     PATHS ENV LIBWDA_LIB  NO_DEFAULT_PATH )
++cet_find_library( IFDH    NAMES ifdh    )
++cet_find_library( IFBEAM  NAMES ifbeam  )
++cet_find_library( NUCONDB NAMES nucondb )
++cet_find_library( WDA     NAMES wda     )
+ 
+ # SQLite
+-cet_find_library(SQLITE3 NAMES sqlite3 PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
++cet_find_library(SQLITE3 NAMES sqlite3 )
+ 
+ # macros
+-include(ArtMake)
+-include(BuildPlugins)
++#include(ArtMake)
++#include(BuildPlugins)
  
  add_subdirectory (src)
  #add_subdirectory (tests)

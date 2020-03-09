@@ -29,7 +29,7 @@ from the ifdhc package."""
     depends_on('ifbeam')
     depends_on('nucondb')
     depends_on('libwda')
-    depends_on('cetmodules@1.02.03:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -42,4 +42,5 @@ from the ifdhc package."""
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         spack_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('PATH', self.prefix.bin)
+
     patch('ifdh_art.unups.patch')
