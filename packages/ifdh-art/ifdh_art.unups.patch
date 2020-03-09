@@ -21,7 +21,7 @@
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -37,38 +32,30 @@
+@@ -37,46 +32,41 @@
  
  cet_report_compiler_flags()
  
@@ -55,9 +55,13 @@
 +find_package( libwda  )
 +find_package( cetlib_except )
 +find_package( Boost COMPONENTS System Fileystem )
++
++# set a few things so the old sub-CMakefiles work
 +set( Boost_FILESYSTEM_LIBRARY Boost::Filesystem)
 +set( Boost_SYSTEM_LIBRARY Boost::System)
-+
++function(simple_plugin name type)
++  basic_plugin(name type)
++endfunction(basic_plugin name type)
 +
 +#include_directories($ENV{IFDHC_FQ_DIR}/inc)
 +#include_directories($ENV{LIBWDA_FQ_DIR}/include)
@@ -79,8 +83,9 @@
 +cet_find_library(SQLITE3 NAMES sqlite3 )
  
  # macros
- include(ArtMake)
-@@ -76,7 +63,7 @@
+-include(ArtMake)
+-include(BuildPlugins)
++include(BasicPlugin)
  
  add_subdirectory (src)
  #add_subdirectory (tests)
