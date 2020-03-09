@@ -1,5 +1,5 @@
---- a/CMakeLists.txt	2020-03-09 11:23:51.311433781 -0500
-+++ b/CMakeLists.txt	2020-03-09 11:26:55.329234123 -0500
+--- a/CMakeLists.txt	2020-03-09 11:57:52.286717838 -0500
++++ b/CMakeLists.txt	2020-03-09 11:58:56.040253843 -0500
 @@ -13,18 +13,13 @@
  # ======================================================================
  
@@ -21,7 +21,7 @@
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -37,46 +32,38 @@
+@@ -37,38 +32,30 @@
  
  cet_report_compiler_flags()
  
@@ -79,10 +79,8 @@
 +cet_find_library(SQLITE3 NAMES sqlite3 )
  
  # macros
--include(ArtMake)
--include(BuildPlugins)
-+#include(ArtMake)
-+#include(BuildPlugins)
+ include(ArtMake)
+@@ -76,7 +63,7 @@
  
  add_subdirectory (src)
  #add_subdirectory (tests)
