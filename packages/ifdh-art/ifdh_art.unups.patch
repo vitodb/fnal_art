@@ -1,17 +1,14 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index dc8bab2..017aa30 100644
+index dc8bab2..2bd3bd4 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -12,20 +12,13 @@
- #  make package (builds distribution tarfile)
- # ======================================================================
+@@ -15,16 +15,11 @@
+ # use cmake 2.8 or later
+ cmake_minimum_required (VERSION 2.8)
  
--# use cmake 2.8 or later
--cmake_minimum_required (VERSION 2.8)
-+# use cmake 3.11 or later
-+cmake_minimum_required (VERSION 3.11)
- 
--##SET ( CMAKE_VERBOSE_MAKEFILE true )
++project(ifdh_art VERSION 2.10.02 LANGUAGES CXX )
++
+ ##SET ( CMAKE_VERBOSE_MAKEFILE true )
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
@@ -21,13 +18,11 @@ index dc8bab2..017aa30 100644
 -set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
-+project(ifdh_art VERSION 2.08.00 LANGUAGES CXX )
++find_package(cetmodules)
  
-+find_package(cetmodules 1.02.03)
  include(CetCMakeEnv)
  cet_cmake_env()
- 
-@@ -37,38 +30,13 @@ cet_set_compiler_flags(DIAGS VIGILANT
+@@ -37,46 +32,28 @@ cet_set_compiler_flags(DIAGS VIGILANT
  
  cet_report_compiler_flags()
  
@@ -38,7 +33,13 @@ index dc8bab2..017aa30 100644
 -find_ups_product( libwda  )
 -find_ups_product( cetbuildtools  )
 -find_ups_product( cetlib_except )
--
++find_package( art )
++find_package( ifdhc  )
++find_package( ifbeam  )
++find_package( nucondb  )
++find_package( libwda  )
++find_package( cetlib_except )
+ 
 -# include search path
 -# decide if we have IFDHC_FQ_DIR or IFDHC_DIR
 -if ( $ENV{IFDHC_FQ_DIR} MATCHES "ifdhc" )
@@ -54,51 +55,33 @@ index dc8bab2..017aa30 100644
 -  include_directories($ENV{IFBEAM_DIR}/include)
 -  include_directories($ENV{NUCONDB_DIR}/include)
 -endif()
--
--#ifdhc
+ 
+ #ifdhc
 -cet_find_library( IFDH    NAMES ifdh    PATHS ENV IFDHC_LIB   NO_DEFAULT_PATH )
 -cet_find_library( IFBEAM  NAMES ifbeam  PATHS ENV IFBEAM_LIB  NO_DEFAULT_PATH )
 -cet_find_library( NUCONDB NAMES nucondb PATHS ENV NUCONDB_LIB NO_DEFAULT_PATH )
 -cet_find_library( WDA     NAMES wda     PATHS ENV LIBWDA_LIB  NO_DEFAULT_PATH )
--
--# SQLite
++cet_find_library( IFDH    NAMES ifdh    )
++cet_find_library( IFBEAM  NAMES ifbeam  )
++cet_find_library( NUCONDB NAMES nucondb )
++cet_find_library( WDA     NAMES wda     )
+ 
+ # SQLite
 -cet_find_library(SQLITE3 NAMES sqlite3 PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
-+cet_find_simple_package(ifbeam)
-+cet_find_simple_package(ifdh INCPATH_SUFFIXES inc)
-+cet_find_simple_package(nucondb)
-+cet_find_simple_package(wda)
-+cet_find_simple_package(sqlite3)
-+find_package(cetlib_except REQUIRED)
-+find_package(art REQUIRED)
++cet_find_library(SQLITE3 NAMES sqlite3 )
  
  # macros
- include(ArtMake)
-@@ -76,7 +44,8 @@ include(BuildPlugins)
+-include(ArtMake)
+-include(BuildPlugins)
++include(BasicPlugin)
  
  add_subdirectory (src)
- #add_subdirectory (tests)
+-#add_subdirectory (tests)
 -add_subdirectory (ups)
-+#add_subdirectory (ups)
-+add_subdirectory(cmakeConfig)
  
  # packaging utility
 -include(UseCPack)
-+#include(UseCPack)
-diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
-new file mode 100644
-index 0000000..756fe99
---- /dev/null
-+++ b/cmakeConfig/CMakeLists.txt
-@@ -0,0 +1,2 @@
-+# Create package configuration and version files.
-+cet_cmake_config(CONFIG_FRAGMENTS ifdh-art-fragment.cmake.in)
-diff --git a/cmakeConfig/ifdh-art-fragment.cmake.in b/cmakeConfig/ifdh-art-fragment.cmake.in
-new file mode 100644
-index 0000000..167b4fb
---- /dev/null
-+++ b/cmakeConfig/ifdh-art-fragment.cmake.in
-@@ -0,0 +1,2 @@
-+find_package( art REQUIRED)
++cet_cmake_config()
 +
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
 index ec4769d..b52a789 100644
@@ -111,10 +94,30 @@ index ec4769d..b52a789 100644
    set(header_install_dir ${${product}_inc_dir} )
    message( STATUS "install_ifdh_headers: headers will be installed in ${header_install_dir}" )
    FILE(GLOB headers [^.]*.h [^.]*.hh [^.]*.icc )
+diff --git a/src/IFBeamService/CMakeLists.txt b/src/IFBeamService/CMakeLists.txt
+index 66adae2..cc46c1f 100644
+--- a/src/IFBeamService/CMakeLists.txt
++++ b/src/IFBeamService/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ 
+ 
+ 
+-simple_plugin(IFBeam "service" 
++basic_plugin(IFBeam "service" 
+ 			   ${IFBEAM} 
+                            ${WDA}
+                            ${IFDH}
 diff --git a/src/IFCatalogInterface/CMakeLists.txt b/src/IFCatalogInterface/CMakeLists.txt
-index ea6098f..1f5e804 100644
+index ea6098f..20c86df 100644
 --- a/src/IFCatalogInterface/CMakeLists.txt
 +++ b/src/IFCatalogInterface/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ 
+-simple_plugin(IFCatalogInterface "service" 
++basic_plugin(IFCatalogInterface "service" 
+ 			   ${IFDH} 
+                            ${ART_FRAMEWORK_CORE}
+                            ${ART_UTILITIES}
 @@ -9,7 +9,7 @@ simple_plugin(IFCatalogInterface "service"
                             ${CETLIB} ${CETLIB_EXCEPT}
                             ${Boost_FILESYSTEM_LIBRARY}
@@ -124,16 +127,40 @@ index ea6098f..1f5e804 100644
                BASENAME_ONLY
  		)
  include_directories(../IFDHService)
+diff --git a/src/IFDHService/CMakeLists.txt b/src/IFDHService/CMakeLists.txt
+index 6154868..8df10dc 100644
+--- a/src/IFDHService/CMakeLists.txt
++++ b/src/IFDHService/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ 
+ 
+-simple_plugin(IFDH service 
++basic_plugin(IFDH service 
+ 			   ${IFDH} 
+ 			   ${ART_UTILITIES}
+                            ${MF_MESSAGELOGGER}
 diff --git a/src/IFFileTransfer/CMakeLists.txt b/src/IFFileTransfer/CMakeLists.txt
-index 856b8c8..b9cf426 100644
+index 856b8c8..c652706 100644
 --- a/src/IFFileTransfer/CMakeLists.txt
 +++ b/src/IFFileTransfer/CMakeLists.txt
-@@ -9,7 +9,7 @@ simple_plugin(IFFileTransfer "service"
-                            ${MF_UTILITIES}
- 			   ${FHICLCPP}
-                            ${CETLIB} ${CETLIB_EXCEPT}
--                           ${ROOT_BASIC_LIB_LIST}
-+                           ${ROOT_LIBRARIES}
-                            ${Boost_FILESYSTEM_LIBRARY}
-                            ${Boost_SYSTEM_LIBRARY}
-               BASENAME_ONLY
+@@ -1,7 +1,7 @@
+ 
+ include_directories(../IFDHService)
+ 
+-simple_plugin(IFFileTransfer "service" 
++basic_plugin(IFFileTransfer "service" 
+ 			   ${IFDH} 
+                            ${ART_FRAMEWORK_CORE}
+                            ${ART_UTILITIES}
+diff --git a/src/nucondbService/CMakeLists.txt b/src/nucondbService/CMakeLists.txt
+index 1d2c403..a59ffcd 100644
+--- a/src/nucondbService/CMakeLists.txt
++++ b/src/nucondbService/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ 
+ 
+-simple_plugin(nucondb "service" 
++basic_plugin(nucondb "service" 
+ 			   ${NUCONDB} 
+                            ${WDA}
+                            ${IFDH}
