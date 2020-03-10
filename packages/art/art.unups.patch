@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index aeac6a1..82abba4 100644
+index 9be53d4..68f4d57 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -16,13 +16,11 @@
@@ -20,7 +20,7 @@ index aeac6a1..82abba4 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -31,7 +31,7 @@
+@@ -33,7 +31,7 @@ cet_set_compiler_flags(DIAGS VIGILANT
    EXTRA_FLAGS -pedantic
    EXTRA_CXX_FLAGS -Wnon-virtual-dtor -Wdelete-non-virtual-dtor)
  
@@ -29,7 +29,7 @@ index aeac6a1..82abba4 100644
  if (SSE2)
    cet_add_compiler_flags(CXX -msse2 -ftree-vectorizer-verbose=2)
  endif()
-@@ -69,20 +67,24 @@
+@@ -69,20 +67,24 @@ endif()
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -65,31 +65,24 @@ index aeac6a1..82abba4 100644
  
  # macros for simple_plugin
  include(BuildPlugins)
-@@ -99,7 +99,7 @@
+@@ -96,11 +98,8 @@ add_subdirectory(tools)
+ # source
  add_subdirectory(art)
  
- # ups - table and config files
+-# ups - table and config files
 -add_subdirectory(ups)
-+#Eadd_subdirectory(ups)
- 
+-
  # CMake modules
- add_subdirectory(Modules)
-@@ -105,4 +105,5 @@
  add_subdirectory(Modules)
  
  # packaging utility
 -include(UseCPack)
-+cet_cmake_config()
-+
---- a/perllib/CetSkelPlugins/CMakeLists.txt	2020-02-17 10:48:46.508360927 -0600
-+++ b/perllib/CetSkelPlugins/CMakeLists.txt	2020-02-17 10:49:09.183770304 -0600
-@@ -1 +1,3 @@
-+ find_package(cetlib REQUIRED)
-+ set(cetlib_PLUGINVERSIONINFO_PM_IN "${cetlib_DIR}/../../../perllib/PluginVersionInfo.pm.in")
- install_perllib()
---- a/Modules/BuildPlugins.cmake	2020-02-19 10:10:47.000000000 -0600
-+++ b/Modules/BuildPlugins.cmake	2020-02-19 10:10:16.000000000 -0600
-@@ -73,22 +73,22 @@
++add_subdirectory(cmakeConfig)
+diff --git a/Modules/BuildPlugins.cmake b/Modules/BuildPlugins.cmake
+index 3fca484..ccc62d3 100644
+--- a/Modules/BuildPlugins.cmake
++++ b/Modules/BuildPlugins.cmake
+@@ -73,22 +73,22 @@ function(simple_plugin name type)
        art_Framework_IO_Sources
        Boost::filesystem)
    endif()
@@ -128,6 +121,53 @@ index aeac6a1..82abba4 100644
    if (SP_NOP)
      set (NOP_ARG NOP)
    endif()
+diff --git a/Modules/CMakeLists.txt b/Modules/CMakeLists.txt
+index d77f658..0a79d57 100644
+--- a/Modules/CMakeLists.txt
++++ b/Modules/CMakeLists.txt
+@@ -1,4 +1,4 @@
+ INSTALL(FILES
+   ArtMake.cmake
+   BuildPlugins.cmake
+-  DESTINATION ${product}/${version}/Modules)
++  DESTINATION Modules)
+diff --git a/art/Framework/Core/CMakeLists.txt b/art/Framework/Core/CMakeLists.txt
+index 4967dde..e04e0ad 100644
+--- a/art/Framework/Core/CMakeLists.txt
++++ b/art/Framework/Core/CMakeLists.txt
+@@ -15,8 +15,8 @@ art_make(
+   canvas
+   cetlib
+   hep_concurrency
+-  ${CLHEP}
+-  ${TBB})
++  CLHEP::Random
++  TBB)
+ 
+ install_headers(SUBDIRS detail)
+ install_source(SUBDIRS detail)
+diff --git a/art/Framework/Services/Optional/CMakeLists.txt b/art/Framework/Services/Optional/CMakeLists.txt
+index ce4e0d4..d22063e 100644
+--- a/art/Framework/Services/Optional/CMakeLists.txt
++++ b/art/Framework/Services/Optional/CMakeLists.txt
+@@ -7,7 +7,7 @@ endif()
+ simple_plugin(RandomNumberGenerator "service"
+   art_Framework_Principal
+   art_Persistency_Common
+-  ${CLHEP})
++  CLHEP::Random)
+ 
+ basic_plugin(MemoryTracker "service"
+   art_Framework_Principal
+@@ -18,7 +18,7 @@ basic_plugin(MemoryTracker "service"
+ 
+ simple_plugin(TimeTracker "service"
+   art_Framework_Principal
+-  ${TBB}
++  TBB::tbb
+   ${SQLITE3})
+ 
+ simple_plugin(Tracer "service" art_Framework_Principal MF_MessageLogger)
 diff --git a/art/test/Utilities/CMakeLists.txt b/art/test/Utilities/CMakeLists.txt
 index d874569..c56f5c3 100644
 --- a/art/test/Utilities/CMakeLists.txt
@@ -141,38 +181,34 @@ index d874569..c56f5c3 100644
    )
  
  cet_test(pointersEqual_t USE_BOOST_UNIT
-diff --git a/art/Framework/Core/CMakeLists.txt b/art/Framework/Core/CMakeLists.txt
-index 4949e9d..11e18b0 100644
---- a/art/Framework/Core/CMakeLists.txt
-+++ b/art/Framework/Core/CMakeLists.txt
-@@ -15,8 +15,8 @@
-   canvas
-   cetlib
-   hep_concurrency
--  ${CLHEP}
--  ${TBB})
-+  CLHEP::Random
-+  TBB)
- 
- install_headers(SUBDIRS detail)
- install_source(SUBDIRS detail)
---- c/art/Framework/Services/Optional/CMakeLists.txt	2020-02-19 13:01:21.000000000 -0600
-+++ d/art/Framework/Services/Optional/CMakeLists.txt	2020-02-19 13:01:51.000000000 -0600
-@@ -7,7 +7,7 @@
- simple_plugin(RandomNumberGenerator "service"
-   art_Framework_Principal
-   art_Persistency_Common
--  ${CLHEP})
-+  CLHEP::Random)
- 
- basic_plugin(MemoryTracker "service"
-   art_Framework_Principal
-@@ -18,7 +18,7 @@
- 
- simple_plugin(TimeTracker "service"
-   art_Framework_Principal
--  ${TBB}
-+  TBB::tbb
-   ${SQLITE3})
- 
- simple_plugin(Tracer "service" art_Framework_Principal MF_MessageLogger)
+diff --git a/perllib/CetSkelPlugins/CMakeLists.txt b/perllib/CetSkelPlugins/CMakeLists.txt
+index 1426bca..93cee2a 100644
+--- a/perllib/CetSkelPlugins/CMakeLists.txt
++++ b/perllib/CetSkelPlugins/CMakeLists.txt
+@@ -1 +1,3 @@
++ find_package(cetlib REQUIRED)
++ set(cetlib_PLUGINVERSIONINFO_PM_IN "${cetlib_DIR}/../../../perllib/PluginVersionInfo.pm.in")
+ install_perllib()
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..7a1c253
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,2 @@
++# Create package configuration and version files.
++cet_cmake_config(CONFIG_FRAGMENTS art-fragment.cmake.in)
+diff --git a/cmakeConfig/art-fragment.cmake.in b/cmakeConfig/art-fragment.cmake.in
+new file mode 100644
+index 0000000..7de916f
+--- /dev/null
++++ b/cmakeConfig/art-fragment.cmake.in
+@@ -0,0 +1,9 @@
++find_package(CLHEP COMPONENTS Vector Random REQUIRED)
++find_package(Boost COMPONENTS date_time graph program_options
++  regex system REQUIRED)
++find_package(hep_concurrency REQUIRED)
++find_package(cetlib_except REQUIRED)
++find_package(cetlib REQUIRED)
++find_package(canvas REQUIRED)
++find_package(fhiclcpp REQUIRED)
++find_package(messagefacility REQUIRED)

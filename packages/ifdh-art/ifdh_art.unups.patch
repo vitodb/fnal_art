@@ -1,13 +1,16 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index dc8bab2..2bd3bd4 100644
+index dc8bab2..346f8b2 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -15,16 +15,11 @@
- # use cmake 2.8 or later
- cmake_minimum_required (VERSION 2.8)
+@@ -13,18 +13,13 @@
+ # ======================================================================
  
-+project(ifdh_art VERSION 2.10.02 LANGUAGES CXX )
+ # use cmake 2.8 or later
+-cmake_minimum_required (VERSION 2.8)
++cmake_minimum_required (VERSION 3.11)
 +
++project(ifdh_art VERSION 2.10.02 LANGUAGES CXX )
+ 
  ##SET ( CMAKE_VERBOSE_MAKEFILE true )
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
@@ -22,7 +25,7 @@ index dc8bab2..2bd3bd4 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -37,46 +32,28 @@ cet_set_compiler_flags(DIAGS VIGILANT
+@@ -37,46 +32,30 @@ cet_set_compiler_flags(DIAGS VIGILANT
  
  cet_report_compiler_flags()
  
@@ -33,12 +36,14 @@ index dc8bab2..2bd3bd4 100644
 -find_ups_product( libwda  )
 -find_ups_product( cetbuildtools  )
 -find_ups_product( cetlib_except )
-+find_package( art )
-+find_package( ifdhc  )
-+find_package( ifbeam  )
-+find_package( nucondb  )
-+find_package( libwda  )
++cet_find_simple_package( ifdhc INCPATH_SUFFIXES inc INCPATH_VAR IFDHC_INC )
++cet_find_simple_package( ifbeam  )
++cet_find_simple_package( nucondb  )
++cet_find_simple_package( wda  )
++find_package( Boost REQUIRED COMPONENTS filesystem system )
++find_package( messagefacility )
 +find_package( cetlib_except )
++find_package( art )
  
 -# include search path
 -# decide if we have IFDHC_FQ_DIR or IFDHC_DIR
@@ -72,8 +77,7 @@ index dc8bab2..2bd3bd4 100644
  
  # macros
 -include(ArtMake)
--include(BuildPlugins)
-+include(BasicPlugin)
+ include(BuildPlugins)
  
  add_subdirectory (src)
 -#add_subdirectory (tests)
@@ -95,72 +99,87 @@ index ec4769d..b52a789 100644
    message( STATUS "install_ifdh_headers: headers will be installed in ${header_install_dir}" )
    FILE(GLOB headers [^.]*.h [^.]*.hh [^.]*.icc )
 diff --git a/src/IFBeamService/CMakeLists.txt b/src/IFBeamService/CMakeLists.txt
-index 66adae2..cc46c1f 100644
+index 66adae2..a502840 100644
 --- a/src/IFBeamService/CMakeLists.txt
 +++ b/src/IFBeamService/CMakeLists.txt
-@@ -1,7 +1,7 @@
+@@ -2,6 +2,7 @@
  
  
- 
--simple_plugin(IFBeam "service" 
-+basic_plugin(IFBeam "service" 
+ simple_plugin(IFBeam "service" 
++                           ${ART_UTILITIES}
  			   ${IFBEAM} 
                             ${WDA}
                             ${IFDH}
+@@ -9,8 +10,8 @@ simple_plugin(IFBeam "service"
+ 			   ${ART_UTILITIES}
+ 			   ${FHICLCPP}
+                            ${CETLIB}
+-                           ${Boost_FILESYSTEM_LIBRARY}
+-                           ${Boost_SYSTEM_LIBRARY}
++                           Boost::filesystem
++                           Boost::system
+               BASENAME_ONLY
+          )
+ 
 diff --git a/src/IFCatalogInterface/CMakeLists.txt b/src/IFCatalogInterface/CMakeLists.txt
-index ea6098f..20c86df 100644
+index ea6098f..5dff4bf 100644
 --- a/src/IFCatalogInterface/CMakeLists.txt
 +++ b/src/IFCatalogInterface/CMakeLists.txt
-@@ -1,5 +1,5 @@
- 
--simple_plugin(IFCatalogInterface "service" 
-+basic_plugin(IFCatalogInterface "service" 
- 			   ${IFDH} 
-                            ${ART_FRAMEWORK_CORE}
-                            ${ART_UTILITIES}
-@@ -9,7 +9,7 @@ simple_plugin(IFCatalogInterface "service"
+@@ -7,9 +7,9 @@ simple_plugin(IFCatalogInterface "service"
+                            ${MF_UTILITIES}
+ 			   ${FHICLCPP}
                             ${CETLIB} ${CETLIB_EXCEPT}
-                            ${Boost_FILESYSTEM_LIBRARY}
-                            ${Boost_SYSTEM_LIBRARY}
+-                           ${Boost_FILESYSTEM_LIBRARY}
+-                           ${Boost_SYSTEM_LIBRARY}
 -                           ${ROOT_BASIC_LIB_LIST}
++                           Boost::filesystem
++                           Boost::system
 +                           ${ROOT_LIBRARIES}
                BASENAME_ONLY
  		)
  include_directories(../IFDHService)
 diff --git a/src/IFDHService/CMakeLists.txt b/src/IFDHService/CMakeLists.txt
-index 6154868..8df10dc 100644
+index 6154868..bb283c0 100644
 --- a/src/IFDHService/CMakeLists.txt
 +++ b/src/IFDHService/CMakeLists.txt
-@@ -1,6 +1,6 @@
+@@ -7,8 +7,8 @@ simple_plugin(IFDH service
+                            ${MF_UTILITIES}
+ 			   ${FHICLCPP}
+                            ${CETLIB} ${CETLIB_EXCEPT}
+-                           ${Boost_FILESYSTEM_LIBRARY}
+-                           ${Boost_SYSTEM_LIBRARY}
++                           Boost::filesystem
++                           Boost::system
+               BASENAME_ONLY
+              )
  
- 
--simple_plugin(IFDH service 
-+basic_plugin(IFDH service 
- 			   ${IFDH} 
- 			   ${ART_UTILITIES}
-                            ${MF_MESSAGELOGGER}
 diff --git a/src/IFFileTransfer/CMakeLists.txt b/src/IFFileTransfer/CMakeLists.txt
-index 856b8c8..c652706 100644
+index 856b8c8..4a06e19 100644
 --- a/src/IFFileTransfer/CMakeLists.txt
 +++ b/src/IFFileTransfer/CMakeLists.txt
-@@ -1,7 +1,7 @@
+@@ -10,8 +10,8 @@ simple_plugin(IFFileTransfer "service"
+ 			   ${FHICLCPP}
+                            ${CETLIB} ${CETLIB_EXCEPT}
+                            ${ROOT_BASIC_LIB_LIST}
+-                           ${Boost_FILESYSTEM_LIBRARY}
+-                           ${Boost_SYSTEM_LIBRARY}
++                           Boost::filesystem
++                           Boost::system
+               BASENAME_ONLY
+            )
  
- include_directories(../IFDHService)
- 
--simple_plugin(IFFileTransfer "service" 
-+basic_plugin(IFFileTransfer "service" 
- 			   ${IFDH} 
-                            ${ART_FRAMEWORK_CORE}
-                            ${ART_UTILITIES}
 diff --git a/src/nucondbService/CMakeLists.txt b/src/nucondbService/CMakeLists.txt
-index 1d2c403..a59ffcd 100644
+index 1d2c403..22d55ae 100644
 --- a/src/nucondbService/CMakeLists.txt
 +++ b/src/nucondbService/CMakeLists.txt
-@@ -1,6 +1,6 @@
+@@ -8,8 +8,8 @@ simple_plugin(nucondb "service"
+                            ${MF_MESSAGELOGGER}
+ 			   ${FHICLCPP}
+                            ${CETLIB}
+-                           ${Boost_FILESYSTEM_LIBRARY}
+-                           ${Boost_SYSTEM_LIBRARY}
++                           Boost::filesystem
++                           Boost::system
+               BASENAME_ONLY
+         )
  
- 
--simple_plugin(nucondb "service" 
-+basic_plugin(nucondb "service" 
- 			   ${NUCONDB} 
-                            ${WDA}
-                            ${IFDH}
