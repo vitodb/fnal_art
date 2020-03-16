@@ -6,6 +6,16 @@
 from spack import *
 
 
+import os
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larsoftobj","08.26.02")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -18,6 +28,8 @@ def sanitize_environments(*args):
 class Larsoftobj(CMakePackage):
     """Larsoftobj"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larsoftobj"
     url      = "http://cdcvs.fnal.gov/projects/larsoftobj"
 
@@ -25,6 +37,8 @@ class Larsoftobj(CMakePackage):
     version('1.48.00', tag='v1_48_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
     version('1.49.00', tag='v1_49_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
     version('1.50.00', tag='v1_50_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
+    version('08.26.02', tag='v08_26_02', git='http://cdcvs.fnal.gov/projects/larsoftobj')
+    version('08.26.03', tag='v08_26_03', git='http://cdcvs.fnal.gov/projects/larsoftobj')
 
     variant('cxxstd',
             default='17',
@@ -56,4 +70,3 @@ class Larsoftobj(CMakePackage):
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
-    patch('larsoftobj.unups.patch')

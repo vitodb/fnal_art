@@ -6,6 +6,16 @@
 from spack import *
 import os
 
+
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","nusimdata","1.21.01")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -18,6 +28,8 @@ def sanitize_environments(*args):
 class Nusimdata(CMakePackage):
     """Nusimdata"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/nusimdata"
     url      = "http://cdcvs.fnal.gov/projects/nusimdata"
 
@@ -26,6 +38,9 @@ class Nusimdata(CMakePackage):
     version('1.19.02', tag='v1_19_02', git='http://cdcvs.fnal.gov/projects/nusimdata')
     version('1.20.00', tag='v1_20_00', git='http://cdcvs.fnal.gov/projects/nusimdata')
     version('1.20.01', tag='v1_20_01', git='http://cdcvs.fnal.gov/projects/nusimdata')
+    version('1.21.00', tag='v1_21_00', git='http://cdcvs.fnal.gov/projects/nusimdata')
+    version('1.21.01', tag='v1_21_01', git='http://cdcvs.fnal.gov/projects/nusimdata')
+    version('1.21.02', tag='v1_21_02', git='http://cdcvs.fnal.gov/projects/nusimdata')
 
     variant('cxxstd',
             default='17',
@@ -82,4 +97,3 @@ class Nusimdata(CMakePackage):
     @run_after('install')
     def create_dirs(self):
         mkdirp('{0}/fcl'.format(self.spec.prefix))
-    patch('nusimdata.unups.patch')

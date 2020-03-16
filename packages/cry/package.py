@@ -8,6 +8,15 @@ import os
 import glob
 
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","cry","1.7")
+
 class Cry(MakefilePackage):
     """Generates correlated cosmic-ray particle showers at one of three 
 elevations (sea level, 2100m, and 11300m) for use as input to transport 
@@ -16,6 +25,7 @@ and detector simulation codes. """
     homepage = "https://nuclear.llnl.gov/simulation/"
     url      = "https://nuclear.llnl.gov/simulation/cry_v1.7.tar.gz"
 
+    patch = patcher
     version('1.7', sha256='dcee2428f81cba113f82e0c7c42f4d85bff4b8530e5ab5c82c059bed3e570c20')
 
     parallel = False

@@ -6,6 +6,14 @@
 from spack import *
 import os
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","gallery","1.14.01")
 
 def sanitize_environments(*args):
     for env in args:
@@ -20,9 +28,11 @@ class Gallery(CMakePackage):
     """A library to allow reading of Root output files produced by the art
     suite.
     """
+    patch = patcher
 
     homepage='http://art.fnal.gov/'
     git_base = 'http://cdcvs.fnal.gov/projects/gallery'
+
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
@@ -33,6 +43,7 @@ class Gallery(CMakePackage):
     version('1.13.00', tag='v1_13_00', git=git_base)
     version('1.13.01', tag='v1_13_01', git=git_base)
     version('1.14.00', tag='v1_14_00', git=git_base)
+    version('1.14.01', tag='v1_14_01', git=git_base)
 
     variant('cxxstd',
             default='17',
@@ -94,4 +105,3 @@ class Gallery(CMakePackage):
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-    patch('gallery.unups.patch')

@@ -7,6 +7,15 @@ from spack import *
 import os
 
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larreco","08.28.00")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -19,6 +28,8 @@ def sanitize_environments(*args):
 class Larreco(CMakePackage):
     """Larreco"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larreco"
     url      = "http://cdcvs.fnal.gov/projects/larreco"
 
@@ -27,6 +38,8 @@ class Larreco(CMakePackage):
     version('08.25.01', tag='v08_25_01', git='http://cdcvs.fnal.gov/projects/larreco')
     version('08.26.00', tag='v08_26_00', git='http://cdcvs.fnal.gov/projects/larreco')
     version('08.26.01', tag='v08_26_01', git='http://cdcvs.fnal.gov/projects/larreco')
+    version('08.28.00', tag='v08_28_00', git='http://cdcvs.fnal.gov/projects/larreco')
+    version('08.29.00', tag='v08_29_00', git='http://cdcvs.fnal.gov/projects/larreco')
 
     variant('cxxstd',
             default='17',
@@ -101,4 +114,3 @@ class Larreco(CMakePackage):
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
 
-    patch('larreco.unups.patch')

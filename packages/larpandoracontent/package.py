@@ -5,9 +5,20 @@
 
 from spack import *
 
+import os
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larpandoracontent","3.15.15")
 
 class Larpandoracontent(CMakePackage):
     """Larpandoracontent"""
+
+    patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
     url      = "http://cdcvs.fnal.gov/projects/larpandoracontent"
@@ -17,6 +28,10 @@ class Larpandoracontent(CMakePackage):
     version('03.15.10', tag='v03_15_10', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
     version('03.15.11', tag='v03_15_11', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
     version('03.15.12', tag='v03_15_12', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
+    version('03.15.13', tag='v03_15_13', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
+    version('03.15.14', tag='v03_15_14', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
+    version('03.15.15', tag='v03_15_15', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
+    version('03.15.16', tag='v03_15_16', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
 
     variant('cxxstd',
             default='17',
@@ -39,4 +54,3 @@ class Larpandoracontent(CMakePackage):
                 '-DPandoraMonitoring_DIR={0}/cmakemodules'.format(self.spec['pandora'].prefix),
                ]
         return args
-    patch('larpandoracontent.unups.patch')

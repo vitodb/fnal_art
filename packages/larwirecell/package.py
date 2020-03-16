@@ -6,6 +6,17 @@
 from spack import *
 import os
 
+
+
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larwirecell","08.12.03")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -18,6 +29,8 @@ def sanitize_environments(*args):
 class Larwirecell(CMakePackage):
     """Larwirecell"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larwirecell"
     url      = "http://cdcvs.fnal.gov/projects/larwirecell"
 
@@ -25,6 +38,9 @@ class Larwirecell(CMakePackage):
     version('08.10.01', tag='v08_10_01', git='http://cdcvs.fnal.gov/projects/larwirecell')
     version('08.11.00', tag='v08_11_00', git='http://cdcvs.fnal.gov/projects/larwirecell')
     version('08.11.01', tag='v08_11_01', git='http://cdcvs.fnal.gov/projects/larwirecell')
+    version('08.12.02', tag='v08_12_02', git='http://cdcvs.fnal.gov/projects/larwirecell')
+    version('08.12.03', tag='v08_12_03', git='http://cdcvs.fnal.gov/projects/larwirecell')
+    version('08.12.04', tag='v08_12_04', git='http://cdcvs.fnal.gov/projects/larwirecell')
 
     variant('cxxstd',
             default='17',

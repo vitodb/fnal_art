@@ -6,6 +6,15 @@
 from spack import *
 import os
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larsim","08.19.03")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -18,6 +27,8 @@ def sanitize_environments(*args):
 class Larsim(CMakePackage):
     """Larsim"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larsim"
     url      = "http://cdcvs.fnal.gov/projects/larsim"
 
@@ -26,6 +37,11 @@ class Larsim(CMakePackage):
     version('08.17.01', tag='v08_17_01', git='http://cdcvs.fnal.gov/projects/larsim')
     version('08.18.00', tag='v08_18_00', git='http://cdcvs.fnal.gov/projects/larsim')
     version('08.18.01', tag='v08_18_01', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('08.19.00', tag='v08_19_00', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('08.19.01', tag='v08_19_01', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('08.19.02', tag='v08_19_02', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('08.19.03', tag='v08_19_03', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('08.19.04', tag='v08_19_04', git='http://cdcvs.fnal.gov/projects/larsim')
 
     variant('cxxstd',
             default='17',
@@ -94,4 +110,3 @@ class Larsim(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    patch('larsim.unups.patch')

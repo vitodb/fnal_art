@@ -7,6 +7,15 @@ from spack import *
 import os
 
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","lardataalg","08.13.02")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -19,15 +28,16 @@ def sanitize_environments(*args):
 class Lardataalg(CMakePackage):
     """Lardataalg"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/lardataalg"
     url      = "http://cdcvs.fnal.gov/projects/lardataalg"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/lardataalg', branch='feature/MVP1a')
-    version('1.01.01', tag='v1_01_01', git='http://cdcvs.fnal.gov/projects/lardataalg')
-    version('1.01.02', tag='v1_01_02', git='http://cdcvs.fnal.gov/projects/lardataalg')
-    version('1.01.03', tag='v1_01_03', git='http://cdcvs.fnal.gov/projects/lardataalg')
-    version('1.02.00', tag='v1_02_00', git='http://cdcvs.fnal.gov/projects/lardataalg')
-    version('1.02.01', tag='v1_02_01', git='http://cdcvs.fnal.gov/projects/lardataalg')
+    version('08.13.01', tag='v08_13_01', git='http://cdcvs.fnal.gov/projects/lardataalg')
+    version('08.13.02', tag='v08_13_02', git='http://cdcvs.fnal.gov/projects/lardataalg')
+    version('08.13.03', tag='v08_13_03', git='http://cdcvs.fnal.gov/projects/lardataalg')
+    version('08.13.04', tag='v08_13_04', git='http://cdcvs.fnal.gov/projects/lardataalg')
 
     variant('cxxstd',
             default='17',

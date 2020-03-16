@@ -6,8 +6,19 @@
 from spack import *
 import os
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larsoft-data","1.02.01")
+
 class LarsoftData(Package):
     """LarsoftData"""
+
+    patch = patcher
 
     version('1.02.01', '9b3e5d763f4a44f0fae7a2b59d583a8b25054f7f06645fa48e331377cf33baca')
 

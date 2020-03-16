@@ -30,6 +30,7 @@ root_re = re.compile("\$\{ROOT_(\w*)_LIBRARY\}")
 tbb_re = re.compile("\$\{TBB}")
 dir_re = re.compile("\$\{\([A-Z_]\)_DIR\}")
 drop_re = re.compile("(_cet_check\()|(include\(UseCPack\))|(add_subdirectory\(\s*ups\s*\))|(cet_have_qual\()|(check_ups_version\()")
+cmake_config_re = re.compile("cet_cmake_config\(")
 
 def fake_check_ups_version(line, fout):
     p0 = line.find("PRODUCT_MATCHES_VAR ") + 20
@@ -43,6 +44,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0'):
     need_cmake_min = toplevel
     need_project = toplevel
     drop_til_close = False
+    saw_cmake_config = False
 
     for line in fin:
         line = line.rstrip()
@@ -58,6 +60,9 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0'):
         line = cmake_find_cetbuild_re.sub("find_package(cetmodules)", line)
         line = tbb_re.sub('TBB:tbb', line)
 
+        mat = cmake_config_re.search(line)
+        if mat:
+            saw_cmake_config = True
         mat = drop_re.search(line)
         if mat: 
             if line.find(")") < 0:
@@ -74,7 +79,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0'):
         
         mat = cmake_find_lib_paths_re.search(line)
         if mat:
-            fout.write("cet_find_library(%s)\n" % mat.group(1))
+            fout.write("cet_find_library(%s)\n" % mat.group(1).replace("_ups",""))
             continue
 
         mat = cmake_project_re.search(line)
@@ -120,21 +125,28 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0'):
 
             newname = mat.group(1)
 
+            newname = newname.replace("_","-")
             if newname.find("lib") == 0:
                newname = newname[3:]
 
             if newname in ("clhep",):
                newname = newname.upper()
 
+            if newname in ("sqlite3",):
+               newname = newname.capitalize().strip("0123456789")
+
             if newname == "ifdhc":
                fout.write("cet_find_simple_package( ifdhc INCPATH_SUFFIXES inc INCPATH_VAR IFDHC_INC )\n")
-            elif newname in ("wda", "ifbeam", "nucondb"):
-               fout.write("cet_find_simple_package( %s INCPATH_VAR %s_inc )\n" % (newname, newname.upper()))
+            elif newname in ("wda", "ifbeam", "nucondb", "cetlib", "cetlib-except", "ifdhc"):
+               fout.write("cet_find_simple_package( %s INCPATH_VAR %s_INC )\n" % (newname, newname.upper()))
             else:
                 fout.write("find_package( %s )\n" % newname )
             continue
 
         fout.write(line+"\n")
+
+    if toplevel and not saw_cmake_config:
+        fout.write("cet_cmake_config()\n")
 
     fin.close()
     fout.close()

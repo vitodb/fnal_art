@@ -6,6 +6,14 @@
 from spack import *
 import os
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larg4","08.12.01")
 
 def sanitize_environments(*args):
     for env in args:
@@ -19,6 +27,8 @@ def sanitize_environments(*args):
 class Larg4(CMakePackage):
     """Larg4"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larg4"
     url      = "http://cdcvs.fnal.gov/projects/larg4"
 
@@ -27,6 +37,9 @@ class Larg4(CMakePackage):
     version('08.08.01', tag='v08_08_01', git='http://cdcvs.fnal.gov/projects/larg4')
     version('08.09.00', tag='v08_09_00', git='http://cdcvs.fnal.gov/projects/larg4')
     version('08.10.00', tag='v08_10_00', git='http://cdcvs.fnal.gov/projects/larg4')
+    version('08.12.00', tag='v08_12_00', git='http://cdcvs.fnal.gov/projects/larg4')
+    version('08.12.01', tag='v08_12_01', git='http://cdcvs.fnal.gov/projects/larg4')
+    version('08.12.02', tag='v08_12_02', git='http://cdcvs.fnal.gov/projects/larg4')
 
     variant('cxxstd',
             default='17',

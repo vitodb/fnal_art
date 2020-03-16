@@ -5,9 +5,20 @@
 
 from spack import *
 
+import os
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","artg4tk","9.07.01")
 
 class Artg4tk(CMakePackage):
     """Artg4tk """
+
+    patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
     url      = "http://cdcvs.fnal.gov/projects/artg4tk/"
@@ -23,6 +34,7 @@ class Artg4tk(CMakePackage):
     version('09.05.01', tag='v09_05_01', git=url)
     version('09.05.02', tag='v09_05_02', git=url)
     version('09.06.00', tag='v09_06_00', git=url)
+    version('09.07.00', tag='v09_07_00', git=url)
 
     variant('cxxstd',
             default='17',
@@ -42,4 +54,3 @@ class Artg4tk(CMakePackage):
                 format(self.spec.variants['cxxstd'].value)
                ]
         return args
-    patch('artg4tk.unups.patch')

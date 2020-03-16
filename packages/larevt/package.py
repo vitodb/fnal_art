@@ -6,6 +6,15 @@
 from spack import *
 import os
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larevt","08.10.03")
+
 
 def sanitize_environments(*args):
     for env in args:
@@ -19,6 +28,8 @@ def sanitize_environments(*args):
 class Larevt(CMakePackage):
     """Larevt"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larevt"
     url      = "http://cdcvs.fnal.gov/projects/larevt"
 
@@ -27,6 +38,9 @@ class Larevt(CMakePackage):
     version('08.08.01', tag='v08_08_01', git='http://cdcvs.fnal.gov/projects/larevt')
     version('08.09.00', tag='v08_09_00', git='http://cdcvs.fnal.gov/projects/larevt')
     version('08.09.01', tag='v08_09_01', git='http://cdcvs.fnal.gov/projects/larevt')
+    version('08.10.02', tag='v08_10_02', git='http://cdcvs.fnal.gov/projects/larevt')
+    version('08.10.03', tag='v08_10_03', git='http://cdcvs.fnal.gov/projects/larevt')
+    version('08.10.04', tag='v08_10_04', git='http://cdcvs.fnal.gov/projects/larevt')
 
     variant('cxxstd',
             default='17',
@@ -86,4 +100,3 @@ class Larevt(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    patch('larevt.unups.patch')

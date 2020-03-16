@@ -6,6 +6,14 @@
 from spack import *
 import os
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","lardataobj","08.10.02")
 
 def sanitize_environments(*args):
     for env in args:
@@ -19,14 +27,16 @@ def sanitize_environments(*args):
 class Lardataobj(CMakePackage):
     """Lardataobj"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/lardataobj"
     url      = "http://cdcvs.fnal.gov/projects/lardataobj"
 
     version('MVP1a', git='http://cdcvs.fnal.gov/projects/lardataobj', branch='feature/MVP1a')
-    version('1.33.00', tag='v1_33_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
-    version('1.34.00', tag='v1_34_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
-    version('1.35.00', tag='v1_35_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
-    version('1.36.00', tag='v1_36_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
+    version('08.10.00', tag='v08_10_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
+    version('08.10.01', tag='v08_10_01', git='http://cdcvs.fnal.gov/projects/lardataobj')
+    version('08.10.02', tag='v08_10_02', git='http://cdcvs.fnal.gov/projects/lardataobj')
+    version('08.10.03', tag='v08_10_03', git='http://cdcvs.fnal.gov/projects/lardataobj')
 
     variant('cxxstd',
             default='17',
@@ -94,4 +104,3 @@ class Lardataobj(CMakePackage):
         mkdirp('{0}/job'.format(self.spec.prefix))
         mkdirp('{0}/gdml'.format(self.spec.prefix))
 
-    patch('lardataobj.unups.patch')

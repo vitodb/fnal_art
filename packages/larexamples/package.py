@@ -6,6 +6,15 @@
 from spack import *
 import os
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","larexamples","08.06.03")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -18,6 +27,8 @@ def sanitize_environments(*args):
 class Larexamples(CMakePackage):
     """Larexamples"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larexamples"
     url      = "http://cdcvs.fnal.gov/projects/larexamples"
 
@@ -25,6 +36,10 @@ class Larexamples(CMakePackage):
     version('08.04.01', tag='v08_04_01', git='http://cdcvs.fnal.gov/projects/larexamples')
     version('08.05.00', tag='v08_05_00', git='http://cdcvs.fnal.gov/projects/larexamples')
     version('08.05.01', tag='v08_05_01', git='http://cdcvs.fnal.gov/projects/larexamples')
+    version('08.06.01', tag='v08_06_01', git='http://cdcvs.fnal.gov/projects/larexamples')
+    version('08.06.02', tag='v08_06_02', git='http://cdcvs.fnal.gov/projects/larexamples')
+    version('08.06.03', tag='v08_06_03', git='http://cdcvs.fnal.gov/projects/larexamples')
+    version('08.06.04', tag='v08_06_04', git='http://cdcvs.fnal.gov/projects/larexamples')
 
     variant('cxxstd',
             default='17',
@@ -85,4 +100,3 @@ class Larexamples(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    patch('larexamples.unups.patch')

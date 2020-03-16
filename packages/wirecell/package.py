@@ -5,6 +5,16 @@
 
 from spack import *
 
+import os
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","wirecell","0.13.1")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -19,9 +29,13 @@ class Wirecell(Package):
     Borrowed from 
     https://github.com/WireCell/wire-cell-spack/blob/master/repo/packages/wirecell-toolkit/package.py"""
 
-    homepage = "http://wirecell.github.io"
-    url = "https://lar.bnl.gov/software/releases/wire-cell-toolkit-0.10.9.tar.gz"
+    patch = patcher
 
+    homepage = "http://wirecell.github.io"
+    url = "https://github.com/WireCell/wire-cell-toolkit/archive/0.13.1.tar.gz"
+
+    version('0.13.1', sha256='d9ce092f9ebae91607213b62bf015ac6ac08c33ce97b6fbd67494d42c1f75bdb')
+    version('0.13.0', sha256='eedc7db7ce75d2f7ef1b23461d1a2d780fd8409187eb851ced1e8ab4b7a10d8e')
     version('0.12.2', sha256='83387ebe6a517353daae69b05e86dd274f66ba80e6b120fb219b5c260c383e21')
     version('0.11.2', sha256='56b46cad781948e21c36660032de3ca54d5d5fd6b7aa47cdc3d3d4a67770f831')
     version('0.10.9', sha256='a5a7f2d45c78c18e098f3afc10e6df06b0e94e062870535c927c0fab51e43bd8')

@@ -6,6 +6,15 @@
 from spack import *
 import os
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","nutools","3.06.01")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -18,6 +27,8 @@ def sanitize_environments(*args):
 class Nutools(CMakePackage):
     """Nutools"""
 
+    patch = patcher
+
     homepage = "http://cdcvs.fnal.gov/redmine/projects/nutools/wiki"
     url      = "http://cdcvs.fnal.gov/projects/nutools/"
 
@@ -26,6 +37,9 @@ class Nutools(CMakePackage):
     version('3.04.03', tag='v3_04_03', git="http://cdcvs.fnal.gov/projects/nutools")
     version('3.05.00', tag='v3_05_00', git="http://cdcvs.fnal.gov/projects/nutools")
     version('3.05.01', tag='v3_05_01', git="http://cdcvs.fnal.gov/projects/nutools")
+    version('3.06.00', tag='v3_06_00', git="http://cdcvs.fnal.gov/projects/nutools")
+    version('3.06.01', tag='v3_06_01', git="http://cdcvs.fnal.gov/projects/nutools")
+    version('3.06.02', tag='v3_06_02', git="http://cdcvs.fnal.gov/projects/nutools")
 
     variant('cxxstd',
             default='17',
@@ -99,4 +113,3 @@ class Nutools(CMakePackage):
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
-    patch('nutools.unups.patch')

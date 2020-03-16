@@ -6,6 +6,15 @@
 
 from spack import *
 
+import os
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","dk2nugenie", "01.08.00")
 
 class Dk2nugenie(CMakePackage):
     """This package consolidates the disparate formats of neutrino beam simulation "flux" files.
@@ -13,12 +22,11 @@ class Dk2nugenie(CMakePackage):
     homepage = "http://cdcvs.fnal.gov/redmine/projects/dk2nu"
     url      = "http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
+    patch = patcher
+
     version('01_07_02',  svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
-    version('01.08.00d', tag='v01_08_00d', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
-    version('01.08.00f', tag='v01_08_00f', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
-    version('01.08.00g', tag='v01_08_00g', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
-    version('01.08.00.ub1', tag='v01_08_00_ub1', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
-    version('01.08.00', tag='v01_08_00', svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
+    version('01.08.00.ub1',  svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00.ub1")
+    version('01.08.00',  svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
 
     # Variant is still important even though it's not passed to compiler
     # flags (use of ROOT, etc.).
