@@ -1,0 +1,11 @@
+--- a/src/Physics/PartonDistributions/LHAPDF5.cxx	2020-03-17 09:59:14.697374375 -0500
++++ b/src/Physics/PartonDistributions/LHAPDF5.cxx	2020-03-17 09:59:53.308485853 -0500
+@@ -116,7 +116,7 @@
+ 
+   LHAPDF::SetType stype = (type==0) ? LHAPDF::LHPDF :  LHAPDF::LHGRID;
+ 
+-  LHAPDF::initPDFByName(name, stype, memset);
++  LHAPDF::initPDFSet(name, stype, memset);
+   LHAPDF::extrapolate(false);
+ 
+ /*

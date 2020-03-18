@@ -19,12 +19,12 @@ class Larsoft(CMakePackage):
     """Larsoft"""
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larsoft"
-    url      = "http://cdcvs.fnal.gov/projects/larsoft"
+    url      = "https://github.com/LArSoft/larsoft.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larsoft', branch='feature/MVP1a')
-    version('08.38.01', tag='v08_38_01', git='http://cdcvs.fnal.gov/projects/larsoft')
-    version('08.39.00', tag='v08_39_00', git='http://cdcvs.fnal.gov/projects/larsoft')
-    version('08.40.00', tag='v08_40_00', git='http://cdcvs.fnal.gov/projects/larsoft')
+    version('MVP1a', git='https://github.com/LArSoft/larsoft.git', branch='feature/MVP1a')
+    version('08.38.01', tag='v08_38_01', git='https://github.com/LArSoft/larsoft.git')
+    version('08.39.00', tag='v08_39_00', git='https://github.com/LArSoft/larsoft.git')
+    version('08.40.00', tag='v08_40_00', git='https://github.com/LArSoft/larsoft.git')
 
     variant('cxxstd',
             default='17',

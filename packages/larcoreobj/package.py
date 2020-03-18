@@ -30,13 +30,13 @@ class Larcoreobj(CMakePackage):
     patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larcoreobj"
-    url      = "http://cdcvs.fnal.gov/projects/larcoreobj"
+    url      = "https://github.com/LArSoft/larcoreobj.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larcoreobj', branch='feature/MVP1a', preferred=True)
+    version('MVP1a', git='https://github.com/LArSoft/larcoreobj.git', branch='feature/MVP1a', preferred=True)
     version('08.10.00', tag='v08_10_00', git='https://cdcvs.fnal.gov/projects/larcoreobj')
     version('08.10.01', tag='v08_10_01', git='https://cdcvs.fnal.gov/projects/larcoreobj')
     version('08.10.02', tag='v08_10_02', git='https://cdcvs.fnal.gov/projects/larcoreobj')
-    #version('08.10.03', tag='v08_10_03', git='http://cdcvs.fnal.gov/projects/larcoreobj')
+    version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larcoreobj.git')
 
     variant('cxxstd',
             default='17',

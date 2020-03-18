@@ -21,17 +21,17 @@ class Larpandoracontent(CMakePackage):
     patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/larpandoracontent"
+    url      = "https://github.com/LArSoft/larpandoracontent.git"
 
-    version('3.14.05', git='http://cdcvs.fnal.gov/projects/larpandoracontent', branch='v03_14_05')
-    version('03.15.09', tag='v03_15_09', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
-    version('03.15.10', tag='v03_15_10', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
-    version('03.15.11', tag='v03_15_11', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
-    version('03.15.12', tag='v03_15_12', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
-    version('03.15.13', tag='v03_15_13', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
-    version('03.15.14', tag='v03_15_14', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
-    version('03.15.15', tag='v03_15_15', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
-    version('03.15.16', tag='v03_15_16', git='http://cdcvs.fnal.gov/projects/larpandoracontent')
+    version('3.14.05', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_14_05')
+    version('03.15.09', tag='v03_15_09', git='https://github.com/LArSoft/larpandoracontent.git')
+    version('03.15.10', tag='v03_15_10', git='https://github.com/LArSoft/larpandoracontent.git')
+    version('03.15.11', tag='v03_15_11', git='https://github.com/LArSoft/larpandoracontent.git')
+    version('03.15.12', tag='v03_15_12', git='https://github.com/LArSoft/larpandoracontent.git')
+    version('03.15.13', tag='v03_15_13', git='https://github.com/LArSoft/larpandoracontent.git')
+    version('03.15.14', tag='v03_15_14', git='https://github.com/LArSoft/larpandoracontent.git')
+    version('03.15.15', tag='v03_15_15', git='https://github.com/LArSoft/larpandoracontent.git')
+    version('03.15.16', tag='v03_15_16', git='https://github.com/LArSoft/larpandoracontent.git')
 
     variant('cxxstd',
             default='17',

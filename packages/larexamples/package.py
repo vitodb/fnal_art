@@ -30,16 +30,16 @@ class Larexamples(CMakePackage):
     patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larexamples"
-    url      = "http://cdcvs.fnal.gov/projects/larexamples"
+    url      = "https://github.com/LArSoft/larexamples.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larexamples', branch='feature/MVP1a')
-    version('08.04.01', tag='v08_04_01', git='http://cdcvs.fnal.gov/projects/larexamples')
-    version('08.05.00', tag='v08_05_00', git='http://cdcvs.fnal.gov/projects/larexamples')
-    version('08.05.01', tag='v08_05_01', git='http://cdcvs.fnal.gov/projects/larexamples')
-    version('08.06.01', tag='v08_06_01', git='http://cdcvs.fnal.gov/projects/larexamples')
-    version('08.06.02', tag='v08_06_02', git='http://cdcvs.fnal.gov/projects/larexamples')
-    version('08.06.03', tag='v08_06_03', git='http://cdcvs.fnal.gov/projects/larexamples')
-    version('08.06.04', tag='v08_06_04', git='http://cdcvs.fnal.gov/projects/larexamples')
+    version('MVP1a', git='https://github.com/LArSoft/larexamples.git', branch='feature/MVP1a')
+    version('08.04.01', tag='v08_04_01', git='https://github.com/LArSoft/larexamples.git')
+    version('08.05.00', tag='v08_05_00', git='https://github.com/LArSoft/larexamples.git')
+    version('08.05.01', tag='v08_05_01', git='https://github.com/LArSoft/larexamples.git')
+    version('08.06.01', tag='v08_06_01', git='https://github.com/LArSoft/larexamples.git')
+    version('08.06.02', tag='v08_06_02', git='https://github.com/LArSoft/larexamples.git')
+    version('08.06.03', tag='v08_06_03', git='https://github.com/LArSoft/larexamples.git')
+    version('08.06.04', tag='v08_06_04', git='https://github.com/LArSoft/larexamples.git')
 
     variant('cxxstd',
             default='17',

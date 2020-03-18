@@ -16,18 +16,18 @@ global analysis of neutrino scattering data.
 """
 
     homepage = "http://www.genie-mc.org"
-    url      = "https://github.com/GENIE-MC/Generator/archive/R-2_12_10.tar.gz"
+    #url      = "https://github.com/GENIE-MC/Generator/archive/R-2_12_10.tar.gz"
+    url      = "https://github.com/GENIE-MC/Generator/archive/R-3_00_06.tar.gz"
 
-    version('3_00_02', sha256='34d6c37017b2387c781aea7bc727a0aac0ef45d6b3f3982cc6f3fc82493f65c3')
-    version('3_0_0b4', sha256='41100dd5141a7e2c934faaaf22f244deda08ab7f03745976dfed0f31e751e24e')
-    version('3_0_0b3', sha256='96b849d426f261a858f5483f1ef576cc15f5303bc9c217a194de2500fb59cc56')
-    version('3_0_0b2', sha256='2884f5cb80467d3a8c11800421c1d1507e9374a4ba2fbd654d474f2676be28ba')
-    version('3_0_0b1', sha256='e870146bfa674235c3713a91decf599d2e90b4202f8b277bf49b04089ee432c1')
-    version('3_00_00', sha256='3953c7d9f1f832dd32dfbc0b9260be59431206c204aec6ab0aa68c01176f2ae6')
-    version('2_12_10', sha256='c8762db3dcc490f80f8a61268f5b964d4d35b80134b622e89fe2307a836f2a0b')
-    version('2_12_8',  sha256='7ca169a8d9eda7267d28b76b2f3110552852f8eeae263a03cd5139caacebb4ea')
-    version('2_12_6',  sha256='3b450c609875459798ec98e12cf671cc971cbb13345af6d75bd6278d422f3309')
-    version('2_12_4',  sha256='19a4a1633b0847a9f16a44e0c74b9c224ca3bb93975aecf108603c22e807517b')
+    def url_for_version(self, version):
+        return  "https://github.com/GENIE-MC/Generator/archive/R-{0}.tar.gz".format(version.underscored)
+
+    version('3.00.06', sha256='ab56ea85d0c1d09029254365bfe75a1427effa717389753b9e0c1b6c2eaa5eaf')
+    version('3.00.04', sha256='53f034618fef9f7f0e17d1c4ed72743e4bba590e824b795177a1a8a8486c861e')
+    version('3.00.02', sha256='34d6c37017b2387c781aea7bc727a0aac0ef45d6b3f3982cc6f3fc82493f65c3')
+    version('3.0.0b4', sha256='41100dd5141a7e2c934faaaf22f244deda08ab7f03745976dfed0f31e751e24e')
+    version('3.00.00', sha256='3953c7d9f1f832dd32dfbc0b9260be59431206c204aec6ab0aa68c01176f2ae6')
+
 
     parallel = False
 
@@ -45,6 +45,7 @@ global analysis of neutrino scattering data.
             description='Use the specified C++ standard when building.')
 
     patch('patch/genie-r21210.patch', when='@2_12_10')
+    patch('patch/genie-r30006.patch', when='@3.00.06')
 
     @property
     def build_targets(self):

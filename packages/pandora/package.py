@@ -33,7 +33,7 @@ class Pandora(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
-                '-DCMAKE_CXX_FLAGS=-Wno-implicit-fallthrough',
+                '-DCMAKE_CXX_FLAGS=-Wno-implicit-fallthrough -std=c++{0}'.format(self.spec.variants['cxxstd'].value),
                 '-DCMAKE_MODULE_PATH={0}/etc/cmake'.format(self.spec['root'].prefix),
                 '-DPANDORA_MONITORING=ON', '-DPANDORA_EXAMPLE_CONTENT=OFF',
                 '-DPANDORA_LC_CONTENT=OFF','-DPANDORA_LAR_CONTENT=OFF']

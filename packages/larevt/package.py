@@ -31,16 +31,16 @@ class Larevt(CMakePackage):
     patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larevt"
-    url      = "http://cdcvs.fnal.gov/projects/larevt"
+    url      = "https://github.com/LArSoft/larevt.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larevt', branch='feature/MVP1a')
-    version('08.08.00', tag='v08_08_00', git='http://cdcvs.fnal.gov/projects/larevt')
-    version('08.08.01', tag='v08_08_01', git='http://cdcvs.fnal.gov/projects/larevt')
-    version('08.09.00', tag='v08_09_00', git='http://cdcvs.fnal.gov/projects/larevt')
-    version('08.09.01', tag='v08_09_01', git='http://cdcvs.fnal.gov/projects/larevt')
-    version('08.10.02', tag='v08_10_02', git='http://cdcvs.fnal.gov/projects/larevt')
-    version('08.10.03', tag='v08_10_03', git='http://cdcvs.fnal.gov/projects/larevt')
-    version('08.10.04', tag='v08_10_04', git='http://cdcvs.fnal.gov/projects/larevt')
+    version('MVP1a', git='https://github.com/LArSoft/larevt.git', branch='feature/MVP1a')
+    version('08.08.00', tag='v08_08_00', git='https://github.com/LArSoft/larevt.git')
+    version('08.08.01', tag='v08_08_01', git='https://github.com/LArSoft/larevt.git')
+    version('08.09.00', tag='v08_09_00', git='https://github.com/LArSoft/larevt.git')
+    version('08.09.01', tag='v08_09_01', git='https://github.com/LArSoft/larevt.git')
+    version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/larevt.git')
+    version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larevt.git')
+    version('08.10.04', tag='v08_10_04', git='https://github.com/LArSoft/larevt.git')
 
     variant('cxxstd',
             default='17',

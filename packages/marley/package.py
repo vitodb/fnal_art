@@ -25,6 +25,7 @@ class Marley(Package):
     depends_on('root')
     depends_on('gsl')
 
+    patch('marley-1.1.1.patch', when='@1.1.1')
     patch('marley-1.1.0.patch', when='@1.1.0')
     patch('marley-1.0.0.patch', when='@1.0.0')
 

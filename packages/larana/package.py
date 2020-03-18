@@ -30,18 +30,18 @@ class Larana(CMakePackage):
     patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larana"
-    url      = "http://cdcvs.fnal.gov/projects/larana"
+    url      = "https://github.com/LArSoft/larana.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larana', branch='feature/MVP1a')
-    version('08.13.03', tag='v08_13_03', git='http://cdcvs.fnal.gov/projects/larana')
-    version('08.14.00', tag='v08_14_00', git='http://cdcvs.fnal.gov/projects/larana')
-    version('08.14.01', tag='v08_14_01', git='http://cdcvs.fnal.gov/projects/larana')
-    version('08.15.00', tag='v08_15_00', git='http://cdcvs.fnal.gov/projects/larana')
-    version('08.15.01', tag='v08_15_01', git='http://cdcvs.fnal.gov/projects/larana')
-    version('08.16.01', tag='v08_16_01', git='http://cdcvs.fnal.gov/projects/larana')
-    version('08.16.02', tag='v08_16_02', git='http://cdcvs.fnal.gov/projects/larana')
-    version('08.16.03', tag='v08_16_03', git='http://cdcvs.fnal.gov/projects/larana')
-    version('08.16.04', tag='v08_16_04', git='http://cdcvs.fnal.gov/projects/larana')
+    version('MVP1a', git='https://github.com/LArSoft/larana.git', branch='feature/MVP1a')
+    version('08.13.03', tag='v08_13_03', git='https://github.com/LArSoft/larana.git')
+    version('08.14.00', tag='v08_14_00', git='https://github.com/LArSoft/larana.git')
+    version('08.14.01', tag='v08_14_01', git='https://github.com/LArSoft/larana.git')
+    version('08.15.00', tag='v08_15_00', git='https://github.com/LArSoft/larana.git')
+    version('08.15.01', tag='v08_15_01', git='https://github.com/LArSoft/larana.git')
+    version('08.16.01', tag='v08_16_01', git='https://github.com/LArSoft/larana.git')
+    version('08.16.02', tag='v08_16_02', git='https://github.com/LArSoft/larana.git')
+    version('08.16.03', tag='v08_16_03', git='https://github.com/LArSoft/larana.git')
+    version('08.16.04', tag='v08_16_04', git='https://github.com/LArSoft/larana.git')
 
     variant('cxxstd',
             default='17',

@@ -31,14 +31,14 @@ class Larsoftobj(CMakePackage):
     patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larsoftobj"
-    url      = "http://cdcvs.fnal.gov/projects/larsoftobj"
+    url      = "https://github.com/LArSoft/larsoftobj.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larsoftobj', branch='feature/MVP1a')
-    version('1.48.00', tag='v1_48_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
-    version('1.49.00', tag='v1_49_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
-    version('1.50.00', tag='v1_50_00', git='http://cdcvs.fnal.gov/projects/larsoftobj')
-    version('08.26.02', tag='v08_26_02', git='http://cdcvs.fnal.gov/projects/larsoftobj')
-    version('08.26.03', tag='v08_26_03', git='http://cdcvs.fnal.gov/projects/larsoftobj')
+    version('MVP1a', git='https://github.com/LArSoft/larsoftobj.git', branch='feature/MVP1a')
+    version('1.48.00', tag='v1_48_00', git='https://github.com/LArSoft/larsoftobj.git')
+    version('1.49.00', tag='v1_49_00', git='https://github.com/LArSoft/larsoftobj.git')
+    version('1.50.00', tag='v1_50_00', git='https://github.com/LArSoft/larsoftobj.git')
+    version('08.26.02', tag='v08_26_02', git='https://github.com/LArSoft/larsoftobj.git')
+    version('08.26.03', tag='v08_26_03', git='https://github.com/LArSoft/larsoftobj.git')
 
     variant('cxxstd',
             default='17',

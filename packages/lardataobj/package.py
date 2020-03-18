@@ -30,13 +30,13 @@ class Lardataobj(CMakePackage):
     patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/lardataobj"
-    url      = "http://cdcvs.fnal.gov/projects/lardataobj"
+    url      = "https://github.com/LArSoft/lardataobj.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/lardataobj', branch='feature/MVP1a')
-    version('08.10.00', tag='v08_10_00', git='http://cdcvs.fnal.gov/projects/lardataobj')
-    version('08.10.01', tag='v08_10_01', git='http://cdcvs.fnal.gov/projects/lardataobj')
-    version('08.10.02', tag='v08_10_02', git='http://cdcvs.fnal.gov/projects/lardataobj')
-    version('08.10.03', tag='v08_10_03', git='http://cdcvs.fnal.gov/projects/lardataobj')
+    version('MVP1a', git='https://github.com/LArSoft/lardataobj.git', branch='feature/MVP1a')
+    version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/lardataobj.git')
+    version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/lardataobj.git')
+    version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/lardataobj.git')
+    version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/lardataobj.git')
 
     variant('cxxstd',
             default='17',

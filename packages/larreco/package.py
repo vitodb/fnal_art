@@ -31,15 +31,15 @@ class Larreco(CMakePackage):
     patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larreco"
-    url      = "http://cdcvs.fnal.gov/projects/larreco"
+    url      = "https://github.com/LArSoft/larreco.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larreco', branch='feature/MVP1a')
-    version('08.25.00', tag='v08_25_00', git='http://cdcvs.fnal.gov/projects/larreco')
-    version('08.25.01', tag='v08_25_01', git='http://cdcvs.fnal.gov/projects/larreco')
-    version('08.26.00', tag='v08_26_00', git='http://cdcvs.fnal.gov/projects/larreco')
-    version('08.26.01', tag='v08_26_01', git='http://cdcvs.fnal.gov/projects/larreco')
-    version('08.28.00', tag='v08_28_00', git='http://cdcvs.fnal.gov/projects/larreco')
-    version('08.29.00', tag='v08_29_00', git='http://cdcvs.fnal.gov/projects/larreco')
+    version('MVP1a', git='https://github.com/LArSoft/larreco.git', branch='feature/MVP1a')
+    version('08.25.00', tag='v08_25_00', git='https://github.com/LArSoft/larreco.git')
+    version('08.25.01', tag='v08_25_01', git='https://github.com/LArSoft/larreco.git')
+    version('08.26.00', tag='v08_26_00', git='https://github.com/LArSoft/larreco.git')
+    version('08.26.01', tag='v08_26_01', git='https://github.com/LArSoft/larreco.git')
+    version('08.28.00', tag='v08_28_00', git='https://github.com/LArSoft/larreco.git')
+    version('08.29.00', tag='v08_29_00', git='https://github.com/LArSoft/larreco.git')
 
     variant('cxxstd',
             default='17',
