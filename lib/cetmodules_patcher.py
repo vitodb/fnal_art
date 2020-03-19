@@ -72,7 +72,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         if mat and not saw_canvas_root_io:
             if debug:
                  sys.stderr.write("inc_ad without canvas_root_io\n")
-            fout.write("find_package(canvas-root-io)")
+            fout.write("find_package(canvas-root-io)\n")
             fout.write(line + "\n")
             continue
     
