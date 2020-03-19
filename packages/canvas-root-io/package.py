@@ -75,7 +75,9 @@ class CanvasRootIo(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-DCANVAS_ROOT_IO_INC={0}'.
+                format(os.path.join(self.build_directory, 'include')) ]
         return args
 
     def setup_environment(self, spack_env, run_env):

@@ -68,11 +68,15 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         line = root_re.sub(fixrootlib, line)
         line = tbb_re.sub('TBB:tbb', line)
 
+        if fname.find("Modules/CMakeLists.txt") >= 0  and line.find("DESTINATION ${product}/${version}/Modules") >= 0:
+            fout.write("  DESTINATION Modules")
+            continue
+
         mat = cmake_inc_ad_re.search(line)
         if mat and not saw_canvas_root_io:
             if debug:
                  sys.stderr.write("inc_ad without canvas_root_io\n")
-            fout.write("find_package(canvas-root-io)\n")
+            fout.write("find_package(canvas_root_io)\n")
             fout.write(line + "\n")
             continue
     
@@ -190,7 +194,13 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
             if newname == 'canvas_root_io':
                 saw_canvas_root_io = True
 
-            newname = newname.replace("_","-")
+            # it might seem we want to do this because
+            # spack packages have the - in the name, but
+            # we shouldn't because the files for foo-bar
+            # still have foo_barConfig.cmake in their
+            # search area...
+            # newname = newname.replace("_","-")
+
             if newname.find("lib") == 0:
                newname = newname[3:]
 
