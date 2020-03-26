@@ -19,7 +19,7 @@ class Ifdhc(MakefilePackage):
     version('2.5.4', git=git_base, tag='v2_5_4')
 
     depends_on('python')
-    depends_on('swig', type='build')
+    depends_on('swig', type='build', when='@:2.5.0')
     depends_on('zlib')
     depends_on('libuuid')
 
