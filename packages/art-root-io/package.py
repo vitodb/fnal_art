@@ -7,6 +7,16 @@ from spack import *
 import os
 
 
+import sys
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_dir_patcher
+
+def patcher(x):
+    cetmodules_dir_patcher(".","art_root_io","8.10.02")
+
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -20,12 +30,16 @@ class ArtRootIo(CMakePackage):
     """Root-based input/output for the art suite.
     """
 
+    patch = patcher
+
     homepage = 'http://art.fnal.gov/'
     git_base = 'http://cdcvs.fnal.gov/projects/art_root_io'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('develop', branch='develop', git=git_base)
+    version('1.02.01', tag='v1_02_01', git=git_base)
+    version('1.02.00', tag='v1_02_00', git=git_base)
 
     variant('cxxstd',
             default='17',

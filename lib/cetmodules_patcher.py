@@ -69,10 +69,10 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         line = root_re.sub(fixrootlib, line)
         line = tbb_re.sub('TBB:tbb', line)
         # fool cetbuildtools version checks
-        cmake_cet_ver_re.sub("CMAKE_CACHE_MAJOR_VERSION",line)
+        line = cmake_cet_ver_re.sub("CMAKE_CACHE_MAJOR_VERSION",line)
 
         if fname.find("Modules/CMakeLists.txt") >= 0  and line.find("DESTINATION ${product}/${version}/Modules") >= 0:
-            fout.write("  DESTINATION Modules")
+            fout.write("  DESTINATION Modules\n")
             continue
 
         mat = cmake_inc_ad_re.search(line)
@@ -159,7 +159,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
                fout.write("cmake_minimum_required(VERSION 3.11)\n")
                need_cmake_min = False
             if need_project:
-               fout.write("project( %s VERSION %s LANGUAGES CXX )" % (proj,vers))
+               fout.write("project( %s VERSION %s LANGUAGES CXX )\n" % (proj,vers))
                need_project = False
               
             fout.write("find_package(ROOT COMPONENTS GenVector Core Imt RIO Net Hist Graf Graf3d Gpad ROOTVecOps Tree TreePlayer Rint Postscript Matrix Physics MathCore Thread MultiProc ROOTDataFrame)\n")
@@ -173,9 +173,9 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
                fout.write("cmake_minimum_required(VERSION 3.11)\n")
                need_cmake_min = False
             if need_project:
-               fout.write("project( %s VERSION %s LANGUAGES CXX )" % (proj,vers))
+               fout.write("project( %s VERSION %s LANGUAGES CXX )\n" % (proj,vers))
                need_project = False
-            fout.write("find_package(Boost COMPONENTS system filesystem program_options date_time graph thread regex random)")
+            fout.write("find_package(Boost COMPONENTS system filesystem program_options date_time graph thread regex random)\n")
             continue
 
         mat = cmake_find_ups_re.search(line)
@@ -186,7 +186,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
                fout.write("cmake_minimum_required(VERSION 3.11)\n")
                need_cmake_min = False
             if need_project:
-               fout.write("project( %s VERSION %s LANGUAGES CXX )" % (proj,vers))
+               fout.write("project( %s VERSION %s LANGUAGES CXX )\n" % (proj,vers))
                need_project = False
 
             newname = mat.group(1)
@@ -215,7 +215,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
 
             if newname == "ifdhc":
                fout.write("cet_find_simple_package( ifdhc INCPATH_SUFFIXES inc INCPATH_VAR IFDHC_INC )\n")
-            elif newname in ("wda", "ifbeam", "nucondb", "cetlib", "cetlib-except", "ifdhc"):
+            elif newname in ("wda", "ifbeam", "nucondb", "cetlib", "cetlib-except", "ifdhc", "dk2nudata"):
                fout.write("cet_find_simple_package( %s INCPATH_VAR %s_INC )\n" % (newname, newname.upper()))
             else:
                 fout.write("find_package( %s )\n" % newname )
