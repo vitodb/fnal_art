@@ -2,30 +2,31 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index dc8bab2..346f8b2 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -13,18 +13,13 @@
+@@ -12,19 +12,10 @@
+ #  make package (builds distribution tarfile)
  # ======================================================================
  
- # use cmake 2.8 or later
+-# use cmake 2.8 or later
 -cmake_minimum_required (VERSION 2.8)
-+cmake_minimum_required (VERSION 3.11)
-+
-+project(ifdh_art VERSION 2.10.02 LANGUAGES CXX )
- 
- ##SET ( CMAKE_VERBOSE_MAKEFILE true )
+-
+-##SET ( CMAKE_VERBOSE_MAKEFILE true )
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
 -    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
 -ENDIF()
- 
+-
 -set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
-+find_package(cetmodules)
++# use cmake 3.11 or later
++cmake_minimum_required (VERSION 3.11)
++project(ifdh_art VERSION 2.08.00 LANGUAGES CXX )
++find_package(cetmodules 1.02.03)
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -37,46 +32,30 @@ cet_set_compiler_flags(DIAGS VIGILANT
+@@ -37,46 +28,22 @@
  
  cet_report_compiler_flags()
  
@@ -36,14 +37,7 @@ index dc8bab2..346f8b2 100644
 -find_ups_product( libwda  )
 -find_ups_product( cetbuildtools  )
 -find_ups_product( cetlib_except )
-+cet_find_simple_package( ifbeam  )
-+cet_find_simple_package( nucondb  )
-+cet_find_simple_package( wda  )
-+find_package( Boost REQUIRED COMPONENTS filesystem system )
-+find_package( messagefacility )
-+find_package( cetlib_except )
-+find_package( art )
- 
+-
 -# include search path
 -# decide if we have IFDHC_FQ_DIR or IFDHC_DIR
 -if ( $ENV{IFDHC_FQ_DIR} MATCHES "ifdhc" )
@@ -59,24 +53,27 @@ index dc8bab2..346f8b2 100644
 -  include_directories($ENV{IFBEAM_DIR}/include)
 -  include_directories($ENV{NUCONDB_DIR}/include)
 -endif()
- 
- #ifdhc
+-
+-#ifdhc
 -cet_find_library( IFDH    NAMES ifdh    PATHS ENV IFDHC_LIB   NO_DEFAULT_PATH )
 -cet_find_library( IFBEAM  NAMES ifbeam  PATHS ENV IFBEAM_LIB  NO_DEFAULT_PATH )
 -cet_find_library( NUCONDB NAMES nucondb PATHS ENV NUCONDB_LIB NO_DEFAULT_PATH )
 -cet_find_library( WDA     NAMES wda     PATHS ENV LIBWDA_LIB  NO_DEFAULT_PATH )
-+cet_find_library( IFDHC  NAMES libidfh.so  )
-+string(REPLACE "lib/libifdh.so" "inc" IFDHC_INC ${IFDHC})
-+cet_find_library( IFBEAM  NAMES ifbeam  )
-+cet_find_library( NUCONDB NAMES nucondb )
-+cet_find_library( WDA     NAMES wda     )
- 
- # SQLite
+-
+-# SQLite
 -cet_find_library(SQLITE3 NAMES sqlite3 PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
-+cet_find_library(SQLITE3 NAMES sqlite3 )
++cet_find_simple_package(ifbeam)
++cet_find_simple_package(ifdh INCPATH_SUFFIXES inc)
++cet_find_simple_package(nucondb)
++cet_find_simple_package(wda)
++cet_find_simple_package(sqlite3)
++find_package(Boost REQUIRED COMPONENTS filesystem system)
++find_package(messagefacility)
++find_package(cetlib_except REQUIRED)
++find_package(art REQUIRED)
  
  # macros
--include(ArtMake)
+ include(ArtMake)
  include(BuildPlugins)
  
  add_subdirectory (src)

@@ -18,7 +18,7 @@ def cetmodules_dir_patcher(dir, proj, vers, debug=False):
             if fname.endswith(".cmake"):
                 cetmodules_file_patcher("%s/%s" % (rt, fname), rt == dir, proj, vers)
 
-cmake_cet_ver_re = re.compile(r"SET\s*\(\s*CETBUILDTOOLS_VERSION\s*\$ENV{CETBUILDTOOLS_VERSION}\s*\)")
+cmake_cet_ver_re = re.compile(r"ENV\{CETBUILDTOOLS_VERSION\}")
 cmake_min_re = re.compile(r"cmake_minimum_required\s*\(\s*[VERSION ]*(\d*\.\d*).*\)")
 cmake_project_re = re.compile(r"project\(\s*(\S*)(.*)\)")
 cmake_ups_boost_re  = re.compile(r"find_ups_boost\(.*\)")
@@ -34,6 +34,7 @@ drop_re = re.compile(r"(_cet_check\()|(include\(UseCPack\))|(add_subdirectory\(\
 cmake_config_re = re.compile(r"cet_cmake_config\(")
 cmake_inc_cme_re = re.compile(r"include\(CetCMakeEnv\)")
 cmake_inc_ad_re = re.compile(r"include\(ArtDictionary\)")
+cmake_eld_re = re.compile(r"export_library_dependencies\(\)")
 
 def fake_check_ups_version(line, fout):
     p0 = line.find("PRODUCT_MATCHES_VAR ") + 20
@@ -67,6 +68,8 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         line = boost_re.sub(lambda x:'Boost::%s' % x.group(1).lower(), line)
         line = root_re.sub(fixrootlib, line)
         line = tbb_re.sub('TBB:tbb', line)
+        # fool cetbuildtools version checks
+        cmake_cet_ver_re.sub("CMAKE_CACHE_MAJOR_VERSION",line)
 
         if fname.find("Modules/CMakeLists.txt") >= 0  and line.find("DESTINATION ${product}/${version}/Modules") >= 0:
             fout.write("  DESTINATION Modules")
@@ -79,7 +82,14 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
             fout.write("find_package(canvas_root_io)\n")
             fout.write(line + "\n")
             continue
-    
+
+        # this found in larpandoracontent
+        # https://cmake.org/cmake/help/v3.0/policy/CMP0033.html
+        mat = cmake_eld_re.search(line)
+        if mat:
+            fout.write("install(EXPORT {0})\n".format(proj))
+            continue
+            
         mat = cmake_find_cetbuild_re.search(line)
         if mat:
             if debug:
@@ -104,13 +114,6 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
                  sys.stderr.write("config_re\n")
             saw_cmake_config = True
 
-        # fool cetbuildtools version checks
-        mat = cmake_cet_ver_re.search(line)
-        if mat:
-            if debug:
-                 sys.stderr.write("cetver_re\n")
-            fout.write("SET ( CETBUILDTOOLS_VERSION 1 )\n")
-            continue
 
         mat = drop_re.search(line)
         if mat: 
@@ -221,6 +224,8 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         fout.write(line+"\n")
 
     if toplevel and not saw_cmake_config:
+        if not saw_cetmodules:
+            fout.write("find_package(cetmodules)\n")
         fout.write("cet_cmake_config()\n")
 
     fin.close()
@@ -232,7 +237,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
 
 if __name__ == '__main__':
     debug = False
-    if sys.argv[1] == '-d':
+    if len(sys.argv) > 1 and sys.argv[1] == '-d':
         sys.argv = [sys.argv[0]] + sys.argv[2:]
         debug = True
 
