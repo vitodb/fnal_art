@@ -34,7 +34,7 @@ drop_re = re.compile(r"(_cet_check\()|(include\(UseCPack\))|(add_subdirectory\(\
 cmake_config_re = re.compile(r"cet_cmake_config\(")
 cmake_inc_cme_re = re.compile(r"include\(CetCMakeEnv\)")
 cmake_inc_ad_re = re.compile(r"include\(ArtDictionary\)")
-cmake_eld_re = re.compile(r"export_library_dependencies\(\)")
+cmake_eld_re = re.compile(r"export_library_dependencies\((.*)\)",re.IGNORECASE)
 
 def fake_check_ups_version(line, fout):
     p0 = line.find("PRODUCT_MATCHES_VAR ") + 20
@@ -88,7 +88,11 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         # https://cmake.org/cmake/help/v3.0/policy/CMP0033.html
         mat = cmake_eld_re.search(line)
         if mat:
-            fout.write("install(EXPORT {0})\n".format(proj))
+            if mat.group(1):
+                arg = mat.group(1)
+            else:
+                arg = proj
+            fout.write("install(EXPORT {0})\n".format(arg))
             continue
             
         mat = cmake_find_cetbuild_re.search(line)
