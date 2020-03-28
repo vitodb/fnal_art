@@ -50,6 +50,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
     drop_til_close = False
     saw_cmake_config = False
     saw_cetmodules = False
+    saw_cmakeenv_include = False
     saw_canvas_root_io = False
 
     for line in fin:
@@ -105,6 +106,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
                  sys.stderr.write("cetbuild_re\n")
             fout.write("find_package(cetmodules)\n")
             saw_cetmodules = True
+            saw_cmakeenv_include = True
             fout.write(line + "\n")
             continue
 
@@ -207,6 +209,9 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
             if newname.find("lib") == 0:
                newname = newname[3:]
 
+            if newname == "catch":
+               newname = "Catch2"
+
             if newname in ("clhep",):
                newname = newname.upper()
 
@@ -226,6 +231,8 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
     if toplevel and not saw_cmake_config:
         if not saw_cetmodules:
             fout.write("find_package(cetmodules)\n")
+        if not saw_cmakeenv_include:
+            fout.write("include(CetCMakeEnv)\n")
         fout.write("cet_cmake_config()\n")
 
     fin.close()
