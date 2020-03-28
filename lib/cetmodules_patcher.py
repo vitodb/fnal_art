@@ -89,10 +89,10 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         mat = cmake_eld_re.search(line)
         if mat:
             if mat.group(1):
-                arg = mat.group(1)
+                arg = "%s FILE %s" % (proj, mat.group(1))
             else:
                 arg = proj
-            fout.write("install(EXPORT {0})\n".format(arg))
+            fout.write("install(EXPORT libdeps {0})\n".format(arg))
             continue
             
         mat = cmake_find_cetbuild_re.search(line)

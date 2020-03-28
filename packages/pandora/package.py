@@ -30,6 +30,11 @@ class Pandora(CMakePackage):
         filter_file('Eigen3_version "3.3.3"',
                     'Eigen3_version "{0}"'.format(self.spec['eigen'].version),
                     'CMakeLists.txt')
+        # Getting CMP0033 error which I want to fix, but don't know what
+        # to replace this with...
+        #filter_file(r'            EXPORT_LIBRARY_DEPENDENCIES\((.*)\)',
+        #            r'            install(EXPORT libdeps FILE \1 DESTINATION lib )',
+        #             'cmakemodules/MacroPandoraGeneratePackageConfigFiles.cmake')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
