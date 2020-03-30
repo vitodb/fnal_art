@@ -72,7 +72,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
 
         # ugly special cases
         # nusimdata/SimulationBase has an install_fhicl but no fhicl files..
-        if fname.find("nusimdata/SimulationBase/CMakeLists.txt") and line.find("install_fhicl()"):
+        if fname.find("nusimdata/SimulationBase/CMakeLists.txt") > 0 and line.find("install_fhicl()") >= 0:
             line = "#%s" % line
 
 
