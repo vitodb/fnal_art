@@ -48,6 +48,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
     fout = open(fname+".new", "w")
     need_cmake_min = toplevel
     need_project = toplevel
+
     drop_til_close = False
     saw_cmake_config = False
     saw_cetmodules = False
@@ -66,14 +67,19 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
 
         line = line.rstrip()
 
+        if line == "else()":
+            # some of these redo everything in an else, so forget
+            # what we know...
+	    drop_til_close = False
+	    saw_cmake_config = False
+	    saw_cetmodules = False
+	    saw_cmakeenv_include = False
+	    saw_canvas_root_io = False
 
         if line.find("include(cetmodules") > 0:
             saw_cetmodules = False
 
         # ugly special cases
-        # nusimdata/SimulationBase has an install_fhicl but no fhicl files..
-        if fname.find("nusimdata/SimulationBase/CMakeLists.txt") > 0 and line.find("install_fhicl()") >= 0:
-            line = "#%s" % line
 
 
         if drop_til_close:
@@ -185,7 +191,8 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
             if mat.group(2).find("VERSION") >= 0:
                 fout.write( line + "\n" )
             else:
-                fout.write( "project(%s VERSION %s LANGUAGES CXX)\n" % (mat.group(1),vers))
+                fout.write( "project(%s VERSION %s LANGUAGES CXX C)\n" % (mat.group(1),vers))
+            fout.write("#some need this for install_fhicl(), install_gdml()\nset(fcl_dir job)\nset(gdml_dir gdml)\n")
             need_project = False
             continue
 
@@ -200,7 +207,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
                fout.write("project( %s VERSION %s LANGUAGES CXX )\n" % (proj,vers))
                need_project = False
               
-            fout.write("find_package(ROOT COMPONENTS GenVector Core Imt RIO Net Hist Graf Graf3d Gpad ROOTVecOps Tree TreePlayer Rint Postscript Matrix Physics MathCore Thread MultiProc ROOTDataFrame)\n")
+            fout.write("find_package(ROOT COMPONENTS Core GenVector Gpad Graf Graf3d Hist Imt MathCore Matrix MultiProc Net Physics Postscript Rint RIO ROOTDataFrame ROOTDataFrame ROOTVecOps Thread Tree TreePlayer)\n")
             continue
 
         mat = cmake_ups_boost_re.search(line)
@@ -248,18 +255,18 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
             if newname.find("lib") == 0:
                newname = newname[3:]
 
-            if newname == "catch":
+            if newname in ("catch", "catch2"):
                newname = "Catch2"
 
             if newname in ("clhep",):
                newname = newname.upper()
 
-            if newname in ("sqlite3",):
+            if newname in ("sqlite3","sqlite"):
                newname = newname.capitalize().strip("0123456789")
 
             if newname == "ifdhc":
                fout.write("cet_find_simple_package( ifdhc INCPATH_SUFFIXES inc INCPATH_VAR IFDHC_INC )\n")
-            elif newname in ("wda", "ifbeam", "nucondb", "cetlib", "cetlib-except", "ifdhc", "dk2nudata"):
+            elif newname in ("wda", "ifbeam", "nucondb", "cetlib", "cetlib-except", "ifdhc", "dk2nudata", "cppunit", "Sqlite"):
                fout.write("cet_find_simple_package( %s INCPATH_VAR %s_INC )\n" % (newname, newname.upper()))
             else:
                 fout.write("find_package( %s )\n" % newname )
