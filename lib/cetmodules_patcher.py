@@ -35,6 +35,7 @@ cmake_config_re = re.compile(r"cet_cmake_config\(")
 cmake_inc_cme_re = re.compile(r"include\(CetCMakeEnv\)")
 cmake_inc_ad_re = re.compile(r"include\(ArtDictionary\)")
 cmake_eld_re = re.compile(r"export_library_dependencies\((.*)\)",re.IGNORECASE)
+comment_re = re.compile(r"^\s*\#")
 
 def fake_check_ups_version(line, fout):
     p0 = line.find("PRODUCT_MATCHES_VAR ") + 20
@@ -58,7 +59,23 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         if debug:
              sys.stderr.write("line: %s" % line)
 
+        # don't be fooled by commented out lines..
+        if comment_re.match(line):
+            fout.write(line)
+            continue
+
         line = line.rstrip()
+
+
+        if line.find("include(cetmodules") > 0:
+            saw_cetmodules = False
+
+        # ugly special cases
+        # nusimdata/SimulationBase has an install_fhicl but no fhicl files..
+        if fname.find("nusimdata/SimulationBase/CMakeLists.txt") and line.find("install_fhicl()"):
+            line = "#%s" % line
+
+
         if drop_til_close:
             if line.find(")") > 0:
                 drop_til_close = False
@@ -105,14 +122,25 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
             continue
 
         mat = cmake_inc_cme_re.search(line)
-        if mat and not saw_cetmodules:
+        if mat:
             if debug:
-                 sys.stderr.write("cetbuild_re\n")
-            fout.write("find_package(cetmodules)\n")
-            saw_cetmodules = True
+                sys.stderr.write("cetbuild_re\n")
+            if not saw_cetmodules:
+                fout.write("find_package(cetmodules)\n")
+                saw_cetmodules = True
             saw_cmakeenv_include = True
             fout.write(line + "\n")
             continue
+
+        # if its any other random cet_xxx command, make sure we have
+        # included the parts...
+        if line.find("cet_") > 0:
+            if not saw_cetmodules:
+                fout.write("find_package(cetmodules)\n")
+                saw_cetmodules = True
+            if not saw_cmakeenv_include:
+                fout.write("include(CetCMakeEnv)\n")
+                saw_cmakeenv_include = True
 
         mat = cmake_config_re.search(line)
         if mat:
@@ -135,7 +163,11 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         if mat:
             if debug:
                  sys.stderr.write("min_re\n")
-            fout.write( "cmake_minimum_required(VERSION %s)\n" % str(max(float(mat.group(1)), 3.11)))
+            if proj.find("pandora") > 0:
+                fout.write(line + "\n")
+                fout.write("cmake_policy(SET CMP0048 NEW)\n")
+            else:
+                fout.write( "cmake_minimum_required(VERSION %s)\n" % str(max(float(mat.group(1)), 3.11)))
             need_cmake_min = False
             continue
         
@@ -188,6 +220,9 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
         if mat:
             if debug:
                  sys.stderr.write("ups_find_ups_re\n")
+            if proj.find("pandora") > 0:
+               # just drop it for larpandora*
+               continue
             if need_cmake_min:
                fout.write("cmake_minimum_required(VERSION 3.11)\n")
                need_cmake_min = False
