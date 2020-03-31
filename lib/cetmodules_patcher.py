@@ -207,7 +207,7 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
                fout.write("project( %s VERSION %s LANGUAGES CXX )\n" % (proj,vers))
                need_project = False
               
-            fout.write("set(ROOT_CONFIG_DEBUG TRUE)")
+            fout.write("set(ROOT_CONFIG_DEBUG TRUE)\n")
             fout.write("find_package(ROOT COMPONENTS Core GenVector Gpad Graf Graf3d Hist Imt MathCore Matrix MultiProc Net Physics Postscript Rint RIO ROOTDataFrame ROOTDataFrame ROOTVecOps Thread Tree TreePlayer)\n")
             continue
 
