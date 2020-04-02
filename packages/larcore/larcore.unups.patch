@@ -1,11 +1,18 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 2dd7d9e..c456b32 100644
+index 188189b..7496cba 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -12,16 +12,9 @@ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
+@@ -13,21 +13,14 @@
+ # ======================================================================
  
- project(larcore LANGUAGES CXX)
  
+-# use cmake 2.8 or later
+-cmake_minimum_required (VERSION 2.8)
++# use cmake 3.12 or later
++cmake_minimum_required (VERSION 3.12)
+ 
+-project(larcore)
+-
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
@@ -15,14 +22,15 @@ index 2dd7d9e..c456b32 100644
 -set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
--
++project(larcore VERSION 08.10.02 LANGUAGES CXX)
+ 
 +set(fcl_dir job)
 +set(gdml_dir gdml)
 +find_package( cetmodules )
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -34,13 +27,11 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -40,13 +33,11 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -32,7 +40,7 @@ index 2dd7d9e..c456b32 100644
 -find_ups_product(art_root_io)
 -find_ups_product( messagefacility )
 -find_ups_product( cetbuildtools )
--find_ups_root()
+-find_ups_root( )
 +find_package( ROOT REQUIRED COMPONENTS Core Geom GenVector)
 +find_package(Boost REQUIRED COMPONENTS date_time filesystem graph program_options
 +  regex system unit_test_framework)
@@ -41,9 +49,9 @@ index 2dd7d9e..c456b32 100644
  
  # macros for artdaq_dictionary and simple_plugin
  include(ArtDictionary)
-@@ -52,9 +43,9 @@ add_subdirectory(larcore)
+@@ -58,9 +49,9 @@ add_subdirectory(larcore)
  
- # tests
+ # tests 
  add_subdirectory(test)
 -
 +add_subdirectory(cmakeConfig)
@@ -75,6 +83,37 @@ index 0000000..05d87eb
 +  regex system unit_test_framework)
 +find_package( larcorealg REQUIRED)
 +find_package( art REQUIRED)
+diff --git a/larcore/CoreUtils/CMakeLists.txt b/larcore/CoreUtils/CMakeLists.txt
+index eec96b5..2ee79f7 100644
+--- a/larcore/CoreUtils/CMakeLists.txt
++++ b/larcore/CoreUtils/CMakeLists.txt
+@@ -1,2 +1 @@
+ install_headers()
+-install_source()
+diff --git a/larcore/Geometry/CMakeLists.txt b/larcore/Geometry/CMakeLists.txt
+index 1bcffdf..d6e9d57 100644
+--- a/larcore/Geometry/CMakeLists.txt
++++ b/larcore/Geometry/CMakeLists.txt
+@@ -2,16 +2,14 @@ art_make(SERVICE_LIBRARIES larcorealg_Geometry
+                            art_Framework_Principal
+                            art_Persistency_Provenance
+                            ${MF_MESSAGELOGGER}
+-                           ${ROOT_CORE}
++                           ROOT::Core
+          MODULE_LIBRARIES larcorealg_Geometry
+                           art_Framework_Services_Registry
+                           ${MF_MESSAGELOGGER}
+-                          ${ROOT_CORE}
+-                          ${ROOT_GEOM}
+-                          ${ROOT_GENVECTOR})
++                          ROOT::Geom
++                          ROOT::GenVector )
+ 
+ install_headers()
+ install_fhicl()
+-install_source()
+ 
+ add_subdirectory(gdml)
 diff --git a/larcore/Geometry/gdml/CMakeLists.txt b/larcore/Geometry/gdml/CMakeLists.txt
 index f324016..005d886 100644
 --- a/larcore/Geometry/gdml/CMakeLists.txt
@@ -109,22 +148,11 @@ index 188900f..2dce9a7 100644
  cet_test(ServiceUtil_test
    LIBRARIES
 diff --git a/test/Geometry/CMakeLists.txt b/test/Geometry/CMakeLists.txt
-index 78a4070..3295d0a 100644
+index 78a4070..27ab734 100644
 --- a/test/Geometry/CMakeLists.txt
 +++ b/test/Geometry/CMakeLists.txt
-@@ -6,7 +6,6 @@ simple_plugin ( GeometryIteratorLoopTest "module"
-                     GeometryTestLib
-                     larcore_Geometry_Geometry_service
-                     ${MF_MESSAGELOGGER}
--                    
-                     ${FHICLCPP}
-                     cetlib cetlib_except
-              )
-@@ -16,10 +15,9 @@ simple_plugin ( GeometryTest "module"
-                     GeometryTestLib
-                     larcore_Geometry_Geometry_service
-                     ${MF_MESSAGELOGGER}
--                    
+@@ -19,7 +19,7 @@ simple_plugin ( GeometryTest "module"
+                     
                      ${FHICLCPP}
                      cetlib cetlib_except
 -                    ${ROOT_BASIC_LIB_LIST}
@@ -132,7 +160,7 @@ index 78a4070..3295d0a 100644
                )
  
  # geometry test on "standard" geometry
-@@ -51,6 +49,15 @@ cet_test(dump_channel_map_test HANDBUILT
+@@ -51,7 +51,15 @@ cet_test(dump_channel_map_test HANDBUILT
    DATAFILES dump_lartpcdetector_channelmap.fcl
  )
  
@@ -141,10 +169,11 @@ index 78a4070..3295d0a 100644
 +set( mrb_build_dir $ENV{MRB_BUILDDIR} )
 +if( NOT mrb_build_dir )
 +  #message(STATUS "MRB_BUILDDIR is undefined, set FHICL_FILE_PATH and FW_SEARCH_PATH")
-+  set_tests_properties( geometry geometry_iterator_loop dump_geometry_test dump_channel_map_test
-+                        PROPERTIES ENVIRONMENT
++  set_tests_properties( geometry geometry_iterator_loop dump_geometry_test dump_channel_map_test 
++                        PROPERTIES ENVIRONMENT 
 +                        "FHICL_FILE_PATH=.:${CMAKE_BINARY_DIR}/job:${larcorealg_fcl_dir};FW_SEARCH_PATH=${CMAKE_BINARY_DIR}/gdml:${larcorealg_gdml_dir}" )
 +endif()
  
  install_headers()
  install_fhicl()
+-install_source()

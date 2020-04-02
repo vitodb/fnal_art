@@ -27,6 +27,7 @@ class Lardata(CMakePackage):
     version('08.11.01', tag='v08_11_01', git='https://github.com/LArSoft/lardata.git')
     version('08.12.00', tag='v08_12_00', git='https://github.com/LArSoft/lardata.git')
     version('08.13.00', tag='v08_13_00', git='https://github.com/LArSoft/lardata.git')
+    version('08.14.02', tag='v08_14_02', git='https://github.com/LArSoft/lardata.git')
 
     variant('cxxstd',
             default='17',
