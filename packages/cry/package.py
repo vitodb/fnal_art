@@ -3,19 +3,20 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 from spack import *
 import os
 import glob
-
-
 import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
 from cetmodules_patcher import cetmodules_dir_patcher
 
+
 def patcher(x):
     cetmodules_dir_patcher(".","cry","1.7")
+
 
 class Cry(MakefilePackage):
     """Generates correlated cosmic-ray particle showers at one of three 
@@ -25,7 +26,6 @@ and detector simulation codes. """
     homepage = "https://nuclear.llnl.gov/simulation/"
     url      = "https://nuclear.llnl.gov/simulation/cry_v1.7.tar.gz"
 
-    patch = patcher
     version('1.7', sha256='dcee2428f81cba113f82e0c7c42f4d85bff4b8530e5ab5c82c059bed3e570c20')
 
     parallel = False
@@ -35,7 +35,6 @@ and detector simulation codes. """
             values=('default', '98', '11', '14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
 
     @run_before('build')
     def filter_makefile(self):

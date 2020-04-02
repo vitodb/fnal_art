@@ -43,6 +43,8 @@ class Canvas(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('canvas.unups.patch')
+
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules@1.01.01:', type='build')
@@ -77,4 +79,3 @@ class Canvas(CMakePackage):
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-    patch('canvas.unups.patch')

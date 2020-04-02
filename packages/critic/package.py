@@ -39,6 +39,8 @@ class Critic(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('critic.unups.patch')
+
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules@1.01.01:', type='build')
@@ -97,4 +99,3 @@ class Critic(CMakePackage):
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-    patch('critic.unups.patch')

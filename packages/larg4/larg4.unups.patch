@@ -1,0 +1,198 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2621585..8aa0299 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -9,12 +9,9 @@
+ # use cmake 3.14 or later
+ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
+ 
+-project(larg4 LANGUAGES CXX)
+-
+-find_package(cetbuildtools REQUIRED)
+-
+-list(APPEND CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules $ENV{ART_DIR}/Modules)
+-
++find_package( cetmodules )
++set(fcl_dir job)
++set(gdml_dir gdml)
+ include(CetCMakeEnv)
+ cet_cmake_env()
+ 
+@@ -28,23 +25,10 @@ cet_set_compiler_flags(DIAGS CAUTIOUS WERROR NO_UNDEFINED EXTRA_FLAGS -pedantic)
+ 
+ cet_report_compiler_flags()
+ 
+-find_ups_product(art)
+-find_ups_product(art_root_io)
+-find_ups_product(artg4tk)
+-find_ups_product(canvas)
+-find_ups_product(canvas_root_io)
+-find_ups_product(cetlib)
+-find_ups_product(clhep)
+-find_ups_product(fhiclcpp)
+-find_ups_geant4()
+-find_ups_product(larcore)
+-find_ups_product(larcoreobj)
+-find_ups_product(lardataalg)
+-find_ups_product(lardataobj)
+-find_ups_product(messagefacility)
+-find_ups_product(nusimdata)
+-find_ups_product(nug4)
+-
++find_package(artg4tk REQUIRED)
++find_package(larevt REQUIRED)
++include(${Geant4_USE_FILE})
++# macros for dictionary and simple_plugin
+ include(ArtDictionary)
+ include(ArtMake)
+ include(BuildPlugins)
+@@ -61,8 +45,7 @@ cet_find_library(ARTG4TK_SERVICES_DETECTORHOLDER_SERVICE NAMES artg4tk_services_
+ add_subdirectory(fcl)
+ add_subdirectory(gdml)
+ add_subdirectory(larg4)
+-add_subdirectory(ups)
+-
++#add_subdirectory(ups)
++add_subdirectory(cmakeConfig)
+ # packaging utility
+-# this has to be last
+-include(UseCPack)
++#include(UseCPack)
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..ed28e86
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1 @@
++cet_cmake_config(CONFIG_FRAGMENTS larg4-fragment.cmake.in)
+diff --git a/cmakeConfig/larg4-fragment.cmake.in b/cmakeConfig/larg4-fragment.cmake.in
+new file mode 100644
+index 0000000..fcf7279
+--- /dev/null
++++ b/cmakeConfig/larg4-fragment.cmake.in
+@@ -0,0 +1,3 @@
++find_package(artg4tk REQUIRED)
++find_package(larevt REQUIRED)
++include(${Geant4_USE_FILE})
+diff --git a/larg4/Analysis/CMakeLists.txt b/larg4/Analysis/CMakeLists.txt
+index 2238c0e..69d9c60 100644
+--- a/larg4/Analysis/CMakeLists.txt
++++ b/larg4/Analysis/CMakeLists.txt
+@@ -1,8 +1,9 @@
++set(CMAKE_CXX_FLAGS "${Geant4_CXX_FLAGS} -Wno-shadow -Wno-unused-parameter")
+ art_make(
+   MODULE_LIBRARIES
+     art_Framework_Core
+     art_Framework_Principal
+-    art_root_io_tfile_support ${ROOT_CORE}
++    art_root_io_tfile_support
+     art_root_io_TFileService_service
+     art_Framework_Services_Registry
+     art_Persistency_Provenance
+@@ -12,9 +13,9 @@ art_make(
+     canvas
+     cetlib_except
+     fhiclcpp
+-    ${G4ZLIB}
++    ${Geant4_LIBRARIES}
+     nusimdata_SimulationBase
+-    ${ROOT_CORE}
+-    ${ROOT_HIST}
+-    ${ROOT_TREE}
++    ${ROOT_Core_LIBRARY}
++    ${ROOT_Hist_LIBRARY}
++    ${ROOT_Tree_LIBRARY}
+ )
+diff --git a/larg4/Core/CMakeLists.txt b/larg4/Core/CMakeLists.txt
+index 3c9274e..fdbf07d 100644
+--- a/larg4/Core/CMakeLists.txt
++++ b/larg4/Core/CMakeLists.txt
+@@ -16,15 +16,11 @@ art_make(
+     cetlib_except
+     clhep
+     fhiclcpp
+-    ${G4EVENT}
+-    ${G4INTERCOMS}
+-    ${G4INTERFACES}
+-    ${G4RUN}
+-    ${G4TRACKING}
++    ${Geant4_LIBRARIES}
+     larg4_pluginActions_ParticleListAction_service
+     MF_MessageLogger
+-    ${ROOT_CORE}
+-    ${ROOT_PHYSICS}
++    ${ROOT_Core_LIBRARY}
++    ${ROOT_Physics_LIBRARY}
+ )
+ 
+ install_headers()
+diff --git a/larg4/Services/CMakeLists.txt b/larg4/Services/CMakeLists.txt
+index 7f7ea9b..d2a6076 100644
+--- a/larg4/Services/CMakeLists.txt
++++ b/larg4/Services/CMakeLists.txt
+@@ -1,3 +1,4 @@
++set(CMAKE_CXX_FLAGS "${Geant4_CXX_FLAGS} -Wno-shadow -Wno-unused-parameter")
+ simple_plugin(
+   LArG4Detector service
+   SOURCE
+@@ -19,15 +20,10 @@ simple_plugin(
+     cetlib_except
+     clhep
+     fhiclcpp
+-    ${G4DIGITS_HITS}
+-    ${G4EVENT}
+-    ${G4GEOMETRY}
+-    ${G4GLOBAL}
+-    ${G4MATERIALS}
+-    ${G4PERSISTENCY}
++    ${Geant4_LIBRARIES}
+     larcorealg_Geometry
+     MF_MessageLogger
+-    ${ROOT_CORE}
++    ${ROOT_Core_LIBRARY}
+     ${XERCESC}
+ )
+ 
+diff --git a/larg4/pluginActions/CMakeLists.txt b/larg4/pluginActions/CMakeLists.txt
+index 759cafb..ca6d9f7 100644
+--- a/larg4/pluginActions/CMakeLists.txt
++++ b/larg4/pluginActions/CMakeLists.txt
+@@ -1,3 +1,4 @@
++set(CMAKE_CXX_FLAGS "${Geant4_CXX_FLAGS} -Wno-shadow -Wno-unused-parameter")
+ simple_plugin(
+   MCTruthEventAction service
+ NOP
+@@ -12,13 +13,12 @@ NOP
+   cetlib_except
+   clhep
+   fhiclcpp
+-  ${G4GLOBAL}
+-  ${G4PARTICLES}
++  ${Geant4_LIBRARIES}
+   MF_MessageLogger
+   nusimdata_SimulationBase
+   nug4_G4Base
+-  ${ROOT_CORE}
+-  ${ROOT_PHYSICS}
++  ${ROOT_Core_LIBRARY}
++  ${ROOT_Physics_LIBRARY}
+ SOURCE
+   MCTruthEventAction_service.cc
+ )
+@@ -38,13 +38,13 @@ NOP
+   artg4tk_services_ActionHolder_service
+   art_Persistency_Provenance
+   clhep
+-  ${G4PARTICLES}
++  ${Geant4_LIBRARIES}
+   MF_MessageLogger
+   nusimdata_SimulationBase
+   nug4_G4Base
+   nug4_ParticleNavigation
+-  ${ROOT_CORE}
+-  ${ROOT_PHYSICS}
++  ${ROOT_Core_LIBRARY}
++  ${ROOT_Physics_LIBRARY}
+ SOURCE
+   ParticleListAction_service.cxx
+ )

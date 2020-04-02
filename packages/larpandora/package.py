@@ -28,8 +28,6 @@ def sanitize_environments(*args):
 class Larpandora(CMakePackage):
     """Larpandora"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandora"
     url      = "https://github.com/LArSoft/larpandora.git"
 
@@ -44,6 +42,8 @@ class Larpandora(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larpandora.unups.patch')
 
     depends_on('larreco')
     depends_on('larpandoracontent')

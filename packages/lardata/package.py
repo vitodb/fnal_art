@@ -34,6 +34,8 @@ class Lardata(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('lardata.unups.patch')
+
     depends_on('nutools')
     depends_on('larcore')
     depends_on('lardataobj')

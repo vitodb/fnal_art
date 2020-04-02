@@ -13,8 +13,10 @@ if not libdir in sys.path:
     sys.path.append(libdir)
 from cetmodules_patcher import cetmodules_dir_patcher
 
+
 def patcher(x):
     cetmodules_dir_patcher(".","dk2nugenie", "01.08.00")
+ 
 
 class Dk2nugenie(CMakePackage):
     """This package consolidates the disparate formats of neutrino beam simulation "flux" files.

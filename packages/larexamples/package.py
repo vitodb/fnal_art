@@ -27,8 +27,6 @@ def sanitize_environments(*args):
 class Larexamples(CMakePackage):
     """Larexamples"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larexamples"
     url      = "https://github.com/LArSoft/larexamples.git"
 
@@ -46,6 +44,8 @@ class Larexamples(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larexamples.unups.patch')
 
     depends_on('larsim')
     depends_on('cetmodules', type='build')

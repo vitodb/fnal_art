@@ -13,6 +13,7 @@ if not libdir in sys.path:
     sys.path.append(libdir)
 from cetmodules_patcher import cetmodules_dir_patcher
 
+
 def patcher(x):
     cetmodules_dir_patcher(".","art_root_io","8.10.02")
 
@@ -30,8 +31,6 @@ class ArtRootIo(CMakePackage):
     """Root-based input/output for the art suite.
     """
 
-    patch = patcher
-
     homepage = 'http://art.fnal.gov/'
     git_base = 'http://cdcvs.fnal.gov/projects/art_root_io'
 
@@ -46,6 +45,8 @@ class ArtRootIo(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('art-root-io.unups.patch')
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')

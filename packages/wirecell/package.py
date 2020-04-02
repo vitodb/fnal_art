@@ -29,8 +29,6 @@ class Wirecell(Package):
     Borrowed from 
     https://github.com/WireCell/wire-cell-spack/blob/master/repo/packages/wirecell-toolkit/package.py"""
 
-    patch = patcher
-
     homepage = "http://wirecell.github.io"
     url = "https://github.com/WireCell/wire-cell-toolkit/archive/0.13.1.tar.gz"
 

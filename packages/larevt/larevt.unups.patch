@@ -1,73 +1,63 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 3ee6e54..c4ed98e 100644
+index ae956ea..a0045ec 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -13,21 +13,14 @@
- # ======================================================================
+@@ -12,42 +12,24 @@ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
  
+ project(larevt LANGUAGES CXX)
  
--# use cmake 2.8 or later
--cmake_minimum_required (VERSION 2.8)
-+# use cmake 3.11 or later
-+cmake_minimum_required (VERSION 3.11)
- 
--project(larevt)
--
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
 -    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
 -ENDIF()
 -
--set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
+-set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
-+project(larevt VERSION 8.02.04 LANGUAGES CXX)
- 
+-
 +set(fcl_dir job)
 +set(gdml_dir gdml)
 +find_package( cetmodules REQUIRED )
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -40,19 +33,9 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+ cet_set_compiler_flags(DIAGS CAUTIOUS
+   WERROR
+   NO_UNDEFINED
+-  EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -I $ENV{CLANG_FQ_DIR}/include/c++/v1
++  EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs
+ )
+ 
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
--find_ups_product( larcore v1_00_00 )
--find_ups_product( lardata v1_00_00 )
--find_ups_product( nutools v1_00_00 )
--find_ups_product( art v1_09_00 )
--find_ups_product( messagefacility v1_10_00 )
--find_ups_product( cetbuildtools v4_09_00 )
--find_ups_root( root v5_34_00 )
--find_ups_product( postgresql v9_1_5 )
--find_ups_product( libwda v2_21_0 )
--
--# include search path
--# notice use of ENV to invoke an external variable
--include_directories ( $ENV{NUTOOLS_INC} )
+-find_ups_product( larcoreobj )
+-find_ups_product( larcorealg )
+-find_ups_product( larcore )
+-find_ups_product( lardataobj )
+-find_ups_product( lardataalg )
+-find_ups_product( lardata )
+-find_ups_product( nusimdata )
+-find_ups_product( art )
+-find_ups_product(art_root_io)
+-find_ups_product( messagefacility )
+-find_ups_root()
+-find_ups_product( postgresql )
+-find_ups_product( libwda )
+-find_ups_product( cetbuildtools )
 +find_package( PostgreSQL REQUIRED )
 +find_package( ROOT REQUIRED COMPONENTS FFTW )
 +find_package( lardata REQUIRED )
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -60,15 +43,13 @@ include(ArtMake)
- include(BuildPlugins)
+@@ -59,9 +41,9 @@ add_subdirectory(larevt)
  
- # source
--add_subdirectory(CalData)
--add_subdirectory(Filters)
--add_subdirectory(CalibrationDBI)
--add_subdirectory(SpaceCharge)
--# tests
--# add_subdirectory(test)
-+add_subdirectory(larevt)
- 
-+# tests
-+add_subdirectory(test)
-+cet_cmake_config()
+ # tests
+ add_subdirectory(test)
+-
++add_subdirectory(cmakeConfig)
  # ups - table and config files
 -add_subdirectory(ups)
 +#add_subdirectory(ups)
@@ -75,3 +65,50 @@ index 3ee6e54..c4ed98e 100644
  # packaging utility
 -include(UseCPack)
 +#include(UseCPack)
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..4d15a17
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,3 @@
++
++# create package configuration and version files
++cet_cmake_config(CONFIG_FRAGMENTS larevt-fragment.cmake.in)
+diff --git a/cmakeConfig/larevt-fragment.cmake.in b/cmakeConfig/larevt-fragment.cmake.in
+new file mode 100644
+index 0000000..95d36a1
+--- /dev/null
++++ b/cmakeConfig/larevt-fragment.cmake.in
+@@ -0,0 +1,3 @@
++find_package( PostgreSQL REQUIRED )
++find_package( ROOT REQUIRED COMPONENTS FFTW )
++find_package( lardata REQUIRED )
+diff --git a/larevt/CalibrationDBI/Providers/CMakeLists.txt b/larevt/CalibrationDBI/Providers/CMakeLists.txt
+index e145a0e..bbdf452 100644
+--- a/larevt/CalibrationDBI/Providers/CMakeLists.txt
++++ b/larevt/CalibrationDBI/Providers/CMakeLists.txt
+@@ -1,6 +1,6 @@
+-cet_find_library(LIBWDA NAMES wda PATHS ENV LIBWDA_LIB NO_DEFAULT_PATH)
++cet_find_library( LIBWDA NAMES wda  )
+ 
+-include_directories($ENV{LIBWDA_FQ_DIR}/include)
++include_directories( ${LIBWDA_INC_DIR} )
+ 
+ art_make(LIB_LIBRARIES
+            larevt_CalibrationDBI_IOVData
+diff --git a/test/Filters/CMakeLists.txt b/test/Filters/CMakeLists.txt
+index 05ea49d..5baeb0c 100644
+--- a/test/Filters/CMakeLists.txt
++++ b/test/Filters/CMakeLists.txt
+@@ -3,10 +3,9 @@ cet_enable_asserts()
+ simple_plugin ( SimpleChannelStatusTest "module"
+                     larevt_Filters
+                     ${MF_MESSAGELOGGER}
+-                    
+                     ${FHICLCPP}
+                     cetlib cetlib_except
+-                    ${ROOT_BASIC_LIB_LIST}
++                    ${ROOT_Core_LIBRARY}
+               )
+ 
+ cet_test(ChannelStatusServiceTest HANDBUILT

@@ -27,8 +27,6 @@ def sanitize_environments(*args):
 class Larg4(CMakePackage):
     """Larg4"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larg4"
     url      = "http://cdcvs.fnal.gov/projects/larg4"
 
@@ -46,6 +44,8 @@ class Larg4(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larg4.unups.patch')
 
     depends_on('artg4tk')
     depends_on('larevt')

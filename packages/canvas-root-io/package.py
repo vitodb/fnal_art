@@ -16,19 +16,20 @@ def sanitize_environments(*args):
             env.prune_duplicate_paths(var)
             env.deprioritize_system_paths(var)
 
+
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
 from cetmodules_patcher import cetmodules_dir_patcher
 
+
 def patcher(x):
     print("patcher: got argument: %s" % repr(x))
     cetmodules_dir_patcher(".","canvas-root-io","1.05.01")
 
+
 class CanvasRootIo(CMakePackage):
     """A Root I/O library for the art suite."""
-
-    patch = patcher
 
     homepage = 'http://art.fnal.gov/'
     git_base = 'http://cdcvs.fnal.gov/projects/canvas_root_io'
@@ -46,6 +47,8 @@ class CanvasRootIo(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('canvas-root-io.unups.patch')
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')

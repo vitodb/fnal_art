@@ -37,6 +37,8 @@ class Messagefacility(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('messagefacility.unups.patch')
+
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules@1.01.01:', type='build')
@@ -96,4 +98,3 @@ class Messagefacility(CMakePackage):
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-    patch('messagefacility.unups.patch')

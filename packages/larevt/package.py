@@ -28,8 +28,6 @@ def sanitize_environments(*args):
 class Larevt(CMakePackage):
     """Larevt"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larevt"
     url      = "https://github.com/LArSoft/larevt.git"
 
@@ -47,6 +45,8 @@ class Larevt(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larevt.unups.patch')
 
     depends_on('libwda')
     depends_on('lardata')

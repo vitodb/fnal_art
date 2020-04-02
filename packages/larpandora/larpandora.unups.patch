@@ -1,18 +1,11 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b93e2de..e4a0852 100644
+index b4f0ce8..ee6dc18 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -13,21 +13,14 @@
- # ======================================================================
+@@ -12,16 +12,9 @@ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
  
+ project(larpandora LANGUAGES CXX)
  
--# use cmake 2.8 or later
--cmake_minimum_required (VERSION 2.8)
-+# use cmake 3.11 or later
-+cmake_minimum_required (VERSION 3.11)
- 
--project(larpandora)
--
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
@@ -22,15 +15,14 @@ index b93e2de..e4a0852 100644
 -set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
-+project(larpandora VERSION 08.00.00 LANGUAGES CXX)
- 
+-
 +set( fcl_dir job )
 +set( fw_dir scripts )
 +find_package( cetmodules )
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -40,54 +33,41 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -34,54 +27,41 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -101,7 +93,7 @@ index b93e2de..e4a0852 100644
  # source
  add_subdirectory(larpandora)
 -
-+cet_cmake_config()
++add_subdirectory(cmakeConfig)
  # ups - table and config files
 -add_subdirectory(ups)
 +#add_subdirectory(ups)
@@ -110,3 +102,105 @@ index b93e2de..e4a0852 100644
 -include(UseCPack)
 +#include(UseCPack)
  
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..0ea3a1f
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,3 @@
++
++# create package configuration and version files
++cet_cmake_config(CONFIG_FRAGMENTS larpandora-fragment.cmake.in)
+diff --git a/cmakeConfig/larpandora-fragment.cmake.in b/cmakeConfig/larpandora-fragment.cmake.in
+new file mode 100644
+index 0000000..16e07b8
+--- /dev/null
++++ b/cmakeConfig/larpandora-fragment.cmake.in
+@@ -0,0 +1,3 @@
++find_package( larreco REQUIRED )
++find_package( LArPandoraContent REQUIRED )
++
+diff --git a/larpandora/LArPandoraAnalysis/CMakeLists.txt b/larpandora/LArPandoraAnalysis/CMakeLists.txt
+index e067681..2c0799c 100644
+--- a/larpandora/LArPandoraAnalysis/CMakeLists.txt
++++ b/larpandora/LArPandoraAnalysis/CMakeLists.txt
+@@ -19,10 +19,9 @@ art_make(
+                         art_Utilities
+                         canvas
+                         ${MF_MESSAGELOGGER}
+-
+                         ${FHICLCPP}
+                         cetlib cetlib_except
+-                        ${ROOT_BASIC_LIB_LIST}
++                        ${ROOT_LIBRARIES}
+            MODULE_LIBRARIES larpandora_LArPandoraInterface
+           )
+ 
+diff --git a/larpandora/LArPandoraEventBuilding/CMakeLists.txt b/larpandora/LArPandoraEventBuilding/CMakeLists.txt
+index 684e3ff..b2bfbad 100644
+--- a/larpandora/LArPandoraEventBuilding/CMakeLists.txt
++++ b/larpandora/LArPandoraEventBuilding/CMakeLists.txt
+@@ -1,5 +1,7 @@
+-include_directories( $ENV{PANDORA_INC} )
+-include_directories( $ENV{LARPANDORACONTENT_INC} )
++include_directories( ${PandoraSDK_INCLUDE_DIRS} )
++include_directories( ${PandoraMonitoring_INCLUDE_DIRS} )
++include_directories( ${EIGEN3_INCLUDE_DIRS} )
++include_directories( ${LArPandoraContent_INCLUDE_DIRS} )
+ 
+ art_make(
+           LIB_LIBRARIES larcorealg_Geometry
+@@ -14,8 +16,8 @@ art_make(
+                         larreco_RecoAlg
+                         larreco_ClusterFinder
+                         larreco_Calorimetry
+-                        ${PANDORASDK}
+-                        ${PANDORAMONITORING}
++                        ${PandoraSDK_LIBRARIES}
++                        ${PandoraMonitoring_LIBRARIES}
+                         LArPandoraContent
+                         larpandora_LArPandoraInterface
+                         nusimdata_SimulationBase
+diff --git a/larpandora/LArPandoraInterface/CMakeLists.txt b/larpandora/LArPandoraInterface/CMakeLists.txt
+index a2893f4..d1b3959 100644
+--- a/larpandora/LArPandoraInterface/CMakeLists.txt
++++ b/larpandora/LArPandoraInterface/CMakeLists.txt
+@@ -1,5 +1,7 @@
+-include_directories( $ENV{PANDORA_INC} )
+-include_directories( $ENV{LARPANDORACONTENT_INC} )
++include_directories( ${PandoraSDK_INCLUDE_DIRS} )
++include_directories( ${PandoraMonitoring_INCLUDE_DIRS} )
++include_directories( ${EIGEN3_INCLUDE_DIRS} )
++include_directories( ${LArPandoraContent_INCLUDE_DIRS} )
+ 
+ art_make(
+           LIB_LIBRARIES larcorealg_Geometry
+@@ -15,8 +17,8 @@ art_make(
+                         larreco_RecoAlg
+                         larreco_ClusterFinder
+                         larreco_Calorimetry
+-                        ${PANDORASDK}
+-                        ${PANDORAMONITORING}
++                        ${PandoraSDK_LIBRARIES}
++                        ${PandoraMonitoring_LIBRARIES}
+                         LArPandoraContent
+                         nusimdata_SimulationBase
+                         ${ART_FRAMEWORK_CORE}
+@@ -30,11 +32,10 @@ art_make(
+                         art_Utilities
+                         canvas
+                         ${MF_MESSAGELOGGER}
+-
+                         ${FHICLCPP}
+                         cetlib cetlib_except
+                         ROOT::Geom
+-                        ${ROOT_BASIC_LIB_LIST}
++                        ${ROOT_LIBRARIES}
+                         MODULE_LIBRARIES larpandora_LArPandoraInterface
+           )
+ 
+@@ -43,3 +44,4 @@ install_fhicl()
+ install_source()
+ 
+ add_subdirectory(scripts)
++

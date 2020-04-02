@@ -26,6 +26,7 @@ class CetlibExcept(CMakePackage):
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
     version('1.04.00', tag='v1_04_00', git=git_base)
+
     patch('cetlib_except.unups.patch')
 
     variant('cxxstd',

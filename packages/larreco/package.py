@@ -28,8 +28,6 @@ def sanitize_environments(*args):
 class Larreco(CMakePackage):
     """Larreco"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larreco"
     url      = "https://github.com/LArSoft/larreco.git"
 
@@ -48,6 +46,8 @@ class Larreco(CMakePackage):
             description='Use the specified C++ standard when building.')
     variant('tf', default=False, description='Build tensorflow dependent libraries.')
     
+    patch('larreco.unups.patch')
+
     depends_on('tbb')
     depends_on('clhep')
     depends_on('root')

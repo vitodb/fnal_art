@@ -27,7 +27,7 @@ def sanitize_environments(*args):
 class Lardataobj(CMakePackage):
     """Lardataobj"""
 
-    patch = patcher
+    #patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/lardataobj"
     url      = "https://github.com/LArSoft/lardataobj.git"
@@ -43,6 +43,8 @@ class Lardataobj(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('lardataobj.unups.patch')
 
     depends_on('nusimdata')
     depends_on('larcorealg')

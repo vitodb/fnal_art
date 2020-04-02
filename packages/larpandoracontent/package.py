@@ -18,8 +18,6 @@ def patcher(x):
 class Larpandoracontent(CMakePackage):
     """Larpandoracontent"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
     url      = "https://github.com/LArSoft/larpandoracontent.git"
 
@@ -38,6 +36,8 @@ class Larpandoracontent(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larpandoracontent.unups.patch')
 
     depends_on('cetmodules', type='build')
     depends_on('eigen+fftw')

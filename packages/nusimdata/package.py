@@ -28,8 +28,6 @@ def sanitize_environments(*args):
 class Nusimdata(CMakePackage):
     """Nusimdata"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/nusimdata"
     url      = "http://cdcvs.fnal.gov/projects/nusimdata"
 
@@ -48,6 +46,8 @@ class Nusimdata(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+
+    patch('nusimdata.unups.patch')
 
     # Build and link dependencies.
     depends_on('canvas-root-io')

@@ -1,13 +1,11 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 8492727..7c7ab63 100644
+index 937d75e..3c9cd92 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -16,18 +16,10 @@
- # use cmake 3.10 or later
- cmake_minimum_required (VERSION 3.10)
+@@ -12,16 +12,8 @@ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
  
--project(lareventdisplay)
--
+ project(lareventdisplay LANGUAGES CXX)
+ 
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
@@ -17,14 +15,13 @@ index 8492727..7c7ab63 100644
 -set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
-+project(lareventdisplay VERSION 08.00.00 LANGUAGES CXX)
- 
+-
 +set(fcl_dir job)
 +find_package( cetmodules REQUIRED )
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -40,23 +32,10 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -34,23 +26,10 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -52,12 +49,12 @@ index 8492727..7c7ab63 100644
  
  # use the system zlib
  find_package( ZLIB REQUIRED )
-@@ -69,9 +48,9 @@ include(BuildPlugins)
+@@ -63,9 +42,9 @@ include(BuildPlugins)
  
  # source
  add_subdirectory(lareventdisplay)
 -
-+cet_cmake_config()
++add_subdirectory(cmakeConfig)
  # ups - table and config files
 -add_subdirectory(ups)
 +#add_subdirectory(ups)
@@ -65,3 +62,27 @@ index 8492727..7c7ab63 100644
  # packaging utility
 -include(UseCPack)
 +#include(UseCPack)
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..fac1e1f
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,3 @@
++
++# create package configuration and version files
++cet_cmake_config(CONFIG_FRAGMENTS lareventdisplay-fragment.cmake.in)
+diff --git a/cmakeConfig/lareventdisplay-fragment.cmake.in b/cmakeConfig/lareventdisplay-fragment.cmake.in
+new file mode 100644
+index 0000000..6852120
+--- /dev/null
++++ b/cmakeConfig/lareventdisplay-fragment.cmake.in
+@@ -0,0 +1,9 @@
++find_package( ROOT REQUIRED COMPONENTS GenVector Gui Geom Minuit Minuit2 XMLIO Gdml TMVA EG VMC X3d Eve)
++set(HAVE_ROOT6 BOOL:True)
++set(ROOTCLING ROOT::rootcling)
++find_package( larreco REQUIRED )
++
++# use the system zlib
++find_package( ZLIB REQUIRED )
++include_directories( ZLIB_INCLUDE_DIRS )
++

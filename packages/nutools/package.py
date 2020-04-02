@@ -27,8 +27,6 @@ def sanitize_environments(*args):
 class Nutools(CMakePackage):
     """Nutools"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/nutools/wiki"
     url      = "http://cdcvs.fnal.gov/projects/nutools/"
 
@@ -46,6 +44,8 @@ class Nutools(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('nutools.unups.patch')
 
     depends_on('cetmodules', type='build')
     depends_on('art-root-io')
@@ -73,7 +73,7 @@ class Nutools(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DGENIE_VERSION=v{0}'.format(self.spec['genie'].version.underscored)
+                '-DCRYHOME={0}'.format(self.spec['cry'].prefix)
                ]
         return args
 

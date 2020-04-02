@@ -1,3 +1,9 @@
+commit efafb37e6326b0d7bec60941ce0385d6c12a3eac
+Author: Patrick Gartung <gartung@fnal.gov>
+Date:   Wed Apr 1 16:36:16 2020 -0500
+
+    Cetmodules
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 4cc3c9f..4f7fb7d 100644
 --- a/CMakeLists.txt
@@ -91,7 +97,7 @@ index 4cc3c9f..4f7fb7d 100644
 -
 -# packaging utility
 -include(UseCPack)
-+cet_cmake_config()
++add_subdirectory(cmakeConfig)
 diff --git a/canvas/CMakeLists.txt b/canvas/CMakeLists.txt
 index 1b7c673..7185e70 100644
 --- a/canvas/CMakeLists.txt
@@ -105,4 +111,57 @@ index 1b7c673..7185e70 100644
 +  CLHEP::Vector
    ${CMAKE_DL_LIBS}
    NO_DICTIONARY)
+ 
+diff --git a/canvas/test/Persistency/Common/CMakeLists.txt b/canvas/test/Persistency/Common/CMakeLists.txt
+index 11e15ae..c8a59a9 100644
+--- a/canvas/test/Persistency/Common/CMakeLists.txt
++++ b/canvas/test/Persistency/Common/CMakeLists.txt
+@@ -4,7 +4,9 @@ cet_test(aggregate_t USE_BOOST_UNIT
+ cet_test(aggregate_clhep_t USE_BOOST_UNIT
+   LIBRARIES
+   canvas
+-  ${CLHEP})
++  CLHEP::Matrix
++  CLHEP::Vector
++  )
+ 
+ cet_test(const_assns_iter_t LIBRARIES canvas)
+ 
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..81ca39b
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,2 @@
++# Create package configuration and version files.
++cet_cmake_config(CONFIG_FRAGMENTS canvas-fragment.cmake.in)
+diff --git a/cmakeConfig/canvas-fragment.cmake.in b/cmakeConfig/canvas-fragment.cmake.in
+new file mode 100644
+index 0000000..babe7bf
+--- /dev/null
++++ b/cmakeConfig/canvas-fragment.cmake.in
+@@ -0,0 +1,7 @@
++find_package(cetlib_except REQUIRED)
++find_package(hep_concurrency REQUIRED)
++find_package(cetlib REQUIRED)
++find_package(fhiclcpp REQUIRED)
++find_package(messagefacility REQUIRED)
++find_package(range-v3 REQUIRED)
++find_package(Boost 1.50.0 REQUIRED COMPONENTS)
+diff --git a/tools/CMakeLists.txt b/tools/CMakeLists.txt
+index 2e1137d..b8a81bb 100644
+--- a/tools/CMakeLists.txt
++++ b/tools/CMakeLists.txt
+@@ -6,10 +6,10 @@ macro( _canvas_install_tools )
+   cmake_parse_arguments( CT "" "DIRNAME" "SCRIPT_LIST" ${ARGN})
+   if( CT_DIRNAME )
+     install( PROGRAMS ${CT_SCRIPT_LIST}
+-             DESTINATION "${product}/${version}/tools/${CT_DIRNAME}" )
++             DESTINATION "tools/${CT_DIRNAME}" )
+   else()
+     install( PROGRAMS ${CT_SCRIPT_LIST}
+-             DESTINATION "${product}/${version}/tools" )
++             DESTINATION "tools" )
+   endif()
+ endmacro( _canvas_install_tools )
  

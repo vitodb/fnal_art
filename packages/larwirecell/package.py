@@ -3,10 +3,9 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 from spack import *
 import os
-
-
 
 import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
@@ -29,8 +28,6 @@ def sanitize_environments(*args):
 class Larwirecell(CMakePackage):
     """Larwirecell"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larwirecell"
     url      = "https://github.com/LArSoft/larwirecell.git"
 
@@ -47,6 +44,8 @@ class Larwirecell(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larwirecell.unups.patch')
 
     depends_on('larevt')
     depends_on('wirecell')

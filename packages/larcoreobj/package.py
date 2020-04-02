@@ -5,15 +5,16 @@
 
 from spack import *
 import os
-
 import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
 from cetmodules_patcher import cetmodules_dir_patcher
 
+
 def patcher(x):
     cetmodules_dir_patcher(".","larcoreobj","08.10.02")
+
 
 def sanitize_environments(*args):
     for env in args:
@@ -26,8 +27,6 @@ def sanitize_environments(*args):
 
 class Larcoreobj(CMakePackage):
     """Larcoreobj"""
-
-    patch = patcher
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larcoreobj"
     url      = "https://github.com/LArSoft/larcoreobj.git"
@@ -44,6 +43,7 @@ class Larcoreobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('larcoreobj.unups.patch')
 
     depends_on('canvas-root-io')
     depends_on('cetmodules', type='build')

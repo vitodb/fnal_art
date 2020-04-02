@@ -1,18 +1,11 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index a0f2267..f63b477 100644
+index 2f632f5..d016091 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -13,105 +13,82 @@
- # ======================================================================
+@@ -12,18 +12,13 @@ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
  
+ project(larsim LANGUAGES CXX)
  
--# use cmake 2.8 or later
--cmake_minimum_required (VERSION 2.8)
-+# use cmake 3.11 or later
-+cmake_minimum_required (VERSION 3.11)
- 
--project(larsim)
--
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
@@ -22,8 +15,7 @@ index a0f2267..f63b477 100644
 -set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
-+project(larsim VERSION 8.03.03 LANGUAGES CXX)
- 
+-
 +set(fcl_dir job)
 +set(gdml_dir gdml)
 +set(fw_dir fw)
@@ -34,9 +26,8 @@ index a0f2267..f63b477 100644
  
  # -Wno-unused-variable needed because of CLHEP
  cet_set_compiler_flags(DIAGS CAUTIOUS
-   WERROR
+@@ -31,152 +26,63 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
    NO_UNDEFINED
--  ALLOW_DEPRECATIONS
    EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-unused-variable
  )
 +add_definitions(-DGENIE_PRE_R3)
@@ -53,66 +44,272 @@ index a0f2267..f63b477 100644
 -find_ups_product( larevt )
 -find_ups_product( marley )
 -find_ups_product( nutools )
+-find_ups_product(nug4)
+-find_ups_product( nugen )
+-find_ups_product( nurandom )
 -find_ups_product( nusimdata )
 -find_ups_product( art )
+-find_ups_product(art_root_io)
 -find_ups_product( cetbuildtools )
 -find_ups_geant4( geant4 )
 -find_ups_product( postgresql )
 -find_ups_product( ifdhc )
+-find_ups_product( genie )
+-find_ups_product( log4cpp )
 -
 -# Wes put this here to use TRACE for debugging...
 -#find_ups_product( TRACE )
-+find_package( larevt REQUIRED )
-+find_package( marley )
-+find_package( larsoft-data )
- 
+-
 -#  Find all the libraries needed by our dependent CMakeList.txt files
 -cet_find_library( BOOST_SERIALIZATION NAMES boost_serialization PATHS ENV BOOST_LIB NO_DEFAULT_PATH )
 -cet_find_library( BOOST_DATE_TIME     NAMES boost_date_time     PATHS ENV BOOST_LIB NO_DEFAULT_PATH )
 -#
 -find_library( CRY NAMES CRY PATHS $ENV{CRYHOME}/lib NO_DEFAULT_PATH )
+-
+-# genie (copied from nugen)
+-  cet_find_library( LOG4CPP NAMES log4cpp PATHS ENV LOG4CPP_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWMSG       NAMES GFwMsg       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWREG       NAMES GFwReg       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWALG       NAMES GFwAlg       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWINT       NAMES GFwInt       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWGHEP      NAMES GFwGHEP      PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWNUM       NAMES GFwNum       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWUTL       NAMES GFwUtl       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWPARDAT    NAMES GFwParDat    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWEG        NAMES GFwEG        PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWNTP       NAMES GFwNtp       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHXSIG      NAMES GPhXSIg      PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHPDF       NAMES GPhPDF       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHNUCLST    NAMES GPhNuclSt    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHCMN       NAMES GPhCmn       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDCY       NAMES GPhDcy       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHHADTRANSP NAMES GPhHadTransp PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHHADNZ     NAMES GPhHadnz     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDEEX      NAMES GPhDeEx      PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHAMNGXS    NAMES GPhAMNGXS    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHAMNGEG    NAMES GPhAMNGEG    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHCHMXS     NAMES GPhChmXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHCOHXS     NAMES GPhCohXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHCOHEG     NAMES GPhCohEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDISXS     NAMES GPhDISXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDISEG     NAMES GPhDISEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDFRCXS    NAMES GPhDfrcXS    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDFRCEG    NAMES GPhDfrcEG    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHGLWRESXS  NAMES GPhGlwResXS  PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHGLWRESEG  NAMES GPhGlwResEG  PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHIBDXS     NAMES GPhIBDXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHIBDEG     NAMES GPhIBDEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHMNUCXS    NAMES GPhMNucXS    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHMNUCEG    NAMES GPhMNucEG    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHMEL       NAMES GPhMEL       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHNUELXS    NAMES GPhNuElXS    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHNUELEG    NAMES GPhNuElEG    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHQELXS     NAMES GPhQELXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHQELEG     NAMES GPhQELEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHRESXS     NAMES GPhResXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHRESEG     NAMES GPhResEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHSTRXS     NAMES GPhStrXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHSTREG     NAMES GPhStrEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHNDCY      NAMES GPhNDcy      PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GTLGEO       NAMES GTlGeo       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GTLFLX       NAMES GTlFlx       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GRWFWK       NAMES GRwFwk       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GRWIO        NAMES GRwIO        PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GRWCLC       NAMES GRwClc       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-
+-  # GENIE pre-R-3 used GSL via ROOT's Math libs, now makes direct call not available via that route
+-  cet_find_library( GSL NAMES gsl PATHS ENV GSL_LIB NO_DEFAULT_PATH )
+-
+-  set (GENIE_LIB_LIST ${GFWMSG}
+-                      ${GFWREG}
+-                      ${GFWALG}
+-                      ${GFWINT}
+-                      ${GFWGHEP}
+-                      ${GFWNUM}
+-                      ${GSL}  # FWNUM relies on GSL
+-                      ${GFWUTL}
+-                      ${GFWPARDAT}
+-                      ${GFWEG}
+-                      ${GFWNTP}
+-                      ${GPHXSIG}
+-                      ${GPHPDF}
+-                      ${GPHNUCLST}
+-                      ${GPHCMN}
+-                      ${GPHDCY}
+-                      ${GPHHADTRANSP}
+-                      ${GPHHADNZ}
+-                      ${GPHDEEX}
+-                      ${GPHAMNGXS}
+-                      ${GPHAMNGEG}
+-                      ${GPHCHMXS}
+-                      ${GPHCOHXS}
+-                      ${GPHCOHEG}
+-                      ${GPHDISXS}
+-                      ${GPHDISEG}
+-                      ${GPHDFRCXS}
+-                      ${GPHDFRCEG}
+-                      ${GPHGLWRESXS}
+-                      ${GPHGLWRESEG}
+-                      ${GPHIBDXS}
+-                      ${GPHIBDEG}
+-                      ${GPHMNUCXS}
+-                      ${GPHMNUCEG}
+-                      ${GPHMEL}
+-                      ${GPHNUELXS}
+-                      ${GPHNUELEG}
+-                      ${GPHQELXS}
+-                      ${GPHQELEG}
+-                      ${GPHRESXS}
+-                      ${GPHRESEG}
+-                      ${GPHSTRXS}
+-                      ${GPHSTREG}
+-                      ${GPHNDCY}
+-                      ${GTLGEO}
+-                      ${GTLFLX}
+-                      ${GRWFWK}
+-                      ${GRWIO}
+-                      ${GRWCLC}
+-		      ${LOG4CPP}
+-                      )
++find_package( larevt REQUIRED )
++find_package( marley )
++find_package( larsoft-data )
++
 +find_library( CRY NAMES CRY )
 +find_library( SQLITE3 NAMES sqlite3 )
- # genie
--cet_find_library( GALGORITHM NAMES GAlgorithm PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GBARYONRESONANCE NAMES GBaryonResonance PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GBASE NAMES GBase PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GBODEKYANG NAMES GBodekYang PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GCHARM NAMES GCharm PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GCOH NAMES GCoh PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GDFRC NAMES GDfrc PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GDIS NAMES GDIS PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GCROSSSECTIONS NAMES GCrossSections PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GDECAY NAMES GDecay PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GELAS NAMES GElas PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GELFF NAMES GElFF PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GHEP NAMES GHEP PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GEVGCORE NAMES GEVGCore  PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GEVGMODULES NAMES GEVGModules PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GEVGDRIVERS NAMES GEVGDrivers PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GGIBUU NAMES GGiBUU PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GHADRONTRANSP NAMES GHadronTransp PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GFRAGMENTATION NAMES GFragmentation PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GINTERACTION NAMES GInteraction PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GLLEWELLYNSMITH NAMES GLlewellynSmith  PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GMEC NAMES GMEC PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GMESSENGER NAMES GMessenger PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GNUGAMMA NAMES GNuGamma PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GNUE NAMES GNuE PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GNTUPLE NAMES GNtuple PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GNUCLEAR NAMES GNuclear PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GNUMERICAL NAMES GNumerical PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GQPM NAMES GQPM PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GPDG NAMES GPDG PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GPDF NAMES GPDF PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GQEL NAMES GQEL PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GRES NAMES GRES PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GREGISTRY NAMES GRegistry PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GREINSEGHAL NAMES GReinSeghal PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GUTILS NAMES GUtils PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GGEO NAMES GGeo PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GFLUXDRIVERS NAMES GFluxDrivers PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
--cet_find_library( GMUELOSS NAMES GMuELoss PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++# genie
++cet_find_library( GALGORITHM NAMES GAlgorithm PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GBARYONRESONANCE NAMES GBaryonResonance PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GBASE NAMES GBase PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GBODEKYANG NAMES GBodekYang PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GCHARM NAMES GCharm PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GCOH NAMES GCoh PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GDFRC NAMES GDfrc PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GDIS NAMES GDIS PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GCROSSSECTIONS NAMES GCrossSections PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GDECAY NAMES GDecay PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GELAS NAMES GElas PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GELFF NAMES GElFF PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GHEP NAMES GHEP PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GEVGCORE NAMES GEVGCore  PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GEVGMODULES NAMES GEVGModules PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GEVGDRIVERS NAMES GEVGDrivers PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GGIBUU NAMES GGiBUU PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GHADRONTRANSP NAMES GHadronTransp PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GFRAGMENTATION NAMES GFragmentation PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GINTERACTION NAMES GInteraction PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GLLEWELLYNSMITH NAMES GLlewellynSmith  PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GMEC NAMES GMEC PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GMESSENGER NAMES GMessenger PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GNUGAMMA NAMES GNuGamma PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GNUE NAMES GNuE PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GNTUPLE NAMES GNtuple PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GNUCLEAR NAMES GNuclear PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GNUMERICAL NAMES GNumerical PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GQPM NAMES GQPM PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GPDG NAMES GPDG PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GPDF NAMES GPDF PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GQEL NAMES GQEL PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GRES NAMES GRES PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GREGISTRY NAMES GRegistry PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GREINSEGHAL NAMES GReinSeghal PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GUTILS NAMES GUtils PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GGEO NAMES GGeo PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GFLUXDRIVERS NAMES GFluxDrivers PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++cet_find_library( GMUELOSS NAMES GMuELoss PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+ # marley libraries
+-cet_find_library( MARLEY NAMES MARLEY PATHS ENV MARLEY_LIB NO_DEFAULT_PATH )
+-cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT PATHS ENV MARLEY_LIB NO_DEFAULT_PATH )
++cet_find_library( MARLEY NAMES MARLEY )
++cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT )
+ 
+ # temporarily needed since this is an unexpected header path
+-include_directories( $ENV{IFDHC_FQ_DIR}/inc )
++include_directories( ${IFDHC_DIR}/inc )
+ 
+ # macros for dictionary and simple_plugin
+ include(ArtDictionary)
+@@ -188,9 +94,9 @@ add_subdirectory(larsim)
+ 
+ # tests
+ add_subdirectory(test)
+-
++add_subdirectory(cmakeConfig)
+ # ups - table and config files
+-add_subdirectory(ups)
++#add_subdirectory(ups)
+ 
+ # packaging utility
+-include(UseCPack)
++#include(UseCPack)
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..1901627
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,5 @@
++
++# create package configuration and version files
++
++cet_cmake_config(CONFIG_FRAGMENTS larsim-fragment.cmake.in)
++
+diff --git a/cmakeConfig/larsim-fragment.cmake.in b/cmakeConfig/larsim-fragment.cmake.in
+new file mode 100644
+index 0000000..ed83066
+--- /dev/null
++++ b/cmakeConfig/larsim-fragment.cmake.in
+@@ -0,0 +1 @@
++find_package( larevt REQUIRED )
+diff --git a/larsim/EventGenerator/CMakeLists.txt b/larsim/EventGenerator/CMakeLists.txt
+index 4ad5bcd..25e0d94 100644
+--- a/larsim/EventGenerator/CMakeLists.txt
++++ b/larsim/EventGenerator/CMakeLists.txt
+@@ -18,7 +18,7 @@ art_make(LIB_LIBRARIES
+            ${ART_FRAMEWORK_SERVICES_REGISTRY}
+            ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+            ${ART_ROOT_IO_TFILE_SUPPORT}
+-           ${CLHEP}
++           ${CLHEP_LIBRARIES}
+            ${MF_MESSAGELOGGER}
+            ROOT::Core
+            ROOT::EG
+diff --git a/larsim/EventGenerator/CORSIKA/CMakeLists.txt b/larsim/EventGenerator/CORSIKA/CMakeLists.txt
+index 605090d..545d40e 100644
+--- a/larsim/EventGenerator/CORSIKA/CMakeLists.txt
++++ b/larsim/EventGenerator/CORSIKA/CMakeLists.txt
+@@ -1,10 +1,12 @@
++include_directories(${IFDHC_INC})
++find_library(IFDH name ifdh PATHS ${CMAKE_INSTALL_PREFIX} NO DEFAULTS)
+ art_make(MODULE_LIBRARIES
+            larcorealg_Geometry
+            larcoreobj_SummaryData
+            nurandom_RandomUtils_NuRandomService_service
+            nusimdata_SimulationBase
+            ${ART_FRAMEWORK_SERVICES_REGISTRY}
+-           ${CLHEP}
++           ${CLHEP_LIBRARIES}
+            ${IFDH}
+            ${MF_MESSAGELOGGER}
+            ROOT::Core
+diff --git a/larsim/EventGenerator/CRY/CMakeLists.txt b/larsim/EventGenerator/CRY/CMakeLists.txt
+index 5fc81db..84c968a 100644
+--- a/larsim/EventGenerator/CRY/CMakeLists.txt
++++ b/larsim/EventGenerator/CRY/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-include_directories($ENV{CRYHOME}/src)
++include_directories ( ${CRY_DIR}/src )
+ 
+ art_make(MODULE_LIBRARIES
+            larcorealg_Geometry
+diff --git a/larsim/EventGenerator/GENIE/CMakeLists.txt b/larsim/EventGenerator/GENIE/CMakeLists.txt
+index a542286..488666e 100644
+--- a/larsim/EventGenerator/GENIE/CMakeLists.txt
++++ b/larsim/EventGenerator/GENIE/CMakeLists.txt
+@@ -1,4 +1,58 @@
+-include_directories ( $ENV{GENIE_INC}/GENIE )
++include_directories ( ${GENIE_INC}/GENIE )
++
++# genie
 +cet_find_library( GALGORITHM NAMES GAlgorithm )
 +cet_find_library( GBARYONRESONANCE NAMES GBaryonResonance )
 +cet_find_library( GBASE NAMES GBase )
@@ -147,33 +344,255 @@ index a0f2267..f63b477 100644
 +cet_find_library( GQEL NAMES GQEL )
 +cet_find_library( GRES NAMES GRES )
 +cet_find_library( GREGISTRY NAMES GRegistry )
-+cet_find_library( GREINSEGHAL NAMES GReinSeghal )
++#cet_find_library( GREINSEGHAL NAMES GReinSeghal )
 +cet_find_library( GUTILS NAMES GUtils )
 +cet_find_library( GGEO NAMES GGeo )
 +cet_find_library( GFLUXDRIVERS NAMES GFluxDrivers )
 +cet_find_library( GMUELOSS NAMES GMuELoss )
- # marley libraries
--cet_find_library( MARLEY NAMES MARLEY PATHS ENV MARLEY_LIB NO_DEFAULT_PATH )
--cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT PATHS ENV MARLEY_LIB NO_DEFAULT_PATH )
-+cet_find_library( MARLEY NAMES MARLEY )
-+cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT )
++cet_find_library( GREWEIGHT NAMES GReWeight )
++cet_find_library( GNUCLEONDECAY NAMES GNucleonDecay )
++cet_find_library( GNEUTRONOSC NAMES GNeutronOsc )
++# prior to GENIE R-2_9_0 Sehgal's name was spelled incorrectly
++# so if minor version # is 8 or less use GReinSeghal, otherwise GReinSehgal
++# parse_ups_version returns VMAJ, VMIN, and VPRJ
++parse_underscored_version( ${GENIE_VERSION} )
++set ( GRSSPELLING GReinSehgal )
++if ( ${VMAJ} EQUAL 2 AND ${VMIN} LESS 9 )
++  set ( GRSSPELLING GReinSeghal )
++endif ( ${VMAJ} EQUAL 2 AND ${VMIN} LESS 9 )
++message(STATUS "GENIE version ${GENIE_VERSION} major ${VMAJ} minor ${VMIN} ${GRSSPELLING}")
++cet_find_library( GREINSEHGAL NAMES ${GRSSPELLING} )
  
- # temporarily needed since this is an unexpected header path
--include_directories( $ENV{IFDHC_FQ_DIR}/inc )
-+include_directories( ${IFDHC_DIR}/inc )
+ art_make(MODULE_LIBRARIES
+          lardataalg_MCDumpers
+@@ -14,8 +68,50 @@ art_make(MODULE_LIBRARIES
+          ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+          art_Persistency_Provenance
+          ${MF_MESSAGELOGGER}
+-         ${CLHEP}
+-         ${GENIE_LIB_LIST}
++         ${CLHEP_LIBRARIES}
++#	 ${GMESSENGER}
++         ${GALGORITHM}
++         ${GBARYONRESONANCE}
++         ${GBASE}
++         ${GBODEKYANG}
++         ${GCHARM}
++         ${GCOH}
++         ${GDFRC}
++         ${GDIS}
++         ${GCROSSSECTIONS}
++         ${GDECAY}
++         ${GELAS}
++         ${GELFF}
++         ${GHEP}
++         ${GEVGCORE}
++         ${GEVGMODULES}
++         ${GEVGDRIVERS}
++         ${GGIBUU}
++         ${GHADRONTRANSP}
++         ${GFRAGMENTATION}
++         ${GINTERACTION}
++         ${GLLEWELLYNSMITH}
++         ${GMEC}
++         ${GNUGAMMA}
++         ${GNUE}
++         ${GNTUPLE}
++         ${GNUCLEAR}
++         ${GNUMERICAL}
++         ${GQPM}
++         ${GPDG}
++         ${GPDF}
++         ${GQEL}
++         ${GRES}
++         ${GREGISTRY}
++         ${GREINSEHGAL}
++         ${GUTILS}
++         ${GGEO}
++         ${GFLUXDRIVERS}
++         ${GMUELOSS}
++         ${GREWEIGHT}
++         ${GNUCLEONDECAY}
++         ${GNEUTRONOSC}
++         ${GMESSENGER}
+          ROOT::EGPythia6    # FIXME!!! - resolving genie run time reference
+          ROOT::EG
+          ROOT::Hist
+diff --git a/larsim/EventGenerator/MARLEY/CMakeLists.txt b/larsim/EventGenerator/MARLEY/CMakeLists.txt
+index 133d408..65be2e0 100644
+--- a/larsim/EventGenerator/MARLEY/CMakeLists.txt
++++ b/larsim/EventGenerator/MARLEY/CMakeLists.txt
+@@ -1,6 +1,7 @@
+ # for c2: the problem is in fhiclcpp/types/detail/Sequence.icc
+-cet_add_compiler_flags( CXX -Wno-missing-braces )
++#cet_add_compiler_flags( CXX -Wno-missing-braces )
  
- # macros for dictionary and simple_plugin
- include(ArtDictionary)
-@@ -123,9 +100,9 @@ add_subdirectory(larsim)
++include_directories ( ${MARLEY_INC} )
+ art_make(LIB_LIBRARIES
+            larcorealg_Geometry
+            nurandom_RandomUtils_NuRandomService_service
+diff --git a/larsim/EventGenerator/MuonPropagation/CMakeLists.txt b/larsim/EventGenerator/MuonPropagation/CMakeLists.txt
+index 08107c4..83d06a1 100644
+--- a/larsim/EventGenerator/MuonPropagation/CMakeLists.txt
++++ b/larsim/EventGenerator/MuonPropagation/CMakeLists.txt
+@@ -1,4 +1,5 @@
+-include_directories($ENV{MuonPropagationHOME}/src)
++
++include_directories ( $ENV{MuonPropagationHOME}/src )
  
- # tests
- add_subdirectory(test)
+ art_make(MODULE_LIBRARIES
+            larcoreobj_SummaryData
+diff --git a/larsim/EventWeight/Base/CMakeLists.txt b/larsim/EventWeight/Base/CMakeLists.txt
+index 9fb3810..b26380d 100644
+--- a/larsim/EventWeight/Base/CMakeLists.txt
++++ b/larsim/EventWeight/Base/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ art_make(LIB_LIBRARIES
+          canvas
+          cetlib_except
+-         ${CLHEP}
++         ${CLHEP_LIBRARIES}
+          ROOT::Core
+          ROOT::Matrix
+          ${ART_UTILITIES})
+diff --git a/larsim/EventWeight/Calculators/CMakeLists.txt b/larsim/EventWeight/Calculators/CMakeLists.txt
+index aeaf2d2..7909303 100644
+--- a/larsim/EventWeight/Calculators/CMakeLists.txt
++++ b/larsim/EventWeight/Calculators/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-include_directories($ENV{GENIE_INC}/GENIE)
++include_directories ( ${GENIE_INC}/GENIE )
+ 
+ art_make(LIB_LIBRARIES
+          larsim_EventWeight_Base
+diff --git a/larsim/GDMLUtils/CMakeLists.txt b/larsim/GDMLUtils/CMakeLists.txt
+index 77136d9..fae9b16 100644
+--- a/larsim/GDMLUtils/CMakeLists.txt
++++ b/larsim/GDMLUtils/CMakeLists.txt
+@@ -1,8 +1,9 @@
+-include_directories($ENV{GEANT4_FQ_DIR}/include)
+-include_directories($ENV{XERCES_C_INC})
++include_directories ( ${GEANT4_INCLUDE_DIRS} )
++include_directories ( ${XERCES_C_INC} )
+ 
+ art_make_exec(NAME simplifyGDML
+-              LIBRARIES
+-              ${G4PERSISTENCY}
+-	      ${G4GEOMETRY}
+-              ${XERCESC})
++  LIBRARIES
++    ${CLHEP_LIBRARIES}
++    ${Geant4_LIBRARIES}
++  )
++
+diff --git a/larsim/IonizationScintillation/CMakeLists.txt b/larsim/IonizationScintillation/CMakeLists.txt
+index d43d2de..914875f 100644
+--- a/larsim/IonizationScintillation/CMakeLists.txt
++++ b/larsim/IonizationScintillation/CMakeLists.txt
+@@ -4,7 +4,7 @@ art_make(LIB_LIBRARIES
+            lardataalg_DetectorInfo
+            larevt_SpaceCharge
+            nusimdata_SimulationBase
+-           ${CLHEP}
++           ${CLHEP_LIBRARIES}
+            ${FHICLCPP}
+            ${MF_MESSAGELOGGER}
+          MODULE_LIBRARIES
+@@ -15,7 +15,7 @@ art_make(LIB_LIBRARIES
+            ${ART_FRAMEWORK_SERVICES_REGISTRY}
+            ${ART_ROOT_IO_TFILE_SUPPORT}
+            ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+-           ${CLHEP}
++           ${CLHEP_LIBRARIES}
+            ROOT::Core
+            ROOT::Tree
+            ${MF_MESSAGELOGGER})
+diff --git a/larsim/MergeSimSources/CMakeLists.txt b/larsim/MergeSimSources/CMakeLists.txt
+index f189ceb..63b470f 100644
+--- a/larsim/MergeSimSources/CMakeLists.txt
++++ b/larsim/MergeSimSources/CMakeLists.txt
+@@ -1,7 +1,9 @@
+-include_directories ( $ENV{GENIE_INC}/GENIE )
+-include_directories ( $ENV{LIBXML2_FQ_DIR}/include/libxml2 )
+-include_directories ( $ENV{GEANT4_FQ_DIR}/include )
+-include_directories ( $ENV{XERCES_C_INC} )
++include(${Geant4_USE_FILE})
++include_directories ( ${GENIE_INC}/GENIE )
++include_directories ( ${LIBXML2_INC})
++include_directories ( ${GEANT4_INCLUDE_DIRS} )
++include_directories ( ${XERCES_C_INC} )
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Geant4_CXX_FLAGS} -Wno-shadow -Wno-unused-parameter")
+ 
+ art_make(LIB_LIBRARIES  larsim_PhotonPropagation
+                         larsim_PhotonPropagation_PhotonVisibilityService_service
+@@ -41,9 +43,9 @@ art_make(LIB_LIBRARIES  larsim_PhotonPropagation
+                         ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+                         ${MF_MESSAGELOGGER}
+                         ROOT::GenVector
+-        ${ROOT_BASIC_LIB_LIST}
+-                        ${CLHEP}
+-                        ${G4_LIB_LIST}
++                        ${ROOT_LIBRARIES}
++                        ${CLHEP_LIBRARIES}
++                        ${Geant4_LIBRARIES}
+                 )
+ 
+ install_headers()
+diff --git a/larsim/PhotonPropagation/CMakeLists.txt b/larsim/PhotonPropagation/CMakeLists.txt
+index 3717db0..a287f73 100644
+--- a/larsim/PhotonPropagation/CMakeLists.txt
++++ b/larsim/PhotonPropagation/CMakeLists.txt
+@@ -10,7 +10,7 @@ art_make(LIB_LIBRARIES larevt_Filters
+                        canvas
+                        ${MF_MESSAGELOGGER}
+                        ${FHICLCPP}
+-                       ${CLHEP}
++                       ${CLHEP_LIBRARIES}
+                        cetlib_except
+                        ROOT::EG
+                        ROOT::RIO
+@@ -47,12 +47,11 @@ art_make(LIB_LIBRARIES larevt_Filters
+                         ${MF_MESSAGELOGGER}
+                         nurandom_RandomUtils_NuRandomService_service
+                         art_Persistency_Provenance
+-                        ${CLHEP}
++                        ${CLHEP_LIBRARIES}
+                         ROOT::GenVector
+                         ROOT::Gpad
+          )
+ 
 -
-+cet_cmake_config()
- # ups - table and config files
--add_subdirectory(ups)
-+#add_subdirectory(ups)
+ install_headers()
+ install_fhicl()
+ install_source()
+@@ -60,4 +59,4 @@ install_scripts()
  
- # packaging utility
--include(UseCPack)
-+#include(UseCPack)
+ add_subdirectory(LibraryBuildTools)
+ add_subdirectory(LibraryMappingTools)
+-add_subdirectory(ScintTimeTools)
+\ No newline at end of file
++add_subdirectory(ScintTimeTools)
+diff --git a/larsim/Simulation/CMakeLists.txt b/larsim/Simulation/CMakeLists.txt
+index 347c169..3f9e989 100644
+--- a/larsim/Simulation/CMakeLists.txt
++++ b/larsim/Simulation/CMakeLists.txt
+@@ -1,3 +1,6 @@
++# for classes_def.xml!!
++include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
++
+ art_make(NO_PLUGINS
+          LIB_LIBRARIES
+            larsim_Simulation_LArVoxelCalculator_service
+diff --git a/test/EventGenerator/CMakeLists.txt b/test/EventGenerator/CMakeLists.txt
+index 1f19933..0a5c4ae 100644
+--- a/test/EventGenerator/CMakeLists.txt
++++ b/test/EventGenerator/CMakeLists.txt
+@@ -14,7 +14,7 @@ simple_plugin( TestGeneratedEventTimestamp "module"
+   
+   ${FHICLCPP}
+   cetlib cetlib_except
+-  ${CLHEP}
++  ${CLHEP_LIBRARIES}
+   NO_INSTALL
+ )
+ 

@@ -32,6 +32,8 @@ class Larsoft(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('larsoft.unups.patch')
+
     depends_on('lareventdisplay')
     depends_on('larexamples')
     depends_on('larana')

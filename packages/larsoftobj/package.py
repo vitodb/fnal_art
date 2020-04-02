@@ -28,8 +28,6 @@ def sanitize_environments(*args):
 class Larsoftobj(CMakePackage):
     """Larsoftobj"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larsoftobj"
     url      = "https://github.com/LArSoft/larsoftobj.git"
 
@@ -45,6 +43,8 @@ class Larsoftobj(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larsoftobj.unups.patch')
 
     depends_on('gallery')
     depends_on('lardataobj')

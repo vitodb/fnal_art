@@ -27,8 +27,6 @@ def sanitize_environments(*args):
 class Lareventdisplay(CMakePackage):
     """Lareventdisplay"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/lareventdisplay"
     url      = "https://github.com/LArSoft/lareventdisplay.git"
 
@@ -46,6 +44,8 @@ class Lareventdisplay(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('lareventdisplay.unups.patch')
 
     depends_on('larreco')
     depends_on('cetmodules', type='build')

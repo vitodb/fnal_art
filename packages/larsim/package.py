@@ -27,8 +27,6 @@ def sanitize_environments(*args):
 class Larsim(CMakePackage):
     """Larsim"""
 
-    patch = patcher
-
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larsim"
     url      = "http://cdcvs.fnal.gov/projects/larsim"
 
@@ -48,6 +46,8 @@ class Larsim(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larsim.unups.patch')
 
     depends_on('larsoft-data')
     depends_on('larevt')

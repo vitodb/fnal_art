@@ -1,20 +1,24 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 38d84e2..0965ae1 100644
+index 38d84e2..1088586 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -16,15 +16,15 @@
- # ----------------------------------------------------------------------
- # Describe build tool requirements:
+@@ -12,19 +12,11 @@
+ #  make package (builds distribution tarfile)
+ # ======================================================================
  
++cmake_minimum_required(VERSION 3.12...3.14 FATAL_ERROR)
++project(cetlib_except VERSION 1.04.00 LANGUAGES CXX)
+ 
+-# ----------------------------------------------------------------------
+-# Describe build tool requirements:
+-
 -cmake_minimum_required(VERSION 3.11)  # use cmake 3.11 or later
-+cmake_minimum_required(VERSION 3.11...3.14 FATAL_ERROR)  # use cmake 3.11 or later
- 
- # ----------------------------------------------------------------------
- # Describe product:
- 
+-
+-# ----------------------------------------------------------------------
+-# Describe product:
+-
 -project(cetlib_except)
-+project(cetlib_except VERSION 1.03.03 LANGUAGES CXX)
- 
+-
 -# cetbuildtools contains our cmake modules
 -find_package(cetbuildtools REQUIRED)
 +# cetmodules contains our cmake modules
@@ -22,7 +26,7 @@ index 38d84e2..0965ae1 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -36,50 +36,10 @@ cet_set_compiler_flags(DIAGS VIGILANT
+@@ -36,50 +28,10 @@ cet_set_compiler_flags(DIAGS VIGILANT
    EXTRA_CXX_FLAGS -Wnon-virtual-dtor -Wdelete-non-virtual-dtor
    )
  
@@ -73,4 +77,12 @@ index 38d84e2..0965ae1 100644
 -
 -#
 -# ======================================================================
++add_subdirectory( cmakeConfig )              # cmakeConfig files
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..937d12d
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,2 @@
++# Create package configuration and version files.
 +cet_cmake_config()

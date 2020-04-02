@@ -5,15 +5,16 @@
 
 from spack import *
 import os
-
 import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
 from cetmodules_patcher import cetmodules_dir_patcher
 
+
 def patcher(x):
     cetmodules_dir_patcher(".","larcore","8.10.02")
+
 
 def sanitize_environments(*args):
     for env in args:
@@ -27,7 +28,6 @@ def sanitize_environments(*args):
 class Larcore(CMakePackage):
     """Larcore"""
 
-    patch = patcher
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larcore"
     url      = "https://github.com/LArSoft/larcore.git"
 
@@ -47,6 +47,8 @@ class Larcore(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('larcore.unups.patch')
 
     depends_on('larcorealg')
     depends_on('art-root-io')
