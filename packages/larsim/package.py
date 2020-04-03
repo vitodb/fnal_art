@@ -28,18 +28,18 @@ class Larsim(CMakePackage):
     """Larsim"""
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larsim"
-    url      = "http://cdcvs.fnal.gov/projects/larsim"
+    url      = "https://github.com/LArSoft/larsim.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larsim', branch='feature/MVP1a')
-    version('08.17.00', tag='v08_17_00', git='http://cdcvs.fnal.gov/projects/larsim')
-    version('08.17.01', tag='v08_17_01', git='http://cdcvs.fnal.gov/projects/larsim')
-    version('08.18.00', tag='v08_18_00', git='http://cdcvs.fnal.gov/projects/larsim')
-    version('08.18.01', tag='v08_18_01', git='http://cdcvs.fnal.gov/projects/larsim')
-    version('08.19.00', tag='v08_19_00', git='http://cdcvs.fnal.gov/projects/larsim')
-    version('08.19.01', tag='v08_19_01', git='http://cdcvs.fnal.gov/projects/larsim')
-    version('08.19.02', tag='v08_19_02', git='http://cdcvs.fnal.gov/projects/larsim')
-    version('08.19.03', tag='v08_19_03', git='http://cdcvs.fnal.gov/projects/larsim')
-    version('08.19.04', tag='v08_19_04', git='http://cdcvs.fnal.gov/projects/larsim')
+    version('MVP1a', git='https://github.com/LArSoft/larsim.git', branch='feature/MVP1a')
+    version('08.17.00', tag='v08_17_00', git='https://github.com/LArSoft/larsim.git')
+    version('08.17.01', tag='v08_17_01', git='https://github.com/LArSoft/larsim.git')
+    version('08.18.00', tag='v08_18_00', git='https://github.com/LArSoft/larsim.git')
+    version('08.18.01', tag='v08_18_01', git='https://github.com/LArSoft/larsim.git')
+    version('08.19.00', tag='v08_19_00', git='https://github.com/LArSoft/larsim.git')
+    version('08.19.01', tag='v08_19_01', git='https://github.com/LArSoft/larsim.git')
+    version('08.19.02', tag='v08_19_02', git='https://github.com/LArSoft/larsim.git')
+    version('08.19.03', tag='v08_19_03', git='https://github.com/LArSoft/larsim.git')
+    version('08.19.04', tag='v08_19_04', git='https://github.com/LArSoft/larsim.git')
 
     variant('cxxstd',
             default='17',
@@ -57,7 +57,9 @@ class Larsim(CMakePackage):
     depends_on('xerces-c')
     depends_on('libxml2')
     depends_on('clhep')
-    depends_on('nutools')
+    depends_on('nug4')
+    depends_on('nugen')
+    depends_on('nurandom')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):

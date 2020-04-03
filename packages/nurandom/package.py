@@ -16,20 +16,19 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class Nugen(CMakePackage):
-    """Generator interfaces to art for GENIE and GiBUU."""
+class Nurandom(CMakePackage):
+    """Random number generator interfaces to art."""
 
-    homepage = 'http://cdcvs.fnal.gov/redmine/projects/nugen'
-    git_base = 'http://cdcvs.fnal.gov/projects/nugen'
+    homepage = 'http://cdcvs.fnal.gov/redmine/projects/nurandom'
+    git_base = 'http://cdcvs.fnal.gov/projects/nurandom'
 
     version('develop', branch='develop', git=git_base)
-    version('1.10.02', tag='v1_10_02', git=git_base)
-    version('1.10.01', tag='v1_10_01', git=git_base)
-    version('1.10.00', tag='v1_10_00', git=git_base)
-    version('1.09.00', tag='v1_09_00', git=git_base)
-    version('1.08.00', tag='v1_08_00', git=git_base)
+    version('1.04.01', tag='v1_04_01', git=git_base)
+    version('1.04.00', tag='v1_04_00', git=git_base)
+    version('1.03.01', tag='v1_03_01', git=git_base)
+    version('1.03.00', tag='v1_03_00', git=git_base)
 
-    patch('nugen.unups.patch')
+    patch('nurandom.unups.patch')
 
     variant('cxxstd',
             default='17',
@@ -38,29 +37,11 @@ class Nugen(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules@1.01.01:', type='build')
-    depends_on('catch2@2.3.0:', type='build')
-
-    # Build and link dependencies.
-    depends_on('clhep')
-    depends_on('boost')
-    depends_on('canvas')
+    depends_on('art')
+    depends_on('art-root-io')
     depends_on('cetlib')
     depends_on('cetlib-except')
-    depends_on('fhicl-cpp')
-    depends_on('hep-concurrency')
-    depends_on('messagefacility')
-    depends_on('tbb')
-    depends_on('root+python')
-    depends_on('art-root-io')
-    depends_on('sqlite@3.8.2:')
-    depends_on('perl')
-
-    if 'SPACKDEV_GENERATOR' in os.environ:
-        generator = os.environ['SPACKDEV_GENERATOR']
-        if generator.endswith('Ninja'):
-            depends_on('ninja', type='build')
 
     def url_for_version(self, version):
         url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
