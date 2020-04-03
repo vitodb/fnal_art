@@ -28,16 +28,16 @@ class Larg4(CMakePackage):
     """Larg4"""
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/larg4"
-    url      = "http://cdcvs.fnal.gov/projects/larg4"
+    url      = "https://github.com/LArSoft/larg4.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/larg4', branch='feature/MVP1a')
-    version('08.08.00', tag='v08_08_00', git='http://cdcvs.fnal.gov/projects/larg4')
-    version('08.08.01', tag='v08_08_01', git='http://cdcvs.fnal.gov/projects/larg4')
-    version('08.09.00', tag='v08_09_00', git='http://cdcvs.fnal.gov/projects/larg4')
-    version('08.10.00', tag='v08_10_00', git='http://cdcvs.fnal.gov/projects/larg4')
-    version('08.12.00', tag='v08_12_00', git='http://cdcvs.fnal.gov/projects/larg4')
-    version('08.12.01', tag='v08_12_01', git='http://cdcvs.fnal.gov/projects/larg4')
-    version('08.12.02', tag='v08_12_02', git='http://cdcvs.fnal.gov/projects/larg4')
+    version('MVP1a', git='https://github.com/LArSoft/larg4.git', branch='feature/MVP1a')
+    version('08.08.00', tag='v08_08_00', git='https://github.com/LArSoft/larg4.git')
+    version('08.08.01', tag='v08_08_01', git='https://github.com/LArSoft/larg4.git')
+    version('08.09.00', tag='v08_09_00', git='https://github.com/LArSoft/larg4.git')
+    version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/larg4.git')
+    version('08.12.00', tag='v08_12_00', git='https://github.com/LArSoft/larg4.git')
+    version('08.12.01', tag='v08_12_01', git='https://github.com/LArSoft/larg4.git')
+    version('08.12.02', tag='v08_12_02', git='https://github.com/LArSoft/larg4.git')
 
     variant('cxxstd',
             default='17',
@@ -52,7 +52,7 @@ class Larg4(CMakePackage):
     depends_on('art')
     depends_on('canvas-root-io')
     depends_on('art-root-io')
-    depends_on('nutools')
+    depends_on('nug4')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):

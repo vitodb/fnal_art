@@ -1,11 +1,24 @@
+commit 85027991cbb875169a675b1524551c48e5d399d4
+Author: Patrick Gartung <gartung@fnal.gov>
+Date:   Fri Apr 3 13:13:06 2020 -0500
+
+    Cetmodules
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 9d6df37..327d006 100644
+index 69a19ef..d9efc4e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -17,16 +17,8 @@ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
+@@ -18,21 +18,13 @@
+ #  make package (builds distribution tarfile)
+ # ======================================================================
  
- project(larwirecell LANGUAGES CXX)
+-# use cmake 2.8 or later
+-cmake_minimum_required (VERSION 2.8)
++# use cmake 3.11 or later
++cmake_minimum_required (VERSION 3.11)
  
+-project(larwirecell)
+-
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
@@ -15,13 +28,14 @@ index 9d6df37..327d006 100644
 -set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
--
++project(larwirecell VERSION 08.00.00 LANGUAGES CXX)
+ 
 +set(fcl_dir fcl)
 +find_package( cetmodules )
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -35,37 +27,25 @@ set_install_root()
+@@ -41,37 +33,24 @@ set_install_root()
  cet_set_compiler_flags(DIAGS CAUTIOUS
    WERROR
    NO_UNDEFINED
@@ -48,9 +62,9 @@ index 9d6df37..327d006 100644
 -find_ups_product( jsoncpp )
 -find_ups_product( jsonnet )
 -find_ups_product( eigen )
--find_ups_product( wirecell )
+-find_ups_product( wirecell ) 
  
- 
+-
 -cet_find_library( WIRECELL_SIGPROC_LIB NAMES WireCellSigProc PATHS ENV WIRECELL_LIB NO_DEFAULT_PATH )
 -cet_find_library( WIRECELL_GEN_LIB NAMES WireCellGen PATHS ENV WIRECELL_LIB NO_DEFAULT_PATH )
 -cet_find_library( WIRECELL_IFACE_LIB NAMES WireCellIface PATHS ENV WIRECELL_LIB NO_DEFAULT_PATH )
@@ -68,7 +82,7 @@ index 9d6df37..327d006 100644
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -74,10 +54,10 @@ include(BuildPlugins)
+@@ -80,10 +59,10 @@ include(BuildPlugins)
  
  # sources
  add_subdirectory(larwirecell)
@@ -99,11 +113,33 @@ index 0000000..b1410e2
 @@ -0,0 +1,2 @@
 +find_package( larevt REQUIRED )
 +find_package( wirecell )
+diff --git a/larwirecell/Components/CMakeLists.txt b/larwirecell/Components/CMakeLists.txt
+index bb4ce45..55c8a9e 100644
+--- a/larwirecell/Components/CMakeLists.txt
++++ b/larwirecell/Components/CMakeLists.txt
+@@ -15,7 +15,7 @@ art_make_library(
+     ${ART_PERSISTENCY_PROVENANCE}
+     ${ART_UTILITIES}
+     ${JSONCPP}
+-    ${ROOT_CORE}
++    ROOT::Core
+     ${WIRECELL_LIBS}
+     canvas
+     cetlib_except
+diff --git a/larwirecell/Interfaces/CMakeLists.txt b/larwirecell/Interfaces/CMakeLists.txt
+index d8ae4ed..2a0805e 100644
+--- a/larwirecell/Interfaces/CMakeLists.txt
++++ b/larwirecell/Interfaces/CMakeLists.txt
+@@ -3,4 +3,3 @@
+ # has no library.
+ 
+ install_headers()
+-install_source()
 diff --git a/larwirecell/LArInterface/CMakeLists.txt b/larwirecell/LArInterface/CMakeLists.txt
-index e9218a6..114b1d3 100644
+index e9218a6..0b0b76c 100644
 --- a/larwirecell/LArInterface/CMakeLists.txt
 +++ b/larwirecell/LArInterface/CMakeLists.txt
-@@ -13,7 +13,7 @@ art_make(
+@@ -13,9 +13,8 @@ art_make(
      ${ART_FRAMEWORK_SERVICES_REGISTRY}
      ${ART_ROOT_IO_TFILESERVICE_SERVICE}
      ${WIRECELL_LIBS}
@@ -112,3 +148,14 @@ index e9218a6..114b1d3 100644
  )
  
  install_headers()
+ install_fhicl()
+-install_source()
+diff --git a/larwirecell/Modules/CMakeLists.txt b/larwirecell/Modules/CMakeLists.txt
+index 00ca435..805f990 100644
+--- a/larwirecell/Modules/CMakeLists.txt
++++ b/larwirecell/Modules/CMakeLists.txt
+@@ -9,4 +9,3 @@ art_make(
+ 
+ 
+ install_headers()
+-install_source()
