@@ -65,6 +65,10 @@ class Larsim(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
+               '-DIFDH_INC={0}'.
+                format(self.spec['ifdhc'].prefix.include),
+               '-DIFDH_LIB={0}'.
+                format(self.spec['ifdhc'].prefix),
                '-DGENIE_INC={0}'.
                 format(self.spec['genie'].prefix.include),
                 '-DGENIE_VERSION=v{0}'.

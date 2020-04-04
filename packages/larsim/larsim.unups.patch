@@ -1,8 +1,14 @@
+commit a62479044d9ad155247fe75d7a2e1b7304059d40
+Author: Patrick Gartung <gartung@fnal.gov>
+Date:   Wed Apr 1 23:59:12 2020 -0500
+
+    Cetmodules
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 0751f5c..73dab50 100644
+index 0751f5c..fce679e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -13,23 +13,18 @@
+@@ -13,176 +13,154 @@
  # ======================================================================
  
  
@@ -34,7 +40,12 @@ index 0751f5c..73dab50 100644
  
  # -Wno-unused-variable needed because of CLHEP
  cet_set_compiler_flags(DIAGS CAUTIOUS
-@@ -41,148 +36,63 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+   WERROR
+   NO_UNDEFINED
+-  EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-unused-variable
++  EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-unused-variable -Wno-shadow -Wno-unused-parameter -Wno-implicit-fallthrough -Wno-ignored-qualifiers
+ )
+ 
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -68,8 +79,19 @@ index 0751f5c..73dab50 100644
 -cet_find_library( BOOST_DATE_TIME     NAMES boost_date_time     PATHS ENV BOOST_LIB NO_DEFAULT_PATH )
 -#
 -find_library( CRY NAMES CRY PATHS $ENV{CRYHOME}/lib NO_DEFAULT_PATH )
--
--# genie (copied from nugen)
++find_package( nurandom REQUIRED )
++find_package( larevt REQUIRED )
++find_package( Geant4 REQUIRED )
++include(${Geant4_USE_FILE})
++find_package( ROOT REQUIRED )
++find_package( CLHEP REQUIRED )
++find_package( marley )
++find_package( larsoft-data )
++
++find_library( CRY NAMES CRY )
++find_library( SQLITE3 NAMES sqlite3 )
+ 
+ # genie (copied from nugen)
 -  cet_find_library( LOG4CPP NAMES log4cpp PATHS ENV LOG4CPP_LIB NO_DEFAULT_PATH )
 -  cet_find_library( GFWMSG       NAMES GFwMsg       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
 -  cet_find_library( GFWREG       NAMES GFwReg       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
@@ -174,62 +196,117 @@ index 0751f5c..73dab50 100644
 -                      ${GRWCLC}
 -		      ${LOG4CPP}
 -                      )
-+find_package( nurandom REQUIRED )
-+find_package( larevt REQUIRED )
-+find_package( Geant4 REQUIRED )
-+include(${Geant4_USE_FILE})
-+find_package( ROOT REQUIRED )
-+find_package( CLHEP REQUIRED )
-+find_package( marley )
-+find_package( larsoft-data )
++cet_find_library( LOG4CPP NAMES log4cpp PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWMSG       NAMES GFwMsg       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWREG       NAMES GFwReg       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWALG       NAMES GFwAlg       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWINT       NAMES GFwInt       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWGHEP      NAMES GFwGHEP      PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWNUM       NAMES GFwNum       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWUTL       NAMES GFwUtl       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWPARDAT    NAMES GFwParDat    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWEG        NAMES GFwEG        PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GFWNTP       NAMES GFwNtp       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHXSIG      NAMES GPhXSIg      PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHPDF       NAMES GPhPDF       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHNUCLST    NAMES GPhNuclSt    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHCMN       NAMES GPhCmn       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHDCY       NAMES GPhDcy       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHHADTRANSP NAMES GPhHadTransp PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHHADNZ     NAMES GPhHadnz     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHDEEX      NAMES GPhDeEx      PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHAMNGXS    NAMES GPhAMNGXS    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHAMNGEG    NAMES GPhAMNGEG    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHCHMXS     NAMES GPhChmXS     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHCOHXS     NAMES GPhCohXS     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHCOHEG     NAMES GPhCohEG     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHDISXS     NAMES GPhDISXS     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHDISEG     NAMES GPhDISEG     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHDFRCXS    NAMES GPhDfrcXS    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHDFRCEG    NAMES GPhDfrcEG    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHGLWRESXS  NAMES GPhGlwResXS  PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHGLWRESEG  NAMES GPhGlwResEG  PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHIBDXS     NAMES GPhIBDXS     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHIBDEG     NAMES GPhIBDEG     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHMNUCXS    NAMES GPhMNucXS    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHMNUCEG    NAMES GPhMNucEG    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHMEL       NAMES GPhMEL       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHNUELXS    NAMES GPhNuElXS    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHNUELEG    NAMES GPhNuElEG    PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHQELXS     NAMES GPhQELXS     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHQELEG     NAMES GPhQELEG     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHRESXS     NAMES GPhResXS     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHRESEG     NAMES GPhResEG     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHSTRXS     NAMES GPhStrXS     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHSTREG     NAMES GPhStrEG     PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GPHNDCY      NAMES GPhNDcy      PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GTLGEO       NAMES GTlGeo       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GTLFLX       NAMES GTlFlx       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GRWFWK       NAMES GRwFwk       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GRWIO        NAMES GRwIO        PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GRWCLC       NAMES GRwClc       PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
 +
-+find_library( CRY NAMES CRY PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+find_library( SQLITE3 NAMES sqlite3 )PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH
-+# genie
-+cet_find_library( GALGORITHM NAMES GAlgorithm PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GBARYONRESONANCE NAMES GBaryonResonance PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GBASE NAMES GBase PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GBODEKYANG NAMES GBodekYang PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GCHARM NAMES GCharm PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GCOH NAMES GCoh PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GDFRC NAMES GDfrc PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GDIS NAMES GDIS PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GCROSSSECTIONS NAMES GCrossSections PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GDECAY NAMES GDecay PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GELAS NAMES GElas PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GELFF NAMES GElFF PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GHEP NAMES GHEP PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GEVGCORE NAMES GEVGCore PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
-+cet_find_library( GEVGMODULES NAMES GEVGModules PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
-+cet_find_library( GEVGDRIVERS NAMES GEVGDrivers PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GGIBUU NAMES GGiBUU PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GHADRONTRANSP NAMES GHadronTransp PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GFRAGMENTATION NAMES GFragmentation PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GINTERACTION NAMES GInteraction PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GLLEWELLYNSMITH NAMES GLlewellynSmith  PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GMEC NAMES GMEC PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GMESSENGER NAMES GMessenger PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GNUGAMMA NAMES GNuGamma PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GNUE NAMES GNuE PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GNTUPLE NAMES GNtuple PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GNUCLEAR NAMES GNuclear PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GNUMERICAL NAMES GNumerical PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GQPM NAMES GQPM PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GPDG NAMES GPDG PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GPDF NAMES GPDF PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GQEL NAMES GQEL PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GRES NAMES GRES PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GREGISTRY NAMES GRegistry ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GREINSEGHAL NAMES GReinSeghal ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GUTILS NAMES GUtils ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GGEO NAMES GGeo ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GFLUXDRIVERS NAMES GFluxDrivers ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( GMUELOSS NAMES GMuELoss ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++# GENIE pre-R-3 used GSL via ROOT's Math libs, now makes direct call not available via that route
++cet_find_library( GSL NAMES gsl PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++
++set (GENIE_LIB_LIST ${GFWMSG}
++                    ${GFWREG}
++                    ${GFWALG}
++                    ${GFWINT}
++                    ${GFWGHEP}
++                    ${GFWNUM}
++                    ${GSL}  # FWNUM relies on GSL
++                    ${GFWUTL}
++                    ${GFWPARDAT}
++                    ${GFWEG}
++                    ${GFWNTP}
++                    ${GPHXSIG}
++                    ${GPHPDF}
++                    ${GPHNUCLST}
++                    ${GPHCMN}
++                    ${GPHDCY}
++                    ${GPHHADTRANSP}
++                    ${GPHHADNZ}
++                    ${GPHDEEX}
++                    ${GPHAMNGXS}
++                    ${GPHAMNGEG}
++                    ${GPHCHMXS}
++                    ${GPHCOHXS}
++                    ${GPHCOHEG}
++                    ${GPHDISXS}
++                    ${GPHDISEG}
++                    ${GPHDFRCXS}
++                    ${GPHDFRCEG}
++                    ${GPHGLWRESXS}
++                    ${GPHGLWRESEG}
++                    ${GPHIBDXS}
++                    ${GPHIBDEG}
++                    ${GPHMNUCXS}
++                    ${GPHMNUCEG}
++                    ${GPHMEL}
++                    ${GPHNUELXS}
++                    ${GPHNUELEG}
++                    ${GPHQELXS}
++                    ${GPHQELEG}
++                    ${GPHRESXS}
++                    ${GPHRESEG}
++                    ${GPHSTRXS}
++                    ${GPHSTREG}
++                    ${GPHNDCY}
++                    ${GTLGEO}
++                    ${GTLFLX}
++                    ${GRWFWK}
++                    ${GRWIO}
++                    ${GRWCLC}
++                   ${LOG4CPP}
++                    )
++
++
  # marley libraries
 -cet_find_library( MARLEY NAMES MARLEY PATHS ENV MARLEY_LIB NO_DEFAULT_PATH )
 -cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT PATHS ENV MARLEY_LIB NO_DEFAULT_PATH )
-+cet_find_library( MARLEY NAMES MARLEY ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
-+cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( MARLEY NAMES MARLEY)
++cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT)
  
  # temporarily needed since this is an unexpected header path
 -include_directories( $ENV{IFDHC_FQ_DIR}/inc )
@@ -237,7 +314,7 @@ index 0751f5c..73dab50 100644
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -194,9 +104,9 @@ add_subdirectory(larsim)
+@@ -194,9 +172,9 @@ add_subdirectory(larsim)
  
  # tests
  add_subdirectory(test)
@@ -274,8 +351,132 @@ index 0000000..444d31f
 +find_package( marley )
 +find_package( larsoft-data )
 +
+diff --git a/cmakeConfig/larsimConfig.cmake.in b/cmakeConfig/larsimConfig.cmake.in
+new file mode 100644
+index 0000000..9be7643
+--- /dev/null
++++ b/cmakeConfig/larsimConfig.cmake.in
+@@ -0,0 +1,118 @@
++@PACKAGE_INIT@
++
++if (EXISTS "@PACKAGE_inc_dir@")
++  set(larsim_inc_dir "@PACKAGE_inc_dir@")
++endif()
++if (EXISTS "@PACKAGE_lib_dir@")
++  set(larsim_lib_dir "@PACKAGE_lib_dir@")
++endif()
++if (EXISTS "@PACKAGE_bin_dir@")
++  set(larsim_bin_dir "@PACKAGE_bin_dir@")
++endif()
++if (EXISTS "@PACKAGE_modules_dir@")
++  set(larsim_modules_dir "@PACKAGE_modules_dir@")
++endif()
++if (EXISTS "@PACKAGE_test_dir@")
++  set(larsim_test_dir "@PACKAGE_test_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fw_dir@")
++  set(larsim_fw_dir "@PACKAGE_fw_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++if (EXISTS "@PACKAGE_fcl_dir@")
++  set(larsim_fcl_dir "@PACKAGE_fcl_dir@")
++endif()
++
++if (IS_DIRECTORY "${@CMAKE_PROJECT_NAME@_modules_dir}")
++  list(APPEND CMAKE_MODULE_PATH "${@CMAKE_PROJECT_NAME@_modules_dir}")
++endif()
++
++if (IS_DIRECTORY "${@CMAKE_PROJECT_NAME@_inc_dir}")
++  include_directories(${@CMAKE_PROJECT_NAME@_inc_dir})
++endif()
++
++@CONFIG_FIND_LIBRARY_COMMANDS@
++
++########################################################################
++# larsim-fragment.cmake.in
++find_package( nurandom REQUIRED )
++find_package( larevt REQUIRED )
++find_package( Geant4 REQUIRED )
++find_package( ROOT REQUIRED )
++find_package( marley )
++find_package( larsoft-data )
++
++########################################################################
++
++check_required_components(@CMAKE_PROJECT_NAME@)
 diff --git a/larsim/DetSim/CMakeLists.txt b/larsim/DetSim/CMakeLists.txt
-index 560ddfd..2778350 100644
+index 560ddfd..ba81a48 100644
 --- a/larsim/DetSim/CMakeLists.txt
 +++ b/larsim/DetSim/CMakeLists.txt
 @@ -4,8 +4,8 @@ simple_plugin(SimWireAna "module"
@@ -289,9 +490,12 @@ index 560ddfd..2778350 100644
  
  simple_plugin(SimWire "module"
                lardataobj_RawData
-@@ -18,9 +18,9 @@ simple_plugin(SimWire "module"
+@@ -16,11 +16,11 @@ simple_plugin(SimWire "module"
+               ${ART_FRAMEWORK_SERVICES_REGISTRY}
+               ${ART_ROOT_IO_TFILESERVICE_SERVICE}
                ${ART_ROOT_IO_TFILE_SUPPORT}
-               ${CLHEP}
+-              ${CLHEP}
++              ${CLHEP_LIBRARIES}
                ${MF_MESSAGELOGGER}
 -              ${ROOT_CORE}
 -              ${ROOT_HIST}
@@ -420,17 +624,20 @@ index e51b17e..1246f20 100644
  add_subdirectory(CRY)
  add_subdirectory(GENIE)
 diff --git a/larsim/EventGenerator/CORSIKA/CMakeLists.txt b/larsim/EventGenerator/CORSIKA/CMakeLists.txt
-index ab5991f..7fddf71 100644
+index ab5991f..81cd9f8 100644
 --- a/larsim/EventGenerator/CORSIKA/CMakeLists.txt
 +++ b/larsim/EventGenerator/CORSIKA/CMakeLists.txt
-@@ -1,3 +1,5 @@
+@@ -1,18 +1,19 @@
 +include_directories(${IFDHC_INC})
-+find_library(IFDH name ifdh PATHS ${CMAKE_INSTALL_PREFIX} NO DEFAULTS)
++find_library(IFDH name ifdh PATHS ${IFDHC_LIB})
  art_make(MODULE_LIBRARIES
             larcorealg_Geometry
             larcoreobj_SummaryData
-@@ -7,12 +9,13 @@ art_make(MODULE_LIBRARIES
-            ${CLHEP}
+            nurandom_RandomUtils_NuRandomService_service
+            nusimdata_SimulationBase
+            ${ART_FRAMEWORK_SERVICES_REGISTRY}
+-           ${CLHEP}
++           ${CLHEP_LIBRARIES}
             ${IFDH}
             ${MF_MESSAGELOGGER}
 -           ${ROOT_CORE}
@@ -444,10 +651,9 @@ index ab5991f..7fddf71 100644
  
  install_headers()
  install_fhicl()
- install_source()
-+
+-install_source()
 diff --git a/larsim/EventGenerator/CRY/CMakeLists.txt b/larsim/EventGenerator/CRY/CMakeLists.txt
-index 92eb5ae..b1ea000 100644
+index 92eb5ae..f728a25 100644
 --- a/larsim/EventGenerator/CRY/CMakeLists.txt
 +++ b/larsim/EventGenerator/CRY/CMakeLists.txt
 @@ -1,4 +1,4 @@
@@ -456,7 +662,7 @@ index 92eb5ae..b1ea000 100644
  
  art_make(MODULE_LIBRARIES
             larcorealg_Geometry
-@@ -10,11 +10,12 @@ art_make(MODULE_LIBRARIES
+@@ -10,11 +10,10 @@ art_make(MODULE_LIBRARIES
             ${ART_ROOT_IO_TFILESERVICE_SERVICE}
             ${ART_ROOT_IO_TFILE_SUPPORT}
             ${MF_MESSAGELOGGER}
@@ -470,10 +676,9 @@ index 92eb5ae..b1ea000 100644
  
  install_headers()
  install_fhicl()
- install_source()
-+
+-install_source()
 diff --git a/larsim/EventGenerator/GENIE/CMakeLists.txt b/larsim/EventGenerator/GENIE/CMakeLists.txt
-index d1062e9..bb859cc 100644
+index d1062e9..596cbe8 100644
 --- a/larsim/EventGenerator/GENIE/CMakeLists.txt
 +++ b/larsim/EventGenerator/GENIE/CMakeLists.txt
 @@ -1,4 +1,5 @@
@@ -492,7 +697,8 @@ index d1062e9..bb859cc 100644
           ${ART_ROOT_IO_TFILESERVICE_SERVICE}
           art_Persistency_Provenance
           ${MF_MESSAGELOGGER}
-          ${CLHEP}
+-         ${CLHEP}
++         ${CLHEP_LIBRARIES}
           ${GENIE_LIB_LIST}
 -         ${ROOT_EGPYTHIA6}    # FIXME!!! - resolving genie run time reference
 -         ${ROOT_EG}
@@ -586,10 +792,10 @@ index d057e4b..37b9e63 100644
  install_fhicl()
 -install_source()
 diff --git a/larsim/EventWeight/Base/CMakeLists.txt b/larsim/EventWeight/Base/CMakeLists.txt
-index 75d557e..b26380d 100644
+index 75d557e..06ba5f5 100644
 --- a/larsim/EventWeight/Base/CMakeLists.txt
 +++ b/larsim/EventWeight/Base/CMakeLists.txt
-@@ -1,9 +1,9 @@
+@@ -1,11 +1,10 @@
  art_make(LIB_LIBRARIES
           canvas
           cetlib_except
@@ -602,6 +808,8 @@ index 75d557e..b26380d 100644
           ${ART_UTILITIES})
  
  install_headers()
+ install_fhicl()
+-install_source()
 diff --git a/larsim/EventWeight/Calculators/CMakeLists.txt b/larsim/EventWeight/Calculators/CMakeLists.txt
 index aeaf2d2..3fcfa64 100644
 --- a/larsim/EventWeight/Calculators/CMakeLists.txt
@@ -629,10 +837,10 @@ index 64d6f50..7b62169 100644
 -install_source( EXTRAS ${fcl_files} )
  
 diff --git a/larsim/GDMLUtils/CMakeLists.txt b/larsim/GDMLUtils/CMakeLists.txt
-index 77136d9..927cd16 100644
+index 77136d9..c5fe86e 100644
 --- a/larsim/GDMLUtils/CMakeLists.txt
 +++ b/larsim/GDMLUtils/CMakeLists.txt
-@@ -1,8 +1,8 @@
+@@ -1,8 +1,7 @@
 -include_directories($ENV{GEANT4_FQ_DIR}/include)
 -include_directories($ENV{XERCES_C_INC})
 +include_directories ( ${GEANT4_INCLUDE_DIRS} )
@@ -643,13 +851,21 @@ index 77136d9..927cd16 100644
 -	      ${G4GEOMETRY}
 -              ${XERCESC})
 +              ${CLHEP_LIBRARIES}
-+              G4Persistency
-+	      G4Geometry
++	      ${Geant4_LIBRARIES}
 +             )
 diff --git a/larsim/IonizationScintillation/CMakeLists.txt b/larsim/IonizationScintillation/CMakeLists.txt
-index 1c779b3..c333fe7 100644
+index 1c779b3..02396d6 100644
 --- a/larsim/IonizationScintillation/CMakeLists.txt
 +++ b/larsim/IonizationScintillation/CMakeLists.txt
+@@ -4,7 +4,7 @@ art_make(LIB_LIBRARIES
+            lardataalg_DetectorInfo
+            larevt_SpaceCharge
+            nusimdata_SimulationBase
+-           ${CLHEP}
++           ${CLHEP_LIBRARIES}
+            ${FHICLCPP}
+            ${MF_MESSAGELOGGER}
+          MODULE_LIBRARIES
 @@ -15,11 +15,10 @@ art_make(LIB_LIBRARIES
             ${ART_FRAMEWORK_SERVICES_REGISTRY}
             ${ART_ROOT_IO_TFILE_SUPPORT}
@@ -1076,10 +1292,10 @@ index 025f559..58f8037 100644
 -install_source()
 \ No newline at end of file
 diff --git a/larsim/SimFilters/CMakeLists.txt b/larsim/SimFilters/CMakeLists.txt
-index 13e2f62..7ee7c8b 100644
+index 13e2f62..2d9fa47 100644
 --- a/larsim/SimFilters/CMakeLists.txt
 +++ b/larsim/SimFilters/CMakeLists.txt
-@@ -1,12 +1,14 @@
+@@ -1,12 +1,13 @@
 +
  art_make(MODULE_LIBRARIES
           larcorealg_Geometry
@@ -1094,13 +1310,13 @@ index 13e2f62..7ee7c8b 100644
  
  # install_headers()
  install_fhicl()
- install_source()
+-install_source()
 +
 diff --git a/larsim/Simulation/CMakeLists.txt b/larsim/Simulation/CMakeLists.txt
-index a44f775..347c169 100644
+index a44f775..73ea953 100644
 --- a/larsim/Simulation/CMakeLists.txt
 +++ b/larsim/Simulation/CMakeLists.txt
-@@ -8,8 +8,8 @@ art_make(NO_PLUGINS
+@@ -8,12 +8,11 @@ art_make(NO_PLUGINS
             ${ART_FRAMEWORK_SERVICES_REGISTRY}
             ${ART_FRAMEWORK_PRINCIPAL}
             ${ART_PERSISTENCY_PROVENANCE}
@@ -1111,6 +1327,10 @@ index a44f775..347c169 100644
  
  simple_plugin(LArVoxelCalculator "service")
  simple_plugin(LArG4Parameters "service")
+ 
+ install_headers()
+ install_fhicl()
+-install_source()
 diff --git a/larsim/TriggerAlgo/CMakeLists.txt b/larsim/TriggerAlgo/CMakeLists.txt
 index 2f39352..2fc17d7 100644
 --- a/larsim/TriggerAlgo/CMakeLists.txt
