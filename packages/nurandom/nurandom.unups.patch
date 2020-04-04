@@ -1,11 +1,11 @@
-commit bc7259738b03d831f6ea06a40680f46217d75384
+commit cd05f00d76e38195535c82830954004c5a7f644d
 Author: Patrick Gartung <gartung@fnal.gov>
 Date:   Fri Apr 3 13:56:56 2020 -0500
 
     Cetmodules
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index e9ded4b..5c61989 100644
+index e9ded4b..0b4e380 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -13,12 +13,12 @@
@@ -18,8 +18,9 @@ index e9ded4b..5c61989 100644
 -project(nurandom)
 +project(nurandom VERSION 1.04.01 LANGUAGES CXX)
  
- # cetbuildtools contains our cmake modules
+-# cetbuildtools contains our cmake modules
 -find_package(cetbuildtools REQUIRED)
++set(fcl_dir job)
 +find_package(cetmodules REQUIRED)
  
  list(APPEND CMAKE_MODULE_PATH

@@ -56,6 +56,7 @@ class Nutools(CMakePackage):
     depends_on('libxml2')
     depends_on('nusimdata')
     depends_on('dk2nugenie')
+    depends_on('genie')
     depends_on('geant4~data')
     depends_on('xerces-c')
     depends_on('cry')
@@ -73,7 +74,8 @@ class Nutools(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DCRYHOME={0}'.format(self.spec['cry'].prefix)
+                '-DCRYHOME={0}'.format(self.spec['cry'].prefix),
+                '-DGENIE_INC={0}'.format(self.spec['genie'].prefix),
                ]
         return args
 
