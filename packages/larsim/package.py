@@ -65,7 +65,10 @@ class Larsim(CMakePackage):
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DGENIE_VERSION=v{0}'.format(self.spec['genie'].version.underscored)
+               '-DGENIE_INC={0}'.
+                format(self.spec['genie'].prefix.include),
+                '-DGENIE_VERSION=v{0}'.
+                format(self.spec['genie'].version.underscored)
         ]
         return args
 

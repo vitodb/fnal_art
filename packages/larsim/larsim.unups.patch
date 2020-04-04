@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 0751f5c..8d4c838 100644
+index 0751f5c..73dab50 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -13,23 +13,18 @@
@@ -34,7 +34,7 @@ index 0751f5c..8d4c838 100644
  
  # -Wno-unused-variable needed because of CLHEP
  cet_set_compiler_flags(DIAGS CAUTIOUS
-@@ -41,148 +36,60 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -41,148 +36,63 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -174,59 +174,62 @@ index 0751f5c..8d4c838 100644
 -                      ${GRWCLC}
 -		      ${LOG4CPP}
 -                      )
++find_package( nurandom REQUIRED )
 +find_package( larevt REQUIRED )
 +find_package( Geant4 REQUIRED )
++include(${Geant4_USE_FILE})
 +find_package( ROOT REQUIRED )
-+#find_package( marley )
-+#find_package( larsoft-data )
++find_package( CLHEP REQUIRED )
++find_package( marley )
++find_package( larsoft-data )
 +
-+find_library( CRY NAMES CRY )
-+find_library( SQLITE3 NAMES sqlite3 )
++find_library( CRY NAMES CRY PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++find_library( SQLITE3 NAMES sqlite3 )PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH
 +# genie
-+cet_find_library( GALGORITHM NAMES GAlgorithm )
-+cet_find_library( GBARYONRESONANCE NAMES GBaryonResonance )
-+cet_find_library( GBASE NAMES GBase )
-+cet_find_library( GBODEKYANG NAMES GBodekYang )
-+cet_find_library( GCHARM NAMES GCharm )
-+cet_find_library( GCOH NAMES GCoh )
-+cet_find_library( GDFRC NAMES GDfrc )
-+cet_find_library( GDIS NAMES GDIS )
-+cet_find_library( GCROSSSECTIONS NAMES GCrossSections )
-+cet_find_library( GDECAY NAMES GDecay )
-+cet_find_library( GELAS NAMES GElas )
-+cet_find_library( GELFF NAMES GElFF )
-+cet_find_library( GHEP NAMES GHEP )
-+cet_find_library( GEVGCORE NAMES GEVGCore  )
-+cet_find_library( GEVGMODULES NAMES GEVGModules )
-+cet_find_library( GEVGDRIVERS NAMES GEVGDrivers )
-+cet_find_library( GGIBUU NAMES GGiBUU )
-+cet_find_library( GHADRONTRANSP NAMES GHadronTransp )
-+cet_find_library( GFRAGMENTATION NAMES GFragmentation )
-+cet_find_library( GINTERACTION NAMES GInteraction )
-+cet_find_library( GLLEWELLYNSMITH NAMES GLlewellynSmith  )
-+cet_find_library( GMEC NAMES GMEC )
-+cet_find_library( GMESSENGER NAMES GMessenger )
-+cet_find_library( GNUGAMMA NAMES GNuGamma )
-+cet_find_library( GNUE NAMES GNuE )
-+cet_find_library( GNTUPLE NAMES GNtuple )
-+cet_find_library( GNUCLEAR NAMES GNuclear )
-+cet_find_library( GNUMERICAL NAMES GNumerical )
-+cet_find_library( GQPM NAMES GQPM )
-+cet_find_library( GPDG NAMES GPDG )
-+cet_find_library( GPDF NAMES GPDF )
-+cet_find_library( GQEL NAMES GQEL )
-+cet_find_library( GRES NAMES GRES )
-+cet_find_library( GREGISTRY NAMES GRegistry )
-+cet_find_library( GREINSEGHAL NAMES GReinSeghal )
-+cet_find_library( GUTILS NAMES GUtils )
-+cet_find_library( GGEO NAMES GGeo )
-+cet_find_library( GFLUXDRIVERS NAMES GFluxDrivers )
-+cet_find_library( GMUELOSS NAMES GMuELoss )
++cet_find_library( GALGORITHM NAMES GAlgorithm PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GBARYONRESONANCE NAMES GBaryonResonance PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GBASE NAMES GBase PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GBODEKYANG NAMES GBodekYang PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GCHARM NAMES GCharm PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GCOH NAMES GCoh PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GDFRC NAMES GDfrc PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GDIS NAMES GDIS PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GCROSSSECTIONS NAMES GCrossSections PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GDECAY NAMES GDecay PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GELAS NAMES GElas PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GELFF NAMES GElFF PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GHEP NAMES GHEP PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GEVGCORE NAMES GEVGCore PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GEVGMODULES NAMES GEVGModules PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
++cet_find_library( GEVGDRIVERS NAMES GEVGDrivers PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GGIBUU NAMES GGiBUU PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GHADRONTRANSP NAMES GHadronTransp PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GFRAGMENTATION NAMES GFragmentation PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GINTERACTION NAMES GInteraction PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GLLEWELLYNSMITH NAMES GLlewellynSmith  PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GMEC NAMES GMEC PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GMESSENGER NAMES GMessenger PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GNUGAMMA NAMES GNuGamma PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GNUE NAMES GNuE PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GNTUPLE NAMES GNtuple PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GNUCLEAR NAMES GNuclear PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GNUMERICAL NAMES GNumerical PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GQPM NAMES GQPM PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GPDG NAMES GPDG PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GPDF NAMES GPDF PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GQEL NAMES GQEL PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GRES NAMES GRES PATHS  ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GREGISTRY NAMES GRegistry ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GREINSEGHAL NAMES GReinSeghal ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GUTILS NAMES GUtils ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GGEO NAMES GGeo ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GFLUXDRIVERS NAMES GFluxDrivers ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( GMUELOSS NAMES GMuELoss ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
  # marley libraries
 -cet_find_library( MARLEY NAMES MARLEY PATHS ENV MARLEY_LIB NO_DEFAULT_PATH )
 -cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT PATHS ENV MARLEY_LIB NO_DEFAULT_PATH )
-+cet_find_library( MARLEY NAMES MARLEY )
-+cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT )
++cet_find_library( MARLEY NAMES MARLEY ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
++cet_find_library( MARLEY_ROOT NAMES MARLEY_ROOT ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH)
  
  # temporarily needed since this is an unexpected header path
 -include_directories( $ENV{IFDHC_FQ_DIR}/inc )
@@ -234,7 +237,7 @@ index 0751f5c..8d4c838 100644
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -194,9 +101,9 @@ add_subdirectory(larsim)
+@@ -194,9 +104,9 @@ add_subdirectory(larsim)
  
  # tests
  add_subdirectory(test)
@@ -260,11 +263,17 @@ index 0000000..1901627
 +
 diff --git a/cmakeConfig/larsim-fragment.cmake.in b/cmakeConfig/larsim-fragment.cmake.in
 new file mode 100644
-index 0000000..ed83066
+index 0000000..444d31f
 --- /dev/null
 +++ b/cmakeConfig/larsim-fragment.cmake.in
-@@ -0,0 +1 @@
+@@ -0,0 +1,7 @@
++find_package( nurandom REQUIRED )
 +find_package( larevt REQUIRED )
++find_package( Geant4 REQUIRED )
++find_package( ROOT REQUIRED )
++find_package( marley )
++find_package( larsoft-data )
++
 diff --git a/larsim/DetSim/CMakeLists.txt b/larsim/DetSim/CMakeLists.txt
 index 560ddfd..2778350 100644
 --- a/larsim/DetSim/CMakeLists.txt

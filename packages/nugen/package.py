@@ -85,7 +85,9 @@ class Nugen(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-DGENIE_INC={0}'.
+                format(self.spec['genie'].prefix.include)]
         return args
 
     def setup_environment(self, spack_env, run_env):

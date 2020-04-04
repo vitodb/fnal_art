@@ -1,4 +1,4 @@
-commit e5232941cef643a588d8b5029a10f98574f40efe
+commit c6ccf39462d609e5ef1aa48d5748e947a463e62d
 Author: Patrick Gartung <gartung@fnal.gov>
 Date:   Fri Apr 3 14:26:24 2020 -0500
 
@@ -474,7 +474,7 @@ index 7609061..899fb20 100644
  add_subdirectory(art)
  
 diff --git a/nugen/NuReweight/art/CMakeLists.txt b/nugen/NuReweight/art/CMakeLists.txt
-index 9d3c8bf..2da438c 100644
+index 9d3c8bf..bc69a32 100644
 --- a/nugen/NuReweight/art/CMakeLists.txt
 +++ b/nugen/NuReweight/art/CMakeLists.txt
 @@ -21,13 +21,12 @@ set( NURW_LIBS ${ART_FRAMEWORK_SERVICES_REGISTRY}
@@ -491,7 +491,7 @@ index 9d3c8bf..2da438c 100644
 +               ${ROOT_LIBRARIES}
 +               ROOT::EG
 +               ROOT::TreePlayer
-+               ROOT_FFTW
++               ROOT::FFTW
 +               ROOT::EGPythia6
 +               ROOT::Gui
             )
