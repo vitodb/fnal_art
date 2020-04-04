@@ -63,6 +63,7 @@ class Nugen(CMakePackage):
     depends_on('nusimdata')
     depends_on('dk2nudata')
     depends_on('dk2nugenie')
+    depends_on('genie')
     depends_on('xerces-c')
     depends_on('cry')
     depends_on('ifdh-art')
