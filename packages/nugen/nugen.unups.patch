@@ -1,11 +1,11 @@
-commit 18f115901d736bc8de83b6a71c3e026682de9435
+commit e5232941cef643a588d8b5029a10f98574f40efe
 Author: Patrick Gartung <gartung@fnal.gov>
 Date:   Fri Apr 3 14:26:24 2020 -0500
 
     Cetmodules
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b33cd0c..35cc7c0 100644
+index b33cd0c..3538a5c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -13,47 +13,43 @@
@@ -25,7 +25,7 @@ index b33cd0c..35cc7c0 100644
 +# use cmake 3.12 or later
 +cmake_minimum_required (VERSION 3.12)
  
-+project(nugen VERSION 1.00.00 LANGUAGES CXX)
++project(nugen VERSION 1.10.02 LANGUAGES CXX)
 +set(fcl_dir job)
 +find_package(cetmodules)
  include(CetCMakeEnv)
@@ -77,15 +77,16 @@ index b33cd0c..35cc7c0 100644
  
  
  # genie-config for R-2 series didn't support --version (returns blank)
-@@ -66,63 +62,66 @@ cet_find_library( XML2 NAMES xml2 PATHS $ENV{LIBXML2_FQ_DIR}/lib NO_DEFAULT_PATH
+@@ -66,63 +62,67 @@ cet_find_library( XML2 NAMES xml2 PATHS $ENV{LIBXML2_FQ_DIR}/lib NO_DEFAULT_PATH
  #if( ${GENIE_MAJOR_VERSION} LESS 3 )
  
  # use GENIE UPS version to decide ...
 -parse_ups_version( ${GENIE_VERSION} )
-+include(ParseVersion)
-+parse_underscored_version( ${GENIE_VERSION} )
-+#set(VMAJ 2)
-+#set(VMIN 12)
++#set(GENIE_VERSION $ENV{GENIE_VERSION})
++#include(ParseVersion)
++#parse_underscored_version( ${GENIE_VERSION} )
++set(VMAJ 3)
++set(VMIN 0)
  if( ${VMAJ} LESS 3 )
    add_definitions(-DGENIE_PRE_R3)
  #  MESSAGE("--NUGEN-- GENIE_VERSION=${VMAJ} ${VMIN} -DGENIE_PRE_R3")
@@ -187,7 +188,7 @@ index b33cd0c..35cc7c0 100644
    set(GENIE_LIB_LIST  ${GALGORITHM}
                        ${GBARYONRESONANCE}
                        ${GBASE}
-@@ -169,60 +168,60 @@ else()
+@@ -169,60 +169,60 @@ else()
  # these are the POST-R-3 library names
  #  MESSAGE("--NUGEN-- GENIE_VERSION=${VMAJ} ${VMIN} not defining -DGENIE_PRE_R3")
  
@@ -293,11 +294,11 @@ index b33cd0c..35cc7c0 100644
  
    # GENIE pre-R-3 used GSL via ROOT's Math libs, now makes direct call not available via that route
 -  cet_find_library( GSL NAMES gsl PATHS ENV GSL_LIB NO_DEFAULT_PATH )
-+  cet_find_library( GSL NAMES gsl PATHS  ${GSL_LIB} NO_DEFAULT_PATH )
++  cet_find_library( GSL NAMES gsl PATHS ${CMAKE_INSTALL_RPATH} NO_DEFAULT_PATH )
  
  # this is the order that GENIE "recommends"
  # genie-config --libs
-@@ -289,35 +288,46 @@ endif()
+@@ -289,35 +289,43 @@ endif()
  #MESSAGE("--NUGEN-- GENIE ${VMAJ} messenger ${GMESSENGER} gfwmsg ${GFWMSG} GENIE_LIB_LIST=${GENIE_LIB_LIST}")
  
  # dk2nu
@@ -334,8 +335,6 @@ index b33cd0c..35cc7c0 100644
 +include_directories ( ${GENIE_INC}/GENIE )
 +include_directories ( ${GENIE_REWEIGHT}/src )
 +include_directories ( ${LIBXML2_INC} )
-+include_directories ( ${G4INCLUDE} )
-+include_directories ( ${XERCES_C_INC} )
 +include_directories ( ${CRYHOME})
 +include_directories ( ${LOG4CPP_INC} )
 +
@@ -346,10 +345,8 @@ index b33cd0c..35cc7c0 100644
  
  # source
  add_subdirectory (nugen)
--add_subdirectory (tools)
+ add_subdirectory (tools)
 -
-+#add_subdirectory (tools)
-+add_subdirectory (test)
 +add_subdirectory(cmakeConfig)
  # ups - table and config files
 -add_subdirectory(ups)
@@ -370,18 +367,16 @@ index 0000000..3629050
 +cet_cmake_config(CONFIG_FRAGMENTS nugen-fragment.cmake.in)
 diff --git a/cmakeConfig/nugen-fragment.cmake.in b/cmakeConfig/nugen-fragment.cmake.in
 new file mode 100644
-index 0000000..d022213
+index 0000000..18ff201
 --- /dev/null
 +++ b/cmakeConfig/nugen-fragment.cmake.in
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,6 @@
 +find_package( ROOT REQUIRED COMPONENTS MathCore Geom GeomPainter GX11 EG EGPythia6 Gui)
 +find_package( art REQUIRED)
 +find_package( art_root_io REQUIRED)
 +find_package( cetlib REQUIRED)
 +find_package( cetlib_except REQUIRED)
 +find_package( nusimdata REQUIRED )
-+find_package( Geant4 REQUIRED)
-+
 diff --git a/nugen/EventGeneratorBase/CMakeLists.txt b/nugen/EventGeneratorBase/CMakeLists.txt
 index 257459f..6bb33aa 100644
 --- a/nugen/EventGeneratorBase/CMakeLists.txt
@@ -395,12 +390,15 @@ index 257459f..6bb33aa 100644
  add_subdirectory(GENIE)
  add_subdirectory(GiBUU)
 diff --git a/nugen/EventGeneratorBase/GENIE/CMakeLists.txt b/nugen/EventGeneratorBase/GENIE/CMakeLists.txt
-index eb3601b..3a48736 100644
+index eb3601b..08873f0 100644
 --- a/nugen/EventGeneratorBase/GENIE/CMakeLists.txt
 +++ b/nugen/EventGeneratorBase/GENIE/CMakeLists.txt
-@@ -23,11 +23,10 @@ art_make( LIB_LIBRARIES nusimdata_SimulationBase
+@@ -21,13 +21,12 @@ art_make( LIB_LIBRARIES nusimdata_SimulationBase
+                         ${GENIE_LIB_LIST}
+                         ${DK2NU_TREE}
                          ${DK2NU_GENIE}
-                         ${CLHEP}
+-                        ${CLHEP}
++                        ${CLHEP_LIBRARIES}
                          ${IFDH}
 -                        ${ROOT_GEOM}
 -                        ${ROOT_GEOMPAINTER}
@@ -432,7 +430,7 @@ index 3d3ef73..32bafd6 100644
  install_fhicl()
 -install_source()
 diff --git a/nugen/EventGeneratorBase/test/CMakeLists.txt b/nugen/EventGeneratorBase/test/CMakeLists.txt
-index 5463ec1..efa567d 100644
+index 5463ec1..7d5804d 100644
 --- a/nugen/EventGeneratorBase/test/CMakeLists.txt
 +++ b/nugen/EventGeneratorBase/test/CMakeLists.txt
 @@ -22,15 +22,13 @@ art_make( EXCLUDE EventGeneratorTest_module.cc
@@ -451,7 +449,7 @@ index 5463ec1..efa567d 100644
 +                        ROOT::TreePlayer
 +                        ROOT::FFTW
 +                        ROOT::EGPythia6
-+                        ROOT::GUI
++                        ROOT::Gui
                          )
  
  install_headers()
@@ -476,7 +474,7 @@ index 7609061..899fb20 100644
  add_subdirectory(art)
  
 diff --git a/nugen/NuReweight/art/CMakeLists.txt b/nugen/NuReweight/art/CMakeLists.txt
-index 9d3c8bf..65a03be 100644
+index 9d3c8bf..2da438c 100644
 --- a/nugen/NuReweight/art/CMakeLists.txt
 +++ b/nugen/NuReweight/art/CMakeLists.txt
 @@ -21,13 +21,12 @@ set( NURW_LIBS ${ART_FRAMEWORK_SERVICES_REGISTRY}
@@ -493,9 +491,9 @@ index 9d3c8bf..65a03be 100644
 +               ${ROOT_LIBRARIES}
 +               ROOT::EG
 +               ROOT::TreePlayer
-+               ROOT_FFTW}
++               ROOT_FFTW
 +               ROOT::EGPythia6
-+               ROOT::GUI
++               ROOT::Gui
             )
  
  art_make_library( SOURCE NuReweight.cxx

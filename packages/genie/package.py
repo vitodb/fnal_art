@@ -16,7 +16,6 @@ global analysis of neutrino scattering data.
 """
 
     homepage = "http://www.genie-mc.org"
-    #url      = "https://github.com/GENIE-MC/Generator/archive/R-2_12_10.tar.gz"
     url      = "https://github.com/GENIE-MC/Generator/archive/R-3_00_06.tar.gz"
 
     def url_for_version(self, version):
@@ -28,8 +27,13 @@ global analysis of neutrino scattering data.
     version('3.0.0b4', sha256='41100dd5141a7e2c934faaaf22f244deda08ab7f03745976dfed0f31e751e24e')
     version('3.00.00', sha256='3953c7d9f1f832dd32dfbc0b9260be59431206c204aec6ab0aa68c01176f2ae6')
 
+    #parallel = False
 
-    parallel = False
+    resource(name='reweight',
+             url='https://github.com/GENIE-MC/Reweight/archive/R-1_00_06.tar.gz',
+             sha256='58d5ad9c7f2bb3015be506bf40fe7b9e12e8f4ae7f2223cbebb568adb7e8fb19',
+             placement='Reweight',
+             when='@3.00.06')
 
     depends_on('root+pythia6')
     depends_on('lhapdf')
@@ -53,7 +57,7 @@ global analysis of neutrino scattering data.
         cxxstdflag = '' if cxxstd == 'default' else \
                      getattr(self.compiler, 'cxx{0}_flag'.format(cxxstd))
         args = ['GOPT_WITH_CXX_USERDEF_FLAGS=-g -fno-omit-frame-pointer {0}'.
-                format(cxxstdflag)]
+                format(cxxstdflag), 'all']
         return args
 
     def configure_args(self):
@@ -89,7 +93,29 @@ global analysis of neutrino scattering data.
     @run_before('build')
     def add_to_make_env(self):
         inspect.getmodule(self).make.add_default_env('GENIE',self.stage.source_path)
+        inspect.getmodule(self).make.add_default_env('GENIE_REWEIGHT',
+                                                     '{0}/Reweight'.
+                                                     format(self.stage.source_path))
         inspect.getmodule(self).make.add_default_env('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
+
+    def build(self, spec, prefix):
+        with working_dir(self.build_directory):
+            make(*self.build_targets)
+        with working_dir('{0}/Reweight'.format(self.stage.source_path)):
+            make(*self.build_targets)
+
+    def install(self, spec, prefix):
+        mkdirp(prefix.bin)
+        mkdirp(prefix.lib)
+        mkdirp(prefix.lib64)
+        mkdirp(prefix.include)
+        mkdirp(prefix.src)
+
+        with working_dir(self.build_directory):
+            make('install')
+        with working_dir('{0}/Reweight'.format(self.stage.source_path)):
+            make('install')
+
 
     @run_after('install')
     def install_required_src(self):
@@ -97,9 +123,8 @@ global analysis of neutrino scattering data.
         filesystem.install_tree(os.path.join(self.stage.source_path, 'src', 'scripts'),
                                 os.path.join(self.prefix, 'src', 'scripts'))
         src_make_dir = os.path.join(self.prefix, 'src', 'make', '')
-        filesystem.mkdirp(src_make_dir)
-        filesystem.install(os.path.join(self.stage.source_path, 'src', 'make', 'Make.config_no_paths'),
-                           src_make_dir)
+        #filesystem.mkdirp(src_make_dir)
+        filesystem.install_tree(os.path.join(self.stage.source_path, 'src', 'make'), src_make_dir)
 
     def setup_environment(self, spack_env, run_env):
         run_env.set('GENIE', self.prefix)

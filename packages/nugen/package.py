@@ -38,7 +38,7 @@ class Nugen(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cmake@3.11:', type='build')
+    depends_on('cmake@3.12:', type='build')
     depends_on('cetmodules@1.01.01:', type='build')
     depends_on('catch2@2.3.0:', type='build')
 
@@ -53,9 +53,24 @@ class Nugen(CMakePackage):
     depends_on('messagefacility')
     depends_on('tbb')
     depends_on('root+python')
-    depends_on('art-root-io')
-    depends_on('sqlite@3.8.2:')
     depends_on('perl')
+    depends_on('art-root-io')
+    depends_on('perl')
+    depends_on('pythia6')
+    depends_on('libwda')
+    depends_on('postgresql')
+    depends_on('libxml2')
+    depends_on('nusimdata')
+    depends_on('dk2nudata')
+    depends_on('dk2nugenie')
+    depends_on('xerces-c')
+    depends_on('cry')
+    depends_on('ifdh-art')
+    depends_on('ifdhc')
+    depends_on('ifbeam')
+    depends_on('nucondb')
+    depends_on('libwda')
+
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
