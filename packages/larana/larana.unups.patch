@@ -1,4 +1,4 @@
-commit 5b3a5d319cb9dc1c60c9b14966fbb4327a127a35
+commit f266f29d43a459f283927128aed61a2b55de545a
 Author: Patrick Gartung <gartung@fnal.gov>
 Date:   Sat Apr 4 20:29:40 2020 -0500
 
@@ -95,7 +95,7 @@ index 0000000..9f34616
 @@ -0,0 +1 @@
 +find_package( larreco REQUIRED )
 diff --git a/larana/CosmicRemoval/CMakeLists.txt b/larana/CosmicRemoval/CMakeLists.txt
-index b75eea5..1a76d77 100644
+index b75eea5..4ed43bf 100644
 --- a/larana/CosmicRemoval/CMakeLists.txt
 +++ b/larana/CosmicRemoval/CMakeLists.txt
 @@ -3,9 +3,9 @@ add_subdirectory(TrackContainment)
@@ -106,7 +106,7 @@ index b75eea5..1a76d77 100644
 -    ${ROOT_HIST}
 -    ${ROOT_PHYSICS}
 +    ROOT::Core
-+    ROOT::HisT
++    ROOT::Hist
 +    ROOT::Physics
      cetlib_except
      larcorealg_Geometry
@@ -148,7 +148,7 @@ index 4e4801f..239b807 100644
  install_headers()
 -install_source()
 diff --git a/larana/OpticalDetector/CMakeLists.txt b/larana/OpticalDetector/CMakeLists.txt
-index 67825fe..72f5d6c 100644
+index 67825fe..28875e7 100644
 --- a/larana/OpticalDetector/CMakeLists.txt
 +++ b/larana/OpticalDetector/CMakeLists.txt
 @@ -7,14 +7,14 @@ art_make(
@@ -172,9 +172,12 @@ index 67825fe..72f5d6c 100644
      canvas
      cetlib_except
      larana_OpticalDetector_OpDigiProperties_service
-@@ -34,12 +34,11 @@ art_make(
+@@ -32,14 +32,13 @@ art_make(
+     larsim_Simulation
+     nurandom_RandomUtils_NuRandomService_service
    SERVICE_LIBRARIES
-     ${CLHEP}
+-    ${CLHEP}
++    ${CLHEP_LIBRARIES}
      ${MF_MESSAGELOGGER}
 -    ${ROOT_CORE}
 -    ${ROOT_HIST}
@@ -204,10 +207,10 @@ index fb7a8b8..e40038e 100644
  install_headers()
 -install_source()
 diff --git a/larana/ParticleIdentification/CMakeLists.txt b/larana/ParticleIdentification/CMakeLists.txt
-index 812a1da..88a1a4f 100644
+index 812a1da..3a26d5d 100644
 --- a/larana/ParticleIdentification/CMakeLists.txt
 +++ b/larana/ParticleIdentification/CMakeLists.txt
-@@ -8,13 +8,13 @@ art_make(
+@@ -8,13 +8,14 @@ art_make(
      art_Utilities
      ${FHICLCPP}
      ${MF_MESSAGELOGGER}
@@ -218,6 +221,7 @@ index 812a1da..88a1a4f 100644
 -    ${ROOT_RIO}
 -    ${ROOT_TMVA}
 -    ${ROOT_TREE}
++    ${CLHEP_LIBRARIES}
 +    ROOT::Core
 +    ROOT::Hist
 +    ROOT::MathCore
@@ -228,7 +232,7 @@ index 812a1da..88a1a4f 100644
      canvas
      cetlib
      cetlib_except
-@@ -28,6 +28,5 @@ art_make(
+@@ -28,6 +29,5 @@ art_make(
  
  install_headers()
  install_fhicl()
