@@ -67,20 +67,27 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
 
         line = line.rstrip()
 
-        if line == "else()":
-            # some of these redo everything in an else, so forget
-            # what we know...
-            drop_til_close = False
-            saw_cmake_config = False
-            saw_cetmodules = False
-            saw_cmakeenv_include = False
-            saw_canvas_root_io = False
+        # ugly special cases
+        # larpandoracontent has an if/else for if we have
+        # cetmodules...
+        if line == "else()" and proj.find("pandora")> 1:
+            if toplevel and not saw_cmake_config:
+                if not saw_cetmodules:
+                    fout.write("find_package(cetmodules)\n")
+                    saw_cetmodules = True
+                if not saw_cmakeenv_include:
+                    fout.write("include(CetCMakeEnv)\n")
+                    saw_cmakeenv_include = True
+                fout.write("cet_cmake_config()\n")
+                saw_cmake_config = True
+ 
+        # art_root_io has wierdness in simple_plugin(SamplingInput...
+        if (line == 'simple_plugin(SamplingInput "source"' and
+                     fname.find('art_root_io/CMakeLists.txt')>=0):
+             line = 'simple_plugin(SamplingInput LIBRARY'
 
         if line.find("include(cetmodules") > 0:
-            saw_cetmodules = False
-
-        # ugly special cases
-
+            saw_cetmodules = True
 
         if drop_til_close:
             if line.find(")") > 0:
