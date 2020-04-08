@@ -273,8 +273,8 @@ def cetmodules_file_patcher(fname, toplevel=True, proj='foo', vers='1.0', debug=
                newname = newname.capitalize().strip("0123456789")
 
             if newname == "ifdhc":
-               fout.write("cet_find_simple_package( ifdhc INCPATH_SUFFIXES inc INCPATH_VAR IFDHC_INC )\n")
-            elif newname in ("wda", "ifbeam", "nucondb", "cetlib", "cetlib-except", "ifdhc", "dk2nudata", "cppunit", "Sqlite"):
+               fout.write("cet_find_simple_package( ifdh INCPATH_SUFFIXES inc INCPATH_VAR IFDHC_INC )\n")
+            elif newname in ("wda", "ifbeam", "nucondb", "cetlib", "cetlib-except", "dk2nudata", "cppunit", "Sqlite"):
                fout.write("cet_find_simple_package( %s INCPATH_VAR %s_INC )\n" % (newname, newname.upper()))
             else:
                 fout.write("find_package( %s )\n" % newname )
