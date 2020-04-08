@@ -1,10 +1,24 @@
+commit f266f29d43a459f283927128aed61a2b55de545a
+Author: Patrick Gartung <gartung@fnal.gov>
+Date:   Sat Apr 4 20:29:40 2020 -0500
+
+    Cetmodules
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5f0d5ca..539ec96 100644
+index fd742a3..9b40ef6 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -12,16 +12,11 @@ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
+@@ -13,21 +13,16 @@
+ # ======================================================================
  
- project(larana LANGUAGES CXX)
+ 
+-# use cmake 2.8 or later
+-cmake_minimum_required (VERSION 2.8)
++# use cmake 3.11 or later
++cmake_minimum_required (VERSION 3.11)
+ 
+-project(larana)
++project(larana VERSION 08.10.03 LANGUAGES CXX)
  
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
@@ -23,7 +37,7 @@ index 5f0d5ca..539ec96 100644
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -34,23 +29,8 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -40,23 +35,8 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -49,7 +63,7 @@ index 5f0d5ca..539ec96 100644
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -62,10 +42,10 @@ add_subdirectory(larana)
+@@ -68,10 +48,10 @@ add_subdirectory(larana)
  
  # tests
  add_subdirectory(test)
@@ -81,25 +95,63 @@ index 0000000..9f34616
 @@ -0,0 +1 @@
 +find_package( larreco REQUIRED )
 diff --git a/larana/CosmicRemoval/CMakeLists.txt b/larana/CosmicRemoval/CMakeLists.txt
-index 6a38312..2a019eb 100644
+index b75eea5..4ed43bf 100644
 --- a/larana/CosmicRemoval/CMakeLists.txt
 +++ b/larana/CosmicRemoval/CMakeLists.txt
-@@ -1,3 +1,10 @@
-+# Add top level include
-+include_directories ( ${PROJECT_SOURCE_DIR} )
-+
-+include(${Geant4_USE_FILE})
-+include_directories(${Geant4_INCLUDE_DIRS})
-+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Geant4_CXX_FLAGS} -Wno-shadow -Wno-unused-parameter -Wno-ignored-qualifiers")
-+
- add_subdirectory(TrackContainment)
- 
+@@ -3,9 +3,9 @@ add_subdirectory(TrackContainment)
  art_make(
+   LIB_LIBRARIES
+     ${FHICLCPP}
+-    ${ROOT_CORE}
+-    ${ROOT_HIST}
+-    ${ROOT_PHYSICS}
++    ROOT::Core
++    ROOT::Hist
++    ROOT::Physics
+     cetlib_except
+     larcorealg_Geometry
+     lardataobj_AnalysisBase
+@@ -17,9 +17,9 @@ art_make(
+     ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+     ${ART_ROOT_IO_TFILE_SUPPORT}
+     ${MF_MESSAGELOGGER}
+-    ${ROOT_CORE}
+-    ${ROOT_PHYSICS}
+-    ${ROOT_TREE}
++    ROOT::Core
++    ROOT::Physics
++    ROOT::Tree
+     larana_CosmicRemoval
+     larana_CosmicRemoval_TrackContainment
+     larcorealg_Geometry
+@@ -31,4 +31,3 @@ art_make(
+ 
+ install_headers()
+ install_fhicl()
+-install_source()
+diff --git a/larana/CosmicRemoval/TrackContainment/CMakeLists.txt b/larana/CosmicRemoval/TrackContainment/CMakeLists.txt
+index 4e4801f..239b807 100644
+--- a/larana/CosmicRemoval/TrackContainment/CMakeLists.txt
++++ b/larana/CosmicRemoval/TrackContainment/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ art_make(
+   LIB_LIBRARIES
+     ${FHICLCPP}
+-    ${ROOT_CORE}
++    ROOT::Core
+     cetlib_except
+     larcorealg_Geometry
+     lardataobj_AnalysisBase
+@@ -11,4 +11,3 @@ art_make(
+ 
+ 
+ install_headers()
+-install_source()
 diff --git a/larana/OpticalDetector/CMakeLists.txt b/larana/OpticalDetector/CMakeLists.txt
-index 75b1054..04a33c2 100644
+index 67825fe..28875e7 100644
 --- a/larana/OpticalDetector/CMakeLists.txt
 +++ b/larana/OpticalDetector/CMakeLists.txt
-@@ -7,7 +7,7 @@ art_make(
+@@ -7,14 +7,14 @@ art_make(
      ${ART_FRAMEWORK_SERVICES_REGISTRY}
      ${ART_ROOT_IO_TFILESERVICE_SERVICE}
      ${ART_ROOT_IO_TFILE_SUPPORT}
@@ -107,29 +159,137 @@ index 75b1054..04a33c2 100644
 +    ${CLHEP_LIBRARIES}
      ${FHICLCPP}
      ${MF_MESSAGELOGGER}
-     ROOT::Core
-@@ -32,7 +32,7 @@ art_make(
+-    ${ROOT_CORE}
+-    ${ROOT_HIST}
+-    ${ROOT_PHYSICS}
+-    ${ROOT_RIO}
+-    ${ROOT_TREE}
++    ROOT::Core
++    ROOT::Hist
++    ROOT::Physics
++    ROOT::RIO
++    ROOT::Tree
+     canvas
+     cetlib_except
+     larana_OpticalDetector_OpDigiProperties_service
+@@ -32,14 +32,13 @@ art_make(
      larsim_Simulation
      nurandom_RandomUtils_NuRandomService_service
    SERVICE_LIBRARIES
 -    ${CLHEP}
 +    ${CLHEP_LIBRARIES}
      ${MF_MESSAGELOGGER}
-     ROOT::Core
-     ROOT::Hist
-@@ -42,4 +42,5 @@ art_make(
+-    ${ROOT_CORE}
+-    ${ROOT_HIST}
++    ROOT::Core
++    ROOT::Hist
+     larcorealg_Geometry
+   )
+ 
  install_headers()
  install_fhicl()
- install_source()
--install_fw(LIST toyWaveform.txt SUBDIRNAME OpticalDetector)
-+install_fw( LIST toyWaveform.txt
-+  SUBDIRNAME OpticalDetector )
+-install_source()
+ install_fw(LIST toyWaveform.txt SUBDIRNAME OpticalDetector)
+diff --git a/larana/OpticalDetector/OpHitFinder/CMakeLists.txt b/larana/OpticalDetector/OpHitFinder/CMakeLists.txt
+index fb7a8b8..e40038e 100644
+--- a/larana/OpticalDetector/OpHitFinder/CMakeLists.txt
++++ b/larana/OpticalDetector/OpHitFinder/CMakeLists.txt
+@@ -6,9 +6,8 @@ art_make(
+     ${MF_MESSAGELOGGER}
+     ${FHICLCPP}
+     cetlib_except
+-    ${ROOT_CORE}
+-    ${ROOT_HIST}
++    ROOT::Core
++    ROOT::Hist
+   )
+ 
+ install_headers()
+-install_source()
 diff --git a/larana/ParticleIdentification/CMakeLists.txt b/larana/ParticleIdentification/CMakeLists.txt
-index bc6e721..a878aa0 100644
+index 812a1da..3a26d5d 100644
 --- a/larana/ParticleIdentification/CMakeLists.txt
 +++ b/larana/ParticleIdentification/CMakeLists.txt
-@@ -1,3 +1,4 @@
-+include_directories ( ${PROJECT_SOURCE_DIR} )
- art_make(
-   LIB_LIBRARIES
-     ${ART_FRAMEWORK_PRINCIPAL}
+@@ -8,13 +8,14 @@ art_make(
+     art_Utilities
+     ${FHICLCPP}
+     ${MF_MESSAGELOGGER}
+-    ${ROOT_CORE}
+-    ${ROOT_HIST}
+-    ${ROOT_MATHCORE}
+-    ${ROOT_PHYSICS}
+-    ${ROOT_RIO}
+-    ${ROOT_TMVA}
+-    ${ROOT_TREE}
++    ${CLHEP_LIBRARIES}
++    ROOT::Core
++    ROOT::Hist
++    ROOT::MathCore
++    ROOT::Physics
++    ROOT::RIO
++    ROOT::TMVA
++    ROOT::Tree
+     canvas
+     cetlib
+     cetlib_except
+@@ -28,6 +29,5 @@ art_make(
+ 
+ install_headers()
+ install_fhicl()
+-install_source()
+ 
+ add_subdirectory(scripts)
+diff --git a/larana/ParticleIdentification/scripts/CMakeLists.txt b/larana/ParticleIdentification/scripts/CMakeLists.txt
+index 76ebd68..1335578 100644
+--- a/larana/ParticleIdentification/scripts/CMakeLists.txt
++++ b/larana/ParticleIdentification/scripts/CMakeLists.txt
+@@ -1,2 +1 @@
+ install_fhicl()
+-install_source()
+diff --git a/larana/T0Finder/AssociationsTools/CMakeLists.txt b/larana/T0Finder/AssociationsTools/CMakeLists.txt
+index c79a0bf..18f1c62 100644
+--- a/larana/T0Finder/AssociationsTools/CMakeLists.txt
++++ b/larana/T0Finder/AssociationsTools/CMakeLists.txt
+@@ -6,7 +6,7 @@ art_make(
+     ${ART_FRAMEWORK_SERVICES_REGISTRY}
+     ${ART_PERSISTENCY_PROVENANCE}
+     ${MF_MESSAGELOGGER}
+-    ${ROOT_CORE}
++    ROOT::Core
+     canvas
+     larcorealg_Geometry
+     larsim_MCCheater_BackTrackerService_service
+diff --git a/larana/T0Finder/CMakeLists.txt b/larana/T0Finder/CMakeLists.txt
+index f585fda..d2892b4 100644
+--- a/larana/T0Finder/CMakeLists.txt
++++ b/larana/T0Finder/CMakeLists.txt
+@@ -6,10 +6,10 @@ art_make(
+     ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+     ${ART_ROOT_IO_TFILE_SUPPORT}
+     ${MF_MESSAGELOGGER}
+-    ${ROOT_CORE}
+-    ${ROOT_HIST}
+-    ${ROOT_PHYSICS}
+-    ${ROOT_TREE}
++    ROOT::Core
++    ROOT::Hist
++    ROOT::Physics
++    ROOT::Tree
+     larcorealg_Geometry
+     lardataobj_AnalysisBase
+     lardataobj_RecoBase
+@@ -20,5 +20,4 @@ art_make(
+ 
+ install_headers()
+ install_fhicl()
+-install_source()
+ install_scripts()
+diff --git a/larana/TruncatedMean/Algorithm/CMakeLists.txt b/larana/TruncatedMean/Algorithm/CMakeLists.txt
+index a7fbe37..a8c375c 100644
+--- a/larana/TruncatedMean/Algorithm/CMakeLists.txt
++++ b/larana/TruncatedMean/Algorithm/CMakeLists.txt
+@@ -2,4 +2,3 @@ art_make()
+ 
+ install_headers()
+ install_fhicl()
+-install_source()

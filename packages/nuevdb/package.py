@@ -13,7 +13,7 @@ if not libdir in sys.path:
 from cetmodules_patcher import cetmodules_dir_patcher
 
 def patcher(x):
-    cetmodules_dir_patcher(".","lareventdisplay","08.12.03")
+    cetmodules_dir_patcher(".","nuevdb","1.02.03")
 
 def sanitize_environments(*args):
     for env in args:
@@ -24,21 +24,15 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class Lareventdisplay(CMakePackage):
-    """Lareventdisplay"""
+class Nuevdb(CMakePackage):
+    """Nuevdb"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/lareventdisplay"
-    url      = "https://github.com/LArSoft/lareventdisplay.git"
+    homepage = "http://cdcvs.fnal.gov/redmine/projects/nuevdb/wiki"
+    url      = "http://cdcvs.fnal.gov/projects/nuevdb/"
 
-    version('MVP1a', git='https://github.com/LArSoft/lareventdisplay.git', branch='feature/MVP1a')
-    version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.11.00', tag='v08_11_00', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.11.01', tag='v08_11_01', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.12.02', tag='v08_12_02', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.12.03', tag='v08_12_03', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.12.04', tag='v08_12_04', git='https://github.com/LArSoft/lareventdisplay.git')
-
+    version('1.02.02', tag='v1_02_02', git="http://cdcvs.fnal.gov/projects/nuevdb")
+    version('1.02.03', tag='v1_02_03', git="http://cdcvs.fnal.gov/projects/nuevdb")
+    version('1.02.04', tag='v1_02_04', git="http://cdcvs.fnal.gov/projects/nuevdb")
 
     variant('cxxstd',
             default='17',
@@ -46,15 +40,32 @@ class Lareventdisplay(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lareventdisplay.unups.patch')
+    patch('nuevdb.unups.patch')
 
-    depends_on('larreco')
-    depends_on('nuevdb')
     depends_on('cetmodules', type='build')
+    depends_on('art-root-io')
+    depends_on('perl')
+    depends_on('pythia6')
+    depends_on('libwda')
+    depends_on('postgresql')
+    depends_on('libxml2')
+    depends_on('nusimdata')
+    depends_on('cry')
+    depends_on('ifdh-art')
+    depends_on('ifdhc')
+    depends_on('ifbeam')
+    depends_on('nucondb')
+    depends_on('libwda')
+
+
+    def url_for_version(self, version):
+        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)
+                format(self.spec.variants['cxxstd'].value),
+                '-DCRYHOME={0}'.format(self.spec['cry'].prefix),
                ]
         return args
 
@@ -78,14 +89,6 @@ class Lareventdisplay(CMakePackage):
         spack_env.prepend_path('PERL5LIB',
                                os.path.join(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
-        # Set path to find fhicl files
-        spack_env.prepend_path('FHICL_INCLUDE_PATH',
-                               os.path.join(self.build_directory, 'job'))
-        run_env.prepend_path('FHICL_INCLUDE_PATH', os.path.join(self.prefix, 'job'))
-        # Set path to find gdml files
-        spack_env.prepend_path('FW_SEARCH_PATH',
-                               os.path.join(self.build_directory, 'job'))
-        run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
 
@@ -101,3 +104,4 @@ class Lareventdisplay(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+        sanitize_environments(spack_env, run_env)

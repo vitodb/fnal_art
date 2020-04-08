@@ -13,7 +13,7 @@ if not libdir in sys.path:
 from cetmodules_patcher import cetmodules_dir_patcher
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larpandora","08.11.03")
+    cetmodules_dir_patcher(".","larpandora","08.12.03")
 
 
 def sanitize_environments(*args):
@@ -36,6 +36,7 @@ class Larpandora(CMakePackage):
     version('08.09.01', tag='v08_09_01', git='https://github.com/LArSoft/larpandora.git')
     version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/larpandora.git')
     version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/larpandora.git')
+    version('08.11.03', tag='v08_11_03', git='https://github.com/LArSoft/larpandora.git')
 
     variant('cxxstd',
             default='17',

@@ -1,11 +1,11 @@
-commit d8ef532029f2d65da1c970f768df3908c383f368
+commit c5b98ac844c6a4eb24d0041cfe770f55980e6d01
 Author: Patrick Gartung <gartung@fnal.gov>
 Date:   Sat Apr 4 18:43:46 2020 -0500
 
     Cetmodules
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d9cae99..ecc6cab 100644
+index d9cae99..11a0cc0 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -13,50 +13,29 @@
@@ -64,7 +64,7 @@ index d9cae99..ecc6cab 100644
 -find_ups_product( postgresql )
 -find_ups_product( range )
 -find_ups_product( eigen )
-+find_package( ROOT REQUIRED COMPONENTS GenVector Geom Minuit Minuit2 XMLIO Gdml TMVA EG )
++find_package( ROOT REQUIRED COMPONENTS GenVector Geom Minuit Minuit2 XMLIO Gdml TMVA EG VMC)
 +find_package( larsim REQUIRED  )
  
  # macros for dictionary and simple_plugin
@@ -114,11 +114,11 @@ index 0000000..0070c86
 +cet_cmake_config(CONFIG_FRAGMENTS larreco-fragment.cmake.in)
 diff --git a/cmakeConfig/larreco-fragment.cmake.in b/cmakeConfig/larreco-fragment.cmake.in
 new file mode 100644
-index 0000000..8fdb424
+index 0000000..51e83b0
 --- /dev/null
 +++ b/cmakeConfig/larreco-fragment.cmake.in
 @@ -0,0 +1,2 @@
-+find_package( ROOT REQUIRED COMPONENTS GenVector Geom Minuit Minuit2 XMLIO Gdml TMVA EG VMC)
++find_package( ROOT REQUIRED COMPONENTS GenVector Geom Minuit Minuit2 XMLIO Gdml TMVA EG)
 +find_package( larsim REQUIRED  )
 diff --git a/larreco/Calibrator/CMakeLists.txt b/larreco/Calibrator/CMakeLists.txt
 index f226347..0cf708e 100644
@@ -303,7 +303,7 @@ index 25b6237..ec61f4f 100644
  install_fhicl()
 -install_source()
 diff --git a/larreco/Genfit/CMakeLists.txt b/larreco/Genfit/CMakeLists.txt
-index ee893ea..ffee56f 100644
+index ee893ea..1d6b060 100644
 --- a/larreco/Genfit/CMakeLists.txt
 +++ b/larreco/Genfit/CMakeLists.txt
 @@ -5,16 +5,15 @@ art_make(LIB_LIBRARIES
@@ -325,7 +325,7 @@ index ee893ea..ffee56f 100644
 +           ROOT::Matrix
 +           ROOT::Physics
 +           ROOT::EG
-+           #ROOT::VMC
++           ROOT::VMC
           )
  
  install_headers()

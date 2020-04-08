@@ -1,11 +1,24 @@
+commit b646c89e2d747d69838f85f6ec83a0fc782e5b99
+Author: Patrick Gartung <gartung@fnal.gov>
+Date:   Mon Apr 6 11:55:39 2020 -0500
+
+    Cetmodules
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b4f0ce8..ee6dc18 100644
+index b93e2de..0562793 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -12,16 +12,9 @@ cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
+@@ -13,21 +13,14 @@
+ # ======================================================================
  
- project(larpandora LANGUAGES CXX)
  
+-# use cmake 2.8 or later
+-cmake_minimum_required (VERSION 2.8)
++# use cmake 3.12 or later
++cmake_minimum_required (VERSION 3.12)
+ 
+-project(larpandora)
+-
 -# cetbuildtools contains our cmake modules
 -SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
 -IF (NOT CETBUILDTOOLS_VERSION)
@@ -15,14 +28,15 @@ index b4f0ce8..ee6dc18 100644
 -set(CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules
 -		      $ENV{CETBUILDTOOLS_DIR}/Modules
 -		      ${CMAKE_MODULE_PATH})
--
++project(larpandora VERSION 08.12.03 LANGUAGES CXX)
+ 
 +set( fcl_dir job )
 +set( fw_dir scripts )
 +find_package( cetmodules )
  include(CetCMakeEnv)
  cet_cmake_env()
  
-@@ -34,54 +27,41 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -40,54 +33,41 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -121,23 +135,29 @@ index 0000000..16e07b8
 +find_package( LArPandoraContent REQUIRED )
 +
 diff --git a/larpandora/LArPandoraAnalysis/CMakeLists.txt b/larpandora/LArPandoraAnalysis/CMakeLists.txt
-index e067681..2c0799c 100644
+index 23f7861..3babfd9 100644
 --- a/larpandora/LArPandoraAnalysis/CMakeLists.txt
 +++ b/larpandora/LArPandoraAnalysis/CMakeLists.txt
-@@ -19,10 +19,9 @@ art_make(
-                         art_Utilities
+@@ -20,15 +20,13 @@ art_make(
+ 			art_Utilities
                          canvas
-                         ${MF_MESSAGELOGGER}
--
-                         ${FHICLCPP}
-                         cetlib cetlib_except
+ 			${MF_MESSAGELOGGER}
+-			
+ 	                ${FHICLCPP}
+ 			cetlib cetlib_except
+-                        ${Boost_SYSTEM_LIBRARY}
 -                        ${ROOT_BASIC_LIB_LIST}
++                        Boost::system
 +                        ${ROOT_LIBRARIES}
             MODULE_LIBRARIES larpandora_LArPandoraInterface
            )
  
+ install_headers()
+ install_fhicl()
+-install_source()
+ 
 diff --git a/larpandora/LArPandoraEventBuilding/CMakeLists.txt b/larpandora/LArPandoraEventBuilding/CMakeLists.txt
-index 684e3ff..b2bfbad 100644
+index 7a5fae1..b6067e6 100644
 --- a/larpandora/LArPandoraEventBuilding/CMakeLists.txt
 +++ b/larpandora/LArPandoraEventBuilding/CMakeLists.txt
 @@ -1,5 +1,7 @@
@@ -148,7 +168,7 @@ index 684e3ff..b2bfbad 100644
 +include_directories( ${EIGEN3_INCLUDE_DIRS} )
 +include_directories( ${LArPandoraContent_INCLUDE_DIRS} )
  
- art_make(
+ art_make( 
            LIB_LIBRARIES larcorealg_Geometry
 @@ -14,8 +16,8 @@ art_make(
                          larreco_RecoAlg
@@ -161,8 +181,30 @@ index 684e3ff..b2bfbad 100644
                          LArPandoraContent
                          larpandora_LArPandoraInterface
                          nusimdata_SimulationBase
+@@ -32,11 +34,11 @@ art_make(
+                         ${MF_MESSAGELOGGER}
+                         ${FHICLCPP}
+                         cetlib cetlib_except
+-                        ${Boost_SYSTEM_LIBRARY}
+-                        ${Boost_FILESYSTEM_LIBRARY}
+-                        ${ROOT_GEOM}
+-                        ${ROOT_BASIC_LIB_LIST}
+-                        ${ROOT_GENVECTOR}
++                        Boost::system
++                        Boost::filesystem
++                        ROOT::Geom
++                        ${ROOT_LIBRARIES}
++                        ROOT::GenVector
+                         MODULE_LIBRARIES larpandora_LArPandoraEventBuilding
+           )
+ 
+@@ -44,4 +46,3 @@ art_make(
+ 
+ install_headers()
+ install_fhicl()
+-install_source()
 diff --git a/larpandora/LArPandoraInterface/CMakeLists.txt b/larpandora/LArPandoraInterface/CMakeLists.txt
-index a2893f4..d1b3959 100644
+index 67fc1c2..b8c7f04 100644
 --- a/larpandora/LArPandoraInterface/CMakeLists.txt
 +++ b/larpandora/LArPandoraInterface/CMakeLists.txt
 @@ -1,5 +1,7 @@
@@ -173,7 +215,7 @@ index a2893f4..d1b3959 100644
 +include_directories( ${EIGEN3_INCLUDE_DIRS} )
 +include_directories( ${LArPandoraContent_INCLUDE_DIRS} )
  
- art_make(
+ art_make( 
            LIB_LIBRARIES larcorealg_Geometry
 @@ -15,8 +17,8 @@ art_make(
                          larreco_RecoAlg
@@ -186,21 +228,25 @@ index a2893f4..d1b3959 100644
                          LArPandoraContent
                          nusimdata_SimulationBase
                          ${ART_FRAMEWORK_CORE}
-@@ -30,11 +32,10 @@ art_make(
+@@ -30,18 +32,16 @@ art_make(
                          art_Utilities
                          canvas
                          ${MF_MESSAGELOGGER}
--
+-                        
                          ${FHICLCPP}
                          cetlib cetlib_except
-                         ROOT::Geom
+-                        ${Boost_SYSTEM_LIBRARY}
+-                        ${ROOT_GEOM}
 -                        ${ROOT_BASIC_LIB_LIST}
++                        Boost::system
++                        ROOT::Geom
 +                        ${ROOT_LIBRARIES}
                          MODULE_LIBRARIES larpandora_LArPandoraInterface
            )
  
-@@ -43,3 +44,4 @@ install_fhicl()
- install_source()
+ install_headers()
+ install_fhicl()
+-install_source()
  
  add_subdirectory(scripts)
-+
+ 
