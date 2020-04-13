@@ -54,8 +54,8 @@ index db5aa64..fc74376 100644
 +find_package(ROOT REQUIRED COMPONENTS)
 +find_package(Boost REQUIRED COMPONENTS system filesystem)
 +include(${Geant4_USE_FILE})
-+#include_directories(${Geant4_DIR}/../../include)
-+include_directories(${Boost_INCLUDE_DIRS})
++get_target_property(BoostIncludes Boost::filesystem INTERFACE_INCLUDE_DIRECTORIES)
++include_directories(${BoostIncludes})
  
  include(ArtDictionary)
  include(ArtMake)
