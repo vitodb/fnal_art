@@ -628,8 +628,8 @@ index ab5991f..81cd9f8 100644
 --- a/larsim/EventGenerator/CORSIKA/CMakeLists.txt
 +++ b/larsim/EventGenerator/CORSIKA/CMakeLists.txt
 @@ -1,18 +1,19 @@
++cet_find_simple_package( ifdh INCPATH_SUFFIXES inc INCPATH_VAR IFDHC_INC )
 +include_directories(${IFDHC_INC})
-+find_library(IFDH name ifdh PATHS ${IFDHC_LIB})
  art_make(MODULE_LIBRARIES
             larcorealg_Geometry
             larcoreobj_SummaryData
