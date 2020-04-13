@@ -240,11 +240,11 @@ index ef31b28..a78fd66 100644
    MODULE_LIBRARIES
      art_root_io_TFileService_service
 diff --git a/artg4tk/actionBase/CMakeLists.txt b/artg4tk/actionBase/CMakeLists.txt
-index 90d153f..b8e2b56 100644
+index 90d153f..9d79864 100644
 --- a/artg4tk/actionBase/CMakeLists.txt
 +++ b/artg4tk/actionBase/CMakeLists.txt
 @@ -1,3 +1,4 @@
-+include_directories(${GEANT4_INCLUDE_DIRS} ${BOOST_INCLUDE_DIRS})
++include_directories(${Geant4_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
  art_make()
  
  install_headers()
