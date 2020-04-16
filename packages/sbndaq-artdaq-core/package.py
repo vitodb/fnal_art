@@ -5,14 +5,12 @@
 
 from spack import *
 
-
 class SbndaqArtdaqCore(CMakePackage):
     """The toolkit currently provides SBNDAQ extensions to the artdaq-core 
  functionality for data transfer, event building, event reconstruction."""
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/sbndaq/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/sbndaq-artdaq-core/"
-
+    url      = "http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/sbndaq-artdaq-core.v1_2_3.tbz2"
     version('develop', git = url, branch="develop")
 
     variant('cxxstd',
@@ -20,6 +18,12 @@ class SbndaqArtdaqCore(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    def url_for_version(self, version):
+        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format(self.name, version.underscored)
+
+
     patch('sbndaq-artdaq-core-unups.patch')
 
     depends_on('cetmodules', type='build')

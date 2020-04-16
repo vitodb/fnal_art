@@ -43,7 +43,8 @@ class Nug4(CMakePackage):
     depends_on('nusimdata')
     depends_on('cetlib')
     depends_on('cetlib-except')
-    depends_on('geant4')
+    depends_on('geant4 cxxstd=17', when='cxxstd=17')
+    depends_on('geant4 cxxstd=14', when='cxxstd=14')
 
     def url_for_version(self, version):
         url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'

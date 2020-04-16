@@ -44,9 +44,12 @@ class Icaruscode(CMakePackage):
 
     # Build and link dependencies.
     depends_on('art-root-io', type=('build','run'))
+    depends_on('canvas', type=('build','run'))
+    depends_on('canvas-root-io', type=('build','run'))
     depends_on('art', type=('build','run'))
     depends_on('boost', type=('build','run'))
     depends_on('eigen', type=('build','run'))
+    depends_on('hep-concurrency', type=('build','run'))
     depends_on('ifdh-art', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))
@@ -61,7 +64,12 @@ class Icaruscode(CMakePackage):
     # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
+    depends_on('cetlib-except', type=('build','run'))
     depends_on('cppgsl', type=('build','run'))
+    depends_on('range-v3', type=('build','run'))
+    depends_on('ifdh-art', type=('build','run'))
+    depends_on('artdaq-core', type=('build','run'))
+    depends_on('sbndaq-artdaq-core', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

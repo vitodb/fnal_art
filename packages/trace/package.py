@@ -18,6 +18,8 @@ fast and/or slow logging - dynamically (you choose)."""
 
     depends_on('cetmodules', type='build')
 
+    patch('trace.patch')
+
     def url_for_version(self, version):
         url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name + '-git', version.underscored)

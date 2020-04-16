@@ -15,8 +15,7 @@ class ArtdaqCore(CMakePackage):
  format."""
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/artdaq-core/"
-
+    url      = "http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/artdaq-core.v1_2_3.tbz2"
     version('develop', git = url, branch="develop")
 
     variant('cxxstd',
@@ -25,6 +24,11 @@ class ArtdaqCore(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
     patch('patch')
+
+    def url_for_version(self, version):
+        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        return url.format(self.name, version.underscored)
+
 
     depends_on('cetmodules', type='build')
     depends_on('art')

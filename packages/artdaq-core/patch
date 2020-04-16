@@ -4,7 +4,8 @@ index 50326e6..0e17382 100644
 +++ b/CMakeLists.txt
 @@ -16,12 +16,8 @@
  # use cmake 2.8 or later
- cmake_minimum_required (VERSION 2.8)
+-cmake_minimum_required (VERSION 2.8)
++cmake_minimum_required (VERSION 3.11)
  
 -project(artdaq-core)
 -# cetbuildtools contains our cmake modules
@@ -12,7 +13,7 @@ index 50326e6..0e17382 100644
 -IF (NOT CETBUILDTOOLS_VERSION)
 -    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
 -ENDIF()
-+project(artdaq-core VERSION 3.05.11 LANGUAGE CXX)
++project(artdaq-core VERSION 3.05.11 LANGUAGES CXX C)
 +find_package(cetmodules)
  
  # Modules moved from canvas to canvas_root_io when canvas_root_io was introduced
@@ -42,7 +43,7 @@ index 50326e6..0e17382 100644
 +find_package( sqlite )
 +find_package( tbb )
 +find_package( root )
-+find_package( trace )
++cet_find_simple_package( trace INCPATH_VAR TRACE_INC )
  
  
  string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "$ENV{MESSAGEFACILITY_VERSION}")

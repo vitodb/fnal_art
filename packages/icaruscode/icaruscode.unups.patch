@@ -1,15 +1,36 @@
---- a/CMakeLists.txt	2020-02-27 16:18:28.262380967 -0600
-+++ b/CMakeLists.txt	2020-02-27 16:21:12.823129258 -0600
-@@ -21,7 +21,7 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d3698de..22afa66 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -21,17 +21,18 @@ message(STATUS
    "\n-- === *** Start of configuration of icaruscode ***"
    "\n-- ===")
  
 -project(icaruscode)
-+project(icaruscode VERSION 08.43.00 LANGUAGE CXX)
++project(icaruscode VERSION 08.43.00 LANGUAGES CXX)
  
++find_package(cetmodules)
  # cetbuildtools contains our cmake modules
- SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
-@@ -45,30 +45,30 @@
+-SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
+-IF (NOT CETBUILDTOOLS_VERSION)
+-    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
+-ENDIF()
+-
+-set(CMAKE_MODULE_PATH $ENV{CANVAS_DIR}/Modules
+-		      $ENV{CETBUILDTOOLS_DIR}/Modules
+-		      ${CMAKE_MODULE_PATH})
++#SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
++#IF (NOT CETBUILDTOOLS_VERSION)
++#    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
++#ENDIF()
++#
++#set(CMAKE_MODULE_PATH $ENV{CANVAS_DIR}/Modules
++#		      $ENV{CETBUILDTOOLS_DIR}/Modules
++#		      ${CMAKE_MODULE_PATH})
+ 
+ include(CetCMakeEnv)
+ cet_cmake_env()
+@@ -45,30 +46,30 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -34,6 +55,9 @@
 -find_ups_boost( v1_53_0 )
 -find_ups_product( ifdh_art )
 -find_ups_product( guideline_sl )
+-
+-find_ups_product( artdaq_core )
+-find_ups_product( sbndaq_artdaq_core )
 +find_package( larcore )
 +find_package( larcoreobj )
 +find_package( lardata )
@@ -43,36 +67,112 @@
 +find_package( larreco )
 +find_package( larpandora )
 +find_package( larana )
-+find_package( larpandora )
++#find_package( larpandora )
 +find_package( nutools )
 +find_package( nug4 )
 +find_package( nurandom )
 +find_package( art )
-+find_package( art_root_io)
-+find_package( cetbuildtools )
++find_package(art_root_io)
++#find_package( cetbuildtools )
 +find_package( postgresql )
 +find_package( eigen )
-+find_package( boost )
++find_package( Boost COMPONENTS boost unit_test_framework )
 +find_package( ifdh_art )
 +find_package( guideline_sl )
- 
--find_ups_product( artdaq_core )
--find_ups_product( sbndaq_artdaq_core )
++
 +find_package( artdaq_core )
 +find_package( sbndaq_artdaq_core )
  
  cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
  cet_find_library( NURANDOM_RANDOMUTILS_NURANDOMSERVICE_SERVICE 
-@@ -90,10 +90,10 @@
+@@ -89,8 +90,8 @@ add_subdirectory(test)
+ # Top level fcl files.
  add_subdirectory(fcl)
  
- # ups - table and config files
+-# ups - table and config files
 -add_subdirectory(ups)
++## ups - table and config files
 +#add_subdirectory(ups)
  
  # packaging utility
--include(UseCPack)
-+cet_cmake_config()
+ include(UseCPack)
+diff --git a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
+index 4c1ad54..1727256 100644
+--- a/icaruscode/Geometry/CMakeLists.txt
++++ b/icaruscode/Geometry/CMakeLists.txt
+@@ -9,7 +9,7 @@ art_make(
+                         ${ART_FRAMEWORK_SERVICES_REGISTRY}
+                         ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
+                         ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+-			${BOOST_LIB}
++			Boost::boost
+                         ${FHICLCPP}
+ 	  LIB_LIBRARIES larcorealg_Geometry
+                         ${MF_MESSAGELOGGER}
+diff --git a/icaruscode/gallery/galleryAnalysis/CMakeLists.txt b/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
+index bcad54a..e5f05ff 100644
+--- a/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
++++ b/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
+@@ -55,7 +55,8 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
+ #
+ # include directories
+ #
+-include_directories($ENV{BOOST_INC})
++get_target_property(BoostIncludes Boost::filesystem INTERFACE_INCLUDE_DIRECTORIES)
++include_directories(${BoostIncludes})
+ include_directories($ENV{ROOT_INC} $ENV{CLHEP_INC})
+ include_directories($ENV{CETLIB_INC} $ENV{CETLIB_EXCEPT_INC} $ENV{CANVAS_INC} $ENV{CANVAS_ROOT_IO_INC})
+ include_directories($ENV{FHICLCPP_INC} $ENV{MESSAGEFACILITY_INC})
+diff --git a/test/Geometry/CMakeLists.txt b/test/Geometry/CMakeLists.txt
+index 970a248..b9e0cd3 100644
+--- a/test/Geometry/CMakeLists.txt
++++ b/test/Geometry/CMakeLists.txt
+@@ -45,7 +45,7 @@ cet_test(geometry_iterator_icarus_test
+             ${FHICLCPP}
+             cetlib_except
+ 	    ${ROOT_CORE}
+-  USE_BOOST_UNIT
++            Boost::unit_test_framework
+ )
  
- message(STATUS
-   "\n-- ==="
+ 
+diff --git a/test/PMT/Trigger/Algorithms/CMakeLists.txt b/test/PMT/Trigger/Algorithms/CMakeLists.txt
+index 901887c..c8471d4 100644
+--- a/test/PMT/Trigger/Algorithms/CMakeLists.txt
++++ b/test/PMT/Trigger/Algorithms/CMakeLists.txt
+@@ -1 +1 @@
+-cet_test(WaveformOperations_test USE_BOOST_UNIT)
++cet_test(WaveformOperations_test Boost::unit_test_framework)
+diff --git a/test/PMT/Trigger/Data/CMakeLists.txt b/test/PMT/Trigger/Data/CMakeLists.txt
+index feb39d1..ecb9740 100644
+--- a/test/PMT/Trigger/Data/CMakeLists.txt
++++ b/test/PMT/Trigger/Data/CMakeLists.txt
+@@ -1,5 +1,5 @@
+ cet_test(TriggerGateData_test
+   LIBRARIES
+     lardataalg_DetectorInfo
+-  USE_BOOST_UNIT
++  Boost::unit_test_framework
+   )
+diff --git a/test/Utilities/CMakeLists.txt b/test/Utilities/CMakeLists.txt
+index 53e7f3b..2f77cd1 100644
+--- a/test/Utilities/CMakeLists.txt
++++ b/test/Utilities/CMakeLists.txt
+@@ -4,13 +4,14 @@ cet_test(FastAndPoorGauss_test
+     ${ROOT_HIST}
+     ${ROOT_RIO}
+     ${ROOT_CORE}
+-  USE_BOOST_UNIT
++  Boost::unit_test_framework
+   )
+-cet_test(SampledFunction_test USE_BOOST_UNIT)
++cet_test(SampledFunction_test 
++  Boost::unit_test_framework)
+ 
+ cet_test(NonRandomCounter_test
+   LIBRARIES
+     icaruscode_Utilities
+     ${CLHEP}
+-  USE_BOOST_UNIT
++  Boost::unit_test_framework
+   )
