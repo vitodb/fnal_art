@@ -2,7 +2,9 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 50326e6..0e17382 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -16,12 +16,8 @@
+@@ -14,14 +14,10 @@
+ # ======================================================================
+ 
  # use cmake 2.8 or later
 -cmake_minimum_required (VERSION 2.8)
 +cmake_minimum_required (VERSION 3.11)
@@ -18,7 +20,7 @@ index 50326e6..0e17382 100644
  
  # Modules moved from canvas to canvas_root_io when canvas_root_io was introduced
  set(CMAKE_MODULE_PATH
-@@ -40,18 +36,16 @@
+@@ -40,18 +36,19 @@
  )
  
  # these are minimum required versions, not the actual product versions
@@ -34,19 +36,40 @@ index 50326e6..0e17382 100644
 -find_ups_product( tbb v4_1 )
 -find_ups_root( v5_34_20 )
 -find_ups_product( TRACE v3_03_00 )
-+find_package( Boost)
++find_package( Boost REQUIRED COMPONENTS filesystem system date_time thread regex)
 +find_package( canvas )
++find_package( canvas_root_io )
 +find_package( cetlib )
-+find_package( clhep )
++find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random)
 +find_package( fhiclcpp )
 +find_package( messagefacility )
-+find_package( sqlite )
-+find_package( tbb )
-+find_package( root )
++find_library(SQLITE3 NAMES sqlite3 REQUIRED)
++cet_find_library(TBB NAMES tbb REQUIRED)
++find_package(ROOT QUIET REQUIRED COMPONENTS Tree MathCore Core RIO Hist Matrix)
 +cet_find_simple_package( trace INCPATH_VAR TRACE_INC )
++get_target_property(BoostIncludes Boost::filesystem INTERFACE_INCLUDE_DIRECTORIES)
++include_directories(${BoostIncludes})
  
  
  string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "$ENV{MESSAGEFACILITY_VERSION}")
+@@ -71,12 +65,12 @@
+ add_definitions(-DCANVAS_HEX_VERSION=0x${CANVAS_MAJOR_VERSION}${CANVAS_MINOR_VERSION}${CANVAS_PATCH_VERSION})
+ 
+ # as of art v2_11_00, messagefacility has a single library
+-check_ups_version(messagefacility $ENV{MESSAGEFACILITY_VERSION} v2_02_00 PRODUCT_MATCHES_VAR ONE_MF_LIBRARY)
+-if(ONE_MF_LIBRARY)
++#check_ups_version(messagefacility $ENV{MESSAGEFACILITY_VERSION} v2_02_00 PRODUCT_MATCHES_VAR ONE_MF_LIBRARY)
++#if(ONE_MF_LIBRARY)
+     set( MESSAGEFACILITY_LIBS MF_MessageLogger)
+-else()
+-    set( MESSAGEFACILITY_LIBS MF_MessageLogger MF_Utilities)
+-endif()
++#else()
++    #set( MESSAGEFACILITY_LIBS MF_MessageLogger MF_Utilities)
++#endif()
+ 
+ # Debug streamer.
+ string(TOUPPER ${CMAKE_BUILD_TYPE} BTYPE_UC)
 @@ -112,7 +106,7 @@
  add_subdirectory(artdaq-core)
  
@@ -62,3 +85,14 @@ index 50326e6..0e17382 100644
  # packaging utility
 -include(UseCPack)
 +cet_cmake_config()
+--- a/artdaq-core/Core/QuickVec.hh
++++ b/artdaq-core/Core/QuickVec.hh
+@@ -39,7 +39,7 @@
+  */
+ static inline void* QV_MEMALIGN(size_t boundary, size_t size)
+ {
+-	void* retadr;
++	void* retadr = 0;
+ 	posix_memalign(&retadr, boundary, size);
+ 	return retadr;
+ }

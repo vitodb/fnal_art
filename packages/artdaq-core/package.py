@@ -30,20 +30,28 @@ class ArtdaqCore(CMakePackage):
         return url.format(self.name, version.underscored)
 
 
-    depends_on('cetmodules', type='build')
     depends_on('art')
-    depends_on('canvas-root-io')
+    depends_on('boost')
     depends_on('canvas')
+    depends_on('canvas-root-io')
+    depends_on('cetmodules', type='build')
+    depends_on('clhep')
     depends_on('messagefacility')
     depends_on('root')
-    depends_on('boost')
+    depends_on('sqlite')
+    depends_on('intel-tbb')
     depends_on('trace')
+
+    def setup_environment(self, spack_env, run_env):
+        spack_env.set('MESSAGEFACILITY_VERSION', self.spec['messagefacility'].version)
+        spack_env.set('CANVAS_VERSION', self.spec['canvas'].version)
+ 
  
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
-                '-DCANVAS_VERSION=v3_06_00',
-                '-DMESSAGEFACILITY_VERSION=v2_02_05',
+                '-DCANVAS_VERSION=v%s' % self.spec['canvas'].version.underscored,
+                '-DMESSAGEFACILITY_VERSION=v%s' % self.spec['messagefacility'].version.underscored,
                 '-DBoost_SYSTEM_LIBRARY=-lboost_system-mt',
                 '-DBoost_DATE_TIME_LIBRARY=-lboost_date_time',
                 '-DBoost_FILESYSTEM_LIBRARY=-lboost_filesystem',
