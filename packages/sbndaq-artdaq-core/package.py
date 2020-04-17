@@ -26,6 +26,7 @@ class SbndaqArtdaqCore(CMakePackage):
 
     patch('sbndaq-artdaq-core-unups.patch')
 
+    depends_on('messagefacility')
     depends_on('cetmodules', type='build')
     depends_on('artdaq-core')
     depends_on('cetlib')
@@ -33,6 +34,9 @@ class SbndaqArtdaqCore(CMakePackage):
     depends_on('boost')
     depends_on('trace')
  
+    def setup_environment(self, spack_env, run_env):
+        spack_env.set('MRB_QUALS', 'both')
+
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),

@@ -30,7 +30,7 @@ index d3698de..22afa66 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,30 +46,30 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -45,30 +46,32 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -73,15 +73,18 @@ index d3698de..22afa66 100644
 +find_package( nurandom )
 +find_package( art )
 +find_package(art_root_io)
-+#find_package( cetbuildtools )
++find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random)
 +find_package( postgresql )
 +find_package( eigen )
 +find_package( Boost COMPONENTS boost unit_test_framework )
 +find_package( ifdh_art )
 +find_package( guideline_sl )
-+
 +find_package( artdaq_core )
 +find_package( sbndaq_artdaq_core )
++set(fcl_dir job)
++set(gdml_dir gdml)
++set(fw_dir fw)
+
  
  cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
  cet_find_library( NURANDOM_RANDOMUTILS_NURANDOMSERVICE_SERVICE 
@@ -123,56 +126,22 @@ index bcad54a..e5f05ff 100644
  include_directories($ENV{ROOT_INC} $ENV{CLHEP_INC})
  include_directories($ENV{CETLIB_INC} $ENV{CETLIB_EXCEPT_INC} $ENV{CANVAS_INC} $ENV{CANVAS_ROOT_IO_INC})
  include_directories($ENV{FHICLCPP_INC} $ENV{MESSAGEFACILITY_INC})
-diff --git a/test/Geometry/CMakeLists.txt b/test/Geometry/CMakeLists.txt
-index 970a248..b9e0cd3 100644
---- a/test/Geometry/CMakeLists.txt
-+++ b/test/Geometry/CMakeLists.txt
-@@ -45,7 +45,7 @@ cet_test(geometry_iterator_icarus_test
-             ${FHICLCPP}
-             cetlib_except
- 	    ${ROOT_CORE}
--  USE_BOOST_UNIT
-+            Boost::unit_test_framework
- )
+diff --git a/icaruscode/gallery/CMakeLists.txt b/icaruscode/gallery/CMakeLists.txt
+--- a/icaruscode/gallery/CMakeLists.txt
++++ b/icaruscode/gallery/CMakeLists.txt
+@@ -4,14 +4,6 @@
  
- 
-diff --git a/test/PMT/Trigger/Algorithms/CMakeLists.txt b/test/PMT/Trigger/Algorithms/CMakeLists.txt
-index 901887c..c8471d4 100644
---- a/test/PMT/Trigger/Algorithms/CMakeLists.txt
-+++ b/test/PMT/Trigger/Algorithms/CMakeLists.txt
-@@ -1 +1 @@
--cet_test(WaveformOperations_test USE_BOOST_UNIT)
-+cet_test(WaveformOperations_test Boost::unit_test_framework)
-diff --git a/test/PMT/Trigger/Data/CMakeLists.txt b/test/PMT/Trigger/Data/CMakeLists.txt
-index feb39d1..ecb9740 100644
---- a/test/PMT/Trigger/Data/CMakeLists.txt
-+++ b/test/PMT/Trigger/Data/CMakeLists.txt
-@@ -1,5 +1,5 @@
- cet_test(TriggerGateData_test
-   LIBRARIES
-     lardataalg_DetectorInfo
--  USE_BOOST_UNIT
-+  Boost::unit_test_framework
-   )
-diff --git a/test/Utilities/CMakeLists.txt b/test/Utilities/CMakeLists.txt
-index 53e7f3b..2f77cd1 100644
---- a/test/Utilities/CMakeLists.txt
-+++ b/test/Utilities/CMakeLists.txt
-@@ -4,13 +4,14 @@ cet_test(FastAndPoorGauss_test
-     ${ROOT_HIST}
-     ${ROOT_RIO}
-     ${ROOT_CORE}
--  USE_BOOST_UNIT
-+  Boost::unit_test_framework
-   )
--cet_test(SampledFunction_test USE_BOOST_UNIT)
-+cet_test(SampledFunction_test 
-+  Boost::unit_test_framework)
- 
- cet_test(NonRandomCounter_test
-   LIBRARIES
-     icaruscode_Utilities
-     ${CLHEP}
--  USE_BOOST_UNIT
-+  Boost::unit_test_framework
-   )
+ foreach(ExampleDir IN ITEMS galleryAnalysis )
+   
+-  # take *all* the files from the listed directory
+-  file(GLOB_RECURSE GalleryExamples RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ExampleDir}/* )
+-  
+-  # cet_install_files() will reproduce the intermediate subdirectories from the
+-  # source list into the destination directory
+-  cet_install_files(
+-    LIST ${GalleryExamples}
+-    DIRNAME examples/gallery/${ExampleDir}
+-    )
++ install(DIRECTORY ${ExampleDir}  DESTINATION examples/gallery/${ExampleDir})
+   
+ endforeach()
