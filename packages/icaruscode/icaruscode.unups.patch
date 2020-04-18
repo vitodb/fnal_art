@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d3698de..22afa66 100644
+index d3698de..9fae3e4 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -21,17 +21,18 @@ message(STATUS
@@ -30,7 +30,7 @@ index d3698de..22afa66 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,30 +46,32 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -45,30 +46,38 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -67,38 +67,45 @@ index d3698de..22afa66 100644
 +find_package( larreco )
 +find_package( larpandora )
 +find_package( larana )
-+#find_package( larpandora )
 +find_package( nutools )
 +find_package( nug4 )
 +find_package( nurandom )
 +find_package( art )
 +find_package(art_root_io)
 +find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random)
-+find_package( postgresql )
 +find_package( eigen )
-+find_package( Boost COMPONENTS boost unit_test_framework )
 +find_package( ifdh_art )
 +find_package( guideline_sl )
 +find_package( artdaq_core )
 +find_package( sbndaq_artdaq_core )
++find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml)
++get_target_property(RootIncludes ROOT::Tree INTERFACE_INCLUDE_DIRECTORIES)
++include_directories(${RootIncludes})
++find_package( Boost COMPONENTS boost unit_test_framework )
++get_target_property(BoostIncludes Boost::filesystem INTERFACE_INCLUDE_DIRECTORIES)
++include_directories(${BoostIncludes})
++find_package(TBB COMPONENTS tbb)
++get_target_property(TBBIncludes TBB::tbb INTERFACE_INCLUDE_DIRECTORIES)
++include_directories(${TBBIncludes})
 +set(fcl_dir job)
 +set(gdml_dir gdml)
 +set(fw_dir fw)
-
  
- cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
+-cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
++cet_find_library( PQ NAMES pq )
  cet_find_library( NURANDOM_RANDOMUTILS_NURANDOMSERVICE_SERVICE 
-@@ -89,8 +90,8 @@ add_subdirectory(test)
- # Top level fcl files.
+@@ -90,10 +93,9 @@ add_subdirectory(test)
  add_subdirectory(fcl)
  
--# ups - table and config files
+ # ups - table and config files
 -add_subdirectory(ups)
-+## ups - table and config files
-+#add_subdirectory(ups)
  
  # packaging utility
- include(UseCPack)
+-include(UseCPack)
++cet_cmake_config()
+ 
+ message(STATUS
+   "\n-- ==="
 diff --git a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
 index 4c1ad54..1727256 100644
 --- a/icaruscode/Geometry/CMakeLists.txt
@@ -145,3 +152,31 @@ diff --git a/icaruscode/gallery/CMakeLists.txt b/icaruscode/gallery/CMakeLists.t
 + install(DIRECTORY ${ExampleDir}  DESTINATION examples/gallery/${ExampleDir})
    
  endforeach()
+
+diff --git a/icaruscode/RecoUtils/CMakeLists.txt b/icaruscode/RecoUtils/CMakeLists.txt
+--- a/icaruscode/RecoUtils/CMakeLists.txt
++++ b/icaruscode/RecoUtils/CMakeLists.txt
+@@ -15,7 +15,7 @@
+                            ${ART_FRAMEWORK_CORE}
+                            ${ART_FRAMEWORK_PRINCIPAL}
+                            ${ART_FRAMEWORK_SERVICES_REGISTRY}
+-                           ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
++                           ${ART_ROOT_IO_TFILE_SUPPORT}
+                            ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+                            art_Persistency_Common canvas
+                            art_Persistency_Provenance canvas
+@@ -23,10 +23,10 @@
+                            ${MF_MESSAGELOGGER}
+                            ${MF_UTILITIES}
+                            ${FHICLCPP}
+-                           ${ROOT_GEOM}
+-                           ${ROOT_XMLIO}
+-                           ${ROOT_GDML}
+-                           ${ROOT_BASIC_LIB_LIST}
++                           Root::Geom
++                           Root::XMLIO
++                           Root::Gdml
++                           Root::Core
+                            ${Boost_SYSTEM_LIBRARY}
+         )
+ 
