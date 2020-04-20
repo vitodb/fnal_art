@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d3698de..9fae3e4 100644
+index d3698de..bef1f57 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -21,17 +21,18 @@ message(STATUS
@@ -30,7 +30,7 @@ index d3698de..9fae3e4 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,30 +46,38 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -45,32 +46,40 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -58,6 +58,8 @@ index d3698de..9fae3e4 100644
 -
 -find_ups_product( artdaq_core )
 -find_ups_product( sbndaq_artdaq_core )
+-
+-cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
 +find_package( larcore )
 +find_package( larcoreobj )
 +find_package( lardata )
@@ -72,13 +74,13 @@ index d3698de..9fae3e4 100644
 +find_package( nurandom )
 +find_package( art )
 +find_package(art_root_io)
-+find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random)
++find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random RandomObjects)
 +find_package( Eigen3 )
 +find_package( ifdh_art )
 +find_package( guideline_sl )
 +find_package( artdaq_core )
 +find_package( sbndaq_artdaq_core )
-+find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml RGL Physics)
++find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml RGL Physics EG)
 +get_target_property(RootIncludes ROOT::Tree INTERFACE_INCLUDE_DIRECTORIES)
 +include_directories(${RootIncludes})
 +find_package( Boost COMPONENTS boost unit_test_framework )
@@ -90,11 +92,12 @@ index d3698de..9fae3e4 100644
 +set(fcl_dir job)
 +set(gdml_dir gdml)
 +set(fw_dir fw)
- 
--cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
++
 +cet_find_library( PQ NAMES pq )
  cet_find_library( NURANDOM_RANDOMUTILS_NURANDOMSERVICE_SERVICE 
-@@ -90,10 +93,9 @@ add_subdirectory(test)
+                   NAMES nurandom_RandomUtils_NuRandomService_service
+ 		  PATHS ENV NURANDOM_LIB NO_DEFAULT_PATH )
+@@ -90,10 +99,9 @@ add_subdirectory(test)
  add_subdirectory(fcl)
  
  # ups - table and config files
@@ -106,85 +109,11 @@ index d3698de..9fae3e4 100644
  
  message(STATUS
    "\n-- ==="
-diff --git a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
-index 4c1ad54..1727256 100644
---- a/icaruscode/Geometry/CMakeLists.txt
-+++ b/icaruscode/Geometry/CMakeLists.txt
-@@ -9,7 +9,7 @@ art_make(
-                         ${ART_FRAMEWORK_SERVICES_REGISTRY}
-                         ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
-                         ${ART_ROOT_IO_TFILESERVICE_SERVICE}
--			${BOOST_LIB}
-+			Boost::boost
-                         ${FHICLCPP}
- 	  LIB_LIBRARIES larcorealg_Geometry
-                         ${MF_MESSAGELOGGER}
-diff --git a/icaruscode/gallery/galleryAnalysis/CMakeLists.txt b/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
-index bcad54a..e5f05ff 100644
---- a/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
-+++ b/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
-@@ -55,7 +55,8 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
- #
- # include directories
- #
--include_directories($ENV{BOOST_INC})
-+get_target_property(BoostIncludes Boost::filesystem INTERFACE_INCLUDE_DIRECTORIES)
-+include_directories(${BoostIncludes})
- include_directories($ENV{ROOT_INC} $ENV{CLHEP_INC})
- include_directories($ENV{CETLIB_INC} $ENV{CETLIB_EXCEPT_INC} $ENV{CANVAS_INC} $ENV{CANVAS_ROOT_IO_INC})
- include_directories($ENV{FHICLCPP_INC} $ENV{MESSAGEFACILITY_INC})
-diff --git a/icaruscode/gallery/CMakeLists.txt b/icaruscode/gallery/CMakeLists.txt
---- a/icaruscode/gallery/CMakeLists.txt
-+++ b/icaruscode/gallery/CMakeLists.txt
-@@ -4,14 +4,6 @@
- 
- foreach(ExampleDir IN ITEMS galleryAnalysis )
-   
--  # take *all* the files from the listed directory
--  file(GLOB_RECURSE GalleryExamples RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ExampleDir}/* )
--  
--  # cet_install_files() will reproduce the intermediate subdirectories from the
--  # source list into the destination directory
--  cet_install_files(
--    LIST ${GalleryExamples}
--    DIRNAME examples/gallery/${ExampleDir}
--    )
-+ install(DIRECTORY ${ExampleDir}  DESTINATION examples/gallery/${ExampleDir})
-   
- endforeach()
-
-diff --git a/icaruscode/RecoUtils/CMakeLists.txt b/icaruscode/RecoUtils/CMakeLists.txt
---- a/icaruscode/RecoUtils/CMakeLists.txt
-+++ b/icaruscode/RecoUtils/CMakeLists.txt
-@@ -15,7 +15,7 @@
-                            ${ART_FRAMEWORK_CORE}
-                            ${ART_FRAMEWORK_PRINCIPAL}
-                            ${ART_FRAMEWORK_SERVICES_REGISTRY}
--                           ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
-+                           ${ART_ROOT_IO_TFILE_SUPPORT}
-                            ${ART_ROOT_IO_TFILESERVICE_SERVICE}
-                            art_Persistency_Common canvas
-                            art_Persistency_Provenance canvas
-@@ -23,10 +23,10 @@
-                            ${MF_MESSAGELOGGER}
-                            ${MF_UTILITIES}
-                            ${FHICLCPP}
--                           ${ROOT_GEOM}
--                           ${ROOT_XMLIO}
--                           ${ROOT_GDML}
--                           ${ROOT_BASIC_LIB_LIST}
--                           ${Boost_SYSTEM_LIBRARY}
-+                           ROOT::Geom
-+                           ROOT::XMLIO
-+                           ROOT::Gdml
-+                           ROOT::Core
-+                           Boost::system
-         )
- 
 diff --git a/icaruscode/Analysis/CMakeLists.txt b/icaruscode/Analysis/CMakeLists.txt
+index e29358a..843284b 100644
 --- a/icaruscode/Analysis/CMakeLists.txt
 +++ b/icaruscode/Analysis/CMakeLists.txt
-@@ -27,10 +27,13 @@
+@@ -27,10 +27,13 @@ art_make( MODULE_LIBRARIES larcorealg_Geometry
                             ${CETLIB}
                             cetlib_except
                             ${CLHEP}
@@ -202,3 +131,387 @@ diff --git a/icaruscode/Analysis/CMakeLists.txt b/icaruscode/Analysis/CMakeLists
                             icaruscode_RecoUtils
          )
  
+diff --git a/icaruscode/Analysis/tools/MCTruth/CMakeLists.txt b/icaruscode/Analysis/tools/MCTruth/CMakeLists.txt
+index 5a2cb50..173b73e 100644
+--- a/icaruscode/Analysis/tools/MCTruth/CMakeLists.txt
++++ b/icaruscode/Analysis/tools/MCTruth/CMakeLists.txt
+@@ -25,10 +25,13 @@ art_make( MODULE_LIBRARIES lardataobj_RecoBase
+                            ${FHICLCPP}
+                            ${CETLIB}
+                            cetlib_except
+-                           ${Boost_FILESYSTEM_LIBRARY}
+-                           ${Boost_SYSTEM_LIBRARY}
+                            ${CLHEP}
+-                           ${ROOT_BASIC_LIB_LIST}
++                           ROOT::ROOTDataFrame
++                           ROOT::Physics
++                           ROOT::Geom
++                           ROOT::FFTW
++                           ROOT::Tree
++                           ROOT::Core
+ 
+           TOOL_LIBRARIES   lardataobj_RecoBase
+                            larcorealg_Geometry
+@@ -55,10 +58,14 @@ art_make( MODULE_LIBRARIES lardataobj_RecoBase
+                            ${FHICLCPP}
+                            ${CETLIB}
+                            cetlib_except
+-                           ${Boost_FILESYSTEM_LIBRARY}
+-                           ${Boost_SYSTEM_LIBRARY}
+                            ${CLHEP}
+-                           ${ROOT_BASIC_LIB_LIST}
++
++                           ROOT::ROOTDataFrame
++                           ROOT::Physics
++                           ROOT::Geom
++                           ROOT::FFTW
++                           ROOT::Tree
++                           ROOT::Core
+         )
+ 
+ install_headers()
+diff --git a/icaruscode/CRT/CMakeLists.txt b/icaruscode/CRT/CMakeLists.txt
+index 47bde23..5feb0f3 100644
+--- a/icaruscode/CRT/CMakeLists.txt
++++ b/icaruscode/CRT/CMakeLists.txt
+@@ -28,8 +28,12 @@ art_make(
+         ${MF_MESSAGELOGGER}
+         ${MF_UTILITIES}
+         ${FHICLCPP}
+-        ${ROOT_BASIC_LIB_LIST}
+-        ${ROOT_GEOM}
++        ROOT::ROOTDataFrame
++	ROOT::Physics
++	ROOT::Geom
++	ROOT::FFTW
++	ROOT::Tree
++	ROOT::Core
+         ${CETLIB}
+ )
+ 
+@@ -44,8 +48,12 @@ art_make_library(
+         ${MF_MESSAGELOGGER}
+         ${MF_UTILITIES}
+         ${FHICLCPP}
+-        ${ROOT_BASIC_LIB_LIST}
+-        ${ROOT_GEOM}
++        ROOT::ROOTDataFrame
++	ROOT::Physics
++	ROOT::Geom
++	ROOT::FFTW
++	ROOT::Tree
++	ROOT::Core
+         ${CETLIB}
+ )
+ 
+@@ -61,7 +69,12 @@ simple_plugin( CRTGeometryHelper service
+         ${ART_FRAMEWORK_SERVICES_REGISTRY}
+         ${MF_MESSAGELOGGER}
+         ${MF_UTILITIES}
+-        ${ROOT_BASIC_LIB_LIST}
++        ROOT::ROOTDataFrame
++	ROOT::Physics
++	ROOT::Geom
++	ROOT::FFTW
++	ROOT::Tree
++	ROOT::Core
+         ${CETLIB}
+ )
+ 
+@@ -83,8 +96,14 @@ simple_plugin( CRTDetSim module
+         ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
+         ${MF_MESSAGELOGGER}
+         ${MF_UTILITIES}
+-        ${ROOT_BASIC_LIB_LIST}
++        ROOT::ROOTDataFrame
++	ROOT::Physics
++	ROOT::Geom
++	ROOT::FFTW
++	ROOT::Tree
++	ROOT::Core
+         ${CLHEP}
++        CLHEP::RandomObjects
+         ${CETLIB}
+ )
+ 
+@@ -107,8 +126,14 @@ simple_plugin( CRTSimHitProducer module
+         ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
+         ${MF_MESSAGELOGGER}
+         ${MF_UTILITIES}
+-        ${ROOT_BASIC_LIB_LIST}
++        ROOT::ROOTDataFrame
++	ROOT::Physics
++	ROOT::Geom
++	ROOT::FFTW
++	ROOT::Tree
++	ROOT::Core
+         ${CLHEP}
++        CLHEP::RandomObjects
+         ${CETLIB}
+ )
+ 
+@@ -131,8 +156,14 @@ simple_plugin(CRTTzeroProducer module
+         ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
+         ${MF_MESSAGELOGGER}
+         ${MF_UTILITIES}
+-        ${ROOT_BASIC_LIB_LIST}
++        ROOT::ROOTDataFrame
++	ROOT::Physics
++	ROOT::Geom
++	ROOT::FFTW
++	ROOT::Tree
++	ROOT::Core
+         ${CLHEP}
++        CLHEP::RandomObjects
+         ${CETLIB}
+ )
+ 
+@@ -155,8 +186,14 @@ simple_plugin(CRTTrackProducer module
+         ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
+         ${MF_MESSAGELOGGER}
+         ${MF_UTILITIES}
+-        ${ROOT_BASIC_LIB_LIST}
++        ROOT::ROOTDataFrame
++	ROOT::Physics
++	ROOT::Geom
++	ROOT::FFTW
++	ROOT::Tree
++	ROOT::Core
+         ${CLHEP}
++        CLHEP::RandomObjects
+         ${CETLIB}
+ )
+ 
+@@ -179,11 +216,14 @@ simple_plugin( CRTAnalysis module
+                         ${MF_MESSAGELOGGER}
+                         ${MF_UTILITIES}
+                         cetlib cetlib_except
+-                        ${ROOT_BASIC_LIB_LIST}
+-                        ${ROOT_GEOM}
+-                        ${ROOT_XMLIO}
+-                        ${ROOT_GDML}              
+-
++			ROOT::ROOTDataFrame
++			ROOT::Physics
++			ROOT::Geom
++			ROOT::FFTW
++			ROOT::Tree
++                        ROOT::XMLIO
++                        ROOT::Gdml              
++			ROOT::Core
+ )
+ 
+ 
+diff --git a/icaruscode/CRT/CRTProducts/CMakeLists.txt b/icaruscode/CRT/CRTProducts/CMakeLists.txt
+index 645e4ac..5449d56 100644
+--- a/icaruscode/CRT/CRTProducts/CMakeLists.txt
++++ b/icaruscode/CRT/CRTProducts/CMakeLists.txt
+@@ -5,8 +5,13 @@ include_directories( $ENV{NURANDOM_INC} )
+ art_make( 
+           LIBRARY_NAME icaruscode_CRTProducts
+           LIB_LIBRARIES
+-                        ${ROOT_BASIC_LIB_LIST}
+-                        ${ROOT_EG}
++			ROOT::ROOTDataFrame
++			ROOT::Physics
++			ROOT::Geom
++			ROOT::FFTW
++			ROOT::Tree
++			ROOT::Core
++                        ROOT::EG
+         )
+ 
+ install_headers()
+diff --git a/icaruscode/CRT/CRTUtils/CMakeLists.txt b/icaruscode/CRT/CRTUtils/CMakeLists.txt
+index 8273e7a..ea26dd6 100644
+--- a/icaruscode/CRT/CRTUtils/CMakeLists.txt
++++ b/icaruscode/CRT/CRTUtils/CMakeLists.txt
+@@ -24,11 +24,15 @@ art_make(    LIBRARY_NAME icaruscode_CRTUtils
+                            ${MF_MESSAGELOGGER}
+                            
+                            ${FHICLCPP}
+-                           ${ROOT_GEOM}
+-                           ${ROOT_XMLIO}
+-                           ${ROOT_GDML}
+-                           ${ROOT_BASIC_LIB_LIST}
+-                           ${Boost_SYSTEM_LIBRARY}
++                           ROOT::ROOTDataFrame
++                           ROOT::Physics
++                           ROOT::Geom
++                           ROOT::FFTW
++                           ROOT::XMLIO
++                           ROOT::Gdml
++                           ROOT::Tree
++                           ROOT::Core
++                           Boost::system
+                            icaruscode_CRT
+                            icaruscode_CRTProducts
+                            icaruscode_CRTData
+diff --git a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
+index 4c1ad54..1727256 100644
+--- a/icaruscode/Geometry/CMakeLists.txt
++++ b/icaruscode/Geometry/CMakeLists.txt
+@@ -9,7 +9,7 @@ art_make(
+                         ${ART_FRAMEWORK_SERVICES_REGISTRY}
+                         ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
+                         ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+-			${BOOST_LIB}
++			Boost::boost
+                         ${FHICLCPP}
+ 	  LIB_LIBRARIES larcorealg_Geometry
+                         ${MF_MESSAGELOGGER}
+diff --git a/icaruscode/RecoUtils/CMakeLists.txt b/icaruscode/RecoUtils/CMakeLists.txt
+index aa70ef5..73d7770 100644
+--- a/icaruscode/RecoUtils/CMakeLists.txt
++++ b/icaruscode/RecoUtils/CMakeLists.txt
+@@ -15,7 +15,7 @@ art_make(
+                            ${ART_FRAMEWORK_CORE}
+                            ${ART_FRAMEWORK_PRINCIPAL}
+                            ${ART_FRAMEWORK_SERVICES_REGISTRY}
+-                           ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
++                           ${ART_ROOT_IO_TFILE_SUPPORT}
+                            ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+                            art_Persistency_Common canvas
+                            art_Persistency_Provenance canvas
+@@ -23,11 +23,11 @@ art_make(
+                            ${MF_MESSAGELOGGER}
+                            ${MF_UTILITIES}
+                            ${FHICLCPP}
+-                           ${ROOT_GEOM}
+-                           ${ROOT_XMLIO}
+-                           ${ROOT_GDML}
+-                           ${ROOT_BASIC_LIB_LIST}
+-                           ${Boost_SYSTEM_LIBRARY}
++                           ROOT::Geom
++                           ROOT::XMLIO
++                           ROOT::Gdml
++                           ROOT::Core
++                           Boost::system
+         )
+ 
+ install_headers()
+diff --git a/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt
+index 557fa81..3e87343 100755
+--- a/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt
++++ b/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt
+@@ -27,11 +27,13 @@ art_make(
+                           ${MF_UTILITIES}
+                           ${FHICLCPP}
+                           cetlib cetlib_except
+-                          ${ROOT_GEOM}
+-                          ${ROOT_XMLIO}
+-                          ${ROOT_GDML}
+-                          ${ROOT_FFTW}
+-                          ${ROOT_BASIC_LIB_LIST}
++                          ROOT::ROOTDataFrame
++                          ROOT::Physics
++                          ROOT::Geom
++                          ROOT::FFTW
++                          ROOT::Tree
++                          ROOT::Core
++                          Eigen3::Eigen
+           TOOL_LIBRARIES  icaruscode_TPC_SignalProcessing_RawDigitFilter_Algorithms
+                           lardataobj_RawData
+                           lardataobj_RecoBase
+@@ -55,9 +57,13 @@ art_make(
+                           ${MF_UTILITIES}
+                           ${FHICLCPP}
+                           cetlib cetlib_except
+-                          ${ROOT_GEOM}
+-                          ${ROOT_FFTW}
+-                          ${ROOT_BASIC_LIB_LIST}
++                          ROOT::Physics
++                          ROOT::ROOTDataFrame
++                          ROOT::Geom
++                          ROOT::FFTW
++                          ROOT::Tree
++                          ROOT::Core
++                          Eigen3::Eigen
+        )
+ 
+ install_headers()
+diff --git a/icaruscode/Utilities/CMakeLists.txt b/icaruscode/Utilities/CMakeLists.txt
+index 09f0805..ba618fe 100644
+--- a/icaruscode/Utilities/CMakeLists.txt
++++ b/icaruscode/Utilities/CMakeLists.txt
+@@ -34,10 +34,12 @@ set( icarus_util_lib_list
+                         ${MF_UTILITIES}
+                         ${FHICLCPP}
+                         ${CETLIB}
+-                        ${Boost_FILESYSTEM_LIBRARY}
+-                        ${Boost_SYSTEM_LIBRARY}
+                         ${CLHEP}
+-                        ${ROOT_BASIC_LIB_LIST}
++                        Boost::filesystem
++                        Boost::system
++                        ROOT::Physics
++                        ROOT::Tree
++                        ROOT::Core
+     )
+ 
+ 
+@@ -56,7 +58,7 @@ simple_plugin(SaveConfigurationIntoTFile "module"
+               hep_concurrency
+               ${FHICLCPP}
+               ${CETLIB}
+-              ${ROOT_CORE}
++	      ROOT::Core
+ )
+ 
+ 
+diff --git a/icaruscode/gallery/CMakeLists.txt b/icaruscode/gallery/CMakeLists.txt
+index 59192d1..e1be379 100644
+--- a/icaruscode/gallery/CMakeLists.txt
++++ b/icaruscode/gallery/CMakeLists.txt
+@@ -4,14 +4,6 @@ add_subdirectory(MCTruthBase)
+ 
+ foreach(ExampleDir IN ITEMS galleryAnalysis )
+   
+-  # take *all* the files from the listed directory
+-  file(GLOB_RECURSE GalleryExamples RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ExampleDir}/* )
+-  
+-  # cet_install_files() will reproduce the intermediate subdirectories from the
+-  # source list into the destination directory
+-  cet_install_files(
+-    LIST ${GalleryExamples}
+-    DIRNAME examples/gallery/${ExampleDir}
+-    )
++ install(DIRECTORY ${ExampleDir}  DESTINATION examples/gallery/${ExampleDir})
+   
+ endforeach()
+diff --git a/icaruscode/gallery/MCTruthBase/CMakeLists.txt b/icaruscode/gallery/MCTruthBase/CMakeLists.txt
+index 3b0d008..1ce6a9c 100644
+--- a/icaruscode/gallery/MCTruthBase/CMakeLists.txt
++++ b/icaruscode/gallery/MCTruthBase/CMakeLists.txt
+@@ -9,10 +9,14 @@ art_make( LIB_LIBRARIES lardataobj_RecoBase
+                         ${FHICLCPP}
+                         ${CETLIB}
+                         cetlib_except
+-                        ${Boost_FILESYSTEM_LIBRARY}
+-                        ${Boost_SYSTEM_LIBRARY}
+                         ${CLHEP}
+-                        ${ROOT_BASIC_LIB_LIST}
++                        Boost::filesystem
++                        Boost::system
++                        ROOT::Physics
++                        ROOT::Geom
++                        ROOT::FFTW
++                        ROOT::Tree
++                        ROOT::Core
+         )
+ 
+ install_headers()
+diff --git a/icaruscode/gallery/galleryAnalysis/CMakeLists.txt b/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
+index bcad54a..e5f05ff 100644
+--- a/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
++++ b/icaruscode/gallery/galleryAnalysis/CMakeLists.txt
+@@ -55,7 +55,8 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
+ #
+ # include directories
+ #
+-include_directories($ENV{BOOST_INC})
++get_target_property(BoostIncludes Boost::filesystem INTERFACE_INCLUDE_DIRECTORIES)
++include_directories(${BoostIncludes})
+ include_directories($ENV{ROOT_INC} $ENV{CLHEP_INC})
+ include_directories($ENV{CETLIB_INC} $ENV{CETLIB_EXCEPT_INC} $ENV{CANVAS_INC} $ENV{CANVAS_ROOT_IO_INC})
+ include_directories($ENV{FHICLCPP_INC} $ENV{MESSAGEFACILITY_INC})
