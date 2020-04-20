@@ -73,7 +73,7 @@ index d3698de..9fae3e4 100644
 +find_package( art )
 +find_package(art_root_io)
 +find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random)
-+find_package( eigen )
++find_package( Eigen3 )
 +find_package( ifdh_art )
 +find_package( guideline_sl )
 +find_package( artdaq_core )
@@ -173,10 +173,30 @@ diff --git a/icaruscode/RecoUtils/CMakeLists.txt b/icaruscode/RecoUtils/CMakeLis
 -                           ${ROOT_XMLIO}
 -                           ${ROOT_GDML}
 -                           ${ROOT_BASIC_LIB_LIST}
-+                           Root::Geom
-+                           Root::XMLIO
-+                           Root::Gdml
-+                           Root::Core
-                            ${Boost_SYSTEM_LIBRARY}
+-                           ${Boost_SYSTEM_LIBRARY}
++                           ROOT::Geom
++                           ROOT::XMLIO
++                           ROOT::Gdml
++                           ROOT::Core
++                           Boost::system
+         )
+ 
+diff --git a/icaruscode/Analysis/CMakeLists.txt b/icaruscode/Analysis/CMakeLists.txt
+--- a/icaruscode/Analysis/CMakeLists.txt
++++ b/icaruscode/Analysis/CMakeLists.txt
+@@ -27,10 +27,11 @@
+                            ${CETLIB}
+                            cetlib_except
+                            ${CLHEP}
+-                           ${ROOT_GEOM}
+-                           ${ROOT_XMLIO}
+-                           ${ROOT_GDML}
+-                           ${ROOT_BASIC_LIB_LIST}
++                           Eigen3::Eigen
++                           ROOT::Geom
++                           ROOT::XMLIO
++                           ROOT::Gdml
++                           ROOT::Core
+                            icaruscode_RecoUtils
          )
  
