@@ -78,7 +78,7 @@ index d3698de..9fae3e4 100644
 +find_package( guideline_sl )
 +find_package( artdaq_core )
 +find_package( sbndaq_artdaq_core )
-+find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml RGL)
++find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml RGL Physics)
 +get_target_property(RootIncludes ROOT::Tree INTERFACE_INCLUDE_DIRECTORIES)
 +include_directories(${RootIncludes})
 +find_package( Boost COMPONENTS boost unit_test_framework )
@@ -184,7 +184,7 @@ diff --git a/icaruscode/RecoUtils/CMakeLists.txt b/icaruscode/RecoUtils/CMakeLis
 diff --git a/icaruscode/Analysis/CMakeLists.txt b/icaruscode/Analysis/CMakeLists.txt
 --- a/icaruscode/Analysis/CMakeLists.txt
 +++ b/icaruscode/Analysis/CMakeLists.txt
-@@ -27,10 +27,11 @@
+@@ -27,10 +27,13 @@
                             ${CETLIB}
                             cetlib_except
                             ${CLHEP}
@@ -197,6 +197,7 @@ diff --git a/icaruscode/Analysis/CMakeLists.txt b/icaruscode/Analysis/CMakeLists
 +                           ROOT::XMLIO
 +                           ROOT::Gdml
 +                           ROOT::RGL
++                           ROOT::Physics
 +                           ROOT::Core
                             icaruscode_RecoUtils
          )
