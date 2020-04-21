@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d3698de..fe482c3 100644
+index d3698de..34f08db 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -21,17 +21,18 @@ message(STATUS
@@ -30,7 +30,7 @@ index d3698de..fe482c3 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,32 +46,41 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -45,32 +46,42 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -77,9 +77,10 @@ index d3698de..fe482c3 100644
 +find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random RandomObjects)
 +find_package( Eigen3 )
 +find_package( ifdh_art )
-+find_package( guideline_sl )
++cet_find_library( GSL NAMES gsl PATHS ENV GSL_LIB NO_DEFAULT_PATH )
 +find_package( artdaq-core )
 +find_package( sbndaq-artdaq-core )
++cet_find_simple_package(sqlite3)
 +find_package( range-v3 REQUIRED COMPONENTS range-v3 meta)
 +find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml RGL Physics EG Minuit Minuit2 GenVector MathCore)
 +get_target_property(RootIncludes ROOT::Tree INTERFACE_INCLUDE_DIRECTORIES)
@@ -98,7 +99,7 @@ index d3698de..fe482c3 100644
  cet_find_library( NURANDOM_RANDOMUTILS_NURANDOMSERVICE_SERVICE 
                    NAMES nurandom_RandomUtils_NuRandomService_service
  		  PATHS ENV NURANDOM_LIB NO_DEFAULT_PATH )
-@@ -90,10 +100,9 @@ add_subdirectory(test)
+@@ -90,10 +101,9 @@ add_subdirectory(test)
  add_subdirectory(fcl)
  
  # ups - table and config files
@@ -1156,7 +1157,7 @@ index 50fee5d..582bf47 100644
  
  install_fhicl()
 diff --git a/icaruscode/TPC/Simulation/DetSim/CMakeLists.txt b/icaruscode/TPC/Simulation/DetSim/CMakeLists.txt
-index 3a1b625..b1e96c4 100644
+index 3a1b625..64a8722 100644
 --- a/icaruscode/TPC/Simulation/DetSim/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/DetSim/CMakeLists.txt
 @@ -16,7 +16,7 @@ art_make(
@@ -1168,7 +1169,7 @@ index 3a1b625..b1e96c4 100644
                             ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
                             ${ART_ROOT_IO_TFILESERVICE_SERVICE}
                             art_Persistency_Common
-@@ -28,12 +28,17 @@ art_make(
+@@ -28,12 +28,18 @@ art_make(
                             ${FHICLCPP}
                             ${CETLIB}
                             ${CLHEP}
@@ -1176,6 +1177,7 @@ index 3a1b625..b1e96c4 100644
 -                           ${ROOT_XMLIO}
 -                           ${ROOT_GDML}
 -                           ${ROOT_BASIC_LIB_LIST}
++                           CLHEP::Random
 +                           ROOT::ROOTDataFrame
 +                           ROOT::Physics
 +                           ROOT::Gdml
@@ -1190,7 +1192,7 @@ index 3a1b625..b1e96c4 100644
  simple_plugin(SimWireICARUS "module"
                             larcorealg_Geometry
                             larcore_Geometry_Geometry_service
-@@ -61,10 +66,14 @@ simple_plugin(SimWireICARUS "module"
+@@ -61,10 +67,15 @@ simple_plugin(SimWireICARUS "module"
                             ${FHICLCPP}
                             ${CETLIB}
                             ${CLHEP}
@@ -1198,6 +1200,7 @@ index 3a1b625..b1e96c4 100644
 -                           ${ROOT_XMLIO}
 -                           ${ROOT_GDML}
 -                           ${ROOT_BASIC_LIB_LIST}
++                           CLHEP::Random
 +                           ROOT::ROOTDataFrame
 +                           ROOT::Physics
 +                           ROOT::Geom
@@ -1210,10 +1213,10 @@ index 3a1b625..b1e96c4 100644
  
  #install_headers()
 diff --git a/icaruscode/TPC/Simulation/DetSim/tools/CMakeLists.txt b/icaruscode/TPC/Simulation/DetSim/tools/CMakeLists.txt
-index 149a6d9..5c70d88 100644
+index 149a6d9..a8d8a3e 100644
 --- a/icaruscode/TPC/Simulation/DetSim/tools/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/DetSim/tools/CMakeLists.txt
-@@ -26,10 +26,16 @@ art_make(
+@@ -26,10 +26,18 @@ art_make(
  			              ${MF_UTILITIES}
  			              ${FHICLCPP}
  			              ${CETLIB}
@@ -1222,6 +1225,7 @@ index 149a6d9..5c70d88 100644
 -                          ${CLHEP}
 -			              ${ROOT_BASIC_LIB_LIST}
 +				   ${CLHEP}
++				   CLHEP::Random
 +				   Boost::filesystem
 +				   Boost::system
 +				   ROOT::ROOTDataFrame
@@ -1230,6 +1234,7 @@ index 149a6d9..5c70d88 100644
 +				   ROOT::FFTW
 +				   ROOT::Tree
 +				   ROOT::Core
++                                   Eigen3::Eigen
 +
      )
  
@@ -1301,10 +1306,18 @@ index 3a93ab4..ff0cfb9 100644
  
  
 diff --git a/icaruscode/Utilities/CMakeLists.txt b/icaruscode/Utilities/CMakeLists.txt
-index 09f0805..ea2b779 100644
+index 09f0805..bce3dfb 100644
 --- a/icaruscode/Utilities/CMakeLists.txt
 +++ b/icaruscode/Utilities/CMakeLists.txt
-@@ -24,7 +24,7 @@ set( icarus_util_lib_list
+@@ -6,6 +6,7 @@ art_make(
+     "SaveConfigurationIntoTFile_module.cc"
+   LIB_LIBRARIES
+     ${CLHEP}
++    CLHEP::Random
+   )
+ 
+ set( icarus_util_lib_list
+@@ -24,7 +25,7 @@ set( icarus_util_lib_list
                          art_Persistency_Common
                          art_Persistency_Provenance
                          ${ART_FRAMEWORK_SERVICES_BASIC}
@@ -1313,7 +1326,7 @@ index 09f0805..ea2b779 100644
                          ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
                          ${ART_ROOT_IO_TFILESERVICE_SERVICE}
                          ${ART_FRAMEWORK_SERVICES_SYSTEM_FILECATALOGMETADATA_SERVICE}
-@@ -34,10 +34,12 @@ set( icarus_util_lib_list
+@@ -34,10 +35,13 @@ set( icarus_util_lib_list
                          ${MF_UTILITIES}
                          ${FHICLCPP}
                          ${CETLIB}
@@ -1321,6 +1334,7 @@ index 09f0805..ea2b779 100644
 -                        ${Boost_SYSTEM_LIBRARY}
                          ${CLHEP}
 -                        ${ROOT_BASIC_LIB_LIST}
++                        CLHEP::Random
 +                        Boost::filesystem
 +                        Boost::system
 +                        ROOT::Physics
@@ -1329,7 +1343,7 @@ index 09f0805..ea2b779 100644
      )
  
  
-@@ -47,7 +49,7 @@ simple_plugin( SignalShapingServiceICARUS  "service"
+@@ -47,7 +51,7 @@ simple_plugin( SignalShapingServiceICARUS  "service"
  
  simple_plugin(SaveConfigurationIntoTFile "module"
                ${ART_ROOT_IO_TFILESERVICE_SERVICE}
@@ -1338,12 +1352,13 @@ index 09f0805..ea2b779 100644
                ${ART_FRAMEWORK_SERVICES_REGISTRY}
                ${ART_FRAMEWORK_PRINCIPAL}
                ${ART_FRAMEWORK_CORE}
-@@ -56,7 +58,7 @@ simple_plugin(SaveConfigurationIntoTFile "module"
+@@ -56,7 +60,8 @@ simple_plugin(SaveConfigurationIntoTFile "module"
                hep_concurrency
                ${FHICLCPP}
                ${CETLIB}
 -              ${ROOT_CORE}
 +	      ROOT::Core
++              ${SQLITE3}
  )
  
  

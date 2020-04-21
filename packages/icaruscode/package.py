@@ -69,12 +69,14 @@ class Icaruscode(CMakePackage):
     depends_on('larpandoracontent', type=('build','run'))
     depends_on('larreco', type=('build','run'))
     depends_on('larsim', type=('build','run'))
+    depends_on('marley', type=('build','run'))
     depends_on('nug4', type=('build','run'))
     # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
     depends_on('range-v3', type=('build','run'))
     depends_on('sbndaq-artdaq-core', type=('build','run'))
+    depends_on('sqlite', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
