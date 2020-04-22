@@ -33,7 +33,8 @@ class Cetlib(CMakePackage):
     version('3.07.02', tag='v3_07_02', git=git_base)
     version('3.08.00', tag='v3_08_00', git=git_base)
 
-    patch('cetlib.unups.patch')
+    patch('cetlib.unups.patch',when="@3.09.00")
+    patch('cetlib-3.10.00.patch',when="@3.10.00")
 
     variant('cxxstd',
             default='17',
