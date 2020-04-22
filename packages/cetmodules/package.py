@@ -33,3 +33,5 @@ class Cetmodules(CMakePackage):
     def url_for_version(self, version):
         url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
+
+    patch('cetmodules.include_guard.patch')
