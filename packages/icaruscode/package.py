@@ -58,7 +58,6 @@ class Icaruscode(CMakePackage):
     depends_on('ifdh-art', type=('build','run'))
     depends_on('intel-tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
-    depends_on('gsl', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))
     depends_on('larcore', type=('build','run'))
@@ -77,6 +76,7 @@ class Icaruscode(CMakePackage):
     depends_on('range-v3', type=('build','run'))
     depends_on('sbndaq-artdaq-core', type=('build','run'))
     depends_on('sqlite', type=('build','run'))
+    depends_on('trace', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

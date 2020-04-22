@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d3698de..34f08db 100644
+index d3698de..69980a4 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -21,17 +21,18 @@ message(STATUS
@@ -30,7 +30,7 @@ index d3698de..34f08db 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,32 +46,42 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -45,32 +46,44 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -77,11 +77,13 @@ index d3698de..34f08db 100644
 +find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random RandomObjects)
 +find_package( Eigen3 )
 +find_package( ifdh_art )
-+cet_find_library( GSL NAMES gsl PATHS ENV GSL_LIB NO_DEFAULT_PATH )
++find_path(GSL_INC NAMES gsl/span PATH_SUFFIXES include)
++message("=== got GSL_INC ${GSL_INC}")
 +find_package( artdaq-core )
 +find_package( sbndaq-artdaq-core )
 +cet_find_simple_package(sqlite3)
 +find_package( range-v3 REQUIRED COMPONENTS range-v3 meta)
++cet_find_simple_package( trace INCPATH_VAR TRACE_INC )
 +find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml RGL Physics EG Minuit Minuit2 GenVector MathCore)
 +get_target_property(RootIncludes ROOT::Tree INTERFACE_INCLUDE_DIRECTORIES)
 +include_directories(${RootIncludes})
@@ -99,7 +101,7 @@ index d3698de..34f08db 100644
  cet_find_library( NURANDOM_RANDOMUTILS_NURANDOMSERVICE_SERVICE 
                    NAMES nurandom_RandomUtils_NuRandomService_service
  		  PATHS ENV NURANDOM_LIB NO_DEFAULT_PATH )
-@@ -90,10 +101,9 @@ add_subdirectory(test)
+@@ -90,10 +103,9 @@ add_subdirectory(test)
  add_subdirectory(fcl)
  
  # ups - table and config files
@@ -409,10 +411,18 @@ index 8273e7a..ea26dd6 100644
                             icaruscode_CRTProducts
                             icaruscode_CRTData
 diff --git a/icaruscode/Decode/CMakeLists.txt b/icaruscode/Decode/CMakeLists.txt
-index 2a2bb20..538b87d 100644
+index 2a2bb20..14a9c4f 100644
 --- a/icaruscode/Decode/CMakeLists.txt
 +++ b/icaruscode/Decode/CMakeLists.txt
-@@ -10,7 +10,12 @@ art_make(
+@@ -1,5 +1,7 @@
+ cet_enable_asserts()
+ 
++include_directories(${TRACE_INC})
++
+ art_make(
+           MODULE_LIBRARIES
+                         sbndaq-artdaq-core_Overlays_ICARUS 
+@@ -10,7 +12,12 @@ art_make(
                          larevt_Filters
                          lardataobj_RawData
                          lardata_ArtDataHelper
@@ -1306,7 +1316,7 @@ index 3a93ab4..ff0cfb9 100644
  
  
 diff --git a/icaruscode/Utilities/CMakeLists.txt b/icaruscode/Utilities/CMakeLists.txt
-index 09f0805..bce3dfb 100644
+index 09f0805..e946c85 100644
 --- a/icaruscode/Utilities/CMakeLists.txt
 +++ b/icaruscode/Utilities/CMakeLists.txt
 @@ -6,6 +6,7 @@ art_make(
@@ -1326,7 +1336,7 @@ index 09f0805..bce3dfb 100644
                          ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
                          ${ART_ROOT_IO_TFILESERVICE_SERVICE}
                          ${ART_FRAMEWORK_SERVICES_SYSTEM_FILECATALOGMETADATA_SERVICE}
-@@ -34,10 +35,13 @@ set( icarus_util_lib_list
+@@ -34,10 +35,14 @@ set( icarus_util_lib_list
                          ${MF_UTILITIES}
                          ${FHICLCPP}
                          ${CETLIB}
@@ -1340,10 +1350,11 @@ index 09f0805..bce3dfb 100644
 +                        ROOT::Physics
 +                        ROOT::Tree
 +                        ROOT::Core
++                        ${GSL}
      )
  
  
-@@ -47,7 +51,7 @@ simple_plugin( SignalShapingServiceICARUS  "service"
+@@ -47,7 +52,7 @@ simple_plugin( SignalShapingServiceICARUS  "service"
  
  simple_plugin(SaveConfigurationIntoTFile "module"
                ${ART_ROOT_IO_TFILESERVICE_SERVICE}
@@ -1352,7 +1363,7 @@ index 09f0805..bce3dfb 100644
                ${ART_FRAMEWORK_SERVICES_REGISTRY}
                ${ART_FRAMEWORK_PRINCIPAL}
                ${ART_FRAMEWORK_CORE}
-@@ -56,7 +60,8 @@ simple_plugin(SaveConfigurationIntoTFile "module"
+@@ -56,7 +61,8 @@ simple_plugin(SaveConfigurationIntoTFile "module"
                hep_concurrency
                ${FHICLCPP}
                ${CETLIB}
@@ -1363,7 +1374,7 @@ index 09f0805..bce3dfb 100644
  
  
 diff --git a/icaruscode/Utilities/tools/CMakeLists.txt b/icaruscode/Utilities/tools/CMakeLists.txt
-index ee806ce..72627fa 100644
+index ee806ce..9a443b8 100644
 --- a/icaruscode/Utilities/tools/CMakeLists.txt
 +++ b/icaruscode/Utilities/tools/CMakeLists.txt
 @@ -15,7 +15,7 @@ art_make(
@@ -1388,7 +1399,7 @@ index ee806ce..72627fa 100644
 +	    ROOT::Gdml
 +	    ROOT::Tree
 +	    ROOT::Core
-+
++            Eigen3::Eigen
          )
  
  install_headers()
@@ -1480,10 +1491,12 @@ index 970a248..873288c 100644
  
  
 diff --git a/test/Utilities/CMakeLists.txt b/test/Utilities/CMakeLists.txt
-index 53e7f3b..b3a0f13 100644
+index 53e7f3b..b578aad 100644
 --- a/test/Utilities/CMakeLists.txt
 +++ b/test/Utilities/CMakeLists.txt
-@@ -1,5 +1,11 @@
+@@ -1,12 +1,20 @@
++include_directories(${GSL_INC})
++
  cet_test(FastAndPoorGauss_test
    LIBRARIES
 +  ROOT::ROOTDataFrame
@@ -1495,3 +1508,11 @@ index 53e7f3b..b3a0f13 100644
      ${ROOT_MATHCORE}
      ${ROOT_HIST}
      ${ROOT_RIO}
+     ${ROOT_CORE}
+   USE_BOOST_UNIT
+   )
+-cet_test(SampledFunction_test USE_BOOST_UNIT)
++cet_test(SampledFunction_test LIBRARIES USE_BOOST_UNIT)
+ 
+ cet_test(NonRandomCounter_test
+   LIBRARIES
