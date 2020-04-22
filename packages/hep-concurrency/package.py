@@ -37,7 +37,8 @@ class HepConcurrency(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('hep_concurrency.unups.patch')
+    patch('hep_concurrency.unups.patch', when='@1.04.00')
+    patch('hep_concurrency.1.04.01.patch', when='@1.04.01')
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
