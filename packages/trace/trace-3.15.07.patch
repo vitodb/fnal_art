@@ -1,0 +1,24 @@
+--- a/CMakeLists.txt	2020-04-15 22:12:56.272341000 -0500
++++ b/CMakeLists.txt	2020-04-15 22:14:04.614837000 -0500
+@@ -13,10 +13,10 @@
+   unset(CMAKE_CXX_COMPILER)
+ endif()
+ 
+-project(TRACE VERSION 3.15.07)
++project(TRACE VERSION 3.15.07 LANGUAGES CXX C)
+ # cetbuildtools contains our cmake modules
+ 
+-find_package(cetmodules 1.02.02 REQUIRED)
++find_package(cetmodules REQUIRED)
+ include(CetCMakeEnv)
+ cet_cmake_env(PAD_MINOR ON NO_BUILDTYPE UPS_PRODUCT_NAME TRACE)
+ 
+@@ -97,7 +97,7 @@
+ add_subdirectory(script)
+ 
+ # ups - table and config files
+-add_subdirectory(ups)
++#add_subdirectory(ups)
+ 
+ # doc - Some documentation...There should be a cet_ function for this...
+ FILE(COPY doc DESTINATION . PATTERN ".svn" EXCLUDE)
