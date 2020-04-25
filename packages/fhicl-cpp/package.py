@@ -42,7 +42,8 @@ class FhiclCpp(CMakePackage):
     version('4.10.00', tag='v4_10_00', git=git_base)
     version('4.11.00', tag='v4_11_00', git=git_base)
 
-    patch("fhicl-cpp.unups.patch")
+    patch("fhicl-cpp.unups.patch", when="@4.11.00")
+    patch("fhicl-cpp.4.11.01.patch", when="@4.11.01")
 
     variant('cxxstd',
             default='17',

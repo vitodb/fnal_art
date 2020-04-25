@@ -37,7 +37,8 @@ class Messagefacility(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('messagefacility.unups.patch')
+    patch('messagefacility.unups.patch', when="@2.05.00")
+    patch('messagefacility.2.06.01.patch', when="@2.06.01")
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
