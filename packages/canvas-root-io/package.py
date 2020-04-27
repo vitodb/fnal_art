@@ -41,6 +41,7 @@ class CanvasRootIo(CMakePackage):
     version('1.05.00', tag="v1_05_00", git=git_base)
     version('1.04.01', tag="v1_04_01", git=git_base)
     version('1.05.01', tag="v1_05_01", git=git_base)
+    version('1.05.02', tag="v1_05_02", git=git_base)
 
     variant('cxxstd',
             default='17',
@@ -48,7 +49,8 @@ class CanvasRootIo(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('canvas-root-io.unups.patch')
+    patch('canvas-root-io.unups.patch', when='@1.05.01')
+    patch('canvas-root-io.1.05.02.patch', when='@1.05.02')
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')

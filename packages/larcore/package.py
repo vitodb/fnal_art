@@ -41,6 +41,7 @@ class Larcore(CMakePackage):
     version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/larcore.git')
     version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/larcore.git')
     version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larcore.git')
+    version('08.11.03', tag='v08_11_03', git='https://github.com/LArSoft/larcore.git')
 
     variant('cxxstd',
             default='17',

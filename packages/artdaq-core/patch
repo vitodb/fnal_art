@@ -85,14 +85,3 @@ index 50326e6..0e17382 100644
  # packaging utility
 -include(UseCPack)
 +cet_cmake_config()
---- a/artdaq-core/Core/QuickVec.hh
-+++ b/artdaq-core/Core/QuickVec.hh
-@@ -39,7 +39,7 @@
-  */
- static inline void* QV_MEMALIGN(size_t boundary, size_t size)
- {
--	void* retadr;
-+	void* retadr = 0;
- 	posix_memalign(&retadr, boundary, size);
- 	return retadr;
- }

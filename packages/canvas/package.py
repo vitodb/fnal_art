@@ -43,7 +43,8 @@ class Canvas(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('canvas.unups.patch')
+    patch('canvas.unups.patch', when="@3.08.00")
+    patch('canvas.3.09.01.patch', when="@3.09.01")
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')

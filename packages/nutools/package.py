@@ -38,6 +38,7 @@ class Nutools(CMakePackage):
     version('3.06.00', tag='v3_06_00', git="http://cdcvs.fnal.gov/projects/nutools")
     version('3.06.01', tag='v3_06_01', git="http://cdcvs.fnal.gov/projects/nutools")
     version('3.06.02', tag='v3_06_02', git="http://cdcvs.fnal.gov/projects/nutools")
+    version('3.06.06', tag='v3_06_06', git="http://cdcvs.fnal.gov/projects/nutools")
 
     variant('cxxstd',
             default='17',

@@ -36,6 +36,7 @@ class Larcorealg(CMakePackage):
     version('08.20.00', tag='v08_20_00', git='https://github.com/LArSoft/larcorealg.git')
     version('08.20.01', tag='v08_20_01', git='https://github.com/LArSoft/larcorealg.git')
     version('08.20.02', tag='v08_20_02', git='https://github.com/LArSoft/larcorealg.git')
+    version('08.20.03', tag='v08_20_03', git='https://github.com/LArSoft/larcorealg.git')
     
 
     variant('cxxstd',

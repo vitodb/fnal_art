@@ -39,6 +39,7 @@ class ArtRootIo(CMakePackage):
     version('develop', branch='develop', git=git_base)
     version('1.02.01', tag='v1_02_01', git=git_base)
     version('1.02.00', tag='v1_02_00', git=git_base)
+    version('1.03.00', tag='v1_03_00', git=git_base)
 
     variant('cxxstd',
             default='17',
@@ -46,7 +47,8 @@ class ArtRootIo(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('art-root-io.unups.patch')
+    patch('art-root-io.unups.patch', when="@1.02.00")
+    patch('art-root-io.1.03.00.patch', when="@1.03.00")
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
