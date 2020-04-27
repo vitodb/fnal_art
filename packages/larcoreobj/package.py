@@ -45,7 +45,7 @@ class Larcoreobj(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('larcoreobj.unups.patch', when='@08.10.03')
-    patch('larcoreobj.08.10.05.patch', when="@08.10.05')
+    patch('larcoreobj.8.10.05.patch', when='@08.10.05')
 
     depends_on('canvas-root-io')
     depends_on('cetmodules', type='build')
