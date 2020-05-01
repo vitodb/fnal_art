@@ -37,7 +37,8 @@ class Larpandoracontent(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larpandoracontent.unups.patch')
+    patch('larpandoracontent.unups.patch', when='@03.15.15')
+    patch('larpandoracontent.03.15.16.patch', when='@03.15.16')
 
     depends_on('cetmodules', type='build')
     depends_on('eigen+fftw')

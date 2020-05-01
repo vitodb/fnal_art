@@ -40,6 +40,7 @@ class Larsim(CMakePackage):
     version('08.19.02', tag='v08_19_02', git='https://github.com/LArSoft/larsim.git')
     version('08.19.03', tag='v08_19_03', git='https://github.com/LArSoft/larsim.git')
     version('08.19.04', tag='v08_19_04', git='https://github.com/LArSoft/larsim.git')
+    version('08.22.03', tag='v08_22_03', git='https://github.com/LArSoft/larsim.git')
 
     variant('cxxstd',
             default='17',
@@ -47,7 +48,8 @@ class Larsim(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larsim.unups.patch')
+    patch('larsim.unups.patch', when='@08.19.04')
+    patch('larsim.08.22.03.patch', when='@08.22.03')
 
     depends_on('larsoft-data')
     depends_on('larevt')
@@ -72,7 +74,11 @@ class Larsim(CMakePackage):
                '-DGENIE_INC={0}'.
                 format(self.spec['genie'].prefix.include),
                 '-DGENIE_VERSION=v{0}'.
-                format(self.spec['genie'].version.underscored)
+                format(self.spec['genie'].version.underscored),
+                '-DLARSOFT_DATA_DIR=v{0}'.
+                format(self.spec['larsoft-data'].prefix),
+                '-DLARSOFT_DATA_VERSION=v{0}'.
+                format(self.spec['larsoft-data'].version.underscored),
         ]
         return args
 

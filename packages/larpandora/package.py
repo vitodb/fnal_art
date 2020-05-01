@@ -37,6 +37,7 @@ class Larpandora(CMakePackage):
     version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/larpandora.git')
     version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/larpandora.git')
     version('08.11.03', tag='v08_11_03', git='https://github.com/LArSoft/larpandora.git')
+    version('08.12.03', tag='v08_12_03', git='https://github.com/LArSoft/larpandora.git')
 
     variant('cxxstd',
             default='17',
@@ -44,7 +45,8 @@ class Larpandora(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larpandora.unups.patch')
+    patch('larpandora.unups.patch', when='@08.10.01')
+    patch('larpandora.08.12.03.patch', when='@08.12.03')
 
     depends_on('larreco')
     depends_on('larpandoracontent')

@@ -39,6 +39,7 @@ class Larevt(CMakePackage):
     version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/larevt.git')
     version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larevt.git')
     version('08.10.04', tag='v08_10_04', git='https://github.com/LArSoft/larevt.git')
+    version('08.11.02', tag='v08_11_02', git='https://github.com/LArSoft/larevt.git')
 
     variant('cxxstd',
             default='17',
@@ -46,7 +47,8 @@ class Larevt(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larevt.unups.patch')
+    patch('larevt.unups.patch', when='@08.10.04')
+    patch('larevt.08.11.02.patch', when='@08.11.02')
 
     depends_on('libwda')
     depends_on('lardata')

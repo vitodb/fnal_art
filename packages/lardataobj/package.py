@@ -37,6 +37,7 @@ class Lardataobj(CMakePackage):
     version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/lardataobj.git')
     version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/lardataobj.git')
     version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/lardataobj.git')
+    version('08.10.06', tag='v08_10_06', git='https://github.com/LArSoft/lardataobj.git')
 
     variant('cxxstd',
             default='17',
@@ -44,7 +45,8 @@ class Lardataobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lardataobj.unups.patch')
+    patch('lardataobj.unups.patch', when='@08.10.03')
+    patch('lardataobj.08.10.06.patch', when='@08.10.06')
 
     depends_on('nusimdata')
     depends_on('larcorealg')

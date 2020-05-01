@@ -38,6 +38,8 @@ class Larreco(CMakePackage):
     version('08.26.01', tag='v08_26_01', git='https://github.com/LArSoft/larreco.git')
     version('08.28.00', tag='v08_28_00', git='https://github.com/LArSoft/larreco.git')
     version('08.29.00', tag='v08_29_00', git='https://github.com/LArSoft/larreco.git')
+    version('08.31.00', tag='v08_31_00', git='https://github.com/LArSoft/larreco.git')
+    version('08.31.01', tag='v08_31_01', git='https://github.com/LArSoft/larreco.git')
 
     variant('cxxstd',
             default='17',
@@ -46,7 +48,8 @@ class Larreco(CMakePackage):
             description='Use the specified C++ standard when building.')
     variant('tf', default=False, description='Build tensorflow dependent libraries.')
     
-    patch('larreco.unups.patch')
+    patch('larreco.unups.patch', when='@08.29.00')
+    patch('larreco.08.31.01.patch', when='@08.31.01')
 
     depends_on('tbb')
     depends_on('clhep')
@@ -56,6 +59,8 @@ class Larreco(CMakePackage):
     depends_on('art')
     depends_on('canvas-root-io')
     depends_on('larsim')
+    depends_on('larsoft-data')
+    depends_on('marley')
     depends_on('nutools')
     depends_on('eigen+fftw')
     depends_on('tensorflow', when='+tf')

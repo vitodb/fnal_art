@@ -36,6 +36,7 @@ class Lardataalg(CMakePackage):
     version('08.13.02', tag='v08_13_02', git='https://github.com/LArSoft/lardataalg.git')
     version('08.13.03', tag='v08_13_03', git='https://github.com/LArSoft/lardataalg.git')
     version('08.13.04', tag='v08_13_04', git='https://github.com/LArSoft/lardataalg.git')
+    version('08.13.08', tag='v08_13_08', git='https://github.com/LArSoft/lardataalg.git')
 
 
     variant('cxxstd',
@@ -44,7 +45,9 @@ class Lardataalg(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lardataalg.unups.patch')
+    patch('lardataalg.unups.patch', when='@08.13.02')
+    patch('lardataalg.unups.patch', when='@08.13.04')
+    patch('lardataalg.08.13.08.patch', when='@08.13.08')
 
     depends_on('lardataobj')
     depends_on('cetmodules', type='build')

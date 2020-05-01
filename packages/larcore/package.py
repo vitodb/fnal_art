@@ -6,6 +6,9 @@
 from spack import *
 import os
 import sys
+import llnl.util.tty as tty
+
+
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
@@ -49,7 +52,8 @@ class Larcore(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larcore.unups.patch')
+    patch('larcore.unups.patch', when='@08.10.03')
+    patch('larcore.08.11.03.patch', when='@08.11.03')
 
     depends_on('larcorealg')
     depends_on('art-root-io')
@@ -60,6 +64,13 @@ class Larcore(CMakePackage):
                 format(self.spec.variants['cxxstd'].value)
                ]
         return args
+
+
+    @run_after('cmake')
+    def fix_static_boost(self):
+        print("fixing filesysem.a references..")
+        os.system("set -x; find %s/test/Geometry/CMakeFiles %s/larcore/Geometry/CMakeFiles -type f -print  | tee /tmp/fixlist | xargs perl -pi -e 's/libboost_filesystem.a/libboost_filesystem.so/go;'" % (self.build_directory, self.build_directory ))
+        print("done fixing filesysem.a references..")
 
     def setup_environment(self, spack_env, run_env):
         # Binaries.
