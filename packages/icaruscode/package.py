@@ -56,6 +56,7 @@ class Icaruscode(CMakePackage):
     depends_on('clhep', type=('build','run'))
     depends_on('cppgsl', type=('build','run'))
     depends_on('eigen', type=('build','run'))
+    depends_on('fftw', type=('build','run'))
     depends_on('hep-concurrency', type=('build','run'))
     depends_on('ifdh-art', type=('build','run'))
     depends_on('intel-tbb', type=('build','run'))
@@ -70,6 +71,7 @@ class Icaruscode(CMakePackage):
     depends_on('larpandoracontent', type=('build','run'))
     depends_on('larreco', type=('build','run'))
     depends_on('larsim', type=('build','run'))
+    depends_on('libwda', type=('build','run'))
     depends_on('marley', type=('build','run'))
     depends_on('nug4', type=('build','run'))
     # depends_on('nurandom', type=('build','run'))  ???

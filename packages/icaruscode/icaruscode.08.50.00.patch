@@ -30,7 +30,7 @@ index b224332..728db2e 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,46 +46,54 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -45,46 +46,55 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -79,7 +79,7 @@ index b224332..728db2e 100644
 +find_package( nurandom )
 +find_package( art )
 +find_package(art_root_io)
-+find_package(FFTW3)
++find_package(FFTW3 REQUIRED)
 +find_package(FFTW3f)
 +find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random RandomObjects)
 +find_package( Eigen3 )
@@ -105,6 +105,7 @@ index b224332..728db2e 100644
 +set(fw_dir fw)
 +
 +cet_find_library( PQ NAMES pq )
++cet_find_library( LIBWDA NAMES wda PATHS ${CMAKE_PREFIX_PATH})
  cet_find_library( NURANDOM_RANDOMUTILS_NURANDOMSERVICE_SERVICE 
 -                  NAMES nurandom_RandomUtils_NuRandomService_service
 -		  PATHS ENV NURANDOM_LIB NO_DEFAULT_PATH )
