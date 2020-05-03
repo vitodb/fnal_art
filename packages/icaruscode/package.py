@@ -32,7 +32,7 @@ class Icaruscode(CMakePackage):
     version('08.50.00', tag='v08_50_00', git=git_base)
 
     patch('icaruscode.unups.patch', when='@08.39.00')
-    patch('icaruscode.08.50.00.patch',when='@08.50.00'))
+    patch('icaruscode.08.50.00.patch',when='@08.50.00')
 
     variant('cxxstd',
             default='17',
