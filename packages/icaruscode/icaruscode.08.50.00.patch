@@ -30,7 +30,7 @@ index b224332..728db2e 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,46 +46,52 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -45,46 +46,54 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -79,6 +79,8 @@ index b224332..728db2e 100644
 +find_package( nurandom )
 +find_package( art )
 +find_package(art_root_io)
++find_package(FFTW3)
++find_package(FFTW3f)
 +find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random RandomObjects)
 +find_package( Eigen3 )
 +find_package( ifdh_art )
@@ -113,10 +115,10 @@ index b224332..728db2e 100644
 -cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS $ENV{FFTW_LIBRARY} )
 -cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS $ENV{FFTW_LIBRARY} )
 -cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS $ENV{FFTW_LIBRARY} )
-+cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  )
-+cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f )
-+cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l )
-+cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q )
++cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  PATHS  $FFTW3_LIBRARY_DIRS)
++cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS  $FFTW3_LIBRARY_DIRS)
++cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS  $FFTW3_LIBRARY_DIRS)
++cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS  $FFTW3_LIBRARY_DIRS)
  set(ICARUS_FFTW_LIBRARIES ${ICARUS_FFTW3_LIBRARY} ${ICARUS_FFTW3F_LIBRARY} ${ICARUS_FFTW3L_LIBRARY} ${ICARUS_FFTW3Q_LIBRARY})
  
  # macros for dictionary and simple_plugin
