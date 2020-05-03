@@ -1089,64 +1089,6 @@ index 3a93ab4..ff0cfb9 100644
          )
  
  
-diff --git a/icaruscode/Utilities/CMakeLists.txt b/icaruscode/Utilities/CMakeLists.txt
-index 09f0805..e946c85 100644
---- a/icaruscode/Utilities/CMakeLists.txt
-+++ b/icaruscode/Utilities/CMakeLists.txt
-@@ -6,6 +6,7 @@ art_make(
-     "SaveConfigurationIntoTFile_module.cc"
-   LIB_LIBRARIES
-     ${CLHEP}
-+    CLHEP::Random
-   )
- 
- set( icarus_util_lib_list
-@@ -24,7 +25,7 @@ set( icarus_util_lib_list
-                         art_Persistency_Common
-                         art_Persistency_Provenance
-                         ${ART_FRAMEWORK_SERVICES_BASIC}
--                        ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
-+                        ${ART_ROOT_IO_TFILE_SUPPORT} ROOT::Core
-                         ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
-                         ${ART_ROOT_IO_TFILESERVICE_SERVICE}
-                         ${ART_FRAMEWORK_SERVICES_SYSTEM_FILECATALOGMETADATA_SERVICE}
-@@ -34,10 +35,14 @@ set( icarus_util_lib_list
-                         ${MF_UTILITIES}
-                         ${FHICLCPP}
-                         ${CETLIB}
--                        ${Boost_FILESYSTEM_LIBRARY}
--                        ${Boost_SYSTEM_LIBRARY}
-                         ${CLHEP}
--                        ${ROOT_BASIC_LIB_LIST}
-+                        CLHEP::Random
-+                        Boost::filesystem
-+                        Boost::system
-+                        ROOT::Physics
-+                        ROOT::Tree
-+                        ROOT::Core
-+                        ${GSL}
-     )
- 
- 
-@@ -47,7 +52,7 @@ simple_plugin( SignalShapingServiceICARUS  "service"
- 
- simple_plugin(SaveConfigurationIntoTFile "module"
-               ${ART_ROOT_IO_TFILESERVICE_SERVICE}
--              ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
-+              ${ART_ROOT_IO_TFILE_SUPPORT} ROOT::Core
-               ${ART_FRAMEWORK_SERVICES_REGISTRY}
-               ${ART_FRAMEWORK_PRINCIPAL}
-               ${ART_FRAMEWORK_CORE}
-@@ -56,7 +61,8 @@ simple_plugin(SaveConfigurationIntoTFile "module"
-               hep_concurrency
-               ${FHICLCPP}
-               ${CETLIB}
--              ${ROOT_CORE}
-+	      ROOT::Core
-+              ${SQLITE3}
- )
- 
- 
 diff --git a/icaruscode/gallery/CMakeLists.txt b/icaruscode/gallery/CMakeLists.txt
 index 59192d1..e1be379 100644
 --- a/icaruscode/gallery/CMakeLists.txt
@@ -1203,19 +1145,6 @@ index bcad54a..e5f05ff 100644
  include_directories($ENV{ROOT_INC} $ENV{CLHEP_INC})
  include_directories($ENV{CETLIB_INC} $ENV{CETLIB_EXCEPT_INC} $ENV{CANVAS_INC} $ENV{CANVAS_ROOT_IO_INC})
  include_directories($ENV{FHICLCPP_INC} $ENV{MESSAGEFACILITY_INC})
-diff --git a/test/Utilities/CMakeLists.txt b/test/Utilities/CMakeLists.txt
-index 53e7f3b..b578aad 100644
---- a/test/Utilities/CMakeLists.txt
-+++ b/test/Utilities/CMakeLists.txt
-@@ -3,7 +3,7 @@
-   EXCLUDE
-     "SaveConfigurationIntoTFile_module.cc"
-   LIB_LIBRARIES
--    ${CLHEP}
-+    ${CLHEP_LIBRARIES}
-     CLHEP::Random
-   )
- 
 diff a/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt	 b/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt
 --- a/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt	2020-04-20 15:58:08.000000000 -0500
 +++ b/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt	2020-05-02 17:03:23.314662000 -0500
@@ -1331,10 +1260,34 @@ diff a/icaruscode/TPC/SignalProcessing/RecoWire/DeconTools/CMakeLists.txt b/icar
              ${TBB}
          )
  
-diff a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
---- b/icaruscode/Geometry/CMakeLists.txt	2020-05-02 15:28:27.219103000 -0500
-+++ a/icaruscode/Geometry/CMakeLists.txt	2020-05-02 17:07:07.172150000 -0500
-@@ -22,9 +22,9 @@
+diff a/icaruscode/CRT/CRTProducts/CMakeLists.txt b/icaruscode/CRT/CRTProducts/CMakeLists.txt
+--- a/icaruscode/CRT/CRTProducts/CMakeLists.txt	2020-05-02 15:28:27.217103000 -0500
++++ b/icaruscode/CRT/CRTProducts/CMakeLists.txt	2020-05-02 17:07:24.790186000 -0500
+@@ -1,6 +1,6 @@
+ # for classes_def.xml!!
+ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+-include_directories( $ENV{NURANDOM_INC} )
++include_directories( ${NURANDOM_INC} )
+ 
+ art_make( 
+           LIBRARY_NAME icaruscode_CRTProducts
+diff --git a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
+index fc1511d..989993d 100644
+--- a/icaruscode/Geometry/CMakeLists.txt
++++ b/icaruscode/Geometry/CMakeLists.txt
+@@ -11,9 +11,9 @@ art_make(
+     ${ART_FRAMEWORK_MODULES}
+     ${ART_FRAMEWORK_PRINCIPAL}
+     ${ART_FRAMEWORK_SERVICES_REGISTRY}
+-    ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
++    ${ART_ROOT_IO_TFILE_SUPPORT} ROOT::Core
+     ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+-    ${BOOST_LIB}
++    Boost::Boost
+     ${FHICLCPP}
+   LIB_LIBRARIES
+     larcorealg_Geometry
+@@ -22,9 +22,9 @@ art_make(
      ${CETLIB}
      ${CETLIB_EXCEPT}
      ${FHICLCPP}
@@ -1347,7 +1300,7 @@ diff a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
    SERVICE_LIBRARIES
      icaruscode_Geometry
      ${ART_UTILITIES}
-@@ -32,11 +32,10 @@
+@@ -32,11 +32,10 @@ art_make(
      ${FHICLCPP}
      ${CETLIB}
      ${CETLIB_EXCEPT}
@@ -1363,21 +1316,11 @@ diff a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
    )
  
  
-diff a/icaruscode/CRT/CRTProducts/CMakeLists.txt b/icaruscode/CRT/CRTProducts/CMakeLists.txt
---- a/icaruscode/CRT/CRTProducts/CMakeLists.txt	2020-05-02 15:28:27.217103000 -0500
-+++ b/icaruscode/CRT/CRTProducts/CMakeLists.txt	2020-05-02 17:07:24.790186000 -0500
-@@ -1,6 +1,6 @@
- # for classes_def.xml!!
- include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
--include_directories( $ENV{NURANDOM_INC} )
-+include_directories( ${NURANDOM_INC} )
- 
- art_make( 
-           LIBRARY_NAME icaruscode_CRTProducts
-diff a/icaruscode/Utilities/CMakeLists.txt	 b/icaruscode/Utilities/CMakeLists.txt
---- a/icaruscode/Utilities/CMakeLists.txt	2020-04-20 15:58:08.000000000 -0500
-+++ b/icaruscode/Utilities/CMakeLists.txt	2020-05-02 17:07:40.053186000 -0500
-@@ -3,12 +3,13 @@
+diff --git a/icaruscode/Utilities/CMakeLists.txt b/icaruscode/Utilities/CMakeLists.txt
+index 0828085..e3a9af7 100644
+--- a/icaruscode/Utilities/CMakeLists.txt
++++ b/icaruscode/Utilities/CMakeLists.txt
+@@ -3,12 +3,13 @@ art_make(
    EXCLUDE
      "SaveConfigurationIntoTFile_module.cc"
    LIB_LIBRARIES
@@ -1393,7 +1336,7 @@ diff a/icaruscode/Utilities/CMakeLists.txt	 b/icaruscode/Utilities/CMakeLists.tx
                ${ART_FRAMEWORK_SERVICES_REGISTRY}
                ${ART_FRAMEWORK_PRINCIPAL}
                ${ART_FRAMEWORK_CORE}
-@@ -17,7 +18,8 @@
+@@ -17,7 +18,8 @@ simple_plugin(SaveConfigurationIntoTFile "module"
                hep_concurrency
                ${FHICLCPP}
                ${CETLIB}
@@ -1403,3 +1346,29 @@ diff a/icaruscode/Utilities/CMakeLists.txt	 b/icaruscode/Utilities/CMakeLists.tx
  )
  
  
+diff --git a/test/Utilities/CMakeLists.txt b/test/Utilities/CMakeLists.txt
+index 53e7f3b..7d02921 100644
+--- a/test/Utilities/CMakeLists.txt
++++ b/test/Utilities/CMakeLists.txt
+@@ -1,9 +1,9 @@
+ cet_test(FastAndPoorGauss_test
+   LIBRARIES
+-    ${ROOT_MATHCORE}
+-    ${ROOT_HIST}
+-    ${ROOT_RIO}
+-    ${ROOT_CORE}
++    ROOT::MatchCore
++    ROOT::Hist
++    ROOT::RIO
++    ROOT::Core
+   USE_BOOST_UNIT
+   )
+ cet_test(SampledFunction_test USE_BOOST_UNIT)
+@@ -11,6 +11,6 @@ cet_test(SampledFunction_test USE_BOOST_UNIT)
+ cet_test(NonRandomCounter_test
+   LIBRARIES
+     icaruscode_Utilities
+-    ${CLHEP}
++    ${CLHEP_LIBRARIES}
+   USE_BOOST_UNIT
+   )
