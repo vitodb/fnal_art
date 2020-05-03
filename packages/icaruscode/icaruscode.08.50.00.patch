@@ -464,54 +464,6 @@ index 1e6e573..b847eba 100644
  install_headers()
  install_fhicl()
  install_source()
-diff --git a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
-index 4c1ad54..a4a43aa 100644
---- a/icaruscode/Geometry/CMakeLists.txt
-+++ b/icaruscode/Geometry/CMakeLists.txt
-@@ -7,27 +7,35 @@ art_make(
- 			${ART_FRAMEWORK_MODULES}
-                         ${ART_FRAMEWORK_PRINCIPAL}
-                         ${ART_FRAMEWORK_SERVICES_REGISTRY}
--                        ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
-+                        ${ART_ROOT_IO_TFILE_SUPPORT} ROOT::Core
-                         ${ART_ROOT_IO_TFILESERVICE_SERVICE}
--			${BOOST_LIB}
-+			Boost::boost
-                         ${FHICLCPP}
- 	  LIB_LIBRARIES larcorealg_Geometry
-                         ${MF_MESSAGELOGGER}
-                         ${CETLIB}
- 			${CETLIB_EXCEPT}
-                         ${FHICLCPP}
--                        ${ROOT_GEOM}
--                        ${ROOT_BASIC_LIB_LIST}
-+			ROOT::ROOTDataFrame
-+			ROOT::Physics
-+			ROOT::Geom
-+			ROOT::FFTW
-+			ROOT::Tree
-+			ROOT::Core
- 	  SERVICE_LIBRARIES icaruscode_Geometry
- 	  		icaruscode_Geometry
- 			${MF_UTILITIES}
- 	                ${FHICLCPP}
- 			${CETLIB}
- 			${CETLIB_EXCEPT}
--                        ${ROOT_GEOM}
--                        ${ROOT_XMLIO}
--                        ${ROOT_GDML}
--			${ROOT_BASIC_LIB_LIST}
-+			ROOT::ROOTDataFrame
-+			ROOT::Physics
-+			ROOT::Geom
-+			ROOT::XMLIO
-+			ROOT::Gdml
-+			ROOT::FFTW
-+			ROOT::Tree
-+			ROOT::Core
-         )							   
- 
- 
 diff --git a/icaruscode/PMT/Algorithms/CMakeLists.txt b/icaruscode/PMT/Algorithms/CMakeLists.txt
 index ed3e933..f07cd92 100644
 --- a/icaruscode/PMT/Algorithms/CMakeLists.txt
