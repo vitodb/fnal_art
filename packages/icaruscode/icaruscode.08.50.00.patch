@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d3698de..69980a4 100644
+index b224332..728db2e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -21,17 +21,18 @@
+@@ -21,17 +21,18 @@ message(STATUS
    "\n-- === *** Start of configuration of icaruscode ***"
    "\n-- ===")
  
@@ -30,7 +30,7 @@ index d3698de..69980a4 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,40 +46,46 @@
+@@ -45,46 +46,52 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -60,6 +60,11 @@ index d3698de..69980a4 100644
 -find_ups_product( icarus_signal_processing )
 -find_ups_product( icarusutil )
 -find_ups_product( icarus_data )
+-
+-find_ups_product( artdaq_core )
+-find_ups_product( sbndaq_artdaq_core )
+-
+-cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
 +find_package( larcore )
 +find_package( larcoreobj )
 +find_package( lardata )
@@ -96,11 +101,7 @@ index d3698de..69980a4 100644
 +set(fcl_dir job)
 +set(gdml_dir gdml)
 +set(fw_dir fw)
- 
--find_ups_product( artdaq_core )
--find_ups_product( sbndaq_artdaq_core )
--
--cet_find_library( PQ NAMES pq PATHS ENV POSTGRESQL_LIBRARIES NO_DEFAULT_PATH )
++
 +cet_find_library( PQ NAMES pq )
  cet_find_library( NURANDOM_RANDOMUTILS_NURANDOMSERVICE_SERVICE 
 -                  NAMES nurandom_RandomUtils_NuRandomService_service
@@ -108,8 +109,18 @@ index d3698de..69980a4 100644
 +                  NAMES nurandom_RandomUtils_NuRandomService_service)
  
  # deal with fftw
- cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  PATHS $ENV{FFTW_LIBRARY} )
-@@ -103,10 +110,9 @@
+-cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS $ENV{FFTW_LIBRARY} )
++cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  )
++cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f )
++cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l )
++cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q )
+ set(ICARUS_FFTW_LIBRARIES ${ICARUS_FFTW3_LIBRARY} ${ICARUS_FFTW3F_LIBRARY} ${ICARUS_FFTW3L_LIBRARY} ${ICARUS_FFTW3Q_LIBRARY})
+ 
+ # macros for dictionary and simple_plugin
+@@ -103,10 +110,9 @@ add_subdirectory(test)
  add_subdirectory(fcl)
  
  # ups - table and config files
