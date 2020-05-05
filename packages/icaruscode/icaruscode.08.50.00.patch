@@ -79,8 +79,8 @@ index b224332..728db2e 100644
 +find_package( nurandom )
 +find_package( art )
 +find_package(art_root_io)
-+find_package(FFTW3 REQUIRED)
-+find_package(FFTW3f)
++#find_package(FFTW3 REQUIRED)
++#find_package(FFTW3f)
 +find_package(CLHEP REQUIRED COMPONENTS Matrix Vector Random RandomObjects)
 +find_package( Eigen3 )
 +find_package( ifdh_art )
@@ -91,7 +91,7 @@ index b224332..728db2e 100644
 +cet_find_simple_package(sqlite3)
 +find_package( range-v3 REQUIRED COMPONENTS range-v3 meta)
 +cet_find_simple_package( trace INCPATH_VAR TRACE_INC )
-+find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml RGL Physics EG Minuit Minuit2 GenVector MathCore)
++find_package( ROOT REQUIRED COMPONENTS Core Tree Geom XMLIO Gdml RGL Physics EG Minuit Minuit2 GenVector MathCore FFTW ROOTDataFrame)
 +get_target_property(RootIncludes ROOT::Tree INTERFACE_INCLUDE_DIRECTORIES)
 +include_directories(${RootIncludes})
 +find_package( Boost COMPONENTS boost unit_test_framework )
@@ -116,10 +116,10 @@ index b224332..728db2e 100644
 -cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS $ENV{FFTW_LIBRARY} )
 -cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS $ENV{FFTW_LIBRARY} )
 -cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS $ENV{FFTW_LIBRARY} )
-+cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  PATHS  $FFTW3_LIBRARY_DIRS)
-+cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS  $FFTW3_LIBRARY_DIRS)
-+cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS  $FFTW3_LIBRARY_DIRS)
-+cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS  $FFTW3_LIBRARY_DIRS)
++cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  )
++cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f )
++cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l )
++cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q )
  set(ICARUS_FFTW_LIBRARIES ${ICARUS_FFTW3_LIBRARY} ${ICARUS_FFTW3F_LIBRARY} ${ICARUS_FFTW3L_LIBRARY} ${ICARUS_FFTW3Q_LIBRARY})
  
  # macros for dictionary and simple_plugin
@@ -1170,7 +1170,7 @@ diff a/icaruscode/TPC/SignalProcessing/RawDigitFilter/CMakeLists.txt	a/icaruscod
 +                        ROOT::Geom
 +                        ROOT::XMLIO
 +                        ROOT::Gdml
-+			ROOT::Fftw
++			ROOT::FFTW
 +			${ROOT_LIBRARIES}
  			${TBB}
          )
@@ -1221,7 +1221,7 @@ diff a/icaruscode/TPC/SignalProcessing/RecoWire/DeconTools/CMakeLists.txt b/icar
              ${CETLIB}
 -            ${ROOT_FFTW}
 -            ${ROOT_BASIC_LIB_LIST}
-+            ROOT::Fftw
++            ROOT::FFTW
 +            ${ROOT_LIBRARIES}
              ${TBB}
          )
@@ -1277,7 +1277,7 @@ index fc1511d..989993d 100644
 -    
 +    ROOT::Geom
 +    ROOT::XMLIO
-+    ROOT::GDML
++    ROOT::Gdml
 +    ${ROOT_LIBRARIES}
    )
  
@@ -1323,7 +1323,7 @@ index 53e7f3b..7d02921 100644
 -    ${ROOT_HIST}
 -    ${ROOT_RIO}
 -    ${ROOT_CORE}
-+    ROOT::MatchCore
++    ROOT::MathCore
 +    ROOT::Hist
 +    ROOT::RIO
 +    ROOT::Core
