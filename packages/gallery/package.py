@@ -29,7 +29,8 @@ class Gallery(CMakePackage):
     """A library to allow reading of Root output files produced by the art
     suite.
     """
-    patch = patch('gallery.unups.patch')
+    patch = patch('gallery.unups.patch', when='@:1.14.0')
+    patch = patch('gallery.01.14.02.patch', when='@1.14.01:')
 
     homepage='http://art.fnal.gov/'
     git_base = 'http://cdcvs.fnal.gov/projects/gallery'
