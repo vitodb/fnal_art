@@ -45,6 +45,7 @@ class Gallery(CMakePackage):
     version('1.13.01', tag='v1_13_01', git=git_base)
     version('1.14.00', tag='v1_14_00', git=git_base)
     version('1.14.01', tag='v1_14_01', git=git_base)
+    version('1.14.02', tag='v1_14_02', git=git_base)
 
     variant('cxxstd',
             default='17',

@@ -38,6 +38,7 @@ class Larexamples(CMakePackage):
     version('08.06.02', tag='v08_06_02', git='https://github.com/LArSoft/larexamples.git')
     version('08.06.03', tag='v08_06_03', git='https://github.com/LArSoft/larexamples.git')
     version('08.06.04', tag='v08_06_04', git='https://github.com/LArSoft/larexamples.git')
+    version('08.06.13', tag='v08_06_13', git='https://github.com/LArSoft/larexamples.git')
 
     variant('cxxstd',
             default='17',

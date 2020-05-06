@@ -36,7 +36,7 @@ class Larsoft(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('larsoft.unups.patch', when="@:08.43.00")
-    patch('larsoft.08.50.00.patch', when="@08.50.00:"
+    patch('larsoft.08.50.00.patch', when="@08.50.00:")
 
     depends_on('lareventdisplay')
     depends_on('larexamples')
