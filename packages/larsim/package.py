@@ -41,6 +41,7 @@ class Larsim(CMakePackage):
     version('08.19.03', tag='v08_19_03', git='https://github.com/LArSoft/larsim.git')
     version('08.19.04', tag='v08_19_04', git='https://github.com/LArSoft/larsim.git')
     version('08.22.03', tag='v08_22_03', git='https://github.com/LArSoft/larsim.git')
+    version('08.22.05', tag='v08_22_05', git='https://github.com/LArSoft/larsim.git')
 
     variant('cxxstd',
             default='17',
@@ -49,7 +50,7 @@ class Larsim(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('larsim.unups.patch', when='@08.19.04')
-    patch('larsim.08.22.03.patch', when='@08.22.03')
+    patch('larsim.08.22.03.patch', when='@08.22.03:')
 
     depends_on('larsoft-data')
     depends_on('larevt')

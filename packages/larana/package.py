@@ -42,6 +42,7 @@ class Larana(CMakePackage):
     version('08.16.03', tag='v08_16_03', git='https://github.com/LArSoft/larana.git')
     version('08.16.04', tag='v08_16_04', git='https://github.com/LArSoft/larana.git')
     version('08.17.03', tag='v08_17_03', git='https://github.com/LArSoft/larana.git')
+    version('08.17.05', tag='v08_17_05', git='https://github.com/LArSoft/larana.git')
 
     variant('cxxstd',
             default='17',
@@ -50,7 +51,7 @@ class Larana(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('larana.unups.patch', when='@08.16.03')
-    patch('larana.08.17.03.patch', when='@08.17.03')
+    patch('larana.08.17.03.patch', when='@08.17.03:')
 
     depends_on('larreco')
     depends_on('cetmodules', type='build')

@@ -37,6 +37,7 @@ class Larcorealg(CMakePackage):
     version('08.20.01', tag='v08_20_01', git='https://github.com/LArSoft/larcorealg.git')
     version('08.20.02', tag='v08_20_02', git='https://github.com/LArSoft/larcorealg.git')
     version('08.21.03', tag='v08_21_03', git='https://github.com/LArSoft/larcorealg.git')
+    version('08.21.04', tag='v08_21_04', git='https://github.com/LArSoft/larcorealg.git')
     
 
     variant('cxxstd',
@@ -46,7 +47,7 @@ class Larcorealg(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('larcorealg.unups.patch', when="@08.20.02")
-    patch('larcorealg.08.21.03.patch', when="@08.21.03")
+    patch('larcorealg.08.21.03.patch', when="@08.21.03:")
 
     depends_on('larcoreobj')
     depends_on('cetmodules', type='build')

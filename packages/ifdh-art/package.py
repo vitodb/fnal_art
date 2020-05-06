@@ -17,6 +17,8 @@ from the ifdhc package."""
     version('2.10.02',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02')
     version('2.10.01',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_01')
     version('2.10.00',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_00')
+    version('2.10.02',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02')
+    version('2.10.04',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_04')
 
     variant('cxxstd',
             default='17',

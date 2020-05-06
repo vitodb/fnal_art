@@ -38,6 +38,7 @@ class Lareventdisplay(CMakePackage):
     version('08.12.02', tag='v08_12_02', git='https://github.com/LArSoft/lareventdisplay.git')
     version('08.12.03', tag='v08_12_03', git='https://github.com/LArSoft/lareventdisplay.git')
     version('08.12.04', tag='v08_12_04', git='https://github.com/LArSoft/lareventdisplay.git')
+    version('08.12.13', tag='v08_12_13', git='https://github.com/LArSoft/lareventdisplay.git')
 
 
     variant('cxxstd',

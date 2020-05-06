@@ -37,6 +37,7 @@ class Larcoreobj(CMakePackage):
     version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/larcoreobj.git')
     version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larcoreobj.git')
     version('08.10.05', tag='v08_10_05', git='https://github.com/LArSoft/larcoreobj.git')
+    version('08.10.06', tag='v08_10_06', git='https://github.com/LArSoft/larcoreobj.git')
 
     variant('cxxstd',
             default='17',
@@ -45,7 +46,7 @@ class Larcoreobj(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('larcoreobj.unups.patch', when='@08.10.03')
-    patch('larcoreobj.8.10.05.patch', when='@08.10.05')
+    patch('larcoreobj.8.10.05.patch', when='@08.10.05:')
 
     depends_on('canvas-root-io')
     depends_on('cetmodules', type='build')

@@ -16,7 +16,7 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class IcaruscodeSignalProcessing(CMakePackage):
+class IcarusSignalProcessing(CMakePackage):
     """SignalProcessing for icarus
     framework for particle physics experiments.
     """

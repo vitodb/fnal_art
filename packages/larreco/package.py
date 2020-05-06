@@ -40,6 +40,7 @@ class Larreco(CMakePackage):
     version('08.29.00', tag='v08_29_00', git='https://github.com/LArSoft/larreco.git')
     version('08.31.00', tag='v08_31_00', git='https://github.com/LArSoft/larreco.git')
     version('08.31.01', tag='v08_31_01', git='https://github.com/LArSoft/larreco.git')
+    version('08.31.03', tag='v08_31_03', git='https://github.com/LArSoft/larreco.git')
 
     variant('cxxstd',
             default='17',
@@ -49,7 +50,7 @@ class Larreco(CMakePackage):
     variant('tf', default=False, description='Build tensorflow dependent libraries.')
     
     patch('larreco.unups.patch', when='@08.29.00')
-    patch('larreco.08.31.01.patch', when='@08.31.01')
+    patch('larreco.08.31.01.patch', when='@08.31.01:')
 
     depends_on('tbb')
     depends_on('clhep')

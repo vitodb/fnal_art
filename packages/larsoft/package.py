@@ -26,6 +26,8 @@ class Larsoft(CMakePackage):
     version('08.39.00', tag='v08_39_00', git='https://github.com/LArSoft/larsoft.git')
     version('08.40.00', tag='v08_40_00', git='https://github.com/LArSoft/larsoft.git')
     version('08.43.00', tag='v08_43_00', git='https://github.com/LArSoft/larsoft.git')
+    version('08.50.00', tag='v08_50_00', git='https://github.com/LArSoft/larsoft.git')
+    version('08.50.02', tag='v08_50_02', git='https://github.com/LArSoft/larsoft.git')
 
     variant('cxxstd',
             default='17',
@@ -33,7 +35,8 @@ class Larsoft(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larsoft.unups.patch')
+    patch('larsoft.unups.patch', when="@:08.43.00")
+    patch('larsoft.08.50.00.patch', when="@08.50.00:"
 
     depends_on('lareventdisplay')
     depends_on('larexamples')

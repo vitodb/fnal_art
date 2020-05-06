@@ -45,6 +45,7 @@ class Larcore(CMakePackage):
     version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/larcore.git')
     version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larcore.git')
     version('08.11.03', tag='v08_11_03', git='https://github.com/LArSoft/larcore.git')
+    version('08.11.05', tag='v08_11_05', git='https://github.com/LArSoft/larcore.git')
 
     variant('cxxstd',
             default='17',
@@ -53,7 +54,7 @@ class Larcore(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('larcore.unups.patch', when='@08.10.03')
-    patch('larcore.08.11.03.patch', when='@08.11.03')
+    patch('larcore.08.11.03.patch', when='@08.11.03:')
 
     depends_on('larcorealg')
     depends_on('art-root-io')
