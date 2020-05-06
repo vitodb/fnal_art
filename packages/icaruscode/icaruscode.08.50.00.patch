@@ -30,7 +30,7 @@ index b224332..728db2e 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -45,46 +46,55 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -45,46 +46,57 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -120,6 +120,8 @@ index b224332..728db2e 100644
 +cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f )
 +cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l )
 +cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q )
++get_filename_component(ICARUS_LIBDIR ${ICARUS_FFTW3_LIBRARY} DIRECTORY)
++include_directories("${ICARUS_LIBDIR}/../include")
  set(ICARUS_FFTW_LIBRARIES ${ICARUS_FFTW3_LIBRARY} ${ICARUS_FFTW3F_LIBRARY} ${ICARUS_FFTW3L_LIBRARY} ${ICARUS_FFTW3Q_LIBRARY})
  
  # macros for dictionary and simple_plugin
@@ -1338,3 +1340,31 @@ index 53e7f3b..7d02921 100644
 +    ${CLHEP_LIBRARIES}
    USE_BOOST_UNIT
    )
+diff --git a/icaruscode/TPC/Utilities/CMakeLists.txt b/icaruscode/TPC/Utilities/CMakeLists.txt
+index 885ffde..1f62ebd 100644
+--- a/icaruscode/TPC/Utilities/CMakeLists.txt
++++ b/icaruscode/TPC/Utilities/CMakeLists.txt
+@@ -28,10 +28,10 @@ set( icarus_util_lib_list
+                         ${MF_UTILITIES}
+                         ${FHICLCPP}
+                         ${CETLIB}
+-                        ${Boost_FILESYSTEM_LIBRARY}
+-                        ${Boost_SYSTEM_LIBRARY}
+-                        ${CLHEP}
+-                        ${ROOT_BASIC_LIB_LIST}
++                        Boost::filesystem
++                        Boost::system
++                        ${CLHEP_LIBRARIES}
++                        ${ROOT_LIBRARIES}
+     )
+ 
+ art_make( 
+@@ -52,7 +52,7 @@ art_make(
+                         hep_concurrency
+                         ${FHICLCPP}
+                         ${CETLIB}
+-                        ${ROOT_CORE}
++                        ROOT::Core
+        )
+ 
+ 
