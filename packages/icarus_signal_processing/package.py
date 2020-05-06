@@ -16,23 +16,20 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class Icaruscode(CMakePackage):
-    """The eponymous package of the Icarus experiment
+class IcaruscodeSignalProcessing(CMakePackage):
+    """SignalProcessing for icarus
     framework for particle physics experiments.
     """
 
-    homepage = 'https://cdcvs.fnal.gov/redmine/projects/icaruscode'
-    git_base = 'http://cdcvs.fnal.gov/projects/icaruscode'
+    homepage = 'https://cdcvs.fnal.gov/redmine/projects/icarus_signal_processing'
+    git_base = 'http://cdcvs.fnal.gov/projects/icarus_signal_processing'
 
     version('develop', branch='develop', git=git_base)
-    version('08.43.00', tag='v08_43_00', git=git_base)
-    version('08.41.00', tag='v08_41_00', git=git_base)
-    version('08.40.00', tag='v08_40_00', git=git_base)
-    version('08.39.00', tag='v08_39_00', git=git_base)
+    version('08.44.00', tag='v08_44_00', git=git_base)
+    version('08.47.00', tag='v08_47_00', git=git_base)
     version('08.50.00', tag='v08_50_00', git=git_base)
 
-    patch('icaruscode.unups.patch', when='@08.39.00')
-    patch('icaruscode.08.50.00.patch',when='@08.50.00')
+    patch('icarus_signal_processing.08.50.00.patch',when='@08.50.00')
 
     variant('cxxstd',
             default='17',
@@ -45,43 +42,10 @@ class Icaruscode(CMakePackage):
     depends_on('cetmodules@1.01.01:', type='build')
 
     # Build and link dependencies.
-    depends_on('artdaq-core', type=('build','run'))
-    depends_on('art-root-io', type=('build','run'))
     depends_on('art', type=('build','run'))
-    depends_on('artdaq-core', type=('build','run'))
-    depends_on('boost', type=('build','run'))
     depends_on('canvas-root-io', type=('build','run'))
-    depends_on('canvas', type=('build','run'))
-    depends_on('cetlib-except', type=('build','run'))
-    depends_on('clhep', type=('build','run'))
-    depends_on('cppgsl', type=('build','run'))
-    depends_on('eigen', type=('build','run'))
-    depends_on('fftw', type=('build','run'))
-    depends_on('hep-concurrency', type=('build','run'))
-    depends_on('ifdh-art', type=('build','run'))
-    depends_on('intel-tbb', type=('build','run'))
-    depends_on('geant4', type=('build','run'))
-    depends_on('icarus_signal_processing', type=('build','run'))
-    depends_on('larana', type=('build','run'))
-    depends_on('larcoreobj', type=('build','run'))
-    depends_on('larcore', type=('build','run'))
-    depends_on('lardataobj', type=('build','run'))
-    depends_on('lardata', type=('build','run'))
-    depends_on('larevt', type=('build','run'))
-    depends_on('larpandora', type=('build','run'))
-    depends_on('larpandoracontent', type=('build','run'))
-    depends_on('larreco', type=('build','run'))
-    depends_on('larsim', type=('build','run'))
-    depends_on('libwda', type=('build','run'))
-    depends_on('marley', type=('build','run'))
-    depends_on('nug4', type=('build','run'))
-    # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))
-    depends_on('postgresql', type=('build','run'))
-    depends_on('range-v3', type=('build','run'))
-    depends_on('sbndaq-artdaq-core', type=('build','run'))
-    depends_on('sqlite', type=('build','run'))
-    depends_on('trace', type=('build','run'))
+    depends_on('larsoft', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
