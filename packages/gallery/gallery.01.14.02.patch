@@ -1,25 +1,23 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 9046c98..89171c4 100644
+index 31e831e..a7668ef 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -14,12 +14,12 @@
+@@ -13,12 +13,10 @@
+ # ======================================================================
  
- 
- # use cmake 3.11 or later
--cmake_minimum_required (VERSION 3.11)
-+cmake_minimum_required (VERSION 3.12...3.14 FATAL_ERROR)
- 
--project(gallery)
+ cmake_minimum_required(VERSION 3.12...3.14 FATAL_ERROR)
+-project(gallery LANGUAGES CXX)
 +project(gallery VERSION 1.14.01 LANGUAGES CXX)
  
--# cetbuildtools contains our cmake modules
--find_package(cetbuildtools 7.13.01 REQUIRED)
-+# cetmodules contains our cmake modules
-+find_package(cetmodules 1.01.01 REQUIRED)
+ # cetbuildtools contains our cmake modules
+-find_package(cetbuildtools REQUIRED)
+-
+-list(APPEND CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules)
++find_package(cetmodules REQUIRED)
  
- list(APPEND CMAKE_MODULE_PATH $ENV{CANVAS_ROOT_IO_DIR}/Modules)
- 
-@@ -31,51 +31,14 @@ cet_set_compiler_flags(DIAGS VIGILANT
+ include(CetCMakeEnv)
+ cet_cmake_env()
+@@ -28,51 +26,14 @@ cet_set_compiler_flags(DIAGS VIGILANT
    NO_UNDEFINED
    EXTRA_FLAGS -pedantic
    EXTRA_CXX_FLAGS -Wnon-virtual-dtor -Wdelete-non-virtual-dtor)
@@ -75,7 +73,7 @@ index 9046c98..89171c4 100644
  
  # art_dictionary
  include(ArtDictionary)
-@@ -84,7 +47,4 @@ include(ArtDictionary)
+@@ -81,7 +42,4 @@ include(ArtDictionary)
  add_subdirectory(gallery)
  
  # ups - table and config files
