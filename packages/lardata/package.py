@@ -28,6 +28,7 @@ class Lardata(CMakePackage):
     version('08.12.00', tag='v08_12_00', git='https://github.com/LArSoft/lardata.git')
     version('08.13.00', tag='v08_13_00', git='https://github.com/LArSoft/lardata.git')
     version('08.14.02', tag='v08_14_02', git='https://github.com/LArSoft/lardata.git')
+    version('08.15.04', tag='v08_15_04', git='https://github.com/LArSoft/lardata.git')
 
     variant('cxxstd',
             default='17',
@@ -35,7 +36,8 @@ class Lardata(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lardata.unups.patch')
+    patch('lardata.unups.patch', when='@:08.15.03')
+    patch('lardata.08.15.04.patch', when='@08.15.04:')
 
     depends_on('nutools')
     depends_on('larcore')

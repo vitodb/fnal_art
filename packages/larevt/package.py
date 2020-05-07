@@ -40,6 +40,7 @@ class Larevt(CMakePackage):
     version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larevt.git')
     version('08.10.04', tag='v08_10_04', git='https://github.com/LArSoft/larevt.git')
     version('08.11.02', tag='v08_11_02', git='https://github.com/LArSoft/larevt.git')
+    version('08.11.04', tag='v08_11_04', git='https://github.com/LArSoft/larevt.git')
 
     variant('cxxstd',
             default='17',
