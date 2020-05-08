@@ -48,8 +48,8 @@ class Larevt(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larevt.unups.patch', when='@08.10.04')
-    patch('larevt.08.11.02.patch', when='@08.11.02')
+    patch('larevt.unups.patch', when='@:08.10.04')
+    patch('larevt.08.11.02.patch', when='@08.11.02:')
 
     depends_on('libwda')
     depends_on('lardata')

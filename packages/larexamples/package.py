@@ -46,7 +46,8 @@ class Larexamples(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larexamples.unups.patch')
+    patch('larexamples.unups.patch', when="@:08.06.12")
+    patch('larexamples.08.06.13.patch', when="@08.06.13:")
 
     depends_on('larsim')
     depends_on('cetmodules', type='build')

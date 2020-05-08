@@ -47,7 +47,8 @@ class Lareventdisplay(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lareventdisplay.unups.patch')
+    patch('lareventdisplay.unups.patch', when='@:08.12.12')
+    patch('lareventdisplay.08.12.13.patch', when='@08.12.13:')
 
     depends_on('larreco')
     depends_on('nuevdb')
