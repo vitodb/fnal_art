@@ -43,9 +43,23 @@ class IcarusSignalProcessing(CMakePackage):
 
     # Build and link dependencies.
     depends_on('art', type=('build','run'))
+    depends_on('boost', type=('build','run'))
+    depends_on('canvas', type=('build','run'))
     depends_on('canvas-root-io', type=('build','run'))
+    depends_on('clhep', type=('build','run'))
+    depends_on('hep-concurrency', type=('build','run'))
     depends_on('nutools', type=('build','run'))
     depends_on('larsoft', type=('build','run'))
+    depends_on('cetlib-except', type=('build','run'))
+    depends_on('range-v3', type=('build','run'))
+    depends_on('geant4', type=('build','run'))
+    depends_on('postgresql', type=('build','run'))
+    depends_on('artg4tk', type=('build','run'))
+    depends_on('larpandoracontent', type=('build','run'))
+    depends_on('fftw', type=('build','run'))
+    depends_on('marley', type=('build','run'))
+    depends_on('larsoft-data', type=('build','run'))
+    depends_on('eigen+fftw', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

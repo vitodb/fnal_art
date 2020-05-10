@@ -30,9 +30,10 @@ class Icaruscode(CMakePackage):
     version('08.40.00', tag='v08_40_00', git=git_base)
     version('08.39.00', tag='v08_39_00', git=git_base)
     version('08.50.00', tag='v08_50_00', git=git_base)
+    version('08.50.02', tag='v08_50_02', git=git_base)
 
-    patch('icaruscode.unups.patch', when='@08.39.00')
-    patch('icaruscode.08.50.00.patch',when='@08.50.00')
+    patch('icaruscode.unups.patch', when='@:08.49.00')
+    patch('icaruscode.08.50.00.patch',when='@08.50.00:')
 
     variant('cxxstd',
             default='17',

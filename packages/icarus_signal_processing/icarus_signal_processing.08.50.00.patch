@@ -1,8 +1,9 @@
+
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index df41978..fb57612 100644
+index df41978..be44290 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -16,16 +16,10 @@
+@@ -16,20 +16,17 @@
  # use cmake 3.11 or later
  cmake_minimum_required (VERSION 3.11)
  
@@ -21,7 +22,14 @@ index df41978..fb57612 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -40,10 +34,10 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+ 
++set(fcl_dir 'job')
++set(gdml_dir 'gdml')
++
+ cet_set_compiler_flags(DIAGS CAUTIOUS
+   WERROR
+   NO_UNDEFINED
+@@ -40,10 +37,13 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
  cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
@@ -33,12 +41,26 @@ index df41978..fb57612 100644
 +find_package( canvas_root_io )
 +find_package( nutools )
 +find_package( art )
++find_package( Eigen3 )
++include_directories( ${EIGEN3_INCLUDE_DIRS} )
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-shadow")
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -58,16 +52,10 @@ cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS $ENV{FFTW_LIBRARY} )
- cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS $ENV{FFTW_LIBRARY} )
- cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS $ENV{FFTW_LIBRARY} )
+@@ -53,21 +50,17 @@ include(BuildPlugins)
+ # add cet_find_library commands here when needed
+ 
+ ##cet_find_library(FFTW_LIBRARY NAMES fftw3f fftw3 fftw3q fftw3l fftw3_threads fftw3f_threads fftw3q_threads PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS $ENV{FFTW_LIBRARY} )
++cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3   )
++cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f  )
++cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l  )
++cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q  )
++get_filename_component(ICARUS_LIBDIR ${ICARUS_FFTW3_LIBRARY} DIRECTORY)
++include_directories("${ICARUS_LIBDIR}/../include")
  set(ICARUS_FFTW_LIBRARIES ${ICARUS_FFTW3_LIBRARY} ${ICARUS_FFTW3F_LIBRARY} ${ICARUS_FFTW3L_LIBRARY} ${ICARUS_FFTW3Q_LIBRARY})
 -
  # ADD SOURCE CODE SUBDIRECTORIES HERE
