@@ -15,7 +15,7 @@ class SbndaqArtdaqCore(CMakePackage):
     url = 'https://github.com/SBNSoftware/sbndaq-artdaq-core/archive/v1_2_3.tar.gz'
     git_base = 'https://github.com/SBNSoftware/sbndaq-artdaq-core.git'
 
-    version('develop', git = git-base, branch="develop")
+    version('develop', git=git_base, branch="develop")
 
     variant('cxxstd',
             default='17',
