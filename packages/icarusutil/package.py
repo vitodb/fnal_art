@@ -20,11 +20,12 @@ class Icarusutil(CMakePackage):
 
     homepage = "http://cdcvs.fnal.gov/redmine/projects/icarusutil"
     url      = "http://cdcvs.fnal.gov/projects/icarusutil"
+    git_base = 'https://github.com/SBNSoftware/icarusutil.git'
 
-    version('08.36.00', tag='v08_36_00', git='http://cdcvs.fnal.gov/projects/icarusutil')
-    version('08.39.00', tag='v08_39_00', git='http://cdcvs.fnal.gov/projects/icarusutil')
-    version('08.41.00', tag='v08_41_00', git='http://cdcvs.fnal.gov/projects/icarusutil')
-    version('08.43.00', tag='v08_43_00', git='http://cdcvs.fnal.gov/projects/icarusutil')
+    version('08.36.00', tag='v08_36_00', git=git_base)
+    version('08.39.00', tag='v08_39_00', git=git_base)
+    version('08.41.00', tag='v08_41_00', git=git_base)
+    version('08.43.00', tag='v08_43_00', git=git_base)
 
     variant('cxxstd',
             default='17',
