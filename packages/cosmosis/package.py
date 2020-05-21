@@ -77,7 +77,9 @@ class Cosmosis(MakefilePackage):
             inspect.getmodule(self).make(*self.build_targets)
 
     def install(self, spec, prefix):
-        # it is already there..
+        # it is already there..but we need a lib directory
+	with working_dir(prefix):
+	    os.system('mkdir lib && cd lib && ln -s `find .. -name *.so -print` .')
         pass
 
     def setup_run_environment(self, env):
