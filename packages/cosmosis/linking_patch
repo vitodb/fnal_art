@@ -1,0 +1,80 @@
+diff --git a/cosmosis-standard-library/boltzmann/halofit/Makefile b/boltzmann/halofit/Makefile
+index 2556d18..ca9dfd8 100644
+--- a/cosmosis-standard-library/boltzmann/halofit/Makefile
++++ b/cosmosis-standard-library/boltzmann/halofit/Makefile
+@@ -9,5 +9,5 @@ clean:
+ 	rm -f halofit_module.so *.o *.mod
+ 	rm -rf halofit_module.so.dSYM/
+ 
+-halofit_module.so: halofit.F90 halofit_module.F90 ${COSMOSIS_SRC_DIR}/cosmosis/datablock/libcosmosis_fortran.so
+-	$(FC) $(FFLAGS) -shared -o $@ $+
++halofit_module.so: halofit.F90 halofit_module.F90
++	$(FC) $(FFLAGS) -shared -o $@ $+ -L${COSMOSIS_SRC_DIR}/cosmosis/datablock -lcosmosis_fortran
+diff --git a/cosmosis-standard-library/boltzmann/halofit_takahashi/Makefile b/boltzmann/halofit_takahashi/Makefile
+index cd9beba..f043a14 100755
+--- a/cosmosis-standard-library/boltzmann/halofit_takahashi/Makefile
++++ b/cosmosis-standard-library/boltzmann/halofit_takahashi/Makefile
+@@ -4,7 +4,7 @@ all: halofit_interface.so
+ 
+ USER_LDFLAGS=-L${COSMOSIS_SRC_DIR}/cosmosis/datablock -lcosmosis_fortran
+ 
+-halofit_interface.so: camb_params_stub.f90 matter_power_stub.f90 nonlinear.f90 halofit_interface.F90 ${COSMOSIS_SRC_DIR}/cosmosis/datablock/libcosmosis_fortran.so
++halofit_interface.so: camb_params_stub.f90 matter_power_stub.f90 nonlinear.f90 halofit_interface.F90 
+ 	$(FC) $(FFLAGS) -fPIC -c -o camb_params_stub.o camb_params_stub.f90
+ 	$(FC) $(FFLAGS) -fPIC -c -o matter_power_stub.o matter_power_stub.f90
+ 	$(FC) $(FFLAGS) -fPIC -c -o nonlinear.o nonlinear.f90
+@@ -16,4 +16,4 @@ clean:
+ 	rm -rf *.o *~ *.flc smith2demo fsmith2  halofit_interface.so halofit_interface.so.dSYM *.mod
+ 
+ test:
+-	@echo "Alas, halofit_takahashi has no tests"
+\ No newline at end of file
++	@echo "Alas, halofit_takahashi has no tests"
+diff --git a/cosmosis-standard-library/mass_function/mf_pressschechter/Makefile b/mass_function/mf_pressschechter/Makefile
+index 19f62bd..d05fb6a 100644
+--- a/cosmosis-standard-library/mass_function/mf_pressschechter/Makefile
++++ b/cosmosis-standard-library/mass_function/mf_pressschechter/Makefile
+@@ -9,5 +9,5 @@ clean:
+ 	rm -f ps_mf_module.so *.o *.mod
+ 	rm -rf ps_mf_module.so.dSYM/
+ 
+-ps_mf_module.so: cosmo.f90 linearpk.f90 sigma.f90 spline_cubic_set.f toms446.f90  quadpack.f90  chebyshev_series.f90  chebyshev.f90  mf_pressschechter.f90 interface_tools.f90 compute_mf_pressschechter.f90  pressschechter_module.F90 ${COSMOSIS_SRC_DIR}/cosmosis/datablock/libcosmosis_fortran.so
+-	$(FC) $(FFLAGS) -shared -o $@ $+
++ps_mf_module.so: cosmo.f90 linearpk.f90 sigma.f90 spline_cubic_set.f toms446.f90  quadpack.f90  chebyshev_series.f90  chebyshev.f90  mf_pressschechter.f90 interface_tools.f90 compute_mf_pressschechter.f90  pressschechter_module.F90 
++	$(FC) $(FFLAGS) -shared -o $@ $+ -L${COSMOSIS_SRC_DIR}/cosmosis/datablock -lcosmosis_fortran
+diff --git a/cosmosis-standard-library/mass_function/mf_shethtormen/Makefile b/mass_function/mf_shethtormen/Makefile
+index a7ba3cb..7b73ef1 100644
+--- a/cosmosis-standard-library/mass_function/mf_shethtormen/Makefile
++++ b/cosmosis-standard-library/mass_function/mf_shethtormen/Makefile
+@@ -9,5 +9,5 @@ clean:
+ 	rm -f st_mf_module.so *.o *.mod
+ 	rm -rf st_mf_module.so.dSYM/
+ 
+-st_mf_module.so: cosmo.f90 linearpk.f90 sigma.f90 spline_cubic_set.f toms446.f90  quadpack.f90  chebyshev_series.f90  chebyshev.f90  mf_shethtormen.f90 interface_tools.f90 compute_mf_shethtormen.f90  shethtormen_module.F90 ${COSMOSIS_SRC_DIR}/cosmosis/datablock/libcosmosis_fortran.so
+-	$(FC) $(FFLAGS) -shared -o $@ $+
++st_mf_module.so: cosmo.f90 linearpk.f90 sigma.f90 spline_cubic_set.f toms446.f90  quadpack.f90  chebyshev_series.f90  chebyshev.f90  mf_shethtormen.f90 interface_tools.f90 compute_mf_shethtormen.f90  shethtormen_module.F90
++	$(FC) $(FFLAGS) -shared -o $@ $+ -L${COSMOSIS_SRC_DIR}/cosmosis/datablock -lcosmosis_fortran
+diff --git a/cosmosis-standard-library/mass_function/mf_tinker/Makefile b/mass_function/mf_tinker/Makefile
+index 49b72ff..56b0bb6 100644
+--- a/cosmosis-standard-library/mass_function/mf_tinker/Makefile
++++ b/cosmosis-standard-library/mass_function/mf_tinker/Makefile
+@@ -8,5 +8,5 @@ clean:
+ 	rm -f tinker_mf_module.so *.o *.mod
+ 	rm -rf tinker_mf_module.so.dSYM/
+ 
+-tinker_mf_module.so: cosmo.f90 linearpk.f90 sigma.f90 spline_cubic_set.f toms446.f90  quadpack.f90  chebyshev_series.f90  chebyshev.f90    mf_tinker.f90 interface_tools.f90 compute_mf_tinker.f90  tinker_module.F90 ${COSMOSIS_SRC_DIR}/cosmosis/datablock/libcosmosis_fortran.so
+-	$(FC) $(FFLAGS) -shared -o $@ $+
++tinker_mf_module.so: cosmo.f90 linearpk.f90 sigma.f90 spline_cubic_set.f toms446.f90  quadpack.f90  chebyshev_series.f90  chebyshev.f90    mf_tinker.f90 interface_tools.f90 compute_mf_tinker.f90  tinker_module.F90 
++	$(FC) $(FFLAGS) -shared -o $@ $+ -L${COSMOSIS_SRC_DIR}/cosmosis/datablock -lcosmosis_fortran
+diff --git a/cosmosis-standard-library/structure/crl_eisenstein_hu/Makefile b/structure/crl_eisenstein_hu/Makefile
+index 6438786..dbe7a64 100644
+--- a/cosmosis-standard-library/structure/crl_eisenstein_hu/Makefile
++++ b/cosmosis-standard-library/structure/crl_eisenstein_hu/Makefile
+@@ -9,5 +9,5 @@ clean:
+ 	rm -f nowiggle_module.so *.o *.mod
+ 	rm -rf nowiggle_module.so.dSYM/
+ 
+-nowiggle_module.so:   spline.f90 interface_tools.f90 eisensteinhu.f90 compute_pk_nowiggle.f90  nowiggle_module.f90 ${COSMOSIS_SRC_DIR}/cosmosis/datablock/libcosmosis_fortran.so
+-	$(FC) $(FFLAGS) -shared -o $@ $+
++nowiggle_module.so:   spline.f90 interface_tools.f90 eisensteinhu.f90 compute_pk_nowiggle.f90  nowiggle_module.f90 
++	$(FC) $(FFLAGS) -shared -o $@ $+ -L${COSMOSIS_SRC_DIR}/cosmosis/datablock -lcosmosis_fortran

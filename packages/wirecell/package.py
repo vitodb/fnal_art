@@ -79,8 +79,8 @@ class Wirecell(Package):
 
         cfg += " configure"
         python(*cfg.split())
-        python("wcb","-vv")
-        python("wcb", "install")
+        python("wcb","-vv","--notests")
+        python("wcb", "--notests", "install")
         return
 
     def setup_environment(self, spack_env, run_env):

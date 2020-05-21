@@ -13,6 +13,10 @@ class Cosmosis(MakefilePackage):
     url      = 'https://bitbucket.org/joezuntz/cosmosis/get/v1.6.2.tar.bz2'
     git      = 'https://bitbucket.org/joezuntz/cosmosis.git'
 
+    # cosmosis by default links some .so files with a full path; so
+    # fix that...
+    patch("linking_patch")
+
     # FIXME: Add a list of GitHub accounts to
     # notify when the package is updated.
     # maintainers = ['github_user1', 'github_user2']
