@@ -51,7 +51,7 @@ class Ifdhc(MakefilePackage):
 
     @property
     def install_targets(self):
-        return ('DESTDIR={0}/'.format(self.prefix), 'install')
+        return ('SHELL=/bin/bash', 'DESTDIR={0}/'.format(self.prefix), 'install')
 
     def setup_environment(self, spack_env, run_env):
         spack_env.set('PYTHON_INCLUDE', self.spec['python'].prefix.include)
