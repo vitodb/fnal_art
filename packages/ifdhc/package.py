@@ -56,6 +56,7 @@ class Ifdhc(MakefilePackage):
     def setup_environment(self, spack_env, run_env):
         spack_env.set('PYTHON_INCLUDE', self.spec['python'].prefix.include)
         spack_env.set('PYTHON_LIB', self.spec['python'].prefix.lib)
+        spack_env.set('SHELL', '/bin/bash')
         run_env.prepend_path('PATH', self.prefix.bin)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
