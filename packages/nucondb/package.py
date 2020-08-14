@@ -39,11 +39,16 @@ class Nucondb(MakefilePackage):
         cxxstd = self.spec.variants['cxxstd'].value
         cxxstdflag =  '' if cxxstd == 'default' else \
                       getattr(self.compiler, 'cxx{0}_flag'.format(cxxstd))        
-        return ('LIBWDA_FQ_DIR=' + self.spec['libwda'].prefix,
+        tlist = ['LIBWDA_FQ_DIR=' + self.spec['libwda'].prefix,
                 'LIBWDA_LIB=' + self.spec['libwda'].prefix.lib,
                 'IFDHC_FQ_DIR=' + self.spec['ifdhc'].prefix,
                 'IFDHC_LIB=' + self.spec['ifdhc'].prefix.lib,
-                'ARCH=' + cxxstdflag)
+                'ARCH=' + cxxstdflag]
+
+        if 'ubuntu' in self.spec.architecture:
+              tlist.append('LDFLAGS=-lfreerdp-crypto') 
+
+        return tlist
 
     @property
     def install_targets(self):
