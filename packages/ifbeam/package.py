@@ -43,7 +43,7 @@ class Ifbeam(MakefilePackage):
                 'ARCH=' + cxxstdflag]
 
         if 'ubuntu' in self.spec.architecture:
-              tlist.append('LDFLAGS=-lfreerdp-crypto') 
+              tlist.append('LDFLAGS=-lcrypto') 
 
         return tlist
 
