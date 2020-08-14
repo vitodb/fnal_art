@@ -34,7 +34,7 @@ class Libwda(MakefilePackage):
     def build_targets(self):
         tlist= ['LIBWDA_VERSION=v{0}'.format(self.version.underscored),]
         if 'ubuntu' in self.spec.architecture:
-              tlist.append('LDFLAGS=-lfreerdp-crypto') 
+              tlist.append('LDFLAGS=-lcrypto') 
         return tlist
 
     @property
