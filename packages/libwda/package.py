@@ -33,8 +33,6 @@ class Libwda(MakefilePackage):
     @property
     def build_targets(self):
         tlist= ['LIBWDA_VERSION=v{0}'.format(self.version.underscored),]
-        if 'ubuntu' in self.spec.architecture:
-              tlist.append('LDFLAGS=-lcrypto') 
         return tlist
 
     @property

@@ -45,9 +45,6 @@ class Nucondb(MakefilePackage):
                 'IFDHC_LIB=' + self.spec['ifdhc'].prefix.lib,
                 'ARCH=' + cxxstdflag]
 
-        if 'ubuntu' in self.spec.architecture:
-              tlist.append('LDFLAGS=-lcrypto') 
-
         return tlist
 
     @property
