@@ -11,7 +11,7 @@ class Cetmodules(CMakePackage):
     Fermilab and associated experiments and other collaborations.
     """
 
-    homepage = 'http://cdcvs.fnal.gov/projects/cetmodules'
+    homepage = 'https://cdcvs.fnal.gov/projects/cetmodules'
 
     version('develop', branch='develop', git=homepage)
     version('1.04.00', sha256='4ba077e7146e19a805476f2fcf2a537a2cd24dbd602f5f5c348431b5018379da')
@@ -31,7 +31,7 @@ class Cetmodules(CMakePackage):
     depends_on('cmake@3.12:', type='build', when='@1.02.00:')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     patch('cetmodules.include_guard.patch')

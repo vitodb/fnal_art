@@ -10,7 +10,7 @@ import os, glob
 class Log4cpp(AutotoolsPackage):
     """A library of C++ classes for flexible logging to files (rolling),
 syslog, IDSA and other destinations. It is modeled after the Log for Java
- library (http://www.log4j.org), staying as close to their API as is 
+ library (https://www.log4j.org), staying as close to their API as is 
 reasonable."""
 
     homepage = "https://sourceforge.net/projects/log4cpp/"

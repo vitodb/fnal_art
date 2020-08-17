@@ -9,7 +9,7 @@ import glob
 
 class Lhapdf(AutotoolsPackage):
 
-    homepage = "http://www.hepforge.org/lhapdf"
+    homepage = "https://www.hepforge.org/lhapdf"
     url      = "https://lhapdf.hepforge.org/downloads/?f=lhapdf-5.9.1.tar.gz"
 
     def url_for_version(self, version):

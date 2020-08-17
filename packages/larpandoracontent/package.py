@@ -18,7 +18,7 @@ def patcher(x):
 class Larpandoracontent(CMakePackage):
     """Larpandoracontent"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
     url      = "https://github.com/LArSoft/larpandoracontent.git"
 
     version('3.14.05', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_14_05')

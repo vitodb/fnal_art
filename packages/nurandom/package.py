@@ -19,8 +19,8 @@ def sanitize_environments(*args):
 class Nurandom(CMakePackage):
     """Random number generator interfaces to art."""
 
-    homepage = 'http://cdcvs.fnal.gov/redmine/projects/nurandom'
-    git_base = 'http://cdcvs.fnal.gov/projects/nurandom'
+    homepage = 'https://cdcvs.fnal.gov/redmine/projects/nurandom'
+    git_base = 'https://cdcvs.fnal.gov/projects/nurandom'
 
     version('develop', branch='develop', git=git_base)
     version('1.04.01', tag='v1_04_01', git=git_base)
@@ -44,7 +44,7 @@ class Nurandom(CMakePackage):
     depends_on('cetlib-except')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

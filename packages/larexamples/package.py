@@ -27,7 +27,7 @@ def sanitize_environments(*args):
 class Larexamples(CMakePackage):
     """Larexamples"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larexamples"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larexamples"
     url      = "https://github.com/LArSoft/larexamples.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larexamples.git', branch='feature/MVP1a')

@@ -9,8 +9,8 @@ import os
 class Ifdhc(MakefilePackage):
     """Data handling client code for intensity frontier experiments"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/ifdhc"
-    git_base = "http://cdcvs.fnal.gov/projects/ifdhc/ifdhc.git"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdhc"
+    git_base = "https://cdcvs.fnal.gov/projects/ifdhc/ifdhc.git"
 
     version('develop', git=git_base, branch='develop')
     version('2.3.10', sha256='4da290f5fc3c9d4344792176e19e1d3278f87a634ebc1535bbd9a91aae2bbf9b')
@@ -39,7 +39,7 @@ class Ifdhc(MakefilePackage):
             filter_file(r'^(\s*#\s*include\s+["<])../util/', r'\1', hfile)
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     @property

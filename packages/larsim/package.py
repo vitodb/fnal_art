@@ -27,7 +27,7 @@ def sanitize_environments(*args):
 class Larsim(CMakePackage):
     """Larsim"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larsim"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larsim"
     url      = "https://github.com/LArSoft/larsim.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larsim.git', branch='feature/MVP1a')

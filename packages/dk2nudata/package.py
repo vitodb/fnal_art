@@ -10,7 +10,7 @@ class Dk2nudata(CMakePackage):
     """This package consolidates the disparate formats of neutrino beam simulation "flux" files.
 """
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/dk2nu"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/dk2nu"
     url      = "https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
     version('01.07.02', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")

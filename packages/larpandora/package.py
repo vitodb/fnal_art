@@ -28,7 +28,7 @@ def sanitize_environments(*args):
 class Larpandora(CMakePackage):
     """Larpandora"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larpandora"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandora"
     url      = "https://github.com/LArSoft/larpandora.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larpandora.git', branch='feature/MVP1a')

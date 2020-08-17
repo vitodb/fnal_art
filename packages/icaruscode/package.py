@@ -22,7 +22,7 @@ class Icaruscode(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/icaruscode'
-    git_base = 'http://cdcvs.fnal.gov/projects/icaruscode'
+    git_base = 'https://cdcvs.fnal.gov/projects/icaruscode'
     git_base = 'https://github.com/SBNSoftware/icaruscode.git'
 
     version('develop', branch='develop', git=git_base)
@@ -91,7 +91,7 @@ class Icaruscode(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        #url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        #url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         url = 'https://github.com/SBNSoftware/{0}/archive/v{1}.tar.gz'
         return url.format(self.name, version.underscored)
 

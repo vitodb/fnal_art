@@ -10,15 +10,15 @@ class IfdhArt(CMakePackage):
     """The ifdh_art package provides ART service access to the libraries 
 from the ifdhc package."""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
+    url      = "https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
 
-    version('MVP1a', git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
-    version('2.10.02',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02')
-    version('2.10.01',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_01')
-    version('2.10.00',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_00')
-    version('2.10.02',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02')
-    version('2.10.04',  git='http://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_04')
+    version('MVP1a', git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
+    version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02')
+    version('2.10.01',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_01')
+    version('2.10.00',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_00')
+    version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02')
+    version('2.10.04',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_04')
 
     variant('cxxstd',
             default='17',

@@ -21,8 +21,8 @@ def sanitize_environments(*args):
 class HepConcurrency(CMakePackage):
     """A concurrency library for the art suite."""
 
-    homepage = 'http://art.fnal.gov/'
-    git_base = 'http://cdcvs.fnal.gov/projects/hep_concurrency'
+    homepage = 'https://art.fnal.gov/'
+    git_base = 'https://cdcvs.fnal.gov/projects/hep_concurrency'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
@@ -54,7 +54,7 @@ class HepConcurrency(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{package}.{v}{version}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{package}.{v}{version}.tbz2'
         return url.format(package='hep_concurrency',
                           v='v' if type(version.version[0]) == int else '',
                           version=version.underscored)

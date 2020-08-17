@@ -27,7 +27,7 @@ def sanitize_environments(*args):
 class Larg4(CMakePackage):
     """Larg4"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larg4"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larg4"
     url      = "https://github.com/LArSoft/larg4.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larg4.git', branch='feature/MVP1a')

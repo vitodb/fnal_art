@@ -29,7 +29,7 @@ class Wirecell(Package):
     Borrowed from 
     https://github.com/WireCell/wire-cell-spack/blob/master/repo/packages/wirecell-toolkit/package.py"""
 
-    homepage = "http://wirecell.github.io"
+    homepage = "https://wirecell.github.io"
     url = "https://github.com/WireCell/wire-cell-toolkit/archive/0.13.1.tar.gz"
 
     version('0.13.1', sha256='d9ce092f9ebae91607213b62bf015ac6ac08c33ce97b6fbd67494d42c1f75bdb')

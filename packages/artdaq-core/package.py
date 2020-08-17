@@ -14,8 +14,8 @@ class ArtdaqCore(CMakePackage):
  and art module configuration, and the writing of event data to disk in ROOT
  format."""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url      = "http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/artdaq-core.v1_2_3.tbz2"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
+    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/artdaq-core.v1_2_3.tbz2"
     version('develop', git = url, branch="develop")
 
     variant('cxxstd',
@@ -26,7 +26,7 @@ class ArtdaqCore(CMakePackage):
     patch('patch')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
 

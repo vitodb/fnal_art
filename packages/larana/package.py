@@ -28,7 +28,7 @@ def sanitize_environments(*args):
 class Larana(CMakePackage):
     """Larana"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larana"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larana"
     url      = "https://github.com/LArSoft/larana.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larana.git', branch='feature/MVP1a')

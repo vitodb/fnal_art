@@ -31,7 +31,7 @@ def sanitize_environments(*args):
 class Larcore(CMakePackage):
     """Larcore"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larcore"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larcore"
     url      = "https://github.com/LArSoft/larcore.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larcore.git', branch='feature/MVP1a')

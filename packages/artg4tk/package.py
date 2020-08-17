@@ -20,8 +20,8 @@ def patcher(x):
 class Artg4tk(CMakePackage):
     """Artg4tk """
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/artg4tk"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
+    url      = "https://cdcvs.fnal.gov/projects/artg4tk"
 
     version('MVP1a', git = url, branch = 'feature/Spack-MVP1a',
             extention='tar.bz2')
@@ -60,6 +60,6 @@ class Artg4tk(CMakePackage):
         return args
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 

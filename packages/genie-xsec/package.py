@@ -9,7 +9,7 @@ import os
 class GenieXsec(Package):
     """Data files used by genie."""
 
-    homepage = "http://www.example.com"
+    homepage = "https://www.example.com"
     url = 'file://' + os.path.dirname(__file__) + '/../../config/junk.xml'
     version('2.12.10', '2cae8b754a9f824ddd27964d11732941fd88f52f0880d7f685017caba7fea6b7', expand=False)
 
@@ -20,7 +20,7 @@ class GenieXsec(Package):
             values=('AltPion','DefaultPlusMECWithNC','DefaultPlusValenciaMEC','EffSFTEM','LocalFGNievesQEAndMEC','ValenciaQEBergerSehgalCOHRES'),
             description='Name of genie xsec set to install.')
 
-    urlbase='http://scisoft.fnal.gov/scisoft/packages/genie_xsec/v2_12_10/genie_xsec-2.12.10-noarch-'
+    urlbase='https://scisoft.fnal.gov/scisoft/packages/genie_xsec/v2_12_10/genie_xsec-2.12.10-noarch-'
     resource(name='AltPion',
              placement='AltPion',
              when='xsec_name=AltPion',

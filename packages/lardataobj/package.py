@@ -29,7 +29,7 @@ class Lardataobj(CMakePackage):
 
     #patch = patcher
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/lardataobj"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataobj"
     url      = "https://github.com/LArSoft/lardataobj.git"
 
     version('MVP1a', git='https://github.com/LArSoft/lardataobj.git', branch='feature/MVP1a')

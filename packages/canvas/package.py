@@ -19,8 +19,8 @@ def sanitize_environments(*args):
 class Canvas(CMakePackage):
     """The underpinnings for the art suite."""
 
-    homepage = 'http://art.fnal.gov/'
-    git_base = 'http://cdcvs.fnal.gov/projects/canvas'
+    homepage = 'https://art.fnal.gov/'
+    git_base = 'https://cdcvs.fnal.gov/projects/canvas'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
@@ -67,7 +67,7 @@ class Canvas(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

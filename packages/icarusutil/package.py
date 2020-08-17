@@ -18,8 +18,8 @@ def sanitize_environments(*args):
 class Icarusutil(CMakePackage):
     """icarusutil """
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/icarusutil"
-    url      = "http://cdcvs.fnal.gov/projects/icarusutil"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/icarusutil"
+    url      = "https://cdcvs.fnal.gov/projects/icarusutil"
     git_base = 'https://github.com/SBNSoftware/icarusutil.git'
 
     version('08.36.00', tag='v08_36_00', git=git_base)

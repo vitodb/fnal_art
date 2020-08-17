@@ -18,7 +18,7 @@ def sanitize_environments(*args):
 class Larsoft(CMakePackage):
     """Larsoft"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larsoft"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoft"
     url      = "https://github.com/LArSoft/larsoft.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larsoft.git', branch='feature/MVP1a')

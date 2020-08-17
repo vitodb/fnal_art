@@ -21,14 +21,14 @@ def patcher(x):
 class Dk2nugenie(CMakePackage):
     """This package consolidates the disparate formats of neutrino beam simulation "flux" files.
 """
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/dk2nu"
-    url      = "http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/dk2nu"
+    url      = "https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
     patch = patcher
 
-    version('01_07_02',  svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
-    version('01.08.00.ub1',  svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00.ub1")
-    version('01.08.00',  svn="http://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
+    version('01_07_02',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
+    version('01.08.00.ub1',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00.ub1")
+    version('01.08.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
 
     # Variant is still important even though it's not passed to compiler
     # flags (use of ROOT, etc.).

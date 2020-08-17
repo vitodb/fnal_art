@@ -18,8 +18,8 @@ def sanitize_environments(*args):
 class CetlibExcept(CMakePackage):
     """Exception libraries for the art suite."""
 
-    homepage = 'http://art.fnal.gov/'
-    git_base = 'http://cdcvs.fnal.gov/projects/cetlib_except'
+    homepage = 'https://art.fnal.gov/'
+    git_base = 'https://cdcvs.fnal.gov/projects/cetlib_except'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
@@ -47,7 +47,7 @@ class CetlibExcept(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib_except.v{0}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib_except.v{0}.tbz2'
         return url.format(version.underscored)
 
     def cmake_args(self):

@@ -28,7 +28,7 @@ def sanitize_environments(*args):
 class Larcoreobj(CMakePackage):
     """Larcoreobj"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larcoreobj"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larcoreobj"
     url      = "https://github.com/LArSoft/larcoreobj.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larcoreobj.git', branch='feature/MVP1a', preferred=True)

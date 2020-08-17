@@ -19,8 +19,8 @@ def sanitize_environments(*args):
 class Nugen(CMakePackage):
     """Generator interfaces to art for GENIE and GiBUU."""
 
-    homepage = 'http://cdcvs.fnal.gov/redmine/projects/nugen'
-    git_base = 'http://cdcvs.fnal.gov/projects/nugen'
+    homepage = 'https://cdcvs.fnal.gov/redmine/projects/nugen'
+    git_base = 'https://cdcvs.fnal.gov/projects/nugen'
 
     version('develop', branch='develop', git=git_base)
     version('1.10.02', tag='v1_10_02', git=git_base)
@@ -79,7 +79,7 @@ class Nugen(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

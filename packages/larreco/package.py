@@ -28,7 +28,7 @@ def sanitize_environments(*args):
 class Larreco(CMakePackage):
     """Larreco"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larreco"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larreco"
     url      = "https://github.com/LArSoft/larreco.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larreco.git', branch='feature/MVP1a')

@@ -10,7 +10,7 @@ from spack import *
 class Nucondb(MakefilePackage):
     """Data handling client code for intensity frontier experiments"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/nucondb"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/nucondb"
 
     version('2.3.0',
             sha256='e2e30acc10cabd4e6fc0784c41dfcf2b372dfbf003a42bd80210ebb8c81d057f')
@@ -31,7 +31,7 @@ class Nucondb(MakefilePackage):
     depends_on('libwda')
  
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format('ifdhc-' + self.name, version.underscored)
 
     @property

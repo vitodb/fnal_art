@@ -28,7 +28,7 @@ def sanitize_environments(*args):
 class Larwirecell(CMakePackage):
     """Larwirecell"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/larwirecell"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larwirecell"
     url      = "https://github.com/LArSoft/larwirecell.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larwirecell.git', branch='feature/MVP1a')

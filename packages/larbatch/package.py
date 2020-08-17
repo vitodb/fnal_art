@@ -9,7 +9,7 @@ class Larbatch(Package):
     """package for batch job submission featuring project.py """
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larbatch-web-client/wiki"
-    url      = "http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/larbatch.v01_51_12.tar"
+    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/larbatch.v01_51_12.tar"
 
     version('1.51.12')
     version('1.51.11')

@@ -15,7 +15,7 @@ the simulation of neutrino interactions, and performs a highly-developed
 global analysis of neutrino scattering data. 
 """
 
-    homepage = "http://www.genie-mc.org"
+    homepage = "https://www.genie-mc.org"
     url      = "https://github.com/GENIE-MC/Generator/archive/R-3_00_06.tar.gz"
 
     def url_for_version(self, version):

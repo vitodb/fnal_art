@@ -10,7 +10,7 @@ import os
 class GeniePhyopt(Package):
     """Phyopt files used by genie."""
 
-    homepage = "http://www.example.com"
+    homepage = "https://www.example.com"
     url = 'file://' + os.path.dirname(__file__) + '/../../config/junk.xml'
     version('2.12.10', '2cae8b754a9f824ddd27964d11732941fd88f52f0880d7f685017caba7fea6b7', expand=False)
 
@@ -21,7 +21,7 @@ class GeniePhyopt(Package):
             values=('dkcharm','dkcharmtau'),
             description='Name of genie phyopt to use.')
             
-    baseurl="http://scisoft.fnal.gov/scisoft/packages/genie_phyopt/v2_12_10/genie_phyopt-2.12.10-noarch-"
+    baseurl="https://scisoft.fnal.gov/scisoft/packages/genie_phyopt/v2_12_10/genie_phyopt-2.12.10-noarch-"
     resource(name = 'dkcharm', when = 'phyopt_name=dkcharm',
              url = baseurl+"dkcharm.tar.bz2",
              sha256='5764cc6e7fc23f721177761526b75725b73970cd941064c23563d9ccaa3de0dc')

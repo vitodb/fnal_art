@@ -27,12 +27,12 @@ def sanitize_environments(*args):
 class Nuevdb(CMakePackage):
     """Nuevdb"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/nuevdb/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/nuevdb/"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/nuevdb/wiki"
+    url      = "https://cdcvs.fnal.gov/projects/nuevdb/"
 
-    version('1.02.02', tag='v1_02_02', git="http://cdcvs.fnal.gov/projects/nuevdb")
-    version('1.02.03', tag='v1_02_03', git="http://cdcvs.fnal.gov/projects/nuevdb")
-    version('1.02.04', tag='v1_02_04', git="http://cdcvs.fnal.gov/projects/nuevdb")
+    version('1.02.02', tag='v1_02_02', git="https://cdcvs.fnal.gov/projects/nuevdb")
+    version('1.02.03', tag='v1_02_03', git="https://cdcvs.fnal.gov/projects/nuevdb")
+    version('1.02.04', tag='v1_02_04', git="https://cdcvs.fnal.gov/projects/nuevdb")
 
     variant('cxxstd',
             default='17',
@@ -59,7 +59,7 @@ class Nuevdb(CMakePackage):
 
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

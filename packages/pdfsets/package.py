@@ -9,7 +9,7 @@ from spack import *
 class Pdfsets(Package):
     """PDF sets used by Genie"""
 
-    homepage = "http://genie.hepforge.org"
+    homepage = "https://genie.hepforge.org"
     url      = "https://github.com/GENIE-MC/Generator/archive/R-2_8_6.tar.gz"
 
     version('5.9.1', url='https://github.com/GENIE-MC/Generator/archive/R-2_8_6.tar.gz',

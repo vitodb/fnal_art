@@ -27,7 +27,7 @@ def sanitize_environments(*args):
 class Lareventdisplay(CMakePackage):
     """Lareventdisplay"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/lareventdisplay"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/lareventdisplay"
     url      = "https://github.com/LArSoft/lareventdisplay.git"
 
     version('MVP1a', git='https://github.com/LArSoft/lareventdisplay.git', branch='feature/MVP1a')

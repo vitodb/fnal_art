@@ -27,18 +27,18 @@ def sanitize_environments(*args):
 class Nutools(CMakePackage):
     """Nutools"""
 
-    homepage = "http://cdcvs.fnal.gov/redmine/projects/nutools/wiki"
-    url      = "http://cdcvs.fnal.gov/projects/nutools/"
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/nutools/wiki"
+    url      = "https://cdcvs.fnal.gov/projects/nutools/"
 
-    version('MVP1a', git="http://cdcvs.fnal.gov/projects/nutools", branch='feature/MVP1a')
-    version('3.04.02', tag='v3_04_02', git="http://cdcvs.fnal.gov/projects/nutools")
-    version('3.04.03', tag='v3_04_03', git="http://cdcvs.fnal.gov/projects/nutools")
-    version('3.05.00', tag='v3_05_00', git="http://cdcvs.fnal.gov/projects/nutools")
-    version('3.05.01', tag='v3_05_01', git="http://cdcvs.fnal.gov/projects/nutools")
-    version('3.06.00', tag='v3_06_00', git="http://cdcvs.fnal.gov/projects/nutools")
-    version('3.06.01', tag='v3_06_01', git="http://cdcvs.fnal.gov/projects/nutools")
-    version('3.06.02', tag='v3_06_02', git="http://cdcvs.fnal.gov/projects/nutools")
-    version('3.06.06', tag='v3_06_06', git="http://cdcvs.fnal.gov/projects/nutools")
+    version('MVP1a', git="https://cdcvs.fnal.gov/projects/nutools", branch='feature/MVP1a')
+    version('3.04.02', tag='v3_04_02', git="https://cdcvs.fnal.gov/projects/nutools")
+    version('3.04.03', tag='v3_04_03', git="https://cdcvs.fnal.gov/projects/nutools")
+    version('3.05.00', tag='v3_05_00', git="https://cdcvs.fnal.gov/projects/nutools")
+    version('3.05.01', tag='v3_05_01', git="https://cdcvs.fnal.gov/projects/nutools")
+    version('3.06.00', tag='v3_06_00', git="https://cdcvs.fnal.gov/projects/nutools")
+    version('3.06.01', tag='v3_06_01', git="https://cdcvs.fnal.gov/projects/nutools")
+    version('3.06.02', tag='v3_06_02', git="https://cdcvs.fnal.gov/projects/nutools")
+    version('3.06.06', tag='v3_06_06', git="https://cdcvs.fnal.gov/projects/nutools")
 
     variant('cxxstd',
             default='17',
@@ -69,7 +69,7 @@ class Nutools(CMakePackage):
 
 
     def url_for_version(self, version):
-        url = 'http://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

@@ -9,7 +9,7 @@ class H5cpp(Package):
     """Hierarchical Data Format C++ templates for Serial and Paralell HDF5"""
 
     homepage = "https://h5cpp.org/"
-    url      = "http://h5cpp.org/download/h5cpp-full_1.10.4.1.tar.gz"
+    url      = "https://h5cpp.org/download/h5cpp-full_1.10.4.1.tar.gz"
 
     version('1.10.4.1')
 
