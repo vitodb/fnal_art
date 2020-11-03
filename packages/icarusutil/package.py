@@ -6,6 +6,15 @@
 from spack import *
 import os
 
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -22,6 +31,8 @@ class Icarusutil(CMakePackage):
     url      = "https://cdcvs.fnal.gov/projects/icarusutil"
     git_base = 'https://github.com/SBNSoftware/icarusutil.git'
 
+    patch = patcher
+
     version('08.36.00', tag='v08_36_00', git=git_base)
     version('08.39.00', tag='v08_39_00', git=git_base)
     version('08.41.00', tag='v08_41_00', git=git_base)
@@ -36,9 +47,8 @@ class Icarusutil(CMakePackage):
     depends_on('art-root-io')
     depends_on('larbatch')
     depends_on('py-pycurl')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
-    patch("icarusutil.unups.patch")
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

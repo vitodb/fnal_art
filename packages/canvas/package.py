@@ -6,6 +6,15 @@
 from spack import *
 import os
 
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 def sanitize_environments(*args):
     for env in args:
@@ -43,12 +52,11 @@ class Canvas(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('canvas.unups.patch', when="@3.08.00")
-    patch('canvas.3.09.01.patch', when="@3.09.01")
+    patch = patcher
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     depends_on('clhep')
     depends_on('boost')

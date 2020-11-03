@@ -9,11 +9,11 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 
 def patcher(x):
-    cetmodules_dir_patcher(".","fhicl-cpp","4.11.00")
+    cetmodules_20_migrator(".","fhicl-cpp","4.11.00")
 
 
 def sanitize_environments(*args):
@@ -41,9 +41,9 @@ class FhiclCpp(CMakePackage):
     version('4.09.03', tag='v4_09_03', git=git_base)
     version('4.10.00', tag='v4_10_00', git=git_base)
     version('4.11.00', tag='v4_11_00', git=git_base)
+    version('4.11.01', sha256='820b747209dfc5747fab71cf95d1833b4bbd406eb9220097e33c2af686c9be8f')
 
-    patch("fhicl-cpp.unups.patch", when="@4.11.00")
-    patch("fhicl-cpp.4.11.01.patch", when="@4.11.01")
+    patch = patcher
 
     variant('cxxstd',
             default='17',
@@ -53,7 +53,7 @@ class FhiclCpp(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
     depends_on('py-pybind11', type='build')
 
     # Build / link dependencies.

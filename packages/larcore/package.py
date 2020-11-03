@@ -12,11 +12,11 @@ import llnl.util.tty as tty
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larcore","8.10.02")
+    cetmodules_20_migrator(".","larcore","8.10.02")
 
 
 def sanitize_environments(*args):
@@ -53,12 +53,11 @@ class Larcore(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larcore.unups.patch', when='@08.10.03')
-    patch('larcore.08.11.03.patch', when='@08.11.03:')
+    patch = patcher
 
     depends_on('larcorealg')
     depends_on('art-root-io')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

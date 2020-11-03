@@ -10,10 +10,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","lareventdisplay","08.12.03")
+    cetmodules_20_migrator(".","lareventdisplay","08.12.03")
 
 def sanitize_environments(*args):
     for env in args:
@@ -47,12 +47,11 @@ class Lareventdisplay(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lareventdisplay.unups.patch', when='@:08.12.12')
-    patch('lareventdisplay.08.12.13.patch', when='@08.12.13:')
+    patch = patcher
 
     depends_on('larreco')
     depends_on('nuevdb')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

@@ -4,6 +4,15 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 
 class IfdhArt(CMakePackage):
@@ -12,6 +21,8 @@ from the ifdhc package."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
     url      = "https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
+
+    patch = patcher
 
     version('MVP1a', git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
     version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02')
@@ -31,7 +42,7 @@ from the ifdhc package."""
     depends_on('ifbeam')
     depends_on('nucondb')
     depends_on('libwda')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -45,4 +56,3 @@ from the ifdhc package."""
         spack_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('PATH', self.prefix.bin)
 
-    patch('ifdh_art.unups.patch')

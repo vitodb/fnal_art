@@ -10,10 +10,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larexamples","08.06.03")
+    cetmodules_20_migrator(".","larexamples","08.06.03")
 
 def sanitize_environments(*args):
     for env in args:
@@ -46,11 +46,10 @@ class Larexamples(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larexamples.unups.patch', when="@:08.06.12")
-    patch('larexamples.08.06.13.patch', when="@08.06.13:")
+    patch = patcher
 
     depends_on('larsim')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
     depends_on('larsoft-data', type='build')
 
     def cmake_args(self):

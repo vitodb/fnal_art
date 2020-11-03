@@ -4,6 +4,15 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 
 class ArtdaqCore(CMakePackage):
@@ -23,7 +32,8 @@ class ArtdaqCore(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-    patch('patch')
+
+    patch = patcher
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -34,7 +44,7 @@ class ArtdaqCore(CMakePackage):
     depends_on('boost')
     depends_on('canvas')
     depends_on('canvas-root-io')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
     depends_on('clhep')
     depends_on('messagefacility')
     depends_on('root')

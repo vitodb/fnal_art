@@ -10,10 +10,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larpandoracontent","3.15.15")
+    cetmodules_20_migrator(".","larpandoracontent","3.15.15")
 
 class Larpandoracontent(CMakePackage):
     """Larpandoracontent"""
@@ -37,10 +37,9 @@ class Larpandoracontent(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larpandoracontent.unups.patch', when='@03.15.15')
-    patch('larpandoracontent.03.15.16.patch', when='@03.15.16')
+    patch = patcher
 
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
     depends_on('eigen+fftw')
     depends_on('pandora')
 

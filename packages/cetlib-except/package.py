@@ -5,6 +5,15 @@
 
 from spack import *
 import os
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 def sanitize_environments(*args):
     for env in args:
@@ -29,8 +38,7 @@ class CetlibExcept(CMakePackage):
     version('1.04.01', tag='v1_04_01', git=git_base)
     version('1.14.01', tag='v1_14_01', git=git_base)
 
-    patch('cetlib_except.unups.patch', when='@1.04.00')
-    patch('cetlib_except.1.04.01.patch', when='@1.04.01:')
+    patch = patcher
 
     variant('cxxstd',
             default='17',
@@ -39,7 +47,7 @@ class CetlibExcept(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

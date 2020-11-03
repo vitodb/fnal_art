@@ -11,10 +11,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larreco","08.28.00")
+    cetmodules_20_migrator(".","larreco","08.28.00")
 
 def sanitize_environments(*args):
     for env in args:
@@ -49,8 +49,7 @@ class Larreco(CMakePackage):
             description='Use the specified C++ standard when building.')
     variant('tf', default=False, description='Build tensorflow dependent libraries.')
     
-    patch('larreco.unups.patch', when='@08.29.00')
-    patch('larreco.08.31.01.patch', when='@08.31.01:')
+    patch = patcher
 
     depends_on('tbb')
     depends_on('clhep')
@@ -65,7 +64,7 @@ class Larreco(CMakePackage):
     depends_on('nutools')
     depends_on('eigen+fftw')
     depends_on('tensorflow', when='+tf')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

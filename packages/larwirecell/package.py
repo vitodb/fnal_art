@@ -11,15 +11,16 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larwirecell","08.12.03")
+    cetmodules_20_migrator(".","larwirecell","08.12.03")
 
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
                     'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+        sanitize_environments(spack_env, run_env)
                     'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
             env.prune_duplicate_paths(var)
             env.deprioritize_system_paths(var)
@@ -45,11 +46,11 @@ class Larwirecell(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larwirecell.unups.patch')
+    patch = patcher
 
     depends_on('larevt')
     depends_on('wirecell')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

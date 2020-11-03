@@ -6,6 +6,15 @@
 from spack import *
 import os
 
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 def sanitize_environments(*args):
     for env in args:
@@ -28,7 +37,7 @@ class Nug4(CMakePackage):
     version('1.03.01', tag='v1_03_01', git=git_base)
     version('1.03.00', tag='v1_03_00', git=git_base)
 
-    patch('nug4.unups.patch')
+    patch = patcher
 
     variant('cxxstd',
             default='17',
@@ -37,7 +46,7 @@ class Nug4(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
     depends_on('art')
     depends_on('art-root-io')
     depends_on('nusimdata')

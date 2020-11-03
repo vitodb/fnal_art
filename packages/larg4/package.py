@@ -10,10 +10,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larg4","08.12.01")
+    cetmodules_20_migrator(".","larg4","08.12.01")
 
 def sanitize_environments(*args):
     for env in args:
@@ -45,7 +45,7 @@ class Larg4(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larg4.unups.patch')
+    patch = patcher
 
     depends_on('artg4tk')
     depends_on('larevt')
@@ -53,7 +53,7 @@ class Larg4(CMakePackage):
     depends_on('canvas-root-io')
     depends_on('art-root-io')
     depends_on('nug4')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

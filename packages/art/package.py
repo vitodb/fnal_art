@@ -5,6 +5,15 @@
 
 from spack import *
 import os
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 
 def sanitize_environments(*args):
@@ -40,8 +49,7 @@ class Art(CMakePackage):
     version('3.03.01', tag='v3_03_01', git=git_base)
     version('3.04.00', tag='v3_04_00', git=git_base)
 
-    patch('art.unups.patch', when="@3.04.00")
-    patch('art.3.05.00.patch', when="@3.05.00")
+    patch = patcher
 
     variant('cxxstd',
             default='17',
@@ -51,7 +59,7 @@ class Art(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.4:', type='build')
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
     depends_on('catch2@2.3.0:', type='build')
 
     # Build and link dependencies.

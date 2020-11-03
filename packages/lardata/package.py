@@ -5,6 +5,15 @@
 
 from spack import *
 import os
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 def sanitize_environments(*args):
     for env in args:
@@ -36,15 +45,14 @@ class Lardata(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lardata.unups.patch', when='@:08.15.03')
-    patch('lardata.08.15.04.patch', when='@08.15.04:')
+    patch = patcher
 
     depends_on('nutools')
     depends_on('larcore')
     depends_on('lardataobj')
     depends_on('lardataalg')
     depends_on('range-v3')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

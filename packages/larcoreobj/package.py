@@ -9,11 +9,11 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larcoreobj","08.10.02")
+    cetmodules_20_migrator(".","larcoreobj","08.10.02")
 
 
 def sanitize_environments(*args):
@@ -45,11 +45,10 @@ class Larcoreobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larcoreobj.unups.patch', when='@08.10.03')
-    patch('larcoreobj.8.10.05.patch', when='@08.10.05:')
+    patch = patcher
 
     depends_on('canvas-root-io')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

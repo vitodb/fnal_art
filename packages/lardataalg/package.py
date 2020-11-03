@@ -9,11 +9,11 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 
 def patcher(x):
-    cetmodules_dir_patcher(".","lardataalg","08.13.02")
+    cetmodules_20_migrator(".","lardataalg","08.13.02")
 
 
 def sanitize_environments(*args):
@@ -45,12 +45,10 @@ class Lardataalg(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lardataalg.unups.patch', when='@08.13.02')
-    patch('lardataalg.unups.patch', when='@08.13.04')
-    patch('lardataalg.08.13.08.patch', when='@08.13.08')
+    patch = patcher
 
     depends_on('lardataobj')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

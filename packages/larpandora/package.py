@@ -10,10 +10,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larpandora","08.12.03")
+    cetmodules_20_migrator(".","larpandora","08.12.03")
 
 
 def sanitize_environments(*args):
@@ -45,12 +45,11 @@ class Larpandora(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larpandora.unups.patch', when='@08.10.01')
-    patch('larpandora.08.12.03.patch', when='@08.12.03')
+    patch = patcher
 
     depends_on('larreco')
     depends_on('larpandoracontent')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

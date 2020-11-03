@@ -10,10 +10,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","larsim","08.19.03")
+    cetmodules_20_migrator(".","larsim","08.19.03")
 
 def sanitize_environments(*args):
     for env in args:
@@ -49,8 +49,7 @@ class Larsim(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('larsim.unups.patch', when='@08.19.04')
-    patch('larsim.08.22.03.patch', when='@08.22.03:')
+    patch = patcher
 
     depends_on('larsoft-data')
     depends_on('larevt')
@@ -63,7 +62,7 @@ class Larsim(CMakePackage):
     depends_on('nug4')
     depends_on('nugen')
     depends_on('nurandom')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

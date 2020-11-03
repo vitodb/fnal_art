@@ -10,10 +10,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","lardataobj","08.10.02")
+    cetmodules_20_migrator(".","lardataobj","08.10.02")
 
 def sanitize_environments(*args):
     for env in args:
@@ -27,7 +27,7 @@ def sanitize_environments(*args):
 class Lardataobj(CMakePackage):
     """Lardataobj"""
 
-    #patch = patcher
+    patch = patcher
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataobj"
     url      = "https://github.com/LArSoft/lardataobj.git"
@@ -45,13 +45,11 @@ class Lardataobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('lardataobj.unups.patch', when='@08.10.03')
-    patch('lardataobj.08.10.06.patch', when='@08.10.06')
 
     depends_on('nusimdata')
     depends_on('larcorealg')
     depends_on('larcoreobj')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

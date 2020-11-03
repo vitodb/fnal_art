@@ -6,6 +6,15 @@
 from spack import *
 import os
 
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -28,8 +37,7 @@ class Dunetpc(CMakePackage):
     version('08.62.00', tag='v08_62_00', git=git_base)
     version('08.62.01', tag='v08_62_01', git=git_base)
 
-    patch('dunetpc.unups.patch', when='@:08.61.00')
-    patch('dunetpc.08.62.00.patch',when='@08.62.00:')
+    patch = patcher
 
     variant('cxxstd',
             default='17',
@@ -39,7 +47,7 @@ class Dunetpc(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:')
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     # Build and link dependencies.
     depends_on('artdaq-core', type=('build','run'))

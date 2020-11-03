@@ -6,6 +6,15 @@
 
 from spack import *
 
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 class Trace(CMakePackage):
     """TRACE is yet another logging (time stamp) tool, but it allows 
@@ -16,10 +25,9 @@ fast and/or slow logging - dynamically (you choose)."""
 
     parallel = False 
 
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
-    patch('trace-3.15.05.patch',when='@3.15.05')
-    patch('trace-3.15.07.patch',when='@3.15.07')
+    patch = patcher
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'

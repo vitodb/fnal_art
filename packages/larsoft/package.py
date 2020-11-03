@@ -4,6 +4,15 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 
 def sanitize_environments(*args):
@@ -34,9 +43,7 @@ class Larsoft(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-    patch('larsoft.unups.patch', when="@:08.43.00")
-    patch('larsoft.08.50.00.patch', when="@08.50.00:")
+    patch = patcher
 
     depends_on('lareventdisplay')
     depends_on('larexamples')
@@ -48,7 +55,7 @@ class Larsoft(CMakePackage):
     depends_on('larsoftobj')
     depends_on('larsoft-data')
     depends_on('ifdh-art')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

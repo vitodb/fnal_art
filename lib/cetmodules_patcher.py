@@ -3,6 +3,9 @@ import sys
 import os
 import re
 
+def cetmodules_20_patcher(*args):
+    os.system("$HOME/migrate")
+
 def fixrootlib(x):
     part = x.group(1)
     for lib in ("GenVector", "Core", "Imt", "RIO", "Net", "Hist", "Graf", "Graf3d", "Gpad", "ROOTVecOps", "Tree", "TreePlayer", "Rint", "Postscript", "Matrix", "Physics", "MathCore", "Thread", "MultiProc", "ROOTDataFrame"):

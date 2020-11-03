@@ -5,6 +5,15 @@
 
 from spack import *
 
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 class Cetmodules(CMakePackage):
     """CMake glue modules and scripts required by packages originating at
@@ -30,8 +39,13 @@ class Cetmodules(CMakePackage):
     depends_on('cmake@3.11:', type='build', when='@:1.01.99')
     depends_on('cmake@3.12:', type='build', when='@1.02.00:')
 
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
+    patch = patcher
 
-    patch('cetmodules.include_guard.patch')
+    def url_for_version(self, version):
+        if str(version)[0] in '0123456789':
+            url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+            return url.format(self.name, version.underscored)
+        else:
+            url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.{1}.tbz2'
+            return url.format(self.name, version)
+

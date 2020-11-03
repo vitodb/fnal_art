@@ -20,12 +20,12 @@ def sanitize_environments(*args):
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 
 def patcher(x):
     print("patcher: got argument: %s" % repr(x))
-    cetmodules_dir_patcher(".","canvas-root-io","1.05.01")
+    cetmodules_20_migrator(".","canvas-root-io","1.05.01")
 
 
 class CanvasRootIo(CMakePackage):
@@ -49,12 +49,11 @@ class CanvasRootIo(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('canvas-root-io.unups.patch', when='@1.05.01')
-    patch('canvas-root-io.1.05.02.patch', when='@1.05.02')
+    patch = patcher
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     # Build and link dependencies.
     depends_on('clhep')

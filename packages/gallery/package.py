@@ -9,11 +9,11 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 
 def patcher(x):
-    cetmodules_dir_patcher(".","gallery","1.14.01")
+    cetmodules_20_migrator(".","gallery","1.14.01")
 
 
 def sanitize_environments(*args):
@@ -29,12 +29,11 @@ class Gallery(CMakePackage):
     """A library to allow reading of Root output files produced by the art
     suite.
     """
-    patch('gallery.unups.patch', when='@:1.14.0')
-    patch('gallery.01.14.02.patch', when='@1.14.01:')
 
     homepage='https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/gallery'
 
+    patch = patcher
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
@@ -56,7 +55,7 @@ class Gallery(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     # Build and link dependencies.
     depends_on('canvas-root-io')

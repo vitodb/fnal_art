@@ -4,6 +4,17 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import sys
+import os
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 class SbndaqArtdaqCore(CMakePackage):
     """The toolkit currently provides SBNDAQ extensions to the artdaq-core 
@@ -29,10 +40,10 @@ class SbndaqArtdaqCore(CMakePackage):
         return url.format(self.name, version.underscored)
 
 
-    patch('sbndaq-artdaq-core-unups.patch')
+    patch = patcher
 
     depends_on('messagefacility')
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
     depends_on('artdaq-core')
     depends_on('cetlib')
     depends_on('cetlib-except')

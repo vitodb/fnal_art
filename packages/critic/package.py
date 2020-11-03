@@ -5,6 +5,15 @@
 
 from spack import *
 import os
+libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
+if not libdir in sys.path:
+    sys.path.append(libdir)
+from cetmodules_patcher import cetmodules_20_migrator
+
+
+def patcher(x):
+    cetmodules_20_migrator(".","artg4tk","9.07.01")
+
 
 def sanitize_environments(*args):
     for env in args:
@@ -38,12 +47,11 @@ class Critic(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-    patch('critic.unups.patch')
+    patch = patcher
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@1.01.01:', type='build')
+    depends_on('cetmodules@2.00:', type='build')
 
     # Build and link dependencies.
     depends_on('clhep@2.4.1.0:', when='@MVP1a')

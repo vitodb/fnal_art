@@ -46,7 +46,7 @@ index 22b8f43..6c85e3c 100644
  
 -# packaging utility
 -include(UseCPack)
-+add_subdirectory(cmakeConfig)
++cet_cmake_config()
 diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
 new file mode 100644
 index 0000000..937d12d

@@ -10,10 +10,10 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 def patcher(x):
-    cetmodules_dir_patcher(".","nuevdb","1.02.03")
+    cetmodules_20_migrator(".","nuevdb","1.02.03")
 
 def sanitize_environments(*args):
     for env in args:
@@ -40,9 +40,9 @@ class Nuevdb(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('nuevdb.unups.patch')
+    patch = patcher
 
-    depends_on('cetmodules', type='build')
+    depends_on('cetmodules@2.00:', type='build')
     depends_on('art-root-io')
     depends_on('perl')
     depends_on('pythia6')

@@ -11,11 +11,11 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_dir_patcher
+from cetmodules_patcher import cetmodules_20_migrator
 
 
 def patcher(x):
-    cetmodules_dir_patcher(".","dk2nugenie", "01.08.00")
+    cetmodules_20_migrator(".","dk2nugenie", "01.08.00")
  
 
 class Dk2nugenie(CMakePackage):
