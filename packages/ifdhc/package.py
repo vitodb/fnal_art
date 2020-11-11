@@ -66,7 +66,7 @@ class Ifdhc(MakefilePackage):
     def setup_environment(self, spack_env, run_env):
         spack_env.set('PYTHON_INCLUDE', self.spec['python'].prefix.include)
         spack_env.set('PYTHON_LIB', self.spec['python'].prefix.lib)
-        run_env.set('IFDHC_CONFIG_DIR', self.spec.prefix)
+        run_env.set('IFDHC_DIR', self.spec.prefix)
         run_env.prepend_path('PATH', self.prefix.bin)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
@@ -75,4 +75,4 @@ class Ifdhc(MakefilePackage):
         # Non-standard, therefore we have to do it ourselves.
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.inc)
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.inc)
-        run_env.set('IFDHC_CONFIG_DIR', self.spec.prefix)
+        run_env.set('IFDHC_DIR', self.spec.prefix)
