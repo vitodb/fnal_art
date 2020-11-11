@@ -39,7 +39,7 @@ class Larpandoracontent(CMakePackage):
 
     patch = patcher
 
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
     depends_on('eigen+fftw')
     depends_on('pandora')
 

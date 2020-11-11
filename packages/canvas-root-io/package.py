@@ -53,7 +53,7 @@ class CanvasRootIo(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
     depends_on('clhep')

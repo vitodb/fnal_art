@@ -4,6 +4,7 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import sys
 from spack import *
 from spack.environment import *
 import os
@@ -50,7 +51,7 @@ class HepConcurrency(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     # Build / link dependencies.
     depends_on('cppunit')

@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import os
+import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
@@ -55,7 +57,7 @@ class Larsoft(CMakePackage):
     depends_on('larsoftobj')
     depends_on('larsoft-data')
     depends_on('ifdh-art')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

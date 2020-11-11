@@ -53,7 +53,7 @@ class FhiclCpp(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
     depends_on('py-pybind11', type='build')
 
     # Build / link dependencies.

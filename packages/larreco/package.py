@@ -64,7 +64,7 @@ class Larreco(CMakePackage):
     depends_on('nutools')
     depends_on('eigen+fftw')
     depends_on('tensorflow', when='+tf')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

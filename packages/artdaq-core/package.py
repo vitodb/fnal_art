@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import os
+import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
@@ -44,7 +46,7 @@ class ArtdaqCore(CMakePackage):
     depends_on('boost')
     depends_on('canvas')
     depends_on('canvas-root-io')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
     depends_on('clhep')
     depends_on('messagefacility')
     depends_on('root')

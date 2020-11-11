@@ -53,7 +53,7 @@ class Larana(CMakePackage):
     patch = patcher
 
     depends_on('larreco')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

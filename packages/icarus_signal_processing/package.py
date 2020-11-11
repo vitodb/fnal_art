@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import sys
 import os
 
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
@@ -49,7 +50,7 @@ class IcarusSignalProcessing(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
     depends_on('art', type=('build','run'))

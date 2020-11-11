@@ -52,7 +52,7 @@ class Larevt(CMakePackage):
 
     depends_on('libwda')
     depends_on('lardata')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

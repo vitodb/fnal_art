@@ -49,7 +49,7 @@ class Larexamples(CMakePackage):
     patch = patcher
 
     depends_on('larsim')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
     depends_on('larsoft-data', type='build')
 
     def cmake_args(self):

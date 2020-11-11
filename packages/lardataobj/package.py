@@ -49,7 +49,7 @@ class Lardataobj(CMakePackage):
     depends_on('nusimdata')
     depends_on('larcorealg')
     depends_on('larcoreobj')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

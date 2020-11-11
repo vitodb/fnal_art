@@ -2,8 +2,10 @@
 import sys
 import os
 import re
+import llnl.util.tty as tty
 
-def cetmodules_20_patcher(*args):
+def cetmodules_20_migrator(*args):
+    tty.warn('Running cetmodules  migration script')
     os.system("$HOME/migrate")
 
 def fixrootlib(x):

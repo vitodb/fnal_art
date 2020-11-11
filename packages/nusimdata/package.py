@@ -51,7 +51,7 @@ class Nusimdata(CMakePackage):
     # Build and link dependencies.
     depends_on('canvas-root-io')
     depends_on('dk2nudata')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

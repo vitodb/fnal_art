@@ -4,6 +4,8 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 
+import os
+import sys
 from spack import *
 
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
@@ -25,8 +27,10 @@ fast and/or slow logging - dynamically (you choose)."""
 
     parallel = False 
 
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
+    depends_on('cetpkgsupport', type='build')
 
+    patch("trace-3.15.05.patch")
     patch = patcher
 
     def url_for_version(self, version):

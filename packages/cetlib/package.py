@@ -4,8 +4,11 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import sys
 from spack.environment import *
 import os
+import os.path
+
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
@@ -13,9 +16,8 @@ from cetmodules_patcher import cetmodules_20_migrator
 
 
 def patcher(x):
+    os.system("patch -p1 < %s/p1" % os.path.dirname(__file__))
     cetmodules_20_migrator(".","artg4tk","9.07.01")
-
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -30,7 +32,7 @@ class Cetlib(CMakePackage):
     """A utility library for the art suite."""
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/cetlib'
+    git_base = 'http://cdcvs.fnal.gov/projects/cetlib'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
@@ -41,7 +43,7 @@ class Cetlib(CMakePackage):
     version('3.05.01', tag='v3_05_01', git=git_base)
     version('3.07.02', tag='v3_07_02', git=git_base)
     version('3.08.00', tag='v3_08_00', git=git_base)
-
+   
     patch = patcher
 
     variant('cxxstd',
@@ -52,7 +54,7 @@ class Cetlib(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
     depends_on('catch2@2.3.0:', type=('build', 'link'))
 
     # Build / link dependencies.

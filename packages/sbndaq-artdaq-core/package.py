@@ -43,7 +43,7 @@ class SbndaqArtdaqCore(CMakePackage):
     patch = patcher
 
     depends_on('messagefacility')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
     depends_on('artdaq-core')
     depends_on('cetlib')
     depends_on('cetlib-except')

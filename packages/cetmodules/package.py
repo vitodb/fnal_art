@@ -4,15 +4,8 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
+import os
+import sys
 
 
 class Cetmodules(CMakePackage):
@@ -39,13 +32,12 @@ class Cetmodules(CMakePackage):
     depends_on('cmake@3.11:', type='build', when='@:1.01.99')
     depends_on('cmake@3.12:', type='build', when='@1.02.00:')
 
-    patch = patcher
 
     def url_for_version(self, version):
-        if str(version)[0] in '0123456789':
-            url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        if str(version)[0] in "01":
+            url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/v{0}.{1}.tbz2'
             return url.format(self.name, version.underscored)
         else:
-            url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.{1}.tbz2'
+            url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive_dot.cgi/cvs/projects/{0}.{1}.tbz2'
             return url.format(self.name, version)
 

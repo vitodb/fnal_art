@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import sys
 import os
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
@@ -34,9 +35,9 @@ class CetlibExcept(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
-    version('1.04.00', tag='v1_04_00', git=git_base)
-    version('1.04.01', tag='v1_04_01', git=git_base)
-    version('1.14.01', tag='v1_14_01', git=git_base)
+    #version('1.04.00', tag='v1_04_00', git=git_base)
+    #version('1.04.01', tag='v1_04_01', git=git_base)
+    #version('1.14.01', tag='v1_14_01', git=git_base)
 
     patch = patcher
 
@@ -47,7 +48,8 @@ class CetlibExcept(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     depends_on('cmake@3.11:', type='build')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
+    depends_on('cetpkgsupport', type='build')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

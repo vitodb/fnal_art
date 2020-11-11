@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import sys
 import os
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
@@ -46,7 +47,7 @@ class Nurandom(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     # Build-only dependencies.
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
     depends_on('art')
     depends_on('art-root-io')
     depends_on('cetlib')

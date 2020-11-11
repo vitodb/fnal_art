@@ -5,6 +5,7 @@
 
 from spack import *
 import os
+import sys
 
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
@@ -52,7 +53,7 @@ class Icaruscode(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cmake@3.11:')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
     depends_on('artdaq-core', type=('build','run'))
@@ -72,6 +73,7 @@ class Icaruscode(CMakePackage):
     depends_on('intel-tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
     depends_on('icarus_signal_processing', type=('build','run'))
+    depends_on('icarusutil', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))
     depends_on('larcore', type=('build','run'))

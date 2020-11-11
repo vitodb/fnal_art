@@ -20,7 +20,6 @@ def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
                     'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
-        sanitize_environments(spack_env, run_env)
                     'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
             env.prune_duplicate_paths(var)
             env.deprioritize_system_paths(var)
@@ -50,7 +49,7 @@ class Larwirecell(CMakePackage):
 
     depends_on('larevt')
     depends_on('wirecell')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

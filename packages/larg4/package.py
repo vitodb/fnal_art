@@ -53,7 +53,7 @@ class Larg4(CMakePackage):
     depends_on('canvas-root-io')
     depends_on('art-root-io')
     depends_on('nug4')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

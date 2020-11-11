@@ -50,7 +50,7 @@ class Larsoftobj(CMakePackage):
     depends_on('gallery')
     depends_on('lardataobj')
     depends_on('lardataalg')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

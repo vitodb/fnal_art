@@ -4,6 +4,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+import sys
 import os
 
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
@@ -47,7 +48,7 @@ class Icarusutil(CMakePackage):
     depends_on('art-root-io')
     depends_on('larbatch')
     depends_on('py-pycurl')
-    depends_on('cetmodules@2.00:', type='build')
+    depends_on('cetmodules', type='build')
 
 
     def cmake_args(self):
