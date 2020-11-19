@@ -31,14 +31,14 @@ class Nutools(CMakePackage):
     url      = "https://cdcvs.fnal.gov/projects/nutools/"
 
     version('MVP1a', git="https://cdcvs.fnal.gov/projects/nutools", branch='feature/MVP1a')
-    version('3.04.02', tag='v3_04_02', git="https://cdcvs.fnal.gov/projects/nutools")
-    version('3.04.03', tag='v3_04_03', git="https://cdcvs.fnal.gov/projects/nutools")
-    version('3.05.00', tag='v3_05_00', git="https://cdcvs.fnal.gov/projects/nutools")
-    version('3.05.01', tag='v3_05_01', git="https://cdcvs.fnal.gov/projects/nutools")
-    version('3.06.00', tag='v3_06_00', git="https://cdcvs.fnal.gov/projects/nutools")
-    version('3.06.01', tag='v3_06_01', git="https://cdcvs.fnal.gov/projects/nutools")
-    version('3.06.02', tag='v3_06_02', git="https://cdcvs.fnal.gov/projects/nutools")
-    version('3.06.06', tag='v3_06_06', git="https://cdcvs.fnal.gov/projects/nutools")
+    version('3.04.02', tag='v3_04_02', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
+    version('3.04.03', tag='v3_04_03', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
+    version('3.05.00', tag='v3_05_00', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
+    version('3.05.01', tag='v3_05_01', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
+    version('3.06.00', tag='v3_06_00', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
+    version('3.06.01', tag='v3_06_01', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
+    version('3.06.02', tag='v3_06_02', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
+    version('3.06.06', tag='v3_06_06', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -58,7 +58,7 @@ class Nutools(CMakePackage):
     depends_on('nusimdata')
     depends_on('dk2nugenie')
     depends_on('genie')
-    depends_on('geant4~data')
+    depends_on('geant4 ~data')
     depends_on('xerces-c')
     depends_on('cry')
     depends_on('ifdh-art')

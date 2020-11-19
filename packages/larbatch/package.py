@@ -12,10 +12,13 @@ class Larbatch(Package):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larbatch-web-client/wiki"
     url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/larbatch.v01_51_12.tar"
+    version('01.51.12', sha256='5ab54efd1897eeab66663a7029a9b0781b691051d0a47998b5989acbeb5117c3')
 
-    version('1.51.12')
-    version('1.51.11')
-    version('1.51.10')
+    version('01.51.11', sha256='e2336eb76b63e6aa95dc24d86ec6b777b31d7ed08cd45e331bcbee050e9e1018')
+    version('01.51.10', sha256='da3c92246716484ba563147deefc4da878824d8109a8dd22d8877ed7926733ef')
+
+    def url_for_version(self, version):
+        return  "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/larbatch.v{0}.tar".format(version.underscored);
 
     depends_on('sam_web_client', type=('run'))
     depends_on('python',         type=('run'))

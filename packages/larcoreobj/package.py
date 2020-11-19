@@ -32,12 +32,12 @@ class Larcoreobj(CMakePackage):
     url      = "https://github.com/LArSoft/larcoreobj.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larcoreobj.git', branch='feature/MVP1a', preferred=True)
-    version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/larcoreobj.git')
-    version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/larcoreobj.git')
-    version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/larcoreobj.git')
-    version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larcoreobj.git')
-    version('08.10.05', tag='v08_10_05', git='https://github.com/LArSoft/larcoreobj.git')
-    version('08.10.06', tag='v08_10_06', git='https://github.com/LArSoft/larcoreobj.git')
+    version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
+    version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
+    version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
+    version('08.10.03', tag='v08_10_03', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
+    version('08.10.05', tag='v08_10_05', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
+    version('08.10.06', tag='v08_10_06', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

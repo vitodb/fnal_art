@@ -36,10 +36,11 @@ class Messagefacility(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
-    version('2.03.00', tag='v2_03_00', git=git_base)
-    version('2.03.01', tag='v2_03_01', git=git_base)
-    version('2.04.03', tag='v2_04_03', git=git_base)
-    version('2.05.00', tag='v2_05_00', git=git_base)
+    version('2.06.01', tag='v2_06_01', git=git_base, get_full_repo=True)
+    version('2.03.00', tag='v2_03_00', git=git_base, get_full_repo=True)
+    version('2.03.01', tag='v2_03_01', git=git_base, get_full_repo=True)
+    version('2.04.03', tag='v2_04_03', git=git_base, get_full_repo=True)
+    version('2.05.00', tag='v2_05_00', git=git_base, get_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -53,7 +54,7 @@ class Messagefacility(CMakePackage):
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules', type='build')
     depends_on('catch2@2.3.0:', type='build')
-    depends_on('pybind11', type='build')
+    depends_on('py-pybind11', type='build')
 
     # Build / link dependencies.
     depends_on('cetlib-except')

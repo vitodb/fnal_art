@@ -40,12 +40,12 @@ class Gallery(CMakePackage):
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
 
-    version('1.12.07', tag='v1_12_07', git=git_base)
-    version('1.13.00', tag='v1_13_00', git=git_base)
-    version('1.13.01', tag='v1_13_01', git=git_base)
-    version('1.14.00', tag='v1_14_00', git=git_base)
-    version('1.14.01', tag='v1_14_01', git=git_base)
-    version('1.14.02', tag='v1_14_02', git=git_base)
+    version('1.12.07', tag='v1_12_07', git=git_base, get_full_repo=True)
+    version('1.13.00', tag='v1_13_00', git=git_base, get_full_repo=True)
+    version('1.13.01', tag='v1_13_01', git=git_base, get_full_repo=True)
+    version('1.14.00', tag='v1_14_00', git=git_base, get_full_repo=True)
+    version('1.14.01', tag='v1_14_01', git=git_base, get_full_repo=True)
+    version('1.14.02', tag='v1_14_02', git=git_base, get_full_repo=True)
 
     variant('cxxstd',
             default='17',

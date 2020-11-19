@@ -32,11 +32,11 @@ class Lardataalg(CMakePackage):
     url      = "https://github.com/LArSoft/lardataalg.git"
 
     version('MVP1a', git='https://github.com/LArSoft/lardataalg.git', branch='feature/MVP1a')
-    version('08.13.01', tag='v08_13_01', git='https://github.com/LArSoft/lardataalg.git')
-    version('08.13.02', tag='v08_13_02', git='https://github.com/LArSoft/lardataalg.git')
-    version('08.13.03', tag='v08_13_03', git='https://github.com/LArSoft/lardataalg.git')
-    version('08.13.04', tag='v08_13_04', git='https://github.com/LArSoft/lardataalg.git')
-    version('08.13.08', tag='v08_13_08', git='https://github.com/LArSoft/lardataalg.git')
+    version('08.13.01', tag='v08_13_01', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
+    version('08.13.02', tag='v08_13_02', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
+    version('08.13.03', tag='v08_13_03', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
+    version('08.13.04', tag='v08_13_04', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
+    version('08.13.08', tag='v08_13_08', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
 
 
     variant('cxxstd',

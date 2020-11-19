@@ -31,14 +31,14 @@ class Lareventdisplay(CMakePackage):
     url      = "https://github.com/LArSoft/lareventdisplay.git"
 
     version('MVP1a', git='https://github.com/LArSoft/lareventdisplay.git', branch='feature/MVP1a')
-    version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.11.00', tag='v08_11_00', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.11.01', tag='v08_11_01', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.12.02', tag='v08_12_02', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.12.03', tag='v08_12_03', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.12.04', tag='v08_12_04', git='https://github.com/LArSoft/lareventdisplay.git')
-    version('08.12.13', tag='v08_12_13', git='https://github.com/LArSoft/lareventdisplay.git')
+    version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
+    version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
+    version('08.11.00', tag='v08_11_00', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
+    version('08.11.01', tag='v08_11_01', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
+    version('08.12.02', tag='v08_12_02', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
+    version('08.12.03', tag='v08_12_03', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
+    version('08.12.04', tag='v08_12_04', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
+    version('08.12.13', tag='v08_12_13', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
 
 
     variant('cxxstd',

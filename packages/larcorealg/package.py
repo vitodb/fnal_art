@@ -32,12 +32,12 @@ class Larcorealg(CMakePackage):
     url      = "https://github.com/LArSoft/larcorealg.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larcorealg.git', branch='feature/MVP1a', preferred=True)
-    version('08.19.00', tag='v08_19_00', git='https://github.com/LArSoft/larcorealg.git')
-    version('08.20.00', tag='v08_20_00', git='https://github.com/LArSoft/larcorealg.git')
-    version('08.20.01', tag='v08_20_01', git='https://github.com/LArSoft/larcorealg.git')
-    version('08.20.02', tag='v08_20_02', git='https://github.com/LArSoft/larcorealg.git')
-    version('08.21.03', tag='v08_21_03', git='https://github.com/LArSoft/larcorealg.git')
-    version('08.21.04', tag='v08_21_04', git='https://github.com/LArSoft/larcorealg.git')
+    version('08.19.00', tag='v08_19_00', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
+    version('08.20.00', tag='v08_20_00', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
+    version('08.20.01', tag='v08_20_01', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
+    version('08.20.02', tag='v08_20_02', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
+    version('08.21.03', tag='v08_21_03', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
+    version('08.21.04', tag='v08_21_04', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
     
 
     variant('cxxstd',

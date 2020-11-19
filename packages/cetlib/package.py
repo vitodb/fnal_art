@@ -32,17 +32,17 @@ class Cetlib(CMakePackage):
     """A utility library for the art suite."""
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'http://cdcvs.fnal.gov/projects/cetlib'
+    git_base = 'https://cdcvs.fnal.gov/projects/cetlib'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
-    version('3.04.00', tag='v3_04_00', git=git_base)
-    version('3.05.00', tag='v3_05_00', git=git_base)
-    version('3.05.01', tag='v3_05_01', git=git_base)
-    version('3.07.02', tag='v3_07_02', git=git_base)
-    version('3.08.00', tag='v3_08_00', git=git_base)
+    version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
+    version('3.05.00', tag='v3_05_00', git=git_base, get_full_repo=True)
+    version('3.05.01', tag='v3_05_01', git=git_base, get_full_repo=True)
+    version('3.07.02', tag='v3_07_02', git=git_base, get_full_repo=True)
+    version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
    
     patch = patcher
 
@@ -90,6 +90,8 @@ class Cetlib(CMakePackage):
         spack_env.prepend_path('PERL5LIB',
                                os.path.join(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        run_env.set('CETLIB_DIR', self.prefix)
+        spack_env.set('CETLIB_DIR', self.prefix)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
 
@@ -100,3 +102,5 @@ class Cetlib(CMakePackage):
         # Perl modules.
         spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        run_env.set('CETLIB_DIR', self.prefix)
+        spack_env.set('CETLIB_DIR', self.prefix)

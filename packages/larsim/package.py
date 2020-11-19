@@ -31,17 +31,17 @@ class Larsim(CMakePackage):
     url      = "https://github.com/LArSoft/larsim.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larsim.git', branch='feature/MVP1a')
-    version('08.17.00', tag='v08_17_00', git='https://github.com/LArSoft/larsim.git')
-    version('08.17.01', tag='v08_17_01', git='https://github.com/LArSoft/larsim.git')
-    version('08.18.00', tag='v08_18_00', git='https://github.com/LArSoft/larsim.git')
-    version('08.18.01', tag='v08_18_01', git='https://github.com/LArSoft/larsim.git')
-    version('08.19.00', tag='v08_19_00', git='https://github.com/LArSoft/larsim.git')
-    version('08.19.01', tag='v08_19_01', git='https://github.com/LArSoft/larsim.git')
-    version('08.19.02', tag='v08_19_02', git='https://github.com/LArSoft/larsim.git')
-    version('08.19.03', tag='v08_19_03', git='https://github.com/LArSoft/larsim.git')
-    version('08.19.04', tag='v08_19_04', git='https://github.com/LArSoft/larsim.git')
-    version('08.22.03', tag='v08_22_03', git='https://github.com/LArSoft/larsim.git')
-    version('08.22.05', tag='v08_22_05', git='https://github.com/LArSoft/larsim.git')
+    version('08.17.00', tag='v08_17_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.17.01', tag='v08_17_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.18.00', tag='v08_18_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.18.01', tag='v08_18_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.19.00', tag='v08_19_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.19.01', tag='v08_19_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.19.02', tag='v08_19_02', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.19.03', tag='v08_19_03', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.19.04', tag='v08_19_04', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.22.03', tag='v08_22_03', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.22.05', tag='v08_22_05', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

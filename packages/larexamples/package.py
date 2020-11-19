@@ -31,14 +31,14 @@ class Larexamples(CMakePackage):
     url      = "https://github.com/LArSoft/larexamples.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larexamples.git', branch='feature/MVP1a')
-    version('08.04.01', tag='v08_04_01', git='https://github.com/LArSoft/larexamples.git')
-    version('08.05.00', tag='v08_05_00', git='https://github.com/LArSoft/larexamples.git')
-    version('08.05.01', tag='v08_05_01', git='https://github.com/LArSoft/larexamples.git')
-    version('08.06.01', tag='v08_06_01', git='https://github.com/LArSoft/larexamples.git')
-    version('08.06.02', tag='v08_06_02', git='https://github.com/LArSoft/larexamples.git')
-    version('08.06.03', tag='v08_06_03', git='https://github.com/LArSoft/larexamples.git')
-    version('08.06.04', tag='v08_06_04', git='https://github.com/LArSoft/larexamples.git')
-    version('08.06.13', tag='v08_06_13', git='https://github.com/LArSoft/larexamples.git')
+    version('08.04.01', tag='v08_04_01', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
+    version('08.05.00', tag='v08_05_00', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
+    version('08.05.01', tag='v08_05_01', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
+    version('08.06.01', tag='v08_06_01', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
+    version('08.06.02', tag='v08_06_02', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
+    version('08.06.03', tag='v08_06_03', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
+    version('08.06.04', tag='v08_06_04', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
+    version('08.06.13', tag='v08_06_13', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

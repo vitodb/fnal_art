@@ -17,8 +17,8 @@ class Ifdhc(MakefilePackage):
     version('develop', git=git_base, branch='develop')
     version('2.3.10', sha256='4da290f5fc3c9d4344792176e19e1d3278f87a634ebc1535bbd9a91aae2bbf9b')
     version('2.3.9', sha256='1acdff224f32c3eb5780aed13cf0f23b431623a0ebc8a74210271b75b9f2f574')
-    version('2.5.2', git=git_base, tag='v2_5_2')
-    #version('2.5.4', git=git_base, tag='v2_5_4')
+    version('2.5.2', git=git_base, tag='v2_5_2', get_full_repo=True)
+    #version('2.5.4', git=git_base, tag='v2_5_4', get_full_repo=True)
     version('2.5.4', sha256='48bf6807cb8b3092677768f763c1f18940d852d685424a1ea386acf7f1606608')
 
 

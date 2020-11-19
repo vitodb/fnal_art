@@ -33,12 +33,12 @@ class Larsoft(CMakePackage):
     url      = "https://github.com/LArSoft/larsoft.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larsoft.git', branch='feature/MVP1a')
-    version('08.38.01', tag='v08_38_01', git='https://github.com/LArSoft/larsoft.git')
-    version('08.39.00', tag='v08_39_00', git='https://github.com/LArSoft/larsoft.git')
-    version('08.40.00', tag='v08_40_00', git='https://github.com/LArSoft/larsoft.git')
-    version('08.43.00', tag='v08_43_00', git='https://github.com/LArSoft/larsoft.git')
-    version('08.50.00', tag='v08_50_00', git='https://github.com/LArSoft/larsoft.git')
-    version('08.50.02', tag='v08_50_02', git='https://github.com/LArSoft/larsoft.git')
+    version('08.38.01', tag='v08_38_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
+    version('08.39.00', tag='v08_39_00', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
+    version('08.40.00', tag='v08_40_00', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
+    version('08.43.00', tag='v08_43_00', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
+    version('08.50.00', tag='v08_50_00', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
+    version('08.50.02', tag='v08_50_02', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

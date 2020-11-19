@@ -32,17 +32,17 @@ class Larana(CMakePackage):
     url      = "https://github.com/LArSoft/larana.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larana.git', branch='feature/MVP1a')
-    version('08.13.03', tag='v08_13_03', git='https://github.com/LArSoft/larana.git')
-    version('08.14.00', tag='v08_14_00', git='https://github.com/LArSoft/larana.git')
-    version('08.14.01', tag='v08_14_01', git='https://github.com/LArSoft/larana.git')
-    version('08.15.00', tag='v08_15_00', git='https://github.com/LArSoft/larana.git')
-    version('08.15.01', tag='v08_15_01', git='https://github.com/LArSoft/larana.git')
-    version('08.16.01', tag='v08_16_01', git='https://github.com/LArSoft/larana.git')
-    version('08.16.02', tag='v08_16_02', git='https://github.com/LArSoft/larana.git')
-    version('08.16.03', tag='v08_16_03', git='https://github.com/LArSoft/larana.git')
-    version('08.16.04', tag='v08_16_04', git='https://github.com/LArSoft/larana.git')
-    version('08.17.03', tag='v08_17_03', git='https://github.com/LArSoft/larana.git')
-    version('08.17.05', tag='v08_17_05', git='https://github.com/LArSoft/larana.git')
+    version('08.13.03', tag='v08_13_03', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.14.00', tag='v08_14_00', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.14.01', tag='v08_14_01', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.15.00', tag='v08_15_00', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.15.01', tag='v08_15_01', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.16.01', tag='v08_16_01', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.16.02', tag='v08_16_02', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.16.03', tag='v08_16_03', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.16.04', tag='v08_16_04', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.17.03', tag='v08_17_03', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
+    version('08.17.05', tag='v08_17_05', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

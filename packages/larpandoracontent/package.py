@@ -21,15 +21,16 @@ class Larpandoracontent(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
     url      = "https://github.com/LArSoft/larpandoracontent.git"
 
+    version('3.22.01', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_22_01')
     version('3.14.05', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_14_05')
-    version('03.15.09', tag='v03_15_09', git='https://github.com/LArSoft/larpandoracontent.git')
-    version('03.15.10', tag='v03_15_10', git='https://github.com/LArSoft/larpandoracontent.git')
-    version('03.15.11', tag='v03_15_11', git='https://github.com/LArSoft/larpandoracontent.git')
-    version('03.15.12', tag='v03_15_12', git='https://github.com/LArSoft/larpandoracontent.git')
-    version('03.15.13', tag='v03_15_13', git='https://github.com/LArSoft/larpandoracontent.git')
-    version('03.15.14', tag='v03_15_14', git='https://github.com/LArSoft/larpandoracontent.git')
-    version('03.15.15', tag='v03_15_15', git='https://github.com/LArSoft/larpandoracontent.git')
-    version('03.15.16', tag='v03_15_16', git='https://github.com/LArSoft/larpandoracontent.git')
+    version('03.15.09', tag='v03_15_09', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+    version('03.15.10', tag='v03_15_10', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+    version('03.15.11', tag='v03_15_11', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+    version('03.15.12', tag='v03_15_12', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+    version('03.15.13', tag='v03_15_13', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+    version('03.15.14', tag='v03_15_14', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+    version('03.15.15', tag='v03_15_15', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+    version('03.15.16', tag='v03_15_16', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

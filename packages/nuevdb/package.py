@@ -30,9 +30,9 @@ class Nuevdb(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nuevdb/wiki"
     url      = "https://cdcvs.fnal.gov/projects/nuevdb/"
 
-    version('1.02.02', tag='v1_02_02', git="https://cdcvs.fnal.gov/projects/nuevdb")
-    version('1.02.03', tag='v1_02_03', git="https://cdcvs.fnal.gov/projects/nuevdb")
-    version('1.02.04', tag='v1_02_04', git="https://cdcvs.fnal.gov/projects/nuevdb")
+    version('1.02.02', tag='v1_02_02', git="https://cdcvs.fnal.gov/projects/nuevdb", get_full_repo=True)
+    version('1.02.03', tag='v1_02_03', git="https://cdcvs.fnal.gov/projects/nuevdb", get_full_repo=True)
+    version('1.02.04', tag='v1_02_04', git="https://cdcvs.fnal.gov/projects/nuevdb", get_full_repo=True)
 
     variant('cxxstd',
             default='17',

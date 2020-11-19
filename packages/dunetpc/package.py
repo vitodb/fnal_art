@@ -33,10 +33,10 @@ class Dunetpc(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/dunetpc'
 
     version('develop', branch='develop', git=git_base)
-    version('08.57.00', tag='v08_57_00', git=git_base)
-    version('08.59.00', tag='v08_59_00', git=git_base)
-    version('08.62.00', tag='v08_62_00', git=git_base)
-    version('08.62.01', tag='v08_62_01', git=git_base)
+    version('08.57.00', tag='v08_57_00', git=git_base, get_full_repo=True)
+    version('08.59.00', tag='v08_59_00', git=git_base, get_full_repo=True)
+    version('08.62.00', tag='v08_62_00', git=git_base, get_full_repo=True)
+    version('08.62.01', tag='v08_62_01', git=git_base, get_full_repo=True)
 
     patch = patcher
 

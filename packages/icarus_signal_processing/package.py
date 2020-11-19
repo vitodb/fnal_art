@@ -36,9 +36,9 @@ class IcarusSignalProcessing(CMakePackage):
     git_base = 'https://github.com/SBNSoftware/icarus_signal_processing.git'
 
     version('develop', branch='develop', git=git_base)
-    version('08.44.00', tag='v08_44_00', git=git_base)
-    version('08.47.00', tag='v08_47_00', git=git_base)
-    version('08.50.00', tag='v08_50_00', git=git_base)
+    version('08.44.00', tag='v08_44_00', git=git_base, get_full_repo=True)
+    version('08.47.00', tag='v08_47_00', git=git_base, get_full_repo=True)
+    version('08.50.00', tag='v08_50_00', git=git_base, get_full_repo=True)
 
     patch = patcher
 

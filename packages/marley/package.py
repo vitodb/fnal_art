@@ -6,16 +6,6 @@
 from spack import *
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
-
 
 class Marley(Package):
     """A Monte Carlo event generator for tens-of-MeV neutrino-nucleus
@@ -36,7 +26,10 @@ class Marley(Package):
     depends_on('root')
     depends_on('gsl')
 
-    patch = patcher
+    
+    patch('marley-1.0.0.patch', when='@1.0.0')
+    patch('marley-1.1.0.patch', when='@1.1.0')
+    patch('marley-1.1.1.patch', when='@1.1.1')
 
     def setup_environment(self, spack_env, run_env):
         spack_env.append_flags('CPPFLAGS', '-I../include')

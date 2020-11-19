@@ -13,7 +13,8 @@ class Pandora(CMakePackage):
 
     homepage = "https://github.com/PandoraPFA"
 
-    version('03.11.01', git='https://github.com/PandoraPFA/PandoraPFA', tag='v03-11-01')
+    version('03.11.01', git='https://github.com/PandoraPFA/PandoraPFA', tag='v03-11-01', get_full_repo=True)
+    version('03.16.00', git='https://github.com/PandoraPFA/PandoraPFA', tag='v03-16-00', get_full_repo=True)
  
     variant('cxxstd',
             default='17',

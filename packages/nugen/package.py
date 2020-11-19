@@ -33,11 +33,11 @@ class Nugen(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/nugen'
 
     version('develop', branch='develop', git=git_base)
-    version('1.10.02', tag='v1_10_02', git=git_base)
-    version('1.10.01', tag='v1_10_01', git=git_base)
-    version('1.10.00', tag='v1_10_00', git=git_base)
-    version('1.09.00', tag='v1_09_00', git=git_base)
-    version('1.08.00', tag='v1_08_00', git=git_base)
+    version('1.10.02', tag='v1_10_02', git=git_base, get_full_repo=True)
+    version('1.10.01', tag='v1_10_01', git=git_base, get_full_repo=True)
+    version('1.10.00', tag='v1_10_00', git=git_base, get_full_repo=True)
+    version('1.09.00', tag='v1_09_00', git=git_base, get_full_repo=True)
+    version('1.08.00', tag='v1_08_00', git=git_base, get_full_repo=True)
 
     patch = patcher
 

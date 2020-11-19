@@ -25,18 +25,18 @@ class Artg4tk(CMakePackage):
 
     version('MVP1a', git = url, branch = 'feature/Spack-MVP1a',
             extention='tar.bz2')
-    version('09.04.04', tag='v09_04_04', git=url, extention='tar.bz2')
-    version('09.05.00', tag='v09_05_00', git=url, extention='tar.bz2')
-    version('09.05.01', tag='v09_05_01', git=url, extention='tar.bz2')
-    version('09.05.02', tag='v09_05_02', git=url, extention='tar.bz2')
-    version('09.06.00', tag='v09_06_00', git=url, extention='tar.bz2')
-    version('09.04.04', tag='v09_04_04', git=url, extention='tar.bz2')
-    version('09.05.00', tag='v09_05_00', git=url, extention='tar.bz2')
-    version('09.05.01', tag='v09_05_01', git=url, extention='tar.bz2')
-    version('09.05.02', tag='v09_05_02', git=url, extention='tar.bz2')
-    version('09.06.00', tag='v09_06_00', git=url, extention='tar.bz2')
-    version('09.07.00', tag='v09_07_00', git=url, extention='tar.bz2')
-    version('09.07.01', tag='v09_07_01', git=url, extention='tar.bz2')
+    version('09.04.04', tag='v09_04_04', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.05.00', tag='v09_05_00', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.05.01', tag='v09_05_01', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.05.02', tag='v09_05_02', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.06.00', tag='v09_06_00', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.04.04', tag='v09_04_04', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.05.00', tag='v09_05_00', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.05.01', tag='v09_05_01', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.05.02', tag='v09_05_02', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.06.00', tag='v09_06_00', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.07.00', tag='v09_07_00', git=url, extention='tar.bz2', get_full_repo=True)
+    version('09.07.01', tag='v09_07_01', git=url, extention='tar.bz2', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

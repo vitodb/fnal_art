@@ -15,10 +15,10 @@ class Libwda(MakefilePackage):
 
     version('develop', git=git_base, branch='develop')
     version('2.26.0', sha256='4df374bbf36030241a9714d5e08cd9b2b5e1b3374da1a97ec793cd37eba40fc2')
-    version('2.22.2', tag='v2_22_2', git=git_base)
-    version('2.23.0', tag='v2_23_0', git=git_base)
-    version('2.24.0', tag='v2_24_0', git=git_base)
-    version('2.26.0', tag='v2_26_0', git=git_base)
+    version('2.22.2', tag='v2_22_2', git=git_base, get_full_repo=True)
+    version('2.23.0', tag='v2_23_0', git=git_base, get_full_repo=True)
+    version('2.24.0', tag='v2_24_0', git=git_base, get_full_repo=True)
+    version('2.26.0', tag='v2_26_0', git=git_base, get_full_repo=True)
 
     parallel = False
 

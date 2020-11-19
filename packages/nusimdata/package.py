@@ -32,13 +32,13 @@ class Nusimdata(CMakePackage):
     url      = "https://cdcvs.fnal.gov/projects/nusimdata"
 
     version('MVP1a', git='https://cdcvs.fnal.gov/projects/nusimdata', branch='feature/MVP1a', preferred=True)
-    version('1.19.01', tag='v1_19_01', git='https://cdcvs.fnal.gov/projects/nusimdata')
-    version('1.19.02', tag='v1_19_02', git='https://cdcvs.fnal.gov/projects/nusimdata')
-    version('1.20.00', tag='v1_20_00', git='https://cdcvs.fnal.gov/projects/nusimdata')
-    version('1.20.01', tag='v1_20_01', git='https://cdcvs.fnal.gov/projects/nusimdata')
-    version('1.21.00', tag='v1_21_00', git='https://cdcvs.fnal.gov/projects/nusimdata')
-    version('1.21.01', tag='v1_21_01', git='https://cdcvs.fnal.gov/projects/nusimdata')
-    version('1.21.02', tag='v1_21_02', git='https://cdcvs.fnal.gov/projects/nusimdata')
+    version('1.19.01', tag='v1_19_01', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
+    version('1.19.02', tag='v1_19_02', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
+    version('1.20.00', tag='v1_20_00', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
+    version('1.20.01', tag='v1_20_01', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
+    version('1.21.00', tag='v1_21_00', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
+    version('1.21.01', tag='v1_21_01', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
+    version('1.21.02', tag='v1_21_02', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

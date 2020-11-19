@@ -22,10 +22,25 @@ class Cosmosis(MakefilePackage):
     # notify when the package is updated.
     # maintainers = ['github_user1', 'github_user2']
 
+    version('des-y3', tag='des-y3')
     version('neutrinoless_mass_function_2', commit='a7f39b5af97f863ed9297b2e536548db7f425110')
     version('neutrinoless_mass_function_1', commit='790b718ea6d7f47f6d3f8fb6d7340e69709066ac')
     version('1.6.2', sha256='b4e5edb9c144b8bf404a3af554f526f52494c48e81c47c53d61d172d27b823b1')
 
+    # three resources for the des-y3 tag:
+    resource(name='cosmosis-standard-library', 
+             git='https://bitbucket.org/joezuntz/cosmosis-standard-library.git',
+             commit='3246f0741551bee1c0d29208e74f38f4ed27d3ed',
+             destination='.', when='@des-y3')
+    resource(name='cosmosis-des-library',
+             git='https://darkenergysurvey@bitbucket.org/joezuntz/cosmosis-des-library.git',
+             tag='des-y3',
+             destination='.', when='@des-y3')
+    resource(name='y3-3x2pt', git='https://github.com/des-science/y3-3x2pt.git',
+             tag='des-y3',
+             destination='.', when='@des-y3')
+ 
+    # the rest just have cosmosis-standard-library
     resource(name='cosmosis-standard-library', git='https://bitbucket.org/joezuntz/cosmosis-standard-library.git',
              commit='30e90c9e8882aa6505e2019ad8b6ef4196471109',
              destination='.', when='@neutrinoless_mass_function_2')

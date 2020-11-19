@@ -32,15 +32,15 @@ class Larreco(CMakePackage):
     url      = "https://github.com/LArSoft/larreco.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larreco.git', branch='feature/MVP1a')
-    version('08.25.00', tag='v08_25_00', git='https://github.com/LArSoft/larreco.git')
-    version('08.25.01', tag='v08_25_01', git='https://github.com/LArSoft/larreco.git')
-    version('08.26.00', tag='v08_26_00', git='https://github.com/LArSoft/larreco.git')
-    version('08.26.01', tag='v08_26_01', git='https://github.com/LArSoft/larreco.git')
-    version('08.28.00', tag='v08_28_00', git='https://github.com/LArSoft/larreco.git')
-    version('08.29.00', tag='v08_29_00', git='https://github.com/LArSoft/larreco.git')
-    version('08.31.00', tag='v08_31_00', git='https://github.com/LArSoft/larreco.git')
-    version('08.31.01', tag='v08_31_01', git='https://github.com/LArSoft/larreco.git')
-    version('08.31.03', tag='v08_31_03', git='https://github.com/LArSoft/larreco.git')
+    version('08.25.00', tag='v08_25_00', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('08.25.01', tag='v08_25_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('08.26.00', tag='v08_26_00', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('08.26.01', tag='v08_26_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('08.28.00', tag='v08_28_00', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('08.29.00', tag='v08_29_00', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('08.31.00', tag='v08_31_00', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('08.31.01', tag='v08_31_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('08.31.03', tag='v08_31_03', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
 
     variant('cxxstd',
             default='17',
