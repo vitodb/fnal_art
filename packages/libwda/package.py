@@ -49,4 +49,10 @@ class Libwda(MakefilePackage):
         makefile = FileFilter(os.path.join('src', 'Makefile'))
         makefile.filter('gcc', '$(CC)')
 
+    def setup_environment(self, spack_env, run_env):
+        spack_env.set("LIBWDA_DIR",self.prefix)
+        run_env.set("LIBWDA_DIR",self.prefix)
 
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set("LIBWDA_DIR",self.prefix)
+        run_env.set("LIBWDA_DIR",self.prefix)

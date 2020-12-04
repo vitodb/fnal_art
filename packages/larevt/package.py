@@ -32,6 +32,8 @@ class Larevt(CMakePackage):
     url      = "https://github.com/LArSoft/larevt.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larevt.git', branch='feature/MVP1a')
+    version('09.00.08', tag='v09_00_08', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
+    version('09.00.00', tag='v09_00_00', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
     version('08.08.00', tag='v08_08_00', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
     version('08.08.01', tag='v08_08_01', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
     version('08.09.00', tag='v08_09_00', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)

@@ -32,6 +32,7 @@ class Larreco(CMakePackage):
     url      = "https://github.com/LArSoft/larreco.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larreco.git', branch='feature/MVP1a')
+    version('09.04.01', tag='v09_04_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
     version('08.25.00', tag='v08_25_00', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
     version('08.25.01', tag='v08_25_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
     version('08.26.00', tag='v08_26_00', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)

@@ -37,7 +37,7 @@ class Art(CMakePackage):
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('3.02.03', tag='v3_02_03', git=git_base, get_full_repo=True)
     version('3.02.04', tag='v3_02_04', git=git_base, get_full_repo=True)
     version('3.02.05', tag='v3_02_05', git=git_base, get_full_repo=True)
@@ -115,6 +115,8 @@ class Art(CMakePackage):
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
+        spack_env.set("ART_DIR",self.prefix)
+        run_env.set("ART_DIR",self.prefix)
 
     def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
         # Binaries.
@@ -131,3 +133,5 @@ class Art(CMakePackage):
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+        spack_env.set("ART_DIR",self.prefix)
+        run_env.set("ART_DIR",self.prefix)

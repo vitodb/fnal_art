@@ -31,6 +31,7 @@ class Lareventdisplay(CMakePackage):
     url      = "https://github.com/LArSoft/lareventdisplay.git"
 
     version('MVP1a', git='https://github.com/LArSoft/lareventdisplay.git', branch='feature/MVP1a')
+    version('09.00.11', tag='v09_00_11', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
     version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
     version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
     version('08.11.00', tag='v08_11_00', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)

@@ -102,6 +102,8 @@ class CanvasRootIo(CMakePackage):
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+        spack_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
+        run_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
 
     def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
         # Ensure we can find plugin libraries.
@@ -112,3 +114,5 @@ class CanvasRootIo(CMakePackage):
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+        spack_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
+        run_env.set("CANVAS_ROOT_IO_DIR", self.prefix)

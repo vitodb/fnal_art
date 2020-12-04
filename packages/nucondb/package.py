@@ -52,3 +52,11 @@ class Nucondb(MakefilePackage):
     @property
     def install_targets(self):
         return ('DESTDIR={0}/'.format(self.prefix), 'install')
+
+    def setup_environment(self, spack_env, run_env):
+        spack_env.set("NUCONDB_DIR",self.prefix)
+        run_env.set("NUCONDB_DIR",self.prefix)
+
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.set("NUCONDB_DIR",self.prefix)
+        run_env.set("NUCONDB_DIR",self.prefix)

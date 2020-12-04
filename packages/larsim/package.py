@@ -31,7 +31,8 @@ class Larsim(CMakePackage):
     url      = "https://github.com/LArSoft/larsim.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larsim.git', branch='feature/MVP1a')
-    version('08.17.00', tag='v08_17_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('09.06.00', tag='v09_06_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('08.17.01', tag='v08_17_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
     version('08.17.01', tag='v08_17_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
     version('08.18.00', tag='v08_18_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
     version('08.18.01', tag='v08_18_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)

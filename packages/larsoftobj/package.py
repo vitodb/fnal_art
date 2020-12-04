@@ -38,6 +38,7 @@ class Larsoftobj(CMakePackage):
     version('08.26.02', tag='v08_26_02', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
     version('08.26.03', tag='v08_26_03', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
     version('08.27.06', tag='v08_27_06', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
+    version('09.03.00', tag='v09_03_00', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
 
     variant('cxxstd',
             default='17',

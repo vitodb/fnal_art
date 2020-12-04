@@ -35,6 +35,7 @@ class Larcore(CMakePackage):
     url      = "https://github.com/LArSoft/larcore.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larcore.git', branch='feature/MVP1a')
+    version('09.00.01', tag='v09_00_01', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
     version('08.07.00', tag='v08_07_00', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
     version('08.07.01', tag='v08_07_01', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
     version('08.08.00', tag='v08_08_00', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)

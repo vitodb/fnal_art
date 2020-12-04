@@ -27,6 +27,7 @@ from the ifdhc package."""
     patch = patcher
 
     version('MVP1a', git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
+    version('2.10.07',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_07', get_full_repo=True)
     version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02', get_full_repo=True)
     version('2.10.01',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_01', get_full_repo=True)
     version('2.10.00',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_00', get_full_repo=True)

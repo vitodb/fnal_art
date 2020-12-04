@@ -32,6 +32,7 @@ class Larcoreobj(CMakePackage):
     url      = "https://github.com/LArSoft/larcoreobj.git"
 
     version('MVP1a', git='https://github.com/LArSoft/larcoreobj.git', branch='feature/MVP1a', preferred=True)
+    version('09.00.00', tag='v09_00_00', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
     version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
     version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
     version('08.10.02', tag='v08_10_02', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
