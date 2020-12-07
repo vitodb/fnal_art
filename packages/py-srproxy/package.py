@@ -22,7 +22,7 @@
 
 from spack import *
 
-class Srproxy(Package):
+class PySrproxy(Package):
     """FIXME: Put a proper description of your package here."""
 
     homepage = "https://github.com/CAFAnaFramework/SRProxy/"
