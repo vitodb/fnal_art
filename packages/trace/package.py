@@ -30,7 +30,9 @@ fast and/or slow logging - dynamically (you choose)."""
     depends_on('cetmodules', type='build')
     depends_on('cetpkgsupport', type='build')
 
-    patch("trace-3.15.05.patch")
+    patch("trace-3.15.05.patch", when="@3.15.05")
+    patch("trace-3.15.06.patch", when="@3.15.06")
+    patch("trace-3.15.07.patch", when="@3.15.07")
     patch = patcher
 
     def url_for_version(self, version):

@@ -1,0 +1,25 @@
+--- a/CMakeLists.txt	2021-01-07 10:40:58.327476000 -0600
++++ b/CMakeLists.txt	2021-01-07 10:50:16.064310000 -0600
+@@ -15,11 +15,10 @@
+   unset(CMAKE_CXX_COMPILER)
+ endif()
+ 
+-project(TRACE VERSION 3.16.00)
++project(TRACE VERSION 3.16.00 LANGUAGES CXX C)
+ # cetbuildtools contains our cmake modules
+ 
+-find_package(cetmodules 1.04.00 REQUIRED)
+-#find_package(cetmodules 1.04.00 QUIET)
++find_package(cetmodules 2.05.08 REQUIRED)
+ if (${cetmodules_FOUND})
+   MESSAGE(STATUS "Found cetmouldes.")
+   include(CetCMakeEnv)
+@@ -129,7 +128,7 @@
+ 
+ if (${cetmodules_FOUND})
+   # ups - table and config files
+-  add_subdirectory(ups)
++  #add_subdirectory(ups)
+ 
+   # doc - Some documentation...There should be a cet_ function for this...
+   FILE(COPY doc DESTINATION . PATTERN ".svn" EXCLUDE)
