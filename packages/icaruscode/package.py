@@ -10,7 +10,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -43,7 +43,7 @@ class Icaruscode(CMakePackage):
     version('08.50.00', tag='v08_50_00', git=git_base, get_full_repo=True)
     version('08.50.02', tag='v08_50_02', git=git_base, get_full_repo=True)
 
-    patch = patcher
+
 
     variant('cxxstd',
             default='17',

@@ -9,7 +9,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -24,7 +24,7 @@ from the ifdhc package."""
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
     url      = "https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
 
-    patch = patcher
+
 
     version('MVP1a', git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
     version('2.10.07',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_07', get_full_repo=True)

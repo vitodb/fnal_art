@@ -12,7 +12,7 @@ import llnl.util.tty as tty
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -54,7 +54,7 @@ class Larcore(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch = patcher
+
 
     depends_on('larcorealg')
     depends_on('art-root-io')

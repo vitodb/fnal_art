@@ -9,7 +9,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -35,7 +35,7 @@ class ArtdaqCore(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch = patcher
+
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'

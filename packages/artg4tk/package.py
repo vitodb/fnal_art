@@ -10,7 +10,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -44,7 +44,7 @@ class Artg4tk(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch = patcher
+
 
     depends_on('cetmodules', type='build')
     depends_on('art-root-io')

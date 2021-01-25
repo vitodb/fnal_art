@@ -11,7 +11,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 def patcher(x):
     cetmodules_20_migrator(".","larsoftobj","08.26.02")
@@ -46,7 +46,7 @@ class Larsoftobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch = patcher
+
 
     depends_on('gallery')
     depends_on('lardataobj')

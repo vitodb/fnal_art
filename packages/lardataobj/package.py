@@ -10,7 +10,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 def patcher(x):
     cetmodules_20_migrator(".","lardataobj","08.10.02")
@@ -27,7 +27,7 @@ def sanitize_environments(*args):
 class Lardataobj(CMakePackage):
     """Lardataobj"""
 
-    patch = patcher
+
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataobj"
     url      = "https://github.com/LArSoft/lardataobj.git"

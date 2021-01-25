@@ -9,7 +9,7 @@ import os
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -48,7 +48,7 @@ class Critic(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-    patch = patcher
+
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')

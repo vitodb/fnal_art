@@ -10,7 +10,7 @@ import os
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -38,7 +38,7 @@ class Dunetpc(CMakePackage):
     version('08.62.00', tag='v08_62_00', git=git_base, get_full_repo=True)
     version('08.62.01', tag='v08_62_01', git=git_base, get_full_repo=True)
 
-    patch = patcher
+
 
     variant('cxxstd',
             default='17',

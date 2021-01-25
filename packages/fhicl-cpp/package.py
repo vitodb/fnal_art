@@ -9,7 +9,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -43,7 +43,7 @@ class FhiclCpp(CMakePackage):
     version('4.11.00', tag='v4_11_00', git=git_base, get_full_repo=True)
     version('4.11.01', sha256='820b747209dfc5747fab71cf95d1833b4bbd406eb9220097e33c2af686c9be8f')
 
-    patch = patcher
+
 
     variant('cxxstd',
             default='17',

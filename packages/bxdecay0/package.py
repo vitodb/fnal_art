@@ -10,7 +10,7 @@ import os
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -39,7 +39,7 @@ class Bxdecay0(CMakePackage):
     version('1.0.6', tag='v1_0_6', git=git_base, get_full_repo=True)
     version('1.0.5', tag='v1_0_5', git=git_base, get_full_repo=True)
 
-    patch = patcher
+
 
     variant('cxxstd',
             default='17',

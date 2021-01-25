@@ -11,7 +11,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -24,7 +24,7 @@ class Dk2nugenie(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/dk2nu"
     url      = "https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
-    patch = patcher
+
 
     version('01_07_02',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
     version('01.08.00.ub1',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00.ub1")

@@ -10,7 +10,7 @@ import os
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -32,7 +32,7 @@ class Larsimrad(CMakePackage):
     url      = "https://cdcvs.fnal.gov/projects/larsimrad"
     git_base = 'https://github.com/SBNSoftware/larsimrad.git'
 
-    patch = patcher
+
 
     version('09.00.13', tag='v09_00_13', git=git_base, get_full_repo=True)
     version('09.00.12', tag='v09_00_12', git=git_base, get_full_repo=True)

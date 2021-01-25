@@ -12,7 +12,7 @@ import os.path
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -44,7 +44,7 @@ class Cetlib(CMakePackage):
     version('3.07.02', tag='v3_07_02', git=git_base, get_full_repo=True)
     version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
    
-    patch = patcher
+
 
     variant('cxxstd',
             default='17',

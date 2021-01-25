@@ -9,7 +9,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -33,7 +33,7 @@ class Gallery(CMakePackage):
     homepage='https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/gallery'
 
-    patch = patcher
+
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)

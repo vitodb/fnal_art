@@ -9,7 +9,7 @@ import os
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 
 def patcher(x):
@@ -40,7 +40,7 @@ class SbndaqArtdaqCore(CMakePackage):
         return url.format(self.name, version.underscored)
 
 
-    patch = patcher
+
 
     depends_on('messagefacility')
     depends_on('cetmodules', type='build')

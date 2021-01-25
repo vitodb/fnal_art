@@ -11,7 +11,7 @@ import sys
 libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
 if not libdir in sys.path:
     sys.path.append(libdir)
-from cetmodules_patcher import cetmodules_20_migrator
+
 
 def patcher(x):
     cetmodules_20_migrator(".","nusimdata","1.21.01")
@@ -46,7 +46,7 @@ class Nusimdata(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch = patcher
+
 
     # Build and link dependencies.
     depends_on('canvas-root-io')
