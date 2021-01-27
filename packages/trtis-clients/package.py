@@ -16,9 +16,12 @@ class TrtisClients(CMakePackage):
     # maintainers = ['github_user1', 'github_user2']
 
     version('2.6.0',                    sha256='c4fad25c212a0b5522c7d65c78b2f25ab0916ccf584ec0295643fec863cb403e')
+
+    depends_on('opencv')
+    depends_on('protobuf')
     
-    path('fix_compile_flags.patch')
-    patch('use_existing.patch)'
+    patch('fix_compile_flags.patch')
+    patch('use_existing.patch')
 
     root_cmakelists_dir = 'build'
 
@@ -37,3 +40,8 @@ class TrtisClients(CMakePackage):
             '-DTRTIS_ENABLE_GPU=OFF',
         ]
         return args
+
+    def install(self, spec, prefix):
+        install_tree(self.stage.source_path+'/install/include', prefix+'/include/trts_clients')
+        install_tree(self.stage.source_path+'/install/lib', prefix+'/lib')
+
