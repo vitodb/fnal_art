@@ -1,0 +1,23 @@
+--- a/build/client/CMakeLists.txt	2019-11-19 10:22:34.000000000 -0600
++++ b/build/client/CMakeLists.txt	2020-01-08 08:37:46.089188752 -0600
+@@ -33,16 +33,16 @@
+ 
+ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+   message("Using MSVC as compiler, default target on Windows 10. "
+-		  "If the target system is not Windows 10, please update _WIN32_WINNT "
+-		  "to corresponding value.")
++                  "If the target system is not Windows 10, please update _WIN32_WINNT "
++                  "to corresponding value.")
+   set(CMAKE_CXX_FLAGS "/W4 /D_WIN32_WINNT=0x0A00 /EHsc")
+   set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+ else()
+-  set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-parameter -Werror")
++  set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-parameter -Werror -Wno-deprecated-declarations")
+   set(CMAKE_CXX_FLAGS_DEBUG "-g")
+   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+ endif()
+-set(CMAKE_CXX_STANDARD 11)
++set(CMAKE_CXX_STANDARD 17)
+ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+ 
+ include_directories("${PROJECT_SOURCE_DIR}/../..")

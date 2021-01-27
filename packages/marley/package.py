@@ -16,6 +16,10 @@ class Marley(Package):
 
     version('1.0.0', sha256='4dea9918cff0aed3b9c38f74351c373c32235496ca6e321078f2c7b56bce719e')
     version('1.1.0', sha256='04d484468d08e5447dfd2fde20bea5bbebfd04ecb6eb34ad65b30f3825bcd577')
+    version('1.1.1', sha256='214f8a40e59d47dd563be53640c5f197f5529bcb0ee65a9402cca450a611c0f8')
+    version('1.2.0', sha256='85426c33aecf58029ab10ef07b5edcdae8d00e7b0e09bdeb653b6c5c81cafe00')
+
+
 
     variant('cxxstd',
             default='17',

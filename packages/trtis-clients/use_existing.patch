@@ -1,0 +1,363 @@
+diff -Naur src/tensorrt-inference-server/build/CMakeLists.txt new/tensorrt-inference-server/build/CMakeLists.txt
+--- a/build/CMakeLists.txt	2019-11-19 10:22:34.000000000 -0600
++++ b/build/CMakeLists.txt	2021-01-14 17:55:43.066490293 -0600
+@@ -100,26 +100,26 @@
+ #
+ # Build protobuf project from grpc-repo
+ #
+-ExternalProject_Add(protobuf
+-  PREFIX protobuf
+-  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/protobuf/cmake"
+-  DOWNLOAD_COMMAND ""
+-  CMAKE_CACHE_ARGS
+-    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+-    -Dprotobuf_BUILD_TESTS:BOOL=OFF
+-    -Dprotobuf_WITH_ZLIB:BOOL=OFF
+-    -Dprotobuf_MSVC_STATIC_RUNTIME:BOOL=OFF
+-    -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
+-    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/protobuf
+-  DEPENDS grpc-repo
+-)
++#ExternalProject_Add(protobuf
++#  PREFIX protobuf
++#  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/protobuf/cmake"
++#  DOWNLOAD_COMMAND ""
++#  CMAKE_CACHE_ARGS
++#    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
++#    -Dprotobuf_BUILD_TESTS:BOOL=OFF
++#    -Dprotobuf_WITH_ZLIB:BOOL=OFF
++#    -Dprotobuf_MSVC_STATIC_RUNTIME:BOOL=OFF
++#    -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
++#    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/protobuf
++#  DEPENDS grpc-repo
++#)
+ 
+ # Location where protobuf-config.cmake will be installed varies by
+ # platform
+ if (WIN32)
+   set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}/protobuf/cmake")
+-else()
+-  set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}/protobuf/lib/cmake/protobuf")
++#else()
++#  set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}/protobuf/lib/cmake/protobuf")
+ endif()
+ 
+ 
+@@ -150,8 +150,8 @@
+     -DgRPC_INSTALL:BOOL=ON
+     -DgRPC_BUILD_TESTS:BOOL=OFF
+     -DgRPC_PROTOBUF_PROVIDER:STRING=package
+-    -DgRPC_PROTOBUF_PACKAGE_TYPE:STRING=CONFIG
+-    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
++    -DgRPC_PROTOBUF_PACKAGE_TYPE:STRING=MODULE
++    #-DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
+     -DgRPC_ZLIB_PROVIDER:STRING=package
+     -DgRPC_CARES_PROVIDER:STRING=package
+     -Dc-ares_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
+@@ -159,7 +159,7 @@
+     ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
+     -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc
+-  DEPENDS grpc-repo c-ares protobuf
++  DEPENDS grpc-repo c-ares
+ )
+ 
+ #
+@@ -183,42 +183,42 @@
+ #
+ # Build libevent
+ #
+-ExternalProject_Add(libevent
+-  PREFIX libevent
+-  GIT_REPOSITORY "https://github.com/libevent/libevent.git"
+-  GIT_TAG "release-2.1.8-stable"
+-  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libevent/src/libevent"
+-  CMAKE_CACHE_ARGS
+-    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+-    -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
+-    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install
+-)
++#ExternalProject_Add(libevent
++#  PREFIX libevent
++#  GIT_REPOSITORY "https://github.com/libevent/libevent.git"
++#  GIT_TAG "release-2.1.8-stable"
++#  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libevent/src/libevent"
++#  CMAKE_CACHE_ARGS
++#    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
++#    -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
++#    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install
++#)
+ 
+ #
+ # Build libevhtp
+ #
+ # Need to patch due to https://github.com/criticalstack/libevhtp/issues/135
+ #
+-ExternalProject_Add(libevhtp
+-  PREFIX libevhtp
+-  URL "https://github.com/criticalstack/libevhtp/archive/1.2.18.zip"
+-  URL_HASH SHA256=3194dc6eb4e8d6aa1e7dd3dc60bfbe066f38f9a0b5881463f0e149badd82a7bb
+-  PATCH_COMMAND sed -i "s/LibEvent/Libevent/g" ${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp/CMakeLists.txt
+-  COMMAND patch -i ${CMAKE_SOURCE_DIR}/libevhtp/evhtp.c.patch ${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp/evhtp.c
+-  COMMAND patch -i ${CMAKE_SOURCE_DIR}/libevhtp/evhtp.h.patch ${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp/include/evhtp/evhtp.h
+-  COMMAND patch -i ${CMAKE_SOURCE_DIR}/libevhtp/config.h.in.patch ${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp/include/evhtp/config.h.in
+-  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp"
+-  CMAKE_CACHE_ARGS
+-    -DEVHTP_DISABLE_REGEX:BOOL=ON
+-    -DEVHTP_DISABLE_SSL:BOOL=ON
+-    -DEVHTP_TRTIS_ENABLE_HTTP_CONTIGUOUS:BOOL=ON
+-    -DEVHTP_TRTIS_ENABLE_TRACING:BOOL=${TRTIS_ENABLE_TRACING}
+-    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+-    -DLibevent_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install/lib/cmake/libevent
+-    -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
+-    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install
+-  DEPENDS libevent
+-)
++#ExternalProject_Add(libevhtp
++#  PREFIX libevhtp
++#  URL "https://github.com/criticalstack/libevhtp/archive/1.2.18.zip"
++#  URL_HASH SHA256=3194dc6eb4e8d6aa1e7dd3dc60bfbe066f38f9a0b5881463f0e149badd82a7bb
++#  PATCH_COMMAND sed -i "s/LibEvent/Libevent/g" ${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp/CMakeLists.txt
++#  COMMAND patch -i ${CMAKE_SOURCE_DIR}/libevhtp/evhtp.c.patch ${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp/evhtp.c
++#  COMMAND patch -i ${CMAKE_SOURCE_DIR}/libevhtp/evhtp.h.patch ${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp/include/evhtp/evhtp.h
++#  COMMAND patch -i ${CMAKE_SOURCE_DIR}/libevhtp/config.h.in.patch ${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp/include/evhtp/config.h.in
++#  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libevhtp/src/libevhtp"
++#  CMAKE_CACHE_ARGS
++#    -DEVHTP_DISABLE_REGEX:BOOL=ON
++#    -DEVHTP_DISABLE_SSL:BOOL=ON
++#    -DEVHTP_TRTIS_ENABLE_HTTP_CONTIGUOUS:BOOL=ON
++#    -DEVHTP_TRTIS_ENABLE_TRACING:BOOL=${TRTIS_ENABLE_TRACING}
++#    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
++#    -DLibevent_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install/lib/cmake/libevent
++#    -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
++#    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install
++#  DEPENDS libevent
++#)
+ 
+ #
+ # Build Prometheus C++ library
+@@ -261,7 +261,8 @@
+    ${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
+    ${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
+    ${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
+-   ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR})
++   )
++#   ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR})
+ 
+ #
+ # Build google-cloud-cpp
+@@ -277,7 +278,7 @@
+     -DCMAKE_PREFIX_PATH:PATH=${GCS_CMAKE_PREFIX_PATH}
+     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install
+-  DEPENDS grpc protobuf crc32c
++  DEPENDS grpc crc32c
+ )
+ 
+ #
+@@ -342,7 +343,7 @@
+     -DTRTIS_MIN_COMPUTE_CAPABILITY:STRING=${TRTIS_MIN_COMPUTE_CAPABILITY}
+     -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
+     -DCMAKE_INSTALL_PREFIX:PATH=${TRTIS_CUSTOM_BACKENDS_INSTALL_PREFIX}
+-  DEPENDS protobuf grpc
++  DEPENDS grpc
+ )
+ 
+ #
+@@ -381,79 +382,79 @@
+     -DTRTIS_ENABLE_GPU:BOOL=${TRTIS_ENABLE_GPU}
+     -DCMAKE_INSTALL_PREFIX:PATH=${TRTIS_CLIENTS_INSTALL_PREFIX}
+     -DTRTIS_VERSION:STRING=${TRTIS_VERSION}
+-  DEPENDS curl protobuf grpc
++  DEPENDS curl grpc
+ )
+ 
+ #
+ # Build TRTIS server library and main executable
+ #
+-if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+-  set(TRTIS_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/trtis/install)
+-else()
+-  set(TRTIS_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+-endif()
+-
+-set(TRTIS_DEPENDS protobuf)
+-if(${TRTIS_ENABLE_GCS})
+-  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} google-cloud-cpp)
+-endif() # TRTIS_ENABLE_GCS
+-if(${TRTIS_ENABLE_S3})
+-  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} aws-sdk-cpp)
+-endif() # TRTIS_ENABLE_S3
+-if(${TRTIS_ENABLE_HTTP} OR ${TRTIS_ENABLE_METRICS})
+-  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} libevent libevhtp)
+-endif() # TRTIS_ENABLE_HTTP || TRTIS_ENABLE_METRICS
+-if(${TRTIS_ENABLE_GRPC})
+-  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} grpc)
+-endif() # TRTIS_ENABLE_GRPC
+-if(${TRTIS_ENABLE_METRICS})
+-  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} prometheus-cpp)
+-endif() # TRTIS_ENABLE_METRICS
+-
+-ExternalProject_Add(trtis
+-  PREFIX trtis
+-  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/trtis"
+-  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/trtis"
+-  BUILD_ALWAYS 1
+-  CMAKE_CACHE_ARGS
+-    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
+-    -Dc-ares_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
+-    ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
+-    -DgRPC_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
+-    -DLibevent_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install/lib/cmake/libevent
+-    -Dlibevhtp_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install/lib/cmake/libevhtp
+-    -Dprometheus-cpp_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/prometheus-cpp/install/lib/cmake/prometheus-cpp
+-    -Dstorage_client_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install/lib/cmake/storage_client
+-    -Dgoogle_cloud_cpp_common_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install/lib/cmake/google_cloud_cpp_common
+-    -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
+-    -DAWSSDK_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/AWSSDK
+-    -Daws-cpp-sdk-core_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/aws-cpp-sdk-core
+-    -Daws-cpp-sdk-s3_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/aws-cpp-sdk-s3
+-    -Daws-c-event-stream_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-c-event-stream/cmake
+-    -Daws-c-common_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-c-common/cmake
+-    -Daws-checksums_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-checksums/cmake
+-    -DTRTIS_ONNXRUNTIME_INCLUDE_PATHS:PATH=${TRTIS_ONNXRUNTIME_INCLUDE_PATHS}
+-    -DTRTIS_PYTORCH_INCLUDE_PATHS:PATH=${TRTIS_PYTORCH_INCLUDE_PATHS}
+-    -DTRTIS_EXTRA_LIB_PATHS:PATH=${TRTIS_EXTRA_LIB_PATHS}
+-    -DTRTIS_ENABLE_ASAN:BOOL=${TRTIS_ENABLE_ASAN}
+-    -DTRTIS_ENABLE_TRACING:BOOL=${TRTIS_ENABLE_TRACING}
+-    -DTRTIS_ENABLE_GPU:BOOL=${TRTIS_ENABLE_GPU}
+-    -DTRTIS_ENABLE_HTTP:BOOL=${TRTIS_ENABLE_HTTP}
+-    -DTRTIS_ENABLE_GRPC:BOOL=${TRTIS_ENABLE_GRPC}
+-    -DTRTIS_MIN_COMPUTE_CAPABILITY:STRING=${TRTIS_MIN_COMPUTE_CAPABILITY}
+-    -DTRTIS_ENABLE_METRICS:BOOL=${TRTIS_ENABLE_METRICS}
+-    -DTRTIS_ENABLE_GCS:BOOL=${TRTIS_ENABLE_GCS}
+-    -DTRTIS_ENABLE_S3:BOOL=${TRTIS_ENABLE_S3}
+-    -DTRTIS_ENABLE_TENSORFLOW:BOOL=${TRTIS_ENABLE_TENSORFLOW}
+-    -DTRTIS_ENABLE_TENSORRT:BOOL=${TRTIS_ENABLE_TENSORRT}
+-    -DTRTIS_ENABLE_CAFFE2:BOOL=${TRTIS_ENABLE_CAFFE2}
+-    -DTRTIS_ENABLE_ONNXRUNTIME:BOOL=${TRTIS_ENABLE_ONNXRUNTIME}
+-    -DTRTIS_ENABLE_ONNXRUNTIME_OPENVINO:BOOL=${TRTIS_ENABLE_ONNXRUNTIME_OPENVINO}
+-    -DTRTIS_ENABLE_PYTORCH:BOOL=${TRTIS_ENABLE_PYTORCH}
+-    -DTRTIS_ENABLE_CUSTOM:BOOL=${TRTIS_ENABLE_CUSTOM}
+-    -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
+-    -DCMAKE_INSTALL_PREFIX:PATH=${TRTIS_INSTALL_PREFIX}
+-  DEPENDS ${TRTIS_DEPENDS}
+-)
++#if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
++#  set(TRTIS_INSTALL_PREFIX ${CMAKE_CURRENT_BINARY_DIR}/trtis/install)
++#else()
++#  set(TRTIS_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
++#endif()
++
++#set(TRTIS_DEPENDS protobuf)
++#if(${TRTIS_ENABLE_GCS})
++#  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} google-cloud-cpp)
++#endif() # TRTIS_ENABLE_GCS
++#if(${TRTIS_ENABLE_S3})
++#  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} aws-sdk-cpp)
++#endif() # TRTIS_ENABLE_S3
++#if(${TRTIS_ENABLE_HTTP} OR ${TRTIS_ENABLE_METRICS})
++#  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} libevent libevhtp)
++#endif() # TRTIS_ENABLE_HTTP || TRTIS_ENABLE_METRICS
++#if(${TRTIS_ENABLE_GRPC})
++#  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} grpc)
++#endif() # TRTIS_ENABLE_GRPC
++#if(${TRTIS_ENABLE_METRICS})
++#  set(TRTIS_DEPENDS ${TRTIS_DEPENDS} prometheus-cpp)
++#endif() # TRTIS_ENABLE_METRICS
++
++#ExternalProject_Add(trtis
++#  PREFIX trtis
++#  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/trtis"
++#  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/trtis"
++#  BUILD_ALWAYS 1
++#  CMAKE_CACHE_ARGS
++#    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
++#    -Dc-ares_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
++#    ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
++#    -DgRPC_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
++#    -DLibevent_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install/lib/cmake/libevent
++#    -Dlibevhtp_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install/lib/cmake/libevhtp
++#    -Dprometheus-cpp_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/prometheus-cpp/install/lib/cmake/prometheus-cpp
++#    -Dstorage_client_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install/lib/cmake/storage_client
++#    -Dgoogle_cloud_cpp_common_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install/lib/cmake/google_cloud_cpp_common
++#    -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
++#    -DAWSSDK_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/AWSSDK
++#    -Daws-cpp-sdk-core_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/aws-cpp-sdk-core
++#    -Daws-cpp-sdk-s3_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/aws-cpp-sdk-s3
++#    -Daws-c-event-stream_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-c-event-stream/cmake
++#    -Daws-c-common_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-c-common/cmake
++#    -Daws-checksums_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-checksums/cmake
++#    -DTRTIS_ONNXRUNTIME_INCLUDE_PATHS:PATH=${TRTIS_ONNXRUNTIME_INCLUDE_PATHS}
++#    -DTRTIS_PYTORCH_INCLUDE_PATHS:PATH=${TRTIS_PYTORCH_INCLUDE_PATHS}
++#    -DTRTIS_EXTRA_LIB_PATHS:PATH=${TRTIS_EXTRA_LIB_PATHS}
++#    -DTRTIS_ENABLE_ASAN:BOOL=${TRTIS_ENABLE_ASAN}
++#    -DTRTIS_ENABLE_TRACING:BOOL=${TRTIS_ENABLE_TRACING}
++#    -DTRTIS_ENABLE_GPU:BOOL=${TRTIS_ENABLE_GPU}
++#    -DTRTIS_ENABLE_HTTP:BOOL=${TRTIS_ENABLE_HTTP}
++#    -DTRTIS_ENABLE_GRPC:BOOL=${TRTIS_ENABLE_GRPC}
++#    -DTRTIS_MIN_COMPUTE_CAPABILITY:STRING=${TRTIS_MIN_COMPUTE_CAPABILITY}
++#    -DTRTIS_ENABLE_METRICS:BOOL=${TRTIS_ENABLE_METRICS}
++#    -DTRTIS_ENABLE_GCS:BOOL=${TRTIS_ENABLE_GCS}
++#    -DTRTIS_ENABLE_S3:BOOL=${TRTIS_ENABLE_S3}
++#    -DTRTIS_ENABLE_TENSORFLOW:BOOL=${TRTIS_ENABLE_TENSORFLOW}
++#    -DTRTIS_ENABLE_TENSORRT:BOOL=${TRTIS_ENABLE_TENSORRT}
++#    -DTRTIS_ENABLE_CAFFE2:BOOL=${TRTIS_ENABLE_CAFFE2}
++#    -DTRTIS_ENABLE_ONNXRUNTIME:BOOL=${TRTIS_ENABLE_ONNXRUNTIME}
++#    -DTRTIS_ENABLE_ONNXRUNTIME_OPENVINO:BOOL=${TRTIS_ENABLE_ONNXRUNTIME_OPENVINO}
++#    -DTRTIS_ENABLE_PYTORCH:BOOL=${TRTIS_ENABLE_PYTORCH}
++#    -DTRTIS_ENABLE_CUSTOM:BOOL=${TRTIS_ENABLE_CUSTOM}
++#    -DCMAKE_BUILD_TYPE:BOOL=${CMAKE_BUILD_TYPE}
++#    -DCMAKE_INSTALL_PREFIX:PATH=${TRTIS_INSTALL_PREFIX}
++#  DEPENDS ${TRTIS_DEPENDS}
++#)
+ 
+ unset(CMAKE_INSTALL_PREFIX CACHE)
+diff -Naur src/tensorrt-inference-server/build/trtis/CMakeLists.txt new/tensorrt-inference-server/build/trtis/CMakeLists.txt
+--- a/build/trtis/CMakeLists.txt	2019-11-19 10:22:34.000000000 -0600
++++ b/build/trtis/CMakeLists.txt	2021-01-14 11:40:59.706075631 -0600
+@@ -144,7 +144,7 @@
+ # Protobuf
+ #
+ set(protobuf_MODULE_COMPATIBLE TRUE CACHE BOOL "protobuf_MODULE_COMPATIBLE" FORCE)
+-find_package(Protobuf CONFIG REQUIRED)
++find_package(Protobuf)
+ message(STATUS "Using protobuf ${Protobuf_VERSION}")
+ include_directories(${Protobuf_INCLUDE_DIRS})
+ 
+diff -Naur src/tensorrt-inference-server/build/trtis-clients/CMakeLists.txt new/tensorrt-inference-server/build/trtis-clients/CMakeLists.txt
+--- a/build/trtis-clients/CMakeLists.txt	2019-11-19 10:22:34.000000000 -0600
++++ b/build/trtis-clients/CMakeLists.txt	2021-01-14 11:41:05.777022832 -0600
+@@ -64,7 +64,7 @@
+ # Protobuf
+ #
+ set(protobuf_MODULE_COMPATIBLE TRUE CACHE BOOL "protobuf_MODULE_COMPATIBLE" FORCE)
+-find_package(Protobuf CONFIG REQUIRED)
++find_package(Protobuf)
+ message(STATUS "Using protobuf ${Protobuf_VERSION}")
+ include_directories(${Protobuf_INCLUDE_DIRS})
+ 
+diff -Naur src/tensorrt-inference-server/build/trtis-custom-backends/CMakeLists.txt new/tensorrt-inference-server/build/trtis-custom-backends/CMakeLists.txt
+--- a/build/trtis-custom-backends/CMakeLists.txt	2019-11-19 10:22:34.000000000 -0600
++++ b/build/trtis-custom-backends/CMakeLists.txt	2021-01-14 11:41:09.320992009 -0600
+@@ -58,7 +58,7 @@
+ # Protobuf
+ #
+ set(protobuf_MODULE_COMPATIBLE TRUE CACHE BOOL "protobuf_MODULE_COMPATIBLE" FORCE)
+-find_package(Protobuf CONFIG REQUIRED)
++find_package(Protobuf)
+ message(STATUS "Using protobuf ${Protobuf_VERSION}")
+ include_directories(${Protobuf_INCLUDE_DIRS})
+ 
+diff -Naur src/tensorrt-inference-server/src/clients/c++/library/cmake/TRTISConfig.cmake.in new/tensorrt-inference-server/src/clients/c++/library/cmake/TRTISConfig.cmake.in
+--- a/src/clients/c++/library/cmake/TRTISConfig.cmake.in	2019-11-19 10:22:34.000000000 -0600
++++ b/src/clients/c++/library/cmake/TRTISConfig.cmake.in	2021-01-14 11:41:12.327965857 -0600
+@@ -27,7 +27,7 @@
+ # specific version required for protobuf
+ if(NOT PROTOBUF_FOUND AND NOT Protobuf_FOUND)
+   set(protobuf_MODULE_COMPATIBLE TRUE CACHE BOOL "protobuf_MODULE_COMPATIBLE" FORCE)
+-  find_package(Protobuf @Protobuf_VERSION@ CONFIG REQUIRED)
++  find_package(Protobuf @Protobuf_VERSION@)
+ endif()
+ 
+ # specific version required for grpc
