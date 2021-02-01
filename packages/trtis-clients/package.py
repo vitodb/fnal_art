@@ -17,6 +17,9 @@ class TrtisClients(CMakePackage):
 
     version('2.6.0',                    sha256='c4fad25c212a0b5522c7d65c78b2f25ab0916ccf584ec0295643fec863cb403e')
 
+    depends_on('cmake@3.18:', type='build')
+    depends_on('py-grpcio', type='build')
+    depends_on('rapidjson')
     depends_on('opencv')
     depends_on('protobuf')
     depends_on('grpc')
@@ -28,11 +31,6 @@ class TrtisClients(CMakePackage):
     patch('use_existing.patch')
 
     root_cmakelists_dir = 'build'
-
-    # FIXME: Add dependencies if required.
-    depends_on('cmake@3.18:', type='build')
-    depends_on('py-grpcio', type='build')
-
   
     def cmake_args(self):
         args = [
@@ -41,7 +39,9 @@ class TrtisClients(CMakePackage):
             '-DCMAKE_CXX_COMPILER=c++',
             '-DCMAKE_CXX_FLAGS=-Wno-deprecated-declarations',
             '-DCMAKE_PREFIX_PATH=%s/share/OpenCV' % self.spec['opencv'].prefix,
-            '-DTRTIS_ENABLE_GPU=OFF',
+            '-DTRITON_ENABLE_GPU:BOOL=OFF',
+            '-DTRITON_ENABLE_METRICS:BOOL=OFF',
+            '-DTRITON_ENABLE_STATS:BOOL=OFF',
         ]
         return args
 
