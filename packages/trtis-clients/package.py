@@ -32,6 +32,9 @@ class TrtisClients(CMakePackage):
 
     root_cmakelists_dir = 'build'
   
+    def setup_environment(self, spack_env, run_env):
+        spack_env.append_path('CMAKE_PREFIX_PATH', self.build_directory)
+
     def cmake_args(self):
         args = [
             '-DCMAKE_BUILD_TYPE=Release',
@@ -40,8 +43,7 @@ class TrtisClients(CMakePackage):
             '-DCMAKE_CXX_FLAGS=-Wno-deprecated-declarations',
             '-DCMAKE_PREFIX_PATH=%s/share/OpenCV' % self.spec['opencv'].prefix,
             '-DTRITON_ENABLE_GPU:BOOL=OFF',
-            '-DTRITON_ENABLE_METRICS:BOOL=OFF',
-            '-DTRITON_ENABLE_STATS:BOOL=OFF',
+            '-DTRITON_ENABLE_METRICS_GPU:BOOL=OFF',
         ]
         return args
 
