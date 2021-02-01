@@ -19,6 +19,10 @@ class TrtisClients(CMakePackage):
 
     depends_on('opencv')
     depends_on('protobuf')
+    depends_on('grpc')
+    depends_on('googletest')
+    depends_on('c-ares')
+    depends_on('libevent')
     
     patch('fix_compile_flags.patch')
     patch('use_existing.patch')
@@ -35,7 +39,7 @@ class TrtisClients(CMakePackage):
             '-DCMAKE_BUILD_TYPE=Release',
             '-DCMAKE_C_COMPILER=cc',
             '-DCMAKE_CXX_COMPILER=c++',
-            '-DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations"',
+            '-DCMAKE_CXX_FLAGS=-Wno-deprecated-declarations',
             '-DCMAKE_PREFIX_PATH=%s/share/OpenCV' % self.spec['opencv'].prefix,
             '-DTRTIS_ENABLE_GPU=OFF',
         ]
