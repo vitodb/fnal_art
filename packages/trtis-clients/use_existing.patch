@@ -639,24 +639,6 @@ diff -Naur src/clients/c++/library/cmake/TRTISConfig.cmake.in src/clients/c++/li
  )
  
  #
---- spack-src/build/CMakeLists.txt.orig	2021-02-04 12:56:45.569584418 -0600
-+++ spack-src/build/CMakeLists.txt	2021-02-04 12:55:58.560828017 -0600
-@@ -275,6 +275,7 @@
-     -DCMAKE_PREFIX_PATH:PATH=${GCS_CMAKE_PREFIX_PATH}
-     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install
-+    -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
-   DEPENDS grpc crc32c
- )
- 
-@@ -409,6 +410,7 @@
-     -DTRITON_ENABLE_GPU:BOOL=${TRITON_ENABLE_GPU}
-     -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_CLIENTS_INSTALL_PREFIX}
-     -DTRITON_VERSION:STRING=${TRITON_VERSION}
-+    -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
- )
- 
- #
 --- spack-src/build/CMakeLists.txt.orig	2021-02-04 13:46:54.035949462 -0600
 +++ spack-src/build/CMakeLists.txt	2021-02-04 13:47:14.548969949 -0600
 @@ -258,6 +258,9 @@
