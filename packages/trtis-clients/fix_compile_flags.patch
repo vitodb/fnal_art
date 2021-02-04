@@ -21,3 +21,32 @@
  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
  
  include_directories("${PROJECT_SOURCE_DIR}/../..")
+--- spack-src/src/test/CMakeLists.txt.orig	2021-02-04 11:05:19.136655933 -0600
++++ spack-src/src/test/CMakeLists.txt	2021-02-04 11:05:09.727105093 -0600
+@@ -47,6 +47,7 @@
+ #
+ # CudaMemoryManger
+ #
++if(${TRITON_ENABLE_GPU})
+ set(
+   CUDA_MEMORY_MANAGER_SRCS
+   ../core/cuda_memory_manager.cc
+@@ -60,6 +61,7 @@
+   ../core/status.h
+   ../core/cuda_utils.h
+ )
++endif()
+ 
+ #
+ # PinnedMemoryManger
+--- spack-src/src/clients/c++/library/http_client.cc.orig	2021-02-04 12:39:40.750497621 -0600
++++ spack-src/src/clients/c++/library/http_client.cc	2021-02-04 12:39:44.644311769 -0600
+@@ -1313,7 +1313,7 @@
+   }
+ 
+   const long buffer_byte_size = 16 * 1024 * 1024;
+-  curl_easy_setopt(curl, CURLOPT_UPLOAD_BUFFERSIZE, buffer_byte_size);
++  //curl_easy_setopt(curl, CURLOPT_UPLOAD_BUFFERSIZE, buffer_byte_size);
+   curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, buffer_byte_size);
+ 
+   // request data provided by InferRequestProvider()

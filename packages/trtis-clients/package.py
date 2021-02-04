@@ -20,32 +20,39 @@ class TrtisClients(CMakePackage):
     depends_on('cmake@3.18:', type='build')
     depends_on('py-grpcio', type='build')
     depends_on('rapidjson')
-    depends_on('opencv')
+    depends_on('opencv ~videoio~gtk~java~vtk~jpeg')
     depends_on('protobuf')
     depends_on('grpc')
     depends_on('googletest')
     depends_on('c-ares')
     depends_on('libevent')
+    depends_on('libevhtp')
     
     patch('fix_compile_flags.patch')
     patch('use_existing.patch')
 
     root_cmakelists_dir = 'build'
   
-    def setup_environment(self, spack_env, run_env):
-        spack_env.append_path('CMAKE_PREFIX_PATH', self.build_directory)
-
     def cmake_args(self):
         args = [
             '-DCMAKE_BUILD_TYPE=Release',
             '-DCMAKE_C_COMPILER=cc',
             '-DCMAKE_CXX_COMPILER=c++',
-            '-DCMAKE_CXX_FLAGS=-Wno-deprecated-declarations',
-            '-DCMAKE_PREFIX_PATH=%s/share/OpenCV' % self.spec['opencv'].prefix,
+            '-DTRITON_CURL_WITHOUT_CONFIG:BOOL=ON',
             '-DTRITON_ENABLE_GPU:BOOL=OFF',
             '-DTRITON_ENABLE_METRICS_GPU:BOOL=OFF',
         ]
         return args
+
+    def setup_build_environment(self, env):
+        env.prepend_path('CMAKE_MODULE_PATH', self.stage.source_path +'/cmake/modules')
+        pass
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
 
     def install(self, spec, prefix):
         install_tree(self.stage.source_path+'/install/include', prefix+'/include/trts_clients')
