@@ -175,7 +175,7 @@ diff -Naur src/clients/c++/library/cmake/TRTISConfig.cmake.in src/clients/c++/li
 -    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
 -    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/curl/install
 -)
-+find_package(libevt)
++find_package(libevhtp)
  
  #
  # Build libevent
