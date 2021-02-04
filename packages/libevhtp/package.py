@@ -31,3 +31,7 @@ class Libevhtp(CMakePackage):
         # FIXME: If not needed delete this function
         args = []
         return args
+
+    def setup_dependent_environment(self, spack_env, run_env, dspec):
+        spack_env.prepend_path('CMAKE_PREFIX_PATH', self.prefix)
+        run_env.prepend_path('CMAKE_PREFIX_PATH', self.prefix)
