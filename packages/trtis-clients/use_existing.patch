@@ -38,547 +38,287 @@ diff -Naur src/clients/c++/library/cmake/TRTISConfig.cmake.in src/clients/c++/li
 +        INTERFACE_COMPILE_OPTIONS "${PKG_LIBEVENT_CFLAGS_OTHER}")
 +set(LIBEVENT_FOUND "${PKG_LIBEVENT_FOUND}")
 +set(LIBEVENT_VERSION "${PKG_LIBEVENT_VERSION}")
---- /dev/null	2020-12-16 11:40:15.146661301 -0600
-+++ spack-src/cmake/modules/curl-config.cmake	2021-02-01 16:37:34.478398504 -0600
-@@ -0,0 +1,12 @@
-+message("In curl-config.cmake, using pkg_check_modules...")
-+include("FindPkgConfig")
-+include_guard(GLOBAL)
-+pkg_check_modules(pkg_curl libcurl)
-+add_library(curl INTERFACE IMPORTED)
-+set_target_properties(curl PROPERTIES
-+        INTERFACE_INCLUDE_DIRECTORIES "${PKG_CURL_INCLUDE_DIRS}"
-+        INTERFACE_LINK_LIBRARIES "${PKG_CURL_LIBRARIES}"
-+        INTERFACE_COMPILE_OPTIONS "${PKG_CURL_CFLAGS_OTHER}")
-+add_library(CURL::libcurl ALIAS curl)
-+set(CURL_VERSION "${PKG_CUR_VERSION}")
-+set(CURL_FOUND "${PKG_CUR_FOUND}")
 --- server-2.6.0/build/CMakeLists.txt	2020-12-17 17:39:05.000000000 -0600
-+++ spack-src/build/CMakeLists.txt	2021-02-04 17:09:38.571861812 -0600
-@@ -43,11 +43,14 @@
- option(TRITON_ENABLE_CUSTOM "Include Custom backend in server" OFF)
- option(TRITON_ENABLE_PYTHON "Include Python backend in server" OFF)
- option(TRITON_ENABLE_ENSEMBLE "Include ensemble support in server" OFF)
--
- # Endpoints
- option(TRITON_ENABLE_HTTP "Include HTTP API in server" ON)
- option(TRITON_ENABLE_GRPC "Include GRPC API in server" ON)
- option(TRITON_ENABLE_METRICS "Include metrics support in server" ON)
-+option(TRITON_ENABLE_TRACING "Include tracing support in server" OFF)
-+option(TRITON_ENABLE_NVTX "Include NVTX support in server" OFF)
-+option(TRITON_ENABLE_ASAN "Build with address sanitizer" OFF)
-+option(TRITON_ENABLE_GPU "Enable GPU support in server/client" ON)
- option(TRITON_ENABLE_METRICS_GPU "Include GPU metrics support in server" ON)
- 
- # Cloud storage
-@@ -71,10 +74,6 @@
- 
- option(TRITON_ENABLE_LOGGING "Include logging support in server" ON)
- option(TRITON_ENABLE_STATS "Include statistics collections in server" ON)
--option(TRITON_ENABLE_TRACING "Include tracing support in server" OFF)
--option(TRITON_ENABLE_NVTX "Include NVTX support in server" OFF)
--option(TRITON_ENABLE_ASAN "Build with address sanitizer" OFF)
--option(TRITON_ENABLE_GPU "Enable GPU support in server/client" ON)
- set(TRITON_MIN_COMPUTE_CAPABILITY "6.0" CACHE STRING
-     "The minimum CUDA compute capability supported by Triton" )
- 
-@@ -129,132 +128,44 @@
-   set(_CMAKE_ARGS_OPENSSL_ROOT_DIR "-DOPENSSL_ROOT_DIR:PATH=${OPENSSL_ROOT_DIR}")
++++ spack-src/build/CMakeLists.txt	2021-02-08 17:12:43.120730206 -0600
+@@ -130,9 +130,12 @@
  endif()
  
-+
-+find_package(c-ares)
+ 
 +find_package(protobuf)
 +find_package(GTest)
-+add_library(googletest ALIAS GTest::gtest)
-+
-+
-+include(FindPkgConfig)
-+find_package(curl)
-+find_package(libevent)
- 
--#
--# Get the protobuf and grpc source
--#
--ExternalProject_Add(grpc-repo
--  PREFIX grpc-repo
--  GIT_REPOSITORY "https://github.com/grpc/grpc.git"
--  GIT_TAG "v1.25.0"
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc"
--  CONFIGURE_COMMAND ""
--  BUILD_COMMAND ""
--  INSTALL_COMMAND ""
--  TEST_COMMAND ""
--)
- 
--#
--# Build protobuf project from grpc-repo
--#
--# Use -DCMAKE_BUILD_TYPE:STRING=RELEASE to workaround the protobuf build issue
--# described in https://stackoverflow.com/a/60218066/2091555
--ExternalProject_Add(protobuf
--  PREFIX protobuf
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/protobuf/cmake"
--  DOWNLOAD_COMMAND ""
--  CMAKE_CACHE_ARGS
--    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
--    -Dprotobuf_BUILD_TESTS:BOOL=OFF
--    -Dprotobuf_WITH_ZLIB:BOOL=OFF
--    -Dprotobuf_MSVC_STATIC_RUNTIME:BOOL=OFF
--    -DCMAKE_BUILD_TYPE:STRING=RELEASE
--    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/protobuf
--  DEPENDS grpc-repo
--)
- 
--#
--# Build googletest project from grpc-repo
--#
--ExternalProject_Add(googletest
--  PREFIX protobuf
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/googletest"
--  DOWNLOAD_COMMAND ""
--  CMAKE_CACHE_ARGS
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/googletest
--  DEPENDS grpc-repo
--)
- 
--# Location where protobuf-config.cmake will be installed varies by
--# platform
--if (WIN32)
--  set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}/protobuf/cmake")
--else()
--  set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${CMAKE_INSTALL_LIBDIR}/cmake/protobuf")
--endif()
- 
--#
--# Build c-area project from grpc-repo
--#
--ExternalProject_Add(c-ares
--  PREFIX c-ares
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/cares/cares"
--  DOWNLOAD_COMMAND ""
--  CMAKE_CACHE_ARGS
--    -DCARES_SHARED:BOOL=OFF
--    -DCARES_STATIC:BOOL=ON
--    -DCARES_STATIC_PIC:BOOL=ON
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares
--  DEPENDS grpc-repo
--)
- 
--#
--# Build GRPC
--#
--ExternalProject_Add(grpc
--  PREFIX grpc
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc"
--  DOWNLOAD_COMMAND ""
--  CMAKE_CACHE_ARGS
--    -DgRPC_INSTALL:BOOL=ON
--    -DgRPC_BUILD_TESTS:BOOL=OFF
--    -DgRPC_PROTOBUF_PROVIDER:STRING=package
--    -DgRPC_PROTOBUF_PACKAGE_TYPE:STRING=CONFIG
--    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
--    -DgRPC_ZLIB_PROVIDER:STRING=package
--    -DgRPC_CARES_PROVIDER:STRING=package
--    -Dc-ares_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
--    -DgRPC_SSL_PROVIDER:STRING=package
--    ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc
--  DEPENDS grpc-repo c-ares protobuf
--)
- 
--#
--# Build libcurl
--#
--ExternalProject_Add(curl
--  PREFIX curl
--  GIT_REPOSITORY "https://github.com/curl/curl.git"
--  GIT_TAG "curl-7_66_0"
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/curl/src/curl"
--  CMAKE_CACHE_ARGS
--    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
--    -DBUILD_CURL_EXE:BOOL=OFF
--    -DBUILD_SHARED_LIBS:BOOL=OFF
--    -DCURL_STATICLIB:BOOL=ON
--    -DHTTP_ONLY:BOOL=ON
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/curl/install
--)
-+
-+
-+
-+
-+
-+find_package(libevhtp)
- 
  #
- # Build libevent
+ # Get the protobuf and grpc source
  #
--ExternalProject_Add(libevent
--  PREFIX libevent
--  GIT_REPOSITORY "https://github.com/libevent/libevent.git"
--  GIT_TAG "release-2.1.8-stable"
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libevent/src/libevent"
--  CMAKE_CACHE_ARGS
--    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install
--)
--
-+#ExternalProject_Add(libevent
-+#  PREFIX libevent
-+#  GIT_REPOSITORY "https://github.com/libevent/libevent.git"
-+#  GIT_TAG "release-2.1.8-stable"
-+#  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/libevent/src/libevent"
-+#  CMAKE_CACHE_ARGS
-+#    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-+#    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-+#    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install
-+#)
-+#
- #
- # Get patched third party repo
- #
-@@ -269,45 +180,43 @@
++if((NOT FOUND_PROTOBUF) OR (NOT FOUND_GTest))
+ ExternalProject_Add(grpc-repo
+   PREFIX grpc-repo
+   GIT_REPOSITORY "https://github.com/grpc/grpc.git"
+@@ -143,12 +146,13 @@
+   INSTALL_COMMAND ""
    TEST_COMMAND ""
- )
- 
-+##
-+## Build patched libevhtp
-+##
-+#if (WIN32)
-+## FIXME evhtp can't be built successfully in native Windows environment
-+## CMAKE_PREFIX_PATH is needed to find libevent
-+#ExternalProject_Add(libevhtp
-+#  PREFIX libevhtp
-+#  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party-repo/src/third_party/libevhtp/libevhtp"
-+#  DOWNLOAD_COMMAND ""
-+#  CMAKE_CACHE_ARGS
-+#    -DEVHTP_DISABLE_REGEX:BOOL=ON
-+#    -DEVHTP_DISABLE_SSL:BOOL=ON
-+#    -DEVHTP_TRITON_ENABLE_HTTP_CONTIGUOUS:BOOL=ON
-+#    -DEVHTP_TRITON_ENABLE_TRACING:BOOL=${TRITON_ENABLE_TRACING}
-+#    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-+#    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-+#    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install
-+#  DEPENDS third-party-repo
-+#)
-+#else()
-+#ExternalProject_Add(libevhtp
-+#  PREFIX libevhtp
-+#  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party-repo/src/third_party/libevhtp/libevhtp"
-+#  DOWNLOAD_COMMAND ""
-+#  CMAKE_CACHE_ARGS
-+#    -DEVHTP_DISABLE_REGEX:BOOL=ON
-+#    -DEVHTP_DISABLE_SSL:BOOL=ON
-+#    -DEVHTP_TRITON_ENABLE_HTTP_CONTIGUOUS:BOOL=ON
-+#    -DEVHTP_TRITON_ENABLE_TRACING:BOOL=${TRITON_ENABLE_TRACING}
-+#    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-+#    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-+#    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install
-+#  DEPENDS third-party-repo
-+#)
-+#endif()
- #
--# Build patched libevhtp
--#
--if (WIN32)
--# FIXME evhtp can't be built successfully in native Windows environment
--# CMAKE_PREFIX_PATH is needed to find libevent
--ExternalProject_Add(libevhtp
--  PREFIX libevhtp
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party-repo/src/third_party/libevhtp/libevhtp"
--  DOWNLOAD_COMMAND ""
--  CMAKE_CACHE_ARGS
--    -DEVHTP_DISABLE_REGEX:BOOL=ON
--    -DEVHTP_DISABLE_SSL:BOOL=ON
--    -DEVHTP_TRITON_ENABLE_HTTP_CONTIGUOUS:BOOL=ON
--    -DEVHTP_TRITON_ENABLE_TRACING:BOOL=${TRITON_ENABLE_TRACING}
--    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
--    -DCMAKE_PREFIX_PATH:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install
--  DEPENDS libevent third-party-repo
--)
--else()
--ExternalProject_Add(libevhtp
--  PREFIX libevhtp
--  SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party-repo/src/third_party/libevhtp/libevhtp"
--  DOWNLOAD_COMMAND ""
--  CMAKE_CACHE_ARGS
--    -DEVHTP_DISABLE_REGEX:BOOL=ON
--    -DEVHTP_DISABLE_SSL:BOOL=ON
--    -DEVHTP_TRITON_ENABLE_HTTP_CONTIGUOUS:BOOL=ON
--    -DEVHTP_TRITON_ENABLE_TRACING:BOOL=${TRITON_ENABLE_TRACING}
--    -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
--    -DLibevent_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install/lib/cmake/libevent
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install
--  DEPENDS libevent third-party-repo
--)
--endif()
--
- #
- # Build Prometheus C++ library
- #
-@@ -349,7 +258,11 @@
-    ${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
-    ${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
-    ${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
--   ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR})
-+   ${CMAKE_CURRENT_BINARY_DIR}/c-ares
-+   ${CMAKE_CURRENT_BINARY_DIR}/grpc
-+   ${CMAKE_CURRENT_BINARY_DIR}/crc32c
-+   )
-+#   ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR})
- 
- #
- # Build google-cloud-cpp
-@@ -365,7 +278,8 @@
-     -DCMAKE_PREFIX_PATH:PATH=${GCS_CMAKE_PREFIX_PATH}
-     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install
--  DEPENDS grpc protobuf crc32c
-+    -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
-+  DEPENDS crc32c
- )
- 
- #
-@@ -380,15 +294,13 @@
-     -DBUILD_SHARED_LIBS:BOOL=OFF
-     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
-     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCURL_INCLUDE_DIR=${CMAKE_CURRENT_BINARY_DIR}/curl/install/include
--    -DCURL_LIBRARY=${CMAKE_CURRENT_BINARY_DIR}/curl/install/lib
-     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/azure-storage-cpplite/install
--  DEPENDS curl
- )
- 
- #
- # Build CNMeM (CUDA memeory management library)
- #
-+if(${TRITON_ENABLE_GPU})
- ExternalProject_Add(cnmem
-   PREFIX cnmem
-   SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party-repo/src/third_party/cnmem/cnmem"
-@@ -398,7 +310,7 @@
-     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/cnmem
-     DEPENDS third-party-repo
  )
 -
 +endif()
  #
+ # Build protobuf project from grpc-repo
+ #
+ # Use -DCMAKE_BUILD_TYPE:STRING=RELEASE to workaround the protobuf build issue
+ # described in https://stackoverflow.com/a/60218066/2091555
++if(NOT ${FOUND_PROTOBUF})
+ ExternalProject_Add(protobuf
+   PREFIX protobuf
+   SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/protobuf/cmake"
+@@ -162,10 +166,14 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/protobuf
+   DEPENDS grpc-repo
+ )
++else()
++add_library(protobuf ALIAS protobuf::libprotobuf)
++endif()
+ 
+ #
+ # Build googletest project from grpc-repo
+ #
++if(NOT ${FOUND_GTEST})
+ ExternalProject_Add(googletest
+   PREFIX protobuf
+   SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/googletest"
+@@ -175,6 +181,9 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/googletest
+   DEPENDS grpc-repo
+ )
++else()
++add_library(googletest ALIAS GTest::gtest)
++endif()
+ 
+ # Location where protobuf-config.cmake will be installed varies by
+ # platform
+@@ -184,9 +191,12 @@
+   set(_FINDPACKAGE_PROTOBUF_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}/protobuf/${CMAKE_INSTALL_LIBDIR}/cmake/protobuf")
+ endif()
+ 
++find_package(c-ares)
++
+ #
+ # Build c-area project from grpc-repo
+ #
++if(NOT ${FOUND_C_ARES})
+ ExternalProject_Add(c-ares
+   PREFIX c-ares
+   SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/cares/cares"
+@@ -199,10 +209,14 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares
+   DEPENDS grpc-repo
+ )
++endif()
+ 
+ #
+ # Build GRPC
+ #
++find_package(gRPC)
++
++if(NOT ${FOUND_GRPC})
+ ExternalProject_Add(grpc
+   PREFIX grpc
+   SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc"
+@@ -222,10 +236,15 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc
+   DEPENDS grpc-repo c-ares protobuf
+ )
++else()
++add_library(grpc ALIAS gRPC::grpc)
++endif()
+ 
+ #
+ # Build libcurl
+ #
++find_package(CURL)
++if(NOT ${FOUND_CURL})
+ ExternalProject_Add(curl
+   PREFIX curl
+   GIT_REPOSITORY "https://github.com/curl/curl.git"
+@@ -240,10 +259,14 @@
+     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/curl/install
+ )
+-
++else()
++add_library(curl ALIAS CURL::libcurl)
++endif()
+ #
+ # Build libevent
+ #
++find_package(libevent)
++if(NOT ${FOUND_LIBEVENT})
+ ExternalProject_Add(libevent
+   PREFIX libevent
+   GIT_REPOSITORY "https://github.com/libevent/libevent.git"
+@@ -254,10 +277,13 @@
+     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install
+ )
++endif()
+ 
++find_package(libevhtp)
+ #
+ # Get patched third party repo
+ #
++if(NOT FOUND_LIBEVHTP)
+ ExternalProject_Add(third-party-repo
+   PREFIX third-party-repo
+   GIT_REPOSITORY "https://github.com/triton-inference-server/third_party.git"
+@@ -268,10 +294,12 @@
+   INSTALL_COMMAND ""
+   TEST_COMMAND ""
+ )
++endif()
+ 
+ #
+ # Build patched libevhtp
+ #
++if(NOT FOUND_LIBEVHTP)
+ if (WIN32)
+ # FIXME evhtp can't be built successfully in native Windows environment
+ # CMAKE_PREFIX_PATH is needed to find libevent
+@@ -307,10 +335,13 @@
+   DEPENDS libevent third-party-repo
+ )
+ endif()
++endif()
+ 
++find_package(prometheus-cpp)
+ #
+ # Build Prometheus C++ library
+ #
++if(NOT FOUND_PROMETHEUS_CPP)
+ ExternalProject_Add(prometheus-cpp
+   PREFIX prometheus-cpp
+   URL "https://github.com/jupp0r/prometheus-cpp/archive/v0.7.0.tar.gz"
+@@ -325,10 +356,13 @@
+     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/prometheus-cpp/install
+ )
++endif()
+ 
++find_package(Crc32c)
+ #
+ # Build crc32c
+ #
++if(NOT FOUND_CRC32C)
+ ExternalProject_Add(crc32c
+   PREFIX crc32c
+   GIT_REPOSITORY "https://github.com/google/crc32c.git"
+@@ -341,19 +375,26 @@
+     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c
+ )
++endif()
+ 
+ # This is necessary because google-cloud-cpp
+ # does not pass protobuf_DIR and gRPC_DIR etc to its
+ # external projects but expects them in CMAKE_PREFIX_PATH
++if(NOT FOUND_GRPC)
+ set(GCS_CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}
+    ${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
+    ${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
+    ${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
+    ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR})
++endif()
++
++find_package(google_cloud_cpp_common)
++find_package(google_cloud_cpp_grpc_utils)
+ 
+ #
+ # Build google-cloud-cpp
+ #
++if(NOT FOUND_GOOGLE-CLOUD-CPP)
+ ExternalProject_Add(google-cloud-cpp
+   PREFIX google-cloud-cpp
+   GIT_REPOSITORY "https://github.com/googleapis/google-cloud-cpp.git"
+@@ -367,10 +408,13 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install
+   DEPENDS grpc protobuf crc32c
+ )
++endif()
+ 
++find_package(asure-storage-cpplite)
+ #
+ # Build azure-storage-cpplite 
+ #
++if(NOT FOUND_ASURE_STORAGE_CPPLITE)
+ ExternalProject_Add(azure-storage-cpplite
+   PREFIX azure-storage-cpplite
+   GIT_REPOSITORY "https://github.com/Azure/azure-storage-cpplite.git"
+@@ -385,10 +429,15 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/azure-storage-cpplite/install
+   DEPENDS curl
+ )
++endif()
++
+ 
++if(TRITON_ENABLE_GPU)
++find_package(CNMeM)
+ #
+ # Build CNMeM (CUDA memeory management library)
+ #
++if(NOT FOUND_CNMEM)
+ ExternalProject_Add(cnmem
+   PREFIX cnmem
+   SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party-repo/src/third_party/cnmem/cnmem"
+@@ -398,10 +446,14 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/cnmem
+     DEPENDS third-party-repo
+ )
++endif()
++endif()
+ 
++find_package(aws-sdk-cpp)
+ #
  # Build AWS sdk for S3 support
  #
-@@ -425,24 +337,41 @@
++if( NOT FOUND_AWS_SDK_CPP)
+ ExternalProject_Add(aws-sdk-cpp
+   PREFIX aws-sdk-cpp
+   GIT_REPOSITORY "https://github.com/aws/aws-sdk-cpp.git"
+@@ -415,6 +466,7 @@
+     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install
+ )
++endif()
+ 
+ #
+ # Build Triton Server test utilities
+@@ -486,6 +538,7 @@
+   DEPENDS curl protobuf grpc
+ )
+ 
++if(TRITON_ENABLE_SERVER)
+ #
+ # Build Triton Server library and main executable
+ #
+@@ -577,5 +630,6 @@
+     -DTRITON_VERSION:STRING=${TRITON_VERSION}
+   DEPENDS ${TRITON_DEPENDS}
+ )
++endif()
+ 
+ unset(CMAKE_INSTALL_PREFIX CACHE)
+--- spack-src/build/CMakeLists.txt	2021-02-08 20:30:55.543934543 -0600
++++ spack-src/build/CMakeLists.txt	2021-02-08 20:31:00.829680862 -0600
+@@ -483,6 +483,7 @@
    set(TRITON_TEST_UTILS_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
  endif()
  
--ExternalProject_Add(test-util
--  PREFIX test-util
--  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test-util"
--  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/test-util"
--  BUILD_ALWAYS 1
--  CMAKE_CACHE_ARGS
--    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
--    -DGTEST_ROOT:PATH=${CMAKE_CURRENT_BINARY_DIR}/googletest
--    -DCNMEM_PATH:PATH=${CMAKE_CURRENT_BINARY_DIR}/cnmem
--    -DTRITON_COMMON_REPO_TAG:STRING=${TRITON_COMMON_REPO_TAG}
--    -DTRITON_CORE_REPO_TAG:STRING=${TRITON_CORE_REPO_TAG}
--    -DTRITON_ENABLE_GPU:BOOL=${TRITON_ENABLE_GPU}
--    -DTRITON_MIN_COMPUTE_CAPABILITY:STRING=${TRITON_MIN_COMPUTE_CAPABILITY}
--    -DTRITON_ENABLE_TENSORRT:BOOL=${TRITON_ENABLE_TENSORRT}
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_TEST_UTILS_INSTALL_PREFIX}
--  DEPENDS protobuf googletest cnmem
--)
-+
-+#if(${TRITON_ENABLE_GPU})
-+#ExternalProject_Add(test-util
-+#  PREFIX test-util
-+#  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test-util"
-+#  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/test-util"
-+#  BUILD_ALWAYS 1
-+#  CMAKE_CACHE_ARGS
-+#    -DCNMEM_PATH:PATH=${CMAKE_CURRENT_BINARY_DIR}/cnmem
-+#    -DTRITON_COMMON_REPO_TAG:STRING=${TRITON_COMMON_REPO_TAG}
-+#    -DTRITON_CORE_REPO_TAG:STRING=${TRITON_CORE_REPO_TAG}
-+#    -DTRITON_ENABLE_GPU:BOOL=${TRITON_ENABLE_GPU}
-+#    -DTRITON_MIN_COMPUTE_CAPABILITY:STRING=${TRITON_MIN_COMPUTE_CAPABILITY}
-+#    -DTRITON_ENABLE_TENSORRT:BOOL=${TRITON_ENABLE_TENSORRT}
-+#    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-+#    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_TEST_UTILS_INSTALL_PREFIX}
-+#  DEPENDS cnmem
-+#)
-+#else()
-+#ExternalProject_Add(test-util
-+#  PREFIX test-util
-+#  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test-util"
-+#  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/test-util"
-+#  BUILD_ALWAYS 1
-+#  CMAKE_CACHE_ARGS
-+#    -DCNMEM_PATH:PATH=${CMAKE_CURRENT_BINARY_DIR}/cnmem
-+#    -DTRITON_COMMON_REPO_TAG:STRING=${TRITON_COMMON_REPO_TAG}
-+#    -DTRITON_CORE_REPO_TAG:STRING=${TRITON_CORE_REPO_TAG}
-+#    -DTRITON_ENABLE_GPU:BOOL=${TRITON_ENABLE_GPU}
-+#    -DTRITON_MIN_COMPUTE_CAPABILITY:STRING=${TRITON_MIN_COMPUTE_CAPABILITY}
-+#    -DTRITON_ENABLE_TENSORRT:BOOL=${TRITON_ENABLE_TENSORRT}
-+#    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-+#    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_TEST_UTILS_INSTALL_PREFIX}
-+#)
-+#endif()
- 
++if(TRITON_ENABLE_GPU)
+ ExternalProject_Add(test-util
+   PREFIX test-util
+   SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test-util"
+@@ -501,7 +502,7 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_TEST_UTILS_INSTALL_PREFIX}
+   DEPENDS protobuf googletest cnmem
+ )
+-
++endif()
  #
  # Build Triton client libraries and examples
-@@ -483,7 +412,7 @@
-     -DTRITON_ENABLE_GPU:BOOL=${TRITON_ENABLE_GPU}
-     -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_CLIENTS_INSTALL_PREFIX}
-     -DTRITON_VERSION:STRING=${TRITON_VERSION}
--  DEPENDS curl protobuf grpc
-+    -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
- )
- 
  #
-@@ -495,7 +424,6 @@
-   set(TRITON_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
- endif()
- 
--set(TRITON_DEPENDS protobuf)
- if(${TRITON_ENABLE_GCS})
-   set(TRITON_DEPENDS ${TRITON_DEPENDS} google-cloud-cpp)
- endif() # TRITON_ENABLE_GCS
-@@ -506,7 +434,7 @@
-   set(TRITON_DEPENDS ${TRITON_DEPENDS} azure-storage-cpplite)
- endif() # TRITON_ENABLE_AZURE_STORAGE
- if(${TRITON_ENABLE_HTTP} OR ${TRITON_ENABLE_METRICS})
--  set(TRITON_DEPENDS ${TRITON_DEPENDS} libevent libevhtp)
-+  set(TRITON_DEPENDS ${TRITON_DEPENDS} libevhtp)
- endif() # TRITON_ENABLE_HTTP || TRITON_ENABLE_METRICS
- if(${TRITON_ENABLE_GRPC})
-   set(TRITON_DEPENDS ${TRITON_DEPENDS} grpc)
-@@ -518,64 +446,63 @@
-   set(TRITON_DEPENDS ${TRITON_DEPENDS} cnmem)
- endif() # TRITON_ENABLE_GPU
- 
--ExternalProject_Add(server
--  PREFIX server
--  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/server"
--  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/server"
--  BUILD_ALWAYS 1
--  CMAKE_CACHE_ARGS
--    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
--    -Dc-ares_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
--    ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
--    -DgRPC_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
--    -DLibevent_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevent/install/lib/cmake/libevent
--    -Dlibevhtp_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install/lib/cmake/libevhtp
--    -Dprometheus-cpp_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/prometheus-cpp/install/lib/cmake/prometheus-cpp
--    -Dstorage_client_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install/lib/cmake/storage_client
--    -Dazure-storage-cpplite_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/azure-storage-cpplite/install
--    -Dgoogle_cloud_cpp_common_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install/lib/cmake/google_cloud_cpp_common
--    -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
--    -DAWSSDK_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/AWSSDK
--    -Daws-cpp-sdk-core_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/aws-cpp-sdk-core
--    -Daws-cpp-sdk-s3_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/aws-cpp-sdk-s3
--    -Daws-c-event-stream_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-c-event-stream/cmake
--    -Daws-c-common_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-c-common/cmake
--    -Daws-checksums_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-checksums/cmake
--    -DCNMEM_PATH:PATH=${CMAKE_CURRENT_BINARY_DIR}/cnmem
--    -DTRITON_COMMON_REPO_TAG:STRING=${TRITON_COMMON_REPO_TAG}
--    -DTRITON_CORE_REPO_TAG:STRING=${TRITON_CORE_REPO_TAG}
--    -DTRITON_BACKEND_REPO_TAG:STRING=${TRITON_BACKEND_REPO_TAG}
--    -DTRITON_ONNXRUNTIME_INCLUDE_PATHS:PATH=${TRITON_ONNXRUNTIME_INCLUDE_PATHS}
--    -DTRITON_PYTORCH_INCLUDE_PATHS:PATH=${TRITON_PYTORCH_INCLUDE_PATHS}
--    -DTRITON_TENSORRT_INCLUDE_PATHS:PATH=${TRITON_TENSORRT_INCLUDE_PATHS}
--    -DTRITON_EXTRA_LIB_PATHS:PATH=${TRITON_EXTRA_LIB_PATHS}
--    -DTRITON_ENABLE_ASAN:BOOL=${TRITON_ENABLE_ASAN}
--    -DTRITON_ENABLE_NVTX:BOOL=${TRITON_ENABLE_NVTX}
--    -DTRITON_ENABLE_TRACING:BOOL=${TRITON_ENABLE_TRACING}
--    -DTRITON_ENABLE_LOGGING:BOOL=${TRITON_ENABLE_LOGGING}
--    -DTRITON_ENABLE_STATS:BOOL=${TRITON_ENABLE_STATS}
--    -DTRITON_ENABLE_GPU:BOOL=${TRITON_ENABLE_GPU}
--    -DTRITON_ENABLE_HTTP:BOOL=${TRITON_ENABLE_HTTP}
--    -DTRITON_ENABLE_GRPC:BOOL=${TRITON_ENABLE_GRPC}
--    -DTRITON_MIN_COMPUTE_CAPABILITY:STRING=${TRITON_MIN_COMPUTE_CAPABILITY}
--    -DTRITON_ENABLE_METRICS:BOOL=${TRITON_ENABLE_METRICS}
--    -DTRITON_ENABLE_METRICS_GPU:BOOL=${TRITON_ENABLE_METRICS_GPU}
--    -DTRITON_ENABLE_GCS:BOOL=${TRITON_ENABLE_GCS}
--    -DTRITON_ENABLE_AZURE_STORAGE:BOOL=${TRITON_ENABLE_AZURE_STORAGE}
--    -DTRITON_ENABLE_S3:BOOL=${TRITON_ENABLE_S3}
--    -DTRITON_ENABLE_TENSORFLOW:BOOL=${TRITON_ENABLE_TENSORFLOW}
--    -DTRITON_ENABLE_PYTHON:BOOL=${TRITON_ENABLE_PYTHON}
--    -DTRITON_ENABLE_TENSORRT:BOOL=${TRITON_ENABLE_TENSORRT}
--    -DTRITON_ENABLE_ONNXRUNTIME:BOOL=${TRITON_ENABLE_ONNXRUNTIME}
--    -DTRITON_ENABLE_ONNXRUNTIME_TENSORRT:BOOL=${TRITON_ENABLE_ONNXRUNTIME_TENSORRT}
--    -DTRITON_ENABLE_ONNXRUNTIME_OPENVINO:BOOL=${TRITON_ENABLE_ONNXRUNTIME_OPENVINO}
--    -DTRITON_ENABLE_PYTORCH:BOOL=${TRITON_ENABLE_PYTORCH}
--    -DTRITON_ENABLE_CUSTOM:BOOL=${TRITON_ENABLE_CUSTOM}
--    -DTRITON_ENABLE_ENSEMBLE:BOOL=${TRITON_ENABLE_ENSEMBLE}
--    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
--    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_INSTALL_PREFIX}
--    -DTRITON_VERSION:STRING=${TRITON_VERSION}
--  DEPENDS ${TRITON_DEPENDS}
--)
-+#ExternalProject_Add(server
-+#  PREFIX server
-+#  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/server"
-+#  BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/server"
-+#  BUILD_ALWAYS 1
-+#  CMAKE_CACHE_ARGS
-+#    -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
-+#    -Dc-ares_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
-+#    ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
-+#    -DgRPC_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
-+#    -Dlibevhtp_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/libevhtp/install/lib/cmake/libevhtp
-+#    -Dprometheus-cpp_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/prometheus-cpp/install/lib/cmake/prometheus-cpp
-+#    -Dstorage_client_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install/lib/cmake/storage_client
-+#    -Dazure-storage-cpplite_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/azure-storage-cpplite/install
-+#    -Dgoogle_cloud_cpp_common_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/google-cloud-cpp/install/lib/cmake/google_cloud_cpp_common
-+#    -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
-+#    -DAWSSDK_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/AWSSDK
-+#    -Daws-cpp-sdk-core_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/aws-cpp-sdk-core
-+#    -Daws-cpp-sdk-s3_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/cmake/aws-cpp-sdk-s3
-+#    -Daws-c-event-stream_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-c-event-stream/cmake
-+#    -Daws-c-common_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-c-common/cmake
-+#    -Daws-checksums_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install/lib/aws-checksums/cmake
-+#    -DCNMEM_PATH:PATH=${CMAKE_CURRENT_BINARY_DIR}/cnmem
-+#    -DTRITON_COMMON_REPO_TAG:STRING=${TRITON_COMMON_REPO_TAG}
-+#    -DTRITON_CORE_REPO_TAG:STRING=${TRITON_CORE_REPO_TAG}
-+#    -DTRITON_BACKEND_REPO_TAG:STRING=${TRITON_BACKEND_REPO_TAG}
-+#    -DTRITON_ONNXRUNTIME_INCLUDE_PATHS:PATH=${TRITON_ONNXRUNTIME_INCLUDE_PATHS}
-+#    -DTRITON_PYTORCH_INCLUDE_PATHS:PATH=${TRITON_PYTORCH_INCLUDE_PATHS}
-+#    -DTRITON_TENSORRT_INCLUDE_PATHS:PATH=${TRITON_TENSORRT_INCLUDE_PATHS}
-+#    -DTRITON_EXTRA_LIB_PATHS:PATH=${TRITON_EXTRA_LIB_PATHS}
-+#    -DTRITON_ENABLE_ASAN:BOOL=${TRITON_ENABLE_ASAN}
-+#    -DTRITON_ENABLE_NVTX:BOOL=${TRITON_ENABLE_NVTX}
-+#    -DTRITON_ENABLE_TRACING:BOOL=${TRITON_ENABLE_TRACING}
-+#    -DTRITON_ENABLE_LOGGING:BOOL=${TRITON_ENABLE_LOGGING}
-+#    -DTRITON_ENABLE_STATS:BOOL=${TRITON_ENABLE_STATS}
-+#    -DTRITON_ENABLE_GPU:BOOL=${TRITON_ENABLE_GPU}
-+#    -DTRITON_ENABLE_HTTP:BOOL=${TRITON_ENABLE_HTTP}
-+#    -DTRITON_ENABLE_GRPC:BOOL=${TRITON_ENABLE_GRPC}
-+#    -DTRITON_MIN_COMPUTE_CAPABILITY:STRING=${TRITON_MIN_COMPUTE_CAPABILITY}
-+#    -DTRITON_ENABLE_METRICS:BOOL=${TRITON_ENABLE_METRICS}
-+#    -DTRITON_ENABLE_METRICS_GPU:BOOL=${TRITON_ENABLE_METRICS_GPU}
-+#    -DTRITON_ENABLE_GCS:BOOL=${TRITON_ENABLE_GCS}
-+#    -DTRITON_ENABLE_AZURE_STORAGE:BOOL=${TRITON_ENABLE_AZURE_STORAGE}
-+#    -DTRITON_ENABLE_S3:BOOL=${TRITON_ENABLE_S3}
-+#    -DTRITON_ENABLE_TENSORFLOW:BOOL=${TRITON_ENABLE_TENSORFLOW}
-+#    -DTRITON_ENABLE_PYTHON:BOOL=${TRITON_ENABLE_PYTHON}
-+#    -DTRITON_ENABLE_TENSORRT:BOOL=${TRITON_ENABLE_TENSORRT}
-+#    -DTRITON_ENABLE_ONNXRUNTIME:BOOL=${TRITON_ENABLE_ONNXRUNTIME}
-+#    -DTRITON_ENABLE_ONNXRUNTIME_TENSORRT:BOOL=${TRITON_ENABLE_ONNXRUNTIME_TENSORRT}
-+#    -DTRITON_ENABLE_ONNXRUNTIME_OPENVINO:BOOL=${TRITON_ENABLE_ONNXRUNTIME_OPENVINO}
-+#    -DTRITON_ENABLE_PYTORCH:BOOL=${TRITON_ENABLE_PYTORCH}
-+#    -DTRITON_ENABLE_CUSTOM:BOOL=${TRITON_ENABLE_CUSTOM}
-+#    -DTRITON_ENABLE_ENSEMBLE:BOOL=${TRITON_ENABLE_ENSEMBLE}
-+#    -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-+#    -DCMAKE_INSTALL_PREFIX:PATH=${TRITON_INSTALL_PREFIX}
-+#    -DTRITON_VERSION:STRING=${TRITON_VERSION}
-+#  DEPENDS ${TRITON_DEPENDS}
-+#)
- 
- unset(CMAKE_INSTALL_PREFIX CACHE)

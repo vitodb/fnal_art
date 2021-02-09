@@ -50,3 +50,29 @@
    curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, buffer_byte_size);
  
    // request data provided by InferRequestProvider()
+--- spack-src/src/clients/c++/perf_analyzer/CMakeLists.txt.orig	2021-02-09 13:43:51.523818278 -0600
++++ spack-src/src/clients/c++/perf_analyzer/CMakeLists.txt	2021-02-09 13:43:53.356730522 -0600
+@@ -58,6 +58,11 @@
+   inference_profiler.h
+ )
+ 
++include(FindPkgConfig)
++pkg_check_modules(libb64 REQUIRED libb64)
++include_directories(${LIBB64_INCLUDES})
++link_directories(${LIBB64_LIBRARY_DIRS})
++
+ add_executable(
+   perf_analyzer
+   ${PERF_ANALYZER_SRCS}
+--- spack-src/src/clients/c++/perf_analyzer/client_backend/CMakeLists.txt.orig	2021-02-09 14:40:07.672129027 -0600
++++ spack-src/src/clients/c++/perf_analyzer/client_backend/CMakeLists.txt	2021-02-09 14:40:31.072008122 -0600
+@@ -26,6 +26,9 @@
+ 
+ cmake_minimum_required (VERSION 3.18)
+ 
++include_directories(${LIBB64_INCLUDES})
++link_directories(${LIBB64_LIBRARY_DIRS})
++
+ FetchContent_Declare(tensorflow-serving-repo
+   PREFIX tensorflow-serving-rep
+ )

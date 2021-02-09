@@ -25,10 +25,12 @@ class GoogleCloudCpp(CMakePackage):
     version('1.22.0', sha256='2f52dcc679a31e738c01fb68aa0fc966fe0be5322d1a4ec7e6337363281a4704')
     version('1.21.0', sha256='14bf9bf97431b890e0ae5dca8f8904841d4883b8596a7108a42f5700ae58d711')
 
-    depends_on('curl')
-    depends_on('googletest')
-    depends_on('grpc')
     depends_on('crc32c')
+    depends_on('curl')
+    depends_on('google-benchmark')
+    depends_on('googletest +gmock')
+    depends_on('grpc')
+    depends_on('nlohmann-json')
     # depends_on('benchmark')
     # depends_on('abseil')
 
