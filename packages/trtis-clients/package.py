@@ -106,6 +106,6 @@ class TrtisClients(CMakePackage):
         return (flags, None, None)
 
     def install(self, spec, prefix):
-        install_tree(self.stage.source_path+'/install/include', prefix+'/include/trts_clients')
-        install_tree(self.stage.source_path+'/install/lib', prefix+'/lib')
+        with working_dir(self.build_directory + '/client'):
+            make('install')
 
