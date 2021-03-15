@@ -33,11 +33,11 @@ class CetlibExcept(CMakePackage):
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base)
+    version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     #version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
-    #version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
-    #version('1.14.01', tag='v1_14_01', git=git_base, get_full_repo=True)
+    version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
+    version('1.14.01', tag='v1_14_01', git=git_base, get_full_repo=True)
 
 
 
@@ -49,7 +49,8 @@ class CetlibExcept(CMakePackage):
 
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules', type='build')
-    depends_on('cetpkgsupport', type='build')
+    depends_on('cetpkgsupport', type=('build','run'))
+    depends_on('catch2', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

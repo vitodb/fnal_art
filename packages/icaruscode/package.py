@@ -72,7 +72,7 @@ class Icaruscode(CMakePackage):
     depends_on('ifdh-art', type=('build','run'))
     depends_on('intel-tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
-    depends_on('icarus-signal-processing', type=('build','run'))
+    #depends_on('icarus-signal-processing', type=('build','run'),when="@09.00:")
     depends_on('icarusutil', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))

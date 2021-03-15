@@ -1,0 +1,8 @@
+--- spack-src/cetlib/CMakeLists.txt.orig	2021-03-15 15:22:02.829432000 -0500
++++ spack-src/cetlib/CMakeLists.txt	2021-03-15 15:22:17.335175000 -0500
+@@ -104,4 +104,4 @@
+ add_subdirectory(sqlite)
+ 
+ # Tests
+-add_subdirectory(test)
++#add_subdirectory(test)

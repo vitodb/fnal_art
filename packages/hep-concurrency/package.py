@@ -14,11 +14,6 @@ if not libdir in sys.path:
     sys.path.append(libdir)
 
 
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
-
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -40,6 +35,8 @@ class HepConcurrency(CMakePackage):
     version('develop', branch='develop', git=git_base)
     version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
     version('1.03.04', tag='v1_03_04', git=git_base, get_full_repo=True)
+    version('1.04.01', sha256='ab6610a6fac64e9c2cded6732751f880b35b0ea4cb0762914b769da5653d7518')
+
 
     variant('cxxstd',
             default='17',
@@ -47,7 +44,7 @@ class HepConcurrency(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
+    patch('hep_concurrency.1.04.01.patch', when='@1.04.01')
 
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')

@@ -13,9 +13,13 @@ class Cetmodules(CMakePackage):
     Fermilab and associated experiments and other collaborations.
     """
 
-    homepage = 'https://cdcvs.fnal.gov/projects/cetmodules'
+    homepage = 'https://cdcvs.fnal.gov/redmine/projects/cetmodules'
+    git_base = 'https://cdcvs.fnal.gov/projects/cetmodules'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetmodules.v1_0_2.tbz2'
 
-    version('develop', branch='develop', git=homepage)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('2.09.00', sha256='8c4d9a5f3d39a7dff5e9136576dab1bcf50a410c6cc028e5b47a2546c57e3860')
+
     version('1.04.00', sha256='4ba077e7146e19a805476f2fcf2a537a2cd24dbd602f5f5c348431b5018379da')
     version('1.03.00', sha256='40b0f8fa88f9522d14cae87a4242a494aa724b13505b6b740a0007153cc85e18')
     version('1.02.04', sha256='4e5063748aa8821b34a2a3ae150927afcd890beade83ad98e03f93e5d93d8ee7')
@@ -31,6 +35,10 @@ class Cetmodules(CMakePackage):
     version('0.07.00', '60fb6f9ff26605ea4c0648fa43d0a516')
     depends_on('cmake@3.11:', type='build', when='@:1.01.99')
     depends_on('cmake@3.12:', type='build', when='@1.02.00:')
+    depends_on('py-sphinxcontrib-moderncmakedomain', when='@2.00.10:')
+    depends_on('py-sphinxcontrib-moderncmakedomain', when='@develop')
+    depends_on('py-sphinx-rtd-theme', when='@2.00.10:')
+    depends_on('py-sphinx-rtd-theme', when='@develop')
 
 
     def url_for_version(self, version):

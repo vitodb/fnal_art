@@ -36,15 +36,15 @@ class Cetlib(CMakePackage):
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base)
+    version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
     version('3.05.00', tag='v3_05_00', git=git_base, get_full_repo=True)
     version('3.05.01', tag='v3_05_01', git=git_base, get_full_repo=True)
     version('3.07.02', tag='v3_07_02', git=git_base, get_full_repo=True)
     version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
    
-
+    patch('cetlib-notests.patch', when='@develop')
 
     variant('cxxstd',
             default='17',
@@ -56,6 +56,7 @@ class Cetlib(CMakePackage):
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules', type='build')
     depends_on('catch2@2.3.0:', type=('build', 'link'))
+    depends_on('intel-tbb', type=('build', 'link'))
 
     # Build / link dependencies.
     depends_on('boost')

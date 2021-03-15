@@ -36,7 +36,7 @@ class Art(CMakePackage):
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base)
+    version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('3.02.03', tag='v3_02_03', git=git_base, get_full_repo=True)
     version('3.02.04', tag='v3_02_04', git=git_base, get_full_repo=True)

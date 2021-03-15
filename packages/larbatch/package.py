@@ -20,7 +20,7 @@ class Larbatch(Package):
     def url_for_version(self, version):
         return  "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/larbatch.v{0}.tar".format(version.underscored);
 
-    depends_on('sam_web_client', type=('run'))
+    depends_on('sam-web-client', type=('run'))
     depends_on('python',         type=('run'))
 
     def install(self, spec, prefix):
