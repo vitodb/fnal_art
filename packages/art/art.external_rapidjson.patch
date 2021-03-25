@@ -1,0 +1,38 @@
+--- spack-src/art/Framework/Core/CMakeLists.txt.orig	2021-03-23 20:37:19.129845000 +0000
++++ spack-src/art/Framework/Core/CMakeLists.txt	2021-03-23 20:51:32.504979000 +0000
+@@ -82,7 +82,6 @@
+     cetlib::container_algorithms
+     hep_concurrency::macros
+     Boost::graph
+-    rapidjson
+ )
+ 
+ cet_make_library(LIBRARY_NAME module INTERFACE
+--- spack-src/art/Framework/Services/System/CMakeLists.txt.orig	2021-03-23 20:37:32.538845000 +0000
++++ spack-src/art/Framework/Services/System/CMakeLists.txt	2021-03-23 20:51:41.754979000 +0000
+@@ -17,7 +17,7 @@
+     fhiclcpp::types
+     cetlib::container_algorithms
+     cetlib::cetlib
+-  PRIVATE rapidjson)
++    )
+ ########################################################################
+ 
+ # FloatingPoint is a true "system" service (constructed explicitly by
+--- spack-src/CMakeLists.txt.orig	2021-03-23 20:51:56.919979000 +0000
++++ spack-src/CMakeLists.txt	2021-03-23 20:50:55.425467000 +0000
+@@ -49,9 +49,12 @@
+ 
+ cet_register_export_set(SET_NAME art NAMESPACE art)
+ 
+-add_subdirectory(third_party/RapidJSON)
++#add_subdirectory(third_party/RapidJSON)
+ 
+-list(PREPEND CMAKE_PREFIX_PATH ${PROJECT_BINARY_DIR}/third_party/RapidJSON/rapidjson)
++#list(PREPEND CMAKE_PREFIX_PATH ${PROJECT_BINARY_DIR}/third_party/RapidJSON/rapidjson)
++
++find_package(RapidJSON REQUIRED)
++include_directories(${RapidJSON_INCLUDE})
+ 
+ # Plugin skeleton generators for cetskelgen.
+ add_subdirectory(perllib)
