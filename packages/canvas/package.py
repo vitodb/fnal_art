@@ -35,7 +35,7 @@ class Canvas(CMakePackage):
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git=git_base,get_full_repo=True)
     version('3.05.00', tag='v3_05_00', git=git_base, get_full_repo=True)
     version('3.05.01', tag='v3_05_01', git=git_base, get_full_repo=True)
     version('3.07.03', tag='v3_07_03', git=git_base, get_full_repo=True)
@@ -69,6 +69,8 @@ class Canvas(CMakePackage):
     depends_on('messagefacility')
     depends_on('range-v3')
     depends_on('tbb', when='@MVP')
+
+    patch('canvas_new.patch')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

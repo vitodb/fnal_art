@@ -38,6 +38,7 @@ class Art(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('v20_6-branch', branch='v2_06-branch', git=git_base, get_full_repo=True)
     version('3.02.03', tag='v3_02_03', git=git_base, get_full_repo=True)
     version('3.02.04', tag='v3_02_04', git=git_base, get_full_repo=True)
     version('3.02.05', tag='v3_02_05', git=git_base, get_full_repo=True)
@@ -49,8 +50,6 @@ class Art(CMakePackage):
     version('3.02.06', tag='v3_02_06', git=git_base, get_full_repo=True)
     version('3.03.01', tag='v3_03_01', git=git_base, get_full_repo=True)
     version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
-
-
 
     variant('cxxstd',
             default='17',
@@ -77,6 +76,10 @@ class Art(CMakePackage):
     depends_on('sqlite@3.8.2:')
     depends_on('perl')
     depends_on('range-v3', when="@3.04.00:")
+    depends_on('rapidjson', when='@3.06:')
+
+    patch('art.external_rapidjson.patch',when='@3.06:')
+    patch('art.ScheduleID.patch',when='@develop')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

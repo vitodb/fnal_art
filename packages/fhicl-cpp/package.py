@@ -33,17 +33,16 @@ class FhiclCpp(CMakePackage):
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/fhicl-cpp'
 
-    version('MVP1a', branch='feature/Spack-MVP1a',
-            git=git_base, preferred=True)
+    version('MVP1a', branch='feature/Spack-MVP1a', git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('4.09.02', tag='v4_09_02', git=git_base, get_full_repo=True)
     version('4.09.03', tag='v4_09_03', git=git_base, get_full_repo=True)
     version('4.10.00', tag='v4_10_00', git=git_base, get_full_repo=True)
     version('4.11.00', tag='v4_11_00', git=git_base, get_full_repo=True)
     version('4.11.01', sha256='820b747209dfc5747fab71cf95d1833b4bbd406eb9220097e33c2af686c9be8f')
 
-
+    #patch('fhicl-cpp-dev.patch', when='@develop')
 
     variant('cxxstd',
             default='17',

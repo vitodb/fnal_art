@@ -35,6 +35,7 @@ class Messagefacility(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('v2_06-branch', branch='v2_06-branch', git=git_base, get_full_repo=True)
     version('2.06.01', tag='v2_06_01', git=git_base, get_full_repo=True)
     version('2.03.00', tag='v2_03_00', git=git_base, get_full_repo=True)
     version('2.03.01', tag='v2_03_01', git=git_base, get_full_repo=True)

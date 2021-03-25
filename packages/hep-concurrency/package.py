@@ -31,8 +31,8 @@ class HepConcurrency(CMakePackage):
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base)
+    version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
     version('1.03.04', tag='v1_03_04', git=git_base, get_full_repo=True)
     version('1.04.01', sha256='ab6610a6fac64e9c2cded6732751f880b35b0ea4cb0762914b769da5653d7518')
@@ -49,10 +49,12 @@ class HepConcurrency(CMakePackage):
     # Build-only dependencies.
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules', type='build')
+    depends_on('cetlib-except', type=('build','run'))
 
     # Build / link dependencies.
     depends_on('cppunit')
-    depends_on('tbb')
+    depends_on('catch2')
+    depends_on('intel-tbb')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

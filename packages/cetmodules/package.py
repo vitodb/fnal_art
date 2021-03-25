@@ -14,10 +14,13 @@ class Cetmodules(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/cetmodules'
-    git_base = 'https://cdcvs.fnal.gov/projects/cetmodules'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetmodules.v1_0_2.tbz2'
+    git_base = 'https://github.com/FNALssi/cetmodules.git'
+    url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.14.00.tar.gz'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+
+    version('2.14.00', sha256='360b719133d644d47f092f42895f3037891cfb30adf6897472f62f037a3129f1')
+
     version('2.09.00', sha256='8c4d9a5f3d39a7dff5e9136576dab1bcf50a410c6cc028e5b47a2546c57e3860')
 
     version('1.04.00', sha256='4ba077e7146e19a805476f2fcf2a537a2cd24dbd602f5f5c348431b5018379da')
@@ -46,6 +49,6 @@ class Cetmodules(CMakePackage):
             url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/v{0}.{1}.tbz2'
             return url.format(self.name, version.underscored)
         else:
-            url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive_dot.cgi/cvs/projects/{0}.{1}.tbz2'
+            url = 'https://github.com/FNALssi/{0}/archive/refs/tags/{1}.tar.gz'
             return url.format(self.name, version)
 

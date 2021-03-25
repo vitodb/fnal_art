@@ -6,3 +6,14 @@
  # Tests
 -add_subdirectory(test)
 +#add_subdirectory(test)
+--- spack-src/CMakeLists.txt.orig	2021-03-15 15:42:30.227726000 -0500
++++ spack-src/CMakeLists.txt	2021-03-15 15:42:33.072726000 -0500
+@@ -32,6 +32,8 @@
+   set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} -fsanitize=thread -D__SANITIZE_THREAD__")
+ endif()
+ 
++find_package(TBB)
++
+ cet_report_compiler_flags(REPORT_THRESHOLD VERBOSE)
+ 
+ add_subdirectory(${PROJECT_NAME})  # source code
