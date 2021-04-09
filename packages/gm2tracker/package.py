@@ -31,12 +31,14 @@ class Gm2tracker(CMakePackage):
     def url_for_version(self, version):
         return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2tracker.v%s.tbz2" % version.underscored
 
-    version('v9.60.00', sha256='1efd2e99333d99c8fcbaa6743e5e5b86aa0f6d93f7c2c7db823ff08980feedde')
-
+    version('9.60.00', sha256='1efd2e99333d99c8fcbaa6743e5e5b86aa0f6d93f7c2c7db823ff08980feedde')
 
     variant('cxxstd',default='17')
 
-    depends_on('cetpkgsupport', type=('build','run'))
+    depends_on('pkgconfig', type='build')
+    depends_on('cetpkgsupport', type=('build'))
+    depends_on('cetbuildtools', type=('build'))
+    depends_on('cetmodules', type=('build'))
     depends_on('artg4', type=('build','run'))
     depends_on('gm2geom', type=('build','run'))
     depends_on('gm2dataproducts', type=('build','run'))
@@ -44,6 +46,13 @@ class Gm2tracker(CMakePackage):
     depends_on('gsl', type=('build','run'))
     depends_on('eigen', type=('build','run'))
 
+    def patch(self):
+        filter_file('^CMAKE_MINIMUM_REQUIRED.*',
+           'CMAKE_MINIMUM_REQUIRED( VERSION 3.14 )\nfind_package(cetmodules)',
+           'CMakeLists.txt')
+        filter_file('^PROJECT.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
+           .format(self.name, self.version), 
+           'CMakeLists.txt')
 
     def cmake_args(self):
         # FIXME: Add arguments other than

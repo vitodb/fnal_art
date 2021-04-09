@@ -44,3 +44,12 @@ class Cetbuildtools(CMakePackage):
         # FIXME: If not needed delete this function
         args = []
         return args
+
+    def setup_dependent_build_environment(self, env, dep):
+        # lots of CMakefiles check this...
+        env.set("CETBUILDTOOLS_VERSION", "v%s" % self.version.underscored)
+        # they look in $CETBUILDTOOLS_DIR/Modules for things that are now
+        # in cetmodules...
+        env.set("CETBUILDTOOLS_DIR", self.spec['cetmodules'].prefix)
+        env.prepend_path('CMAKE_PREFIX_PATH', self.prefix )
+
