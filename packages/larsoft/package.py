@@ -48,17 +48,19 @@ class Larsoft(CMakePackage):
             description='Use the specified C++ standard when building.')
 
 
+    depends_on('cetmodules', type='build')
+    depends_on('ifdh-art')
+    depends_on('larana')
     depends_on('lareventdisplay')
     depends_on('larexamples')
-    depends_on('larana')
-    depends_on('larreco')
     depends_on('larg4')
     depends_on('larpandora')
-    depends_on('larwirecell')
-    depends_on('larsoftobj')
+    depends_on('larreco')
+    depends_on('larrecodnn')
+    depends_on('larsimrad')
     depends_on('larsoft-data')
-    depends_on('ifdh-art')
-    depends_on('cetmodules', type='build')
+    depends_on('larsoftobj')
+    depends_on('larwirecell')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

@@ -58,7 +58,7 @@ class Nutools(CMakePackage):
     depends_on('nusimdata')
     depends_on('dk2nugenie')
     depends_on('genie')
-    depends_on('geant4 ~data')
+    depends_on('geant4')
     depends_on('xerces-c')
     depends_on('cry')
     depends_on('ifdh-art')

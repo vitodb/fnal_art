@@ -48,7 +48,10 @@ class Wirecell(Package):
     depends_on("jsonnet")
 
     depends_on("fftw")
-    depends_on("eigen+fftw")
+    depends_on("eigen")
+    depends_on("spdlog")
+    depends_on("hdf5")
+    depends_on("h5cpp")
 
 
     # Do not currently make use of TBB.  When we get back to this,

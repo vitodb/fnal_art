@@ -23,7 +23,7 @@ class Pandora(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     depends_on('root')
-    depends_on('eigen+fftw')
+    depends_on('eigen')
 
     def patch(self):
         # Build larpandoracontent as part of pandora

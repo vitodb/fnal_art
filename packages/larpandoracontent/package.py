@@ -41,8 +41,9 @@ class Larpandoracontent(CMakePackage):
 
 
     depends_on('cetmodules', type='build')
-    depends_on('eigen+fftw')
+    depends_on('eigen')
     depends_on('pandora')
+    depends_on('py-torch')
 
 
     def cmake_args(self):

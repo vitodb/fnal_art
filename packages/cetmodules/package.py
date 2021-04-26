@@ -38,10 +38,11 @@ class Cetmodules(CMakePackage):
     version('0.07.00', '60fb6f9ff26605ea4c0648fa43d0a516')
     depends_on('cmake@3.11:', type='build', when='@:1.01.99')
     depends_on('cmake@3.12:', type='build', when='@1.02.00:')
-    depends_on('py-sphinxcontrib-moderncmakedomain', when='@2.00.10:')
-    depends_on('py-sphinxcontrib-moderncmakedomain', when='@develop')
-    depends_on('py-sphinx-rtd-theme', when='@2.00.10:')
-    depends_on('py-sphinx-rtd-theme', when='@develop')
+    depends_on('cmake@3.18:', type='build', when='@3.07.00:')
+    depends_on('py-sphinxcontrib-moderncmakedomain', when='@2.00.10:', type='build')
+    depends_on('py-sphinxcontrib-moderncmakedomain', when='@develop',type='build')
+    depends_on('py-sphinx-rtd-theme', when='@2.00.10:',type='build')
+    depends_on('py-sphinx-rtd-theme', when='@develop',type='build')
 
 
     def url_for_version(self, version):

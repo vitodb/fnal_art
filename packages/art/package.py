@@ -15,8 +15,6 @@ if not libdir in sys.path:
 def patcher(x):
     cetmodules_20_migrator(".","artg4tk","9.07.01")
 
-
-
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -79,7 +77,8 @@ class Art(CMakePackage):
     depends_on('rapidjson', when='@3.06:')
 
     patch('art.external_rapidjson.patch',when='@3.06:')
-    patch('art.ScheduleID.patch',when='@develop')
+    #patch('art.ScheduleID.patch',when='@develop')
+    #patch('art.ScheduleID.patch',when='@3.06:')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
