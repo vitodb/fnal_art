@@ -64,7 +64,7 @@ class Larreco(CMakePackage):
     depends_on('marley')
     depends_on('nutools')
     depends_on('eigen')
-    depends_on('tensorflow', when='+tf')
+    depends_on('py-tensorflow', when='+tf')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):

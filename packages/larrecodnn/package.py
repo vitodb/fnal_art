@@ -62,7 +62,7 @@ class Larrecodnn(CMakePackage):
     depends_on('range-v3')
     depends_on('eigen')
     depends_on('root')
-    depends_on('tensorflow')
+    depends_on('py-tensorflow')
     depends_on('trtis-clients')
 
     def cmake_args(self):

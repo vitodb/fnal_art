@@ -21,6 +21,7 @@ class Larpandoracontent(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
     url      = "https://github.com/LArSoft/larpandoracontent.git"
 
+    version('3.22.09', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_22_09')
     version('3.22.01', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_22_01')
     version('3.14.05', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_14_05')
     version('03.15.09', tag='v03_15_09', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)

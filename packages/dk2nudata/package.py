@@ -40,12 +40,8 @@ class Dk2nudata(CMakePackage):
         prefix=self.spec.prefix
         args = [
                 '-DWITH_GENIE=OFF',
-                '-DTBB_LIBRARY=%s'%self.spec['intel-tbb'].prefix.lib]
+                '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['intel-tbb'].prefix.lib]
         return args
-
-    def build(self, spec, prefix):
-        with working_dir('%s/spack-build'%self.stage.path, create=True):
-            make('VERBOSE=t', 'all')
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.
