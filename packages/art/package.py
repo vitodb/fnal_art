@@ -137,3 +137,9 @@ class Art(CMakePackage):
         sanitize_environments(spack_env, run_env)
         spack_env.set("ART_DIR",self.prefix)
         run_env.set("ART_DIR",self.prefix)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

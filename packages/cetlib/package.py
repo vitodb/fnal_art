@@ -106,3 +106,9 @@ class Cetlib(CMakePackage):
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         run_env.set('CETLIB_DIR', self.prefix)
         spack_env.set('CETLIB_DIR', self.prefix)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

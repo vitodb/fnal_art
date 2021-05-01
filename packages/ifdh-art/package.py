@@ -59,3 +59,9 @@ from the ifdhc package."""
         spack_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('PATH', self.prefix.bin)
 
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

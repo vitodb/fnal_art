@@ -45,3 +45,9 @@ fast and/or slow logging - dynamically (you choose)."""
                 format(self.spec.prefix.include),
                ]
         return args
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

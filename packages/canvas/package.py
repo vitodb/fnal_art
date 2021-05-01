@@ -91,3 +91,9 @@ class Canvas(CMakePackage):
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

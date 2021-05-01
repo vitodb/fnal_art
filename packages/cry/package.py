@@ -67,3 +67,9 @@ and detector simulation codes. """
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.src)
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.src)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))
