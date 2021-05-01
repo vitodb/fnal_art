@@ -38,6 +38,7 @@ class Cetlib(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('3.13.01', tag='v3_13_01', git=git_base, get_full_repo=True)
     version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
     version('3.05.00', tag='v3_05_00', git=git_base, get_full_repo=True)
     version('3.05.01', tag='v3_05_01', git=git_base, get_full_repo=True)

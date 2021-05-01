@@ -26,6 +26,11 @@ class TrtisClients(CMakePackage):
     version('2.6.0',                    sha256='c4fad25c212a0b5522c7d65c78b2f25ab0916ccf584ec0295643fec863cb403e')
 
     variant('cuda', default=False)
+    variant('cxxstd',
+            default='17',
+            values=('14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
 
     depends_on('cmake@3.18:', type='build')
     depends_on('py-setuptools', type='build')
@@ -66,6 +71,7 @@ class TrtisClients(CMakePackage):
             '-DCMAKE_C_COMPILER=cc',
             '-DCMAKE_CXX_COMPILER=c++',
             '-DTRITON_CURL_WITHOUT_CONFIG:BOOL=ON',
+            '-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
         ]
 
         if ('+cuda' in self.spec):

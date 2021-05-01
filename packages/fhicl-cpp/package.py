@@ -36,6 +36,7 @@ class FhiclCpp(CMakePackage):
     version('MVP1a', branch='feature/Spack-MVP1a', git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('4.14.00', tag='v4_14_00', git=git_base, get_full_repo=True)
     version('4.09.02', tag='v4_09_02', git=git_base, get_full_repo=True)
     version('4.09.03', tag='v4_09_03', git=git_base, get_full_repo=True)
     version('4.10.00', tag='v4_10_00', git=git_base, get_full_repo=True)
