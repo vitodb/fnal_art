@@ -15,6 +15,7 @@ class Dk2nudata(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/dk2nu"
     url      = "https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
+    version('01.08.00', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
     version('01.07.02', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
     version('01.08.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
 
