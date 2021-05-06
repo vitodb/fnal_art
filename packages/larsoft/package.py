@@ -85,3 +85,10 @@ class Larsoft(CMakePackage):
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
+
+    @run_after('install')
+    def rename_bin_python(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "bin/python"),
+                   join_path(self.spec.prefix, "bin/python-scripts"))
+
