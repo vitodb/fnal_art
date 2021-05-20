@@ -59,9 +59,10 @@ class TrtisClients(CMakePackage):
     depends_on('cuda', when='+cuda')
     depends_on('nccl', when='+cuda')
     
-    patch('fix_compile_flags.2.7.0.patch', when='@2.7.0')
     patch('fix_compile_flags.2.6.0.patch', when='@2.6.0')
-    patch('use_existing.patch')
+    patch('use_existing.patch.2.6.0', when='@2.6.0')
+    patch('fix_compile_flags.2.7.0.patch', when='@2.7.0')
+    patch('use_existing.patch.2.7.0', when='@2.7.0')
 
     root_cmakelists_dir = 'build'
 
