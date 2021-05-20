@@ -23,7 +23,9 @@ class TrtisClients(CMakePackage):
 
     maintainers = ['marcmengel', 'github_user2']
 
-    version('2.6.0',                    sha256='c4fad25c212a0b5522c7d65c78b2f25ab0916ccf584ec0295643fec863cb403e')
+    version('2.6.0', sha256='c4fad25c212a0b5522c7d65c78b2f25ab0916ccf584ec0295643fec863cb403e')
+    version('2.7.0', sha256='7ad24acb3c7138ff5667137e143de3f7345f03df61f060004214495faa7fa16e')
+
 
     variant('cuda', default=False)
     variant('cxxstd',
@@ -57,8 +59,8 @@ class TrtisClients(CMakePackage):
     depends_on('cuda', when='+cuda')
     depends_on('nccl', when='+cuda')
     
-    patch('fix_compile_flags.2.6.0.patch', when='@2.6.0')
     patch('fix_compile_flags.2.7.0.patch', when='@2.7.0')
+    patch('fix_compile_flags.2.6.0.patch', when='@2.6.0')
     patch('use_existing.patch')
 
     root_cmakelists_dir = 'build'
@@ -115,8 +117,6 @@ class TrtisClients(CMakePackage):
     def install(self, spec, prefix):
         with working_dir(self.build_directory + '/client'):
             make('install')
-
-    patch('use_existing.patch')
 
     root_cmakelists_dir = 'build'
 

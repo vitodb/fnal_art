@@ -23,6 +23,7 @@ from the ifdhc package."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
     url      = "https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
+    version('2.11.05',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_11_05', get_full_repo=True)
 
 
 

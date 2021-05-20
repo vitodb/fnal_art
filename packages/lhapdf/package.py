@@ -13,6 +13,8 @@ class Lhapdf(AutotoolsPackage):
     homepage = "https://www.hepforge.org/lhapdf"
     url      = "https://lhapdf.hepforge.org/downloads/?f=lhapdf-5.9.1.tar.gz"
 
+    version('6.2.3', sha256='d6e63addc56c57b6286dc43ffc56d901516f4779a93a0f1547e14b32cfd82dd1')
+
     def url_for_version(self, version):
         # between 5.x and 6.x they went to upper case names in the URLs
         if str(version)[0] < '6':

@@ -13,11 +13,12 @@ class Nucondb(MakefilePackage):
     """Data handling client code for intensity frontier experiments"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nucondb"
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nucondb.v2_2_10.tbz2'
 
-    version('2.3.0',
-            sha256='e2e30acc10cabd4e6fc0784c41dfcf2b372dfbf003a42bd80210ebb8c81d057f')
-    version('2.2.10',
-            sha256='d90d471ee1db823260035986284623eea0e84944039e69d9fd95bf8749d2a736')
+    version('2.4.8', sha256='84ec5de0528a62284de2f331630974e846b3fc8e1bb445ff5d7a4eab2ef0a74f')
+
+    version('2.3.0', sha256='e2e30acc10cabd4e6fc0784c41dfcf2b372dfbf003a42bd80210ebb8c81d057f')
+    version('2.2.10', sha256='d90d471ee1db823260035986284623eea0e84944039e69d9fd95bf8749d2a736')
 
     parallel = False
 

@@ -90,6 +90,9 @@ class Nugen(CMakePackage):
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+    version('1.12.00', tag='v1_12_00', git=git_base, get_full_repo=True)
+    version('1.12.00', tag='v1_12_00', git=git_base, get_full_repo=True)
+    version('1.12.00', tag='v1_12_00', git=git_base, get_full_repo=True)
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

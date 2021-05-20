@@ -32,16 +32,19 @@ class Larrecodnn(CMakePackage):
     url      = "https://github.com/LArSoft/larrecodnn.git"
 
 
+    version('09.06.07', sha256='f0aca1bc7b53f07a377006c8f36e3682d29e29c2a1cedf478be40d263e03658f')
+    version('9.06.06', sha256='b914e26f2537d1f26035a8c357f0ad09ba5c80d1c38fdaa62de9b72b559b0499')
+    version('9.06.05', sha256='a99775d149afaf072a1b139795f9ba5075525ab85e42f52267bcced105257c2d')
+    version('9.06.04', sha256='867e1ec2fb006189e5bd7f12433a97d8ec3b6916cc9dcc55384360d0e936ba66')
+
     variant('cxxstd',
             default='17',
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    version('9.06.07', sha256='9e185fedde77e861c9bf4233f9562109f3abf8785c1d7fbe198b410409f00ff9')
-    version('9.06.06', sha256='b914e26f2537d1f26035a8c357f0ad09ba5c80d1c38fdaa62de9b72b559b0499')
-    version('9.06.05', sha256='a99775d149afaf072a1b139795f9ba5075525ab85e42f52267bcced105257c2d')
-    version('9.06.04', sha256='867e1ec2fb006189e5bd7f12433a97d8ec3b6916cc9dcc55384360d0e936ba66')
+    def url_for_version(self, version):
+        return "https://github.com/LArSoft/larrecodnn/archive/refs/tags/v{0}.tar.gz".format(version.underscored)
 
     depends_on('cetmodules', type='build')
     depends_on('larcoreobj')

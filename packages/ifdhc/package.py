@@ -20,6 +20,7 @@ class Ifdhc(MakefilePackage):
     version('2.5.2', git=git_base, tag='v2_5_2', get_full_repo=True)
     #version('2.5.4', git=git_base, tag='v2_5_4', get_full_repo=True)
     version('2.5.4', sha256='48bf6807cb8b3092677768f763c1f18940d852d685424a1ea386acf7f1606608')
+    version('2.5.12', sha256='e8a8af62e5e9917e51c88b2cda889c2a195dfb7911e09c28aeaf10f54e8abf49')
 
 
     depends_on('python')
@@ -44,6 +45,7 @@ class Ifdhc(MakefilePackage):
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+
         return url.format(self.name, version.underscored)
 
     @property

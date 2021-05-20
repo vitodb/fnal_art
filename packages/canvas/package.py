@@ -36,6 +36,8 @@ class Canvas(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base,get_full_repo=True)
+    version('3.12.00', tag='v3_12_00', git=git_base, get_full_repo=True)
+    version('3.10.00', tag='v3_10_00', git=git_base, get_full_repo=True)
     version('3.05.00', tag='v3_05_00', git=git_base, get_full_repo=True)
     version('3.05.01', tag='v3_05_01', git=git_base, get_full_repo=True)
     version('3.07.03', tag='v3_07_03', git=git_base, get_full_repo=True)

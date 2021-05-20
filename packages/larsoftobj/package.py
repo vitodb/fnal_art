@@ -30,6 +30,7 @@ class Larsoftobj(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoftobj"
     url      = "https://github.com/LArSoft/larsoftobj.git"
+    version('09.05.03', tag='v09_05_03', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larsoftobj.git', branch='feature/MVP1a')
     version('1.48.00', tag='v1_48_00', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)

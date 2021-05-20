@@ -29,6 +29,7 @@ class Lareventdisplay(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lareventdisplay"
     url      = "https://github.com/LArSoft/lareventdisplay.git"
+    version('09.01.08', tag='v09_01_08', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/lareventdisplay.git', branch='feature/MVP1a')
     version('09.00.11', tag='v09_00_11', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)

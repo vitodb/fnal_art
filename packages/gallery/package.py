@@ -33,8 +33,9 @@ class Gallery(CMakePackage):
     homepage='https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/gallery'
 
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gallery.v1_12_07.tbz2'
 
-
+    version('1.16.02', tag='v1_16_02', git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)

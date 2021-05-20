@@ -29,6 +29,7 @@ class Larg4(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larg4"
     url      = "https://github.com/LArSoft/larg4.git"
+    version('09.03.05', tag='v09_03_05', git='https://github.com/LArSoft/larg4.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larg4.git', branch='feature/MVP1a')
     version('08.08.00', tag='v08_08_00', git='https://github.com/LArSoft/larg4.git', get_full_repo=True)

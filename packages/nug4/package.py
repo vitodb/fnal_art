@@ -31,7 +31,9 @@ class Nug4(CMakePackage):
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/nug4'
     git_base = 'https://cdcvs.fnal.gov/projects/nug4'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nug4.v1_07_00.tbz2'
 
+    version('1.07.00', tag='v1_07_00', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base)
     version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
     version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)

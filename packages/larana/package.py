@@ -30,6 +30,7 @@ class Larana(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larana"
     url      = "https://github.com/LArSoft/larana.git"
+    version('09.02.04', tag='v09_02_04', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larana.git', branch='feature/MVP1a')
     version('09.00.15', tag='v09_00_15', git='https://github.com/LArSoft/larana.git', get_full_repo=True)

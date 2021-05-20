@@ -17,6 +17,8 @@ class Cetmodules(CMakePackage):
     git_base = 'https://github.com/FNALssi/cetmodules.git'
     url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.14.00.tar.gz'
 
+    version('2.16.02', sha256='43082380b23b3367303368b6ec698d7a3624b19a8a99842752bd13bcb474625e')
+
     version('develop', branch='develop', git=git_base, get_full_repo=True)
 
     version('2.14.00', sha256='360b719133d644d47f092f42895f3037891cfb30adf6897472f62f037a3129f1')
@@ -35,7 +37,7 @@ class Cetmodules(CMakePackage):
     version('1.01.01', sha256='0b7e28d4c29c9941a6960609e8ab4aa33f90736ef1dc81fc7b1b520e99ee0ae7')
     version('1.01.00', sha256='80bf9a77852751f90b1446e5d5966bea9b73d5b35e024195b35c851dc93a5443')
     version('1.00.00', sha256='67438bb1ee9acdaadb6e245ff670463c4603c3283c69b3c9d1a04d6ee9a3fd16')
-    version('0.07.00', '60fb6f9ff26605ea4c0648fa43d0a516')
+    version('0.07.00', md5='60fb6f9ff26605ea4c0648fa43d0a516')
     depends_on('cmake@3.11:', type='build', when='@:1.01.99')
     depends_on('cmake@3.12:', type='build', when='@1.02.00:')
     depends_on('cmake@3.18:', type='build', when='@3.07.00:')

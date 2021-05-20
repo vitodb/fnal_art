@@ -31,7 +31,9 @@ class Nurandom(CMakePackage):
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/nurandom'
     git_base = 'https://cdcvs.fnal.gov/projects/nurandom'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nurandom.v1_05_02.tbz2'
 
+    version('1.05.02', tag='v1_05_02', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base)
     version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
     version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
