@@ -38,10 +38,10 @@ diff -Naur src/clients/c++/library/cmake/TRTISConfig.cmake.in src/clients/c++/li
 +        INTERFACE_COMPILE_OPTIONS "${PKG_LIBEVENT_CFLAGS_OTHER}")
 +set(LIBEVENT_FOUND "${PKG_LIBEVENT_FOUND}")
 +set(LIBEVENT_VERSION "${PKG_LIBEVENT_VERSION}")
-diff --git a/spack-src/src/clients/c++/library/CMakeLists.txt.orig b/spack-src/src/clients/c++/library/CMakeLists.txt
+diff --git a/src/clients/c++/library/CMakeLists.txt.orig b/src/clients/c++/library/CMakeLists.txt
 index 4cd515b..b8487c6 100644
---- a/spack-src/src/clients/c++/library/CMakeLists.txt.orig
-+++ b/spack-src/src/clients/c++/library/CMakeLists.txt
+--- a/src/clients/c++/library/CMakeLists.txt.orig
++++ b/src/clients/c++/library/CMakeLists.txt
 @@ -145,27 +145,27 @@ if(${TRITON_ENABLE_GRPC})
    )
  
@@ -145,9 +145,9 @@ index 4cd515b..b8487c6 100644
        FILES
 diff --git a/spack-src/build/CMakeLists.txt.orig b/spack-src/build/CMakeLists.txt
 index dd4da73..860ad3f 100644
---- spack-src/build/CMakeLists.txt.orig	2021-02-26 19:14:03.000000000 -0600
-+++ spack-src/build/CMakeLists.txt	2021-05-20 17:18:10.059235955 -0500
-@@ -143,11 +143,16 @@
+--- server-2.7.0/build/CMakeLists.txt	2021-02-26 19:14:03.000000000 -0600
++++ spack-src/build/CMakeLists.txt	2021-05-24 14:27:58.932819187 -0500
+@@ -143,6 +143,9 @@
    set(_CMAKE_ARGS_OPENSSL_ROOT_DIR "-DOPENSSL_ROOT_DIR:PATH=${OPENSSL_ROOT_DIR}")
  endif()
  
@@ -157,22 +157,16 @@ index dd4da73..860ad3f 100644
  #
  # Get the protobuf and grpc source used for the GRPC endpoint. We must
  # use v1.25.0 because later GRPC has significant performance
- # regressions (e.g. resnet50 bs128).
- #
-+if((NOT FOUND_PROTOBUF) OR (NOT FOUND_GTest))
-+message("Notice: did not find external protobuf or googletest, downloading")
- ExternalProject_Add(grpc-repo
-   PREFIX grpc-repo
-   GIT_REPOSITORY "https://github.com/grpc/grpc.git"
-@@ -173,6 +178,7 @@
-   INSTALL_COMMAND ""
-   TEST_COMMAND ""
- )
-+endif()
- 
+@@ -177,6 +180,8 @@
  #
  # Get and build nlohmann/json
-@@ -190,12 +196,14 @@
+ #
++find_package(nlohmann-json QUIET)
++if(NOT FOUND_nlohmann_json)
+ ExternalProject_Add(nlohmann-json
+   PREFIX nlohmann-json
+   GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+@@ -190,12 +195,14 @@
      -DBUILD_TESTING:BOOL=OFF
      -H. -Bcmake-out
  )
@@ -188,15 +182,26 @@ index dd4da73..860ad3f 100644
  ExternalProject_Add(protobuf
    PREFIX protobuf
    SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc/third_party/protobuf/cmake"
-@@ -227,10 +235,16 @@
-     -DBUILD_TESTING:BOOL=OFF
-   DEPENDS grpc-repo-new
+@@ -212,6 +219,10 @@
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/protobuf
+   DEPENDS grpc-repo
  )
 +else()
 +message("Notice: did find external protobuf, adding target")
 +add_library(protobuf ALIAS protobuf::libprotobuf)
 +endif()
  
+ #
+ # Build absl (abseil) project from grpc-repo-new (see comment above).
+@@ -220,6 +231,7 @@
+   PREFIX absl
+   SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo-new/src/grpc/third_party/abseil-cpp"
+   DOWNLOAD_COMMAND ""
++  STAMP_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo-new/src/grpc/third_party/abseil-cpp"
+   CMAKE_CACHE_ARGS
+     -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/absl
+@@ -231,6 +243,8 @@
  #
  # Build googletest project from grpc-repo
  #
@@ -246,9 +251,20 @@ index dd4da73..860ad3f 100644
  ExternalProject_Add(grpc
    PREFIX grpc
    SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/grpc-repo/src/grpc"
-@@ -293,10 +320,17 @@
+@@ -284,19 +311,26 @@
+     -DgRPC_ZLIB_PROVIDER:STRING=package
+     -DgRPC_CARES_PROVIDER:STRING=package
+     -DgRPC_SSL_PROVIDER:STRING=package
+-    -Dc-ares_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
++    -Dc-ares_DIR:PATH=${_FINDPACKAGE_C_ARES_CONFIG_DIR}
+     -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
+     ${_CMAKE_ARGS_OPENSSL_ROOT_DIR}
+     ${_CMAKE_ARGS_CMAKE_TOOLCHAIN_FILE}
+     ${_CMAKE_ARGS_VCPKG_TARGET_TRIPLET}
+     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/grpc
-   DEPENDS grpc-repo c-ares protobuf
+-  DEPENDS grpc-repo c-ares protobuf
++  DEPENDS grpc-repo 
  )
 +else()
 +message("Notice: found external gRPC, adding target")
@@ -340,7 +356,15 @@ index dd4da73..860ad3f 100644
  ExternalProject_Add(crc32c
    PREFIX crc32c
    GIT_REPOSITORY "https://github.com/google/crc32c.git"
-@@ -433,6 +487,7 @@
+@@ -426,6 +480,7 @@
+     -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+     -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c
+ )
++endif()
+ 
+ # This is necessary because google-cloud-cpp
+ # does not pass protobuf_DIR and gRPC_DIR etc to its
+@@ -433,6 +488,7 @@
  #
  # absl must preceed grpc to ensure that the absl from the newer grpc
  # repo is used and not the absl from the older grpc.
@@ -348,7 +372,7 @@ index dd4da73..860ad3f 100644
  set(GCS_CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH}
     ${CMAKE_CURRENT_BINARY_DIR}/c-ares/lib/cmake/c-ares
     ${CMAKE_CURRENT_BINARY_DIR}/absl/lib/cmake/absl
-@@ -440,10 +495,15 @@
+@@ -440,10 +496,15 @@
     ${CMAKE_CURRENT_BINARY_DIR}/grpc/lib/cmake/grpc
     ${CMAKE_CURRENT_BINARY_DIR}/nlohmann_json/lib/cmake/nlohmann_json
     ${_FINDPACKAGE_PROTOBUF_CONFIG_DIR})
@@ -364,9 +388,12 @@ index dd4da73..860ad3f 100644
  ExternalProject_Add(google-cloud-cpp
    PREFIX google-cloud-cpp
    GIT_REPOSITORY "https://github.com/googleapis/google-cloud-cpp.git"
-@@ -462,10 +522,13 @@
+@@ -460,12 +521,15 @@
+     -Dnlohmann_json_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/nlohmann_json/lib/cmake/nlohmann_json
+     -DProtobuf_DIR:PATH=${_FINDPACKAGE_PROTOBUF_CONFIG_DIR}
      -DCrc32c_DIR:PATH=${CMAKE_CURRENT_BINARY_DIR}/crc32c/lib/cmake/Crc32c
-   DEPENDS grpc c-ares protobuf crc32c absl nlohmann-json
+-  DEPENDS grpc c-ares protobuf crc32c absl nlohmann-json
++  DEPENDS grpc crc32c absl nlohmann-json
  )
 +endif()
  
@@ -378,7 +405,7 @@ index dd4da73..860ad3f 100644
  ExternalProject_Add(azure-storage-cpplite
    PREFIX azure-storage-cpplite
    GIT_REPOSITORY "https://github.com/Azure/azure-storage-cpplite.git"
-@@ -482,10 +545,15 @@
+@@ -482,10 +546,15 @@
      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/azure-storage-cpplite/install
    DEPENDS curl
  )
@@ -394,7 +421,7 @@ index dd4da73..860ad3f 100644
  ExternalProject_Add(cnmem
    PREFIX cnmem
    SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party-repo/src/third_party/cnmem/cnmem"
-@@ -497,10 +565,14 @@
+@@ -497,10 +566,14 @@
      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/cnmem
      DEPENDS third-party-repo
  )
@@ -409,7 +436,7 @@ index dd4da73..860ad3f 100644
  ExternalProject_Add(aws-sdk-cpp
    PREFIX aws-sdk-cpp
    GIT_REPOSITORY "https://github.com/aws/aws-sdk-cpp.git"
-@@ -516,6 +588,7 @@
+@@ -516,6 +589,7 @@
      -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=ON
      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_CURRENT_BINARY_DIR}/aws-sdk-cpp/install
  )
@@ -417,7 +444,7 @@ index dd4da73..860ad3f 100644
  
  #
  # Build Triton Server test utilities
-@@ -591,6 +664,7 @@
+@@ -591,6 +665,7 @@
    DEPENDS curl protobuf grpc
  )
  
@@ -425,7 +452,7 @@ index dd4da73..860ad3f 100644
  #
  # Build Triton Server library and main executable
  #
-@@ -686,5 +760,6 @@
+@@ -686,5 +761,6 @@
      -DTRITON_VERSION:STRING=${TRITON_VERSION}
    DEPENDS ${TRITON_DEPENDS}
  )

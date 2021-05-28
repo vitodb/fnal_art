@@ -31,7 +31,9 @@ class Canvas(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/canvas'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/canvas.v3_05_01.tbz2'
 
+    version('3.09.00', tag='v3_09_00', git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)

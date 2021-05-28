@@ -30,6 +30,7 @@ class Larreco(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larreco"
     url      = "https://github.com/LArSoft/larreco.git"
+    version('09.06.05.01', tag='v09_06_05_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
     version('09.06.04', tag='v09_06_04', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larreco.git', branch='feature/MVP1a')

@@ -59,22 +59,29 @@ class TrtisClients(CMakePackage):
     depends_on('cuda', when='+cuda')
     depends_on('nccl', when='+cuda')
     
-    patch('fix_compile_flags.2.6.0.patch', when='@2.6.0')
-    patch('use_existing.patch.2.6.0', when='@2.6.0')
-    patch('fix_compile_flags.2.7.0.patch', when='@2.7.0')
-    patch('use_existing.patch.2.7.0', when='@2.7.0')
+    patch('cms.patch', when='@2.6.0')
 
     root_cmakelists_dir = 'build'
 
     # trying doubled build...
     build = tryagain(CMakePackage.build)
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
   
     def cmake_args(self):
         args = [
-            '-DCMAKE_BUILD_TYPE=Release',
+            '-DCMAKE_BUILD_TYPE=RelWithDebInfo',
             '-DCMAKE_C_COMPILER=cc',
             '-DCMAKE_CXX_COMPILER=c++',
             '-DTRITON_CURL_WITHOUT_CONFIG:BOOL=ON',
+            '-DTRITON_CLIENT_SKIP_EXAMPLES:BOOL=ON',
+            '-DTRITON_CLIENT_ENABLE_HTTP:BOOL=OFF',
+            '-DTRITON_CLIENT_ENABLE_GRPC:BOOL=ON',
+            '-DProtobuf_DIR={0}/lib/cmake/protobuf'.format(self.spec['protobuf'].prefix)
             '-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
         ]
 
@@ -109,17 +116,12 @@ class TrtisClients(CMakePackage):
         env.prepend_path('CMAKE_PREFIX_PATH', self.stage.source_path +'/cmake/modules')
         pass
 
-    def flag_handler(self, name, flags):
-        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
-            flags.append('-Wno-error=deprecated-declarations')
-            flags.append('-Wno-error=class-memaccess')
-        return (flags, None, None)
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory + '/client'):
             make('install')
 
-    root_cmakelists_dir = 'build'
+    root_cmakelists_dir = 'build/client'
 
     # trying doubled build...
     build = tryagain(CMakePackage.build)

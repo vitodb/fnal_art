@@ -29,6 +29,7 @@ class Larexamples(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larexamples"
     url      = "https://github.com/LArSoft/larexamples.git"
+    version('09.01.09.01', tag='v09_01_09_01', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
     version('09.01.08', tag='v09_01_08', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larexamples.git', branch='feature/MVP1a')
