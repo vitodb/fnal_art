@@ -35,6 +35,7 @@ class CanvasRootIo(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/canvas_root_io'
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/canvas-root-io.v1_05_00.tbz2'
 
+    version('1.09.02', tag="v1_09_02", git=git_base, get_full_repo=True)
     version('1.07.02', tag="v1_07_02", git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
