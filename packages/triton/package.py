@@ -15,7 +15,7 @@ def tryagain(f):
             f(*args, **kwargs)
     return double_f
 
-class TrtisClients(CMakePackage):
+class Triton(CMakePackage):
     """C++ client code for Triton Inference Server."""
 
     homepage = "https://github.com/triton-inference-server/server"
@@ -23,6 +23,7 @@ class TrtisClients(CMakePackage):
 
     maintainers = ['marcmengel', 'github_user2']
 
+    version('2.3.0', sha256='3e46d09f0d3dd79513e10112170a81ed072db0719b75b95943d824b1afd149c4')
     version('2.6.0', sha256='c4fad25c212a0b5522c7d65c78b2f25ab0916ccf584ec0295643fec863cb403e')
     version('2.7.0', sha256='7ad24acb3c7138ff5667137e143de3f7345f03df61f060004214495faa7fa16e')
 
@@ -59,12 +60,17 @@ class TrtisClients(CMakePackage):
     depends_on('cuda', when='+cuda')
     depends_on('nccl', when='+cuda')
     
-    patch('cms.patch', when='@2.6.0')
-
-    root_cmakelists_dir = 'build'
+    patch('cms.patch', when='@2.3.0')
+    patch('proto.patch', when='@2.3.0')
 
     # trying doubled build...
     build = tryagain(CMakePackage.build)
+
+    @run_before('cmake')
+    def patch_version(self):
+        filter_file('^project.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
+           .format('client', self.version), 
+           'build/client/CMakeLists.txt')
 
     def flag_handler(self, name, flags):
         if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
@@ -81,7 +87,8 @@ class TrtisClients(CMakePackage):
             '-DTRITON_CLIENT_SKIP_EXAMPLES:BOOL=ON',
             '-DTRITON_CLIENT_ENABLE_HTTP:BOOL=OFF',
             '-DTRITON_CLIENT_ENABLE_GRPC:BOOL=ON',
-            '-DProtobuf_DIR={0}/lib/cmake/protobuf'.format(self.spec['protobuf'].prefix)
+            '-DTRITON_VERSION={0}'.format(self.spec.version),
+            '-DProtobuf_DIR={0}/lib/cmake/protobuf'.format(self.spec['protobuf'].prefix),
             '-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
         ]
 
@@ -118,7 +125,7 @@ class TrtisClients(CMakePackage):
 
 
     def install(self, spec, prefix):
-        with working_dir(self.build_directory + '/client'):
+        with working_dir(self.build_directory + '/src/clients/c++'):
             make('install')
 
     root_cmakelists_dir = 'build/client'
@@ -126,26 +133,6 @@ class TrtisClients(CMakePackage):
     # trying doubled build...
     build = tryagain(CMakePackage.build)
   
-    def cmake_args(self):
-        args = [
-            '-DCMAKE_BUILD_TYPE=Release',
-            '-DCMAKE_C_COMPILER=cc',
-            '-DCMAKE_CXX_COMPILER=c++',
-            '-DTRITON_CURL_WITHOUT_CONFIG:BOOL=ON',
-            '-DTRITON_ENABLE_AZURE_STORAGE:BOOL=OFF',
-            '-DTRITON_ENABLE_S3:BOOL=OFF',
-            '-DTRITON_ENABLE_GCS:BOOL=OFF',
-            '-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
-        ]
-
-        if ('+cuda' in self.spec):
-            args.append('-DTRITON_ENABLE_GPU:BOOL=ON')
-            args.append('-DTRITON_ENABLE_METRICS_GPU:BOOL=ON')
-        else:
-            args.append('-DTRITON_ENABLE_GPU:BOOL=OFF')
-            args.append('-DTRITON_ENABLE_METRICS_GPU:BOOL=OFF')
-
-        return args
 
     #
     # we want our cmake/modules directory in the CMAKE_PREFIX_PATH
@@ -176,6 +163,6 @@ class TrtisClients(CMakePackage):
         return (flags, None, None)
 
     def install(self, spec, prefix):
-        with working_dir(self.build_directory + '/client'):
+        with working_dir(self.build_directory):
             make('install')
 

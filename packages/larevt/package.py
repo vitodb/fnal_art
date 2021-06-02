@@ -30,6 +30,7 @@ class Larevt(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larevt"
     url      = "https://github.com/LArSoft/larevt.git"
+    version('09.02.05.01', tag='v09_02_05_01', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
     version('09.02.04', tag='v09_02_04', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larevt.git', branch='feature/MVP1a')

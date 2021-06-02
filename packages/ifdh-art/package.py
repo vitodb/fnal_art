@@ -23,11 +23,13 @@ from the ifdhc package."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
     url      = "https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
+    version('3.06.03',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v3_06_03', get_full_repo=True)
     version('2.11.05',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_11_05', get_full_repo=True)
 
 
 
     version('MVP1a', git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
+    version('2.11.05',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_11_05', get_full_repo=True)
     version('2.10.07',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_07', get_full_repo=True)
     version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02', get_full_repo=True)
     version('2.10.01',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_01', get_full_repo=True)

@@ -66,7 +66,7 @@ class Larrecodnn(CMakePackage):
     depends_on('eigen')
     depends_on('root')
     depends_on('py-tensorflow')
-    depends_on('trtis-clients')
+    depends_on('triton')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
