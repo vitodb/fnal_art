@@ -30,6 +30,8 @@ class Larcoreobj(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcoreobj"
     url      = "https://github.com/LArSoft/larcoreobj.git"
+
+    version('09.24.01.01', tag='v09_24_01_01', git='https://github.com/marcmengel/larcoreobj.git', get_full_repo=True)
     version('09.02.00', tag='v09_02_00', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larcoreobj.git', branch='feature/MVP1a', preferred=True)
@@ -88,6 +90,12 @@ class Larcoreobj(CMakePackage):
         run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+        return (flags, None, None)
+
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)

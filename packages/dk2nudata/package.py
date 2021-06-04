@@ -52,4 +52,5 @@ class Dk2nudata(CMakePackage):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        spack_env.set('DK2NUDATA_LIB', self.prefix.lib)
 
