@@ -1,5 +1,5 @@
---- CMakeLists.txt.bak	2021-06-04 10:56:31.333927467 -0500
-+++ CMakeLists.txt	2021-06-04 10:55:36.293544367 -0500
+--- a/CMakeLists.txt	2021-06-04 10:56:31.333927467 -0500
++++ b/CMakeLists.txt	2021-06-04 10:55:36.293544367 -0500
 @@ -52,7 +52,15 @@
  option(BXDECAY0_INSTALL_DBD_GA_DATA "Install BxDecay0 DBD gA process data" OFF)
  

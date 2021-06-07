@@ -121,3 +121,4 @@ class Larrecodnn(CMakePackage):
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larrecodnn.git', get_full_repo=True)

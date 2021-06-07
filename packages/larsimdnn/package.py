@@ -7,13 +7,6 @@ from spack import *
 import os
 
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larsim","08.19.03")
 
 def sanitize_environments(*args):
     for env in args:
@@ -24,11 +17,13 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-class Larsim(CMakePackage):
+class Larsimdnn(CMakePackage):
     """Larsim"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsim"
     url      = "https://github.com/LArSoft/larsim.git"
+
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsim.git', get_full_repo=True)
     version('09.13.02.01', tag='v09_13_02_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
     version('09.13.01', tag='v09_13_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
 
@@ -128,4 +123,3 @@ class Larsim(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsim.git', get_full_repo=True)

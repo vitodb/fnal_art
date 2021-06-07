@@ -109,3 +109,4 @@ class Lardataobj(CMakePackage):
         mkdirp('{0}/job'.format(self.spec.prefix))
         mkdirp('{0}/gdml'.format(self.spec.prefix))
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lardataobj.git', get_full_repo=True)

@@ -6,15 +6,6 @@
 from spack import *
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larcoreobj","08.10.02")
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -48,8 +39,6 @@ class Larcoreobj(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-
 
     depends_on('canvas-root-io')
     depends_on('cetmodules', type='build')
