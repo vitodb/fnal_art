@@ -18,7 +18,7 @@ art_make_library(
     ${ART_FRAMEWORK_PRINCIPAL}
     ${ART_FRAMEWORK_SERVICES_REGISTRY}
     ${ART_PERSISTENCY_PROVENANCE}
-    ${MF_MESSAGELOGGER}
+    messagefacility::MFMessageLogger
     ROOT::Core
     ROOT::EG
     ROOT::Gpad
@@ -59,7 +59,7 @@ simple_plugin(SimulationDrawingOptions "service" nuevdb_EventDisplayBase)
 
 simple_plugin(ColorDrawingOptions "service"
               ${ART_PERSISTENCY_PROVENANCE}
-              ${MF_MESSAGELOGGER}
+              messagefacility::MFMessageLogger
               ROOT::Core
               ROOT::Graf3d
               ROOT::Hist
@@ -73,7 +73,7 @@ simple_plugin(InfoTransfer "service"
               nuevdb_EventDisplayBase
               ${ART_FRAMEWORK_PRINCIPAL}
               ${ART_PERSISTENCY_PROVENANCE}
-              ${MF_MESSAGELOGGER}
+              messagefacility::MFMessageLogger
               ROOT::Core)
 
 install_headers()

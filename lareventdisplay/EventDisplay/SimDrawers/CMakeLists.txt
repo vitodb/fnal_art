@@ -4,7 +4,7 @@ art_make(
   TOOL_LIBRARIES
     ${ART_FRAMEWORK_PRINCIPAL}
     ${ART_FRAMEWORK_SERVICES_REGISTRY}
-    ${MF_MESSAGELOGGER}
+    messagefacility::MFMessageLogger
     ROOT::Core
     ROOT::EG
     ROOT::Physics
