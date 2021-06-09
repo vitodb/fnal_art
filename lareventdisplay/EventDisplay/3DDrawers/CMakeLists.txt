@@ -1,7 +1,7 @@
 cet_enable_asserts()
 
 art_make(TOOL_LIBRARIES
-           ${ART_FRAMEWORK_PRINCIPAL}
+           art::Framework_Principal
            canvas
            larcorealg_Geometry
            lardataalg_DetectorInfo

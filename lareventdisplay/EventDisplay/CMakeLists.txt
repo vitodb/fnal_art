@@ -15,9 +15,9 @@ art_make_library(
     ${src_files}
     ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE}Cint.cc
   LIBRARIES
-    ${ART_FRAMEWORK_PRINCIPAL}
-    ${ART_FRAMEWORK_SERVICES_REGISTRY}
-    ${ART_PERSISTENCY_PROVENANCE}
+    art::Framework_Principal
+    art::Framework_Services_Registry
+    art::Persistency_Provenence
     messagefacility::MF_MessageLogger
     ROOT::Core
     ROOT::EG
@@ -58,7 +58,7 @@ simple_plugin(RecoDrawingOptions "service" nuevdb_EventDisplayBase)
 simple_plugin(SimulationDrawingOptions "service" nuevdb_EventDisplayBase)
 
 simple_plugin(ColorDrawingOptions "service"
-              ${ART_PERSISTENCY_PROVENANCE}
+              art::Persistency_Provenence
               messagefacility::MF_MessageLogger
               ROOT::Core
               ROOT::Graf3d
@@ -71,8 +71,8 @@ simple_plugin(ColorDrawingOptions "service"
 simple_plugin(InfoTransfer "service"
               larcorealg_Geometry
               nuevdb_EventDisplayBase
-              ${ART_FRAMEWORK_PRINCIPAL}
-              ${ART_PERSISTENCY_PROVENANCE}
+              art::Framework_Principal
+              art::Persistency_Provenence
               messagefacility::MF_MessageLogger
               ROOT::Core)
 

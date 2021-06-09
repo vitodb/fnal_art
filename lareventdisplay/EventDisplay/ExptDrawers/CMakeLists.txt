@@ -2,7 +2,7 @@ cet_enable_asserts()
 
 art_make(
   TOOL_LIBRARIES
-    ${ART_FRAMEWORK_SERVICES_REGISTRY}
+    art::Framework_Services_Registry
     ROOT::Core
     ROOT::Physics
     canvas
