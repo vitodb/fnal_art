@@ -41,7 +41,7 @@ find_ups_product( nug4 )
 find_ups_product( nugen )
 find_ups_product( art )
 find_ups_product(art_root_io)
-find_ups_product( postgresql )
+find_package( postgresql )
 
 # use the system zlib
 find_package( ZLIB REQUIRED )
