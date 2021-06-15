@@ -17,7 +17,7 @@ art_make_library(
   LIBRARIES
     art::Framework_Principal
     art::Framework_Services_Registry
-    art::Persistency_Provenence
+    art::Persistency_Provenance
     messagefacility::MF_MessageLogger
     ROOT::Core
     ROOT::EG
