@@ -58,7 +58,7 @@ simple_plugin(RecoDrawingOptions "service" nuevdb_EventDisplayBase)
 simple_plugin(SimulationDrawingOptions "service" nuevdb_EventDisplayBase)
 
 simple_plugin(ColorDrawingOptions "service"
-              art::Persistency_Provenence
+              art::Persistency_Provenance
               messagefacility::MF_MessageLogger
               ROOT::Core
               ROOT::Graf3d
@@ -72,7 +72,7 @@ simple_plugin(InfoTransfer "service"
               larcorealg_Geometry
               nuevdb_EventDisplayBase
               art::Framework_Principal
-              art::Persistency_Provenence
+              art::Persistency_Provenance
               messagefacility::MF_MessageLogger
               ROOT::Core)
 
