@@ -10,6 +10,7 @@ art_make(
     lardata_ArtDataHelper
     lardataobj::RawData
     lardataobj::RecoBase
+    larcorealg::Geometry
     lareventdisplay_EventDisplay_ColorDrawingOptions_service
     lareventdisplay_EventDisplay_RawDrawingOptions_service
     lareventdisplay_EventDisplay_RecoDrawingOptions_service
