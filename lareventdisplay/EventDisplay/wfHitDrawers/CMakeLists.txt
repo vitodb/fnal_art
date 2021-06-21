@@ -8,7 +8,8 @@ art_make(
     ROOT::Core
     canvas
     lardata_ArtDataHelper
-    lardataobj_RawData
+    lardataobj::RawData
+    lardataobj::RecoBase
     lareventdisplay_EventDisplay_ColorDrawingOptions_service
     lareventdisplay_EventDisplay_RawDrawingOptions_service
     lareventdisplay_EventDisplay_RecoDrawingOptions_service
