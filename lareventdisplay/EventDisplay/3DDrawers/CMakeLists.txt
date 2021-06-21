@@ -11,7 +11,7 @@ art_make(TOOL_LIBRARIES
            lardataobj_RecoBase
            lareventdisplay_EventDisplay_ColorDrawingOptions_service
            lareventdisplay_EventDisplay_RecoDrawingOptions_service
-           pandora::PandoraMonitoring
+           PandoraMonitoring
            nuevdb_EventDisplayBase)
 
 install_headers()
