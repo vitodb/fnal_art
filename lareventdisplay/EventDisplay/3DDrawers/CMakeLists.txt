@@ -4,6 +4,7 @@ art_make(TOOL_LIBRARIES
            art::Framework_Principal
            art::Framework_Services_Registry
            ROOT::Hist
+           ROOT::Graf3d
            ROOT::Core
            canvas
            larcorealg_Geometry
@@ -11,7 +12,7 @@ art_make(TOOL_LIBRARIES
            lardataobj_RecoBase
            lareventdisplay_EventDisplay_ColorDrawingOptions_service
            lareventdisplay_EventDisplay_RecoDrawingOptions_service
-           PandoraMonitoring
+           ${PandoraMonitoring}
            nuevdb_EventDisplayBase)
 
 install_headers()
