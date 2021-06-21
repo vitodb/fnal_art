@@ -28,6 +28,7 @@ art_make_library(
     ROOT::Hist
     ROOT::Physics
     ROOT::RIO
+    ROOT::TreePlayer
     canvas
     cetlib_except
     lardataalg_DetectorInfo
@@ -35,6 +36,7 @@ art_make_library(
     lardata_ArtDataHelper
     lardata_Utilities
     lardataobj_RawData
+    lardataobj_RecoBase
     lareventdisplay_EventDisplay_AnalysisDrawingOptions_service
     lareventdisplay_EventDisplay_ColorDrawingOptions_service
     lareventdisplay_EventDisplay_EvdLayoutOptions_service
