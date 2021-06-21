@@ -4,6 +4,7 @@ art_make(
   TOOL_LIBRARIES
     art::Framework_Principal
     art::Framework_Services_Registry
+    ROOT::Hist
     ROOT::Core
     canvas
     lardata_ArtDataHelper
