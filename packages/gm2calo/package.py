@@ -11,6 +11,8 @@ class Gm2calo(CMakePackage):
 
     homepage = "https://redmine.fnal.gov/projects/gm2calo"
     url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2calo.v9_60_00.tbz2" 
+    git_base = 'https://cdcvs.fnal.gov/projects/gm2calo'
+    version('spack_branch', branch='feature/mengel_spack', git=git_base, get_full_repo=True)
     def url_for_version(self, version):
         return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2calo.v%s.tbz2" % version.underscored
 
