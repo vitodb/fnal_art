@@ -30,6 +30,8 @@ class Larreco(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larreco"
     url      = "https://github.com/LArSoft/larreco.git"
+    version('09.06.05.01', tag='v09_06_05_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
+    version('09.06.04', tag='v09_06_04', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larreco.git', branch='feature/MVP1a')
     version('09.04.01', tag='v09_04_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
@@ -63,8 +65,8 @@ class Larreco(CMakePackage):
     depends_on('larsoft-data')
     depends_on('marley')
     depends_on('nutools')
-    depends_on('eigen+fftw')
-    depends_on('tensorflow', when='+tf')
+    depends_on('eigen')
+    depends_on('py-tensorflow', when='+tf')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):

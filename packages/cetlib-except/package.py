@@ -30,7 +30,10 @@ class CetlibExcept(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/cetlib_except'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib_except.v1_04_00.tbz2'
+    version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
 
+    version('1.07.00', tag='v1_07_00', git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
@@ -71,3 +74,9 @@ class CetlibExcept(CMakePackage):
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

@@ -30,6 +30,8 @@ class Lardataalg(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataalg"
     url      = "https://github.com/LArSoft/lardataalg.git"
+    version('09.04.03.01', tag='v09_04_03_01', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
+    version('09.04.03', tag='v09_04_03', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/lardataalg.git', branch='feature/MVP1a')
     version('09.03.00', tag='v09_03_00', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)

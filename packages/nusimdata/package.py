@@ -30,6 +30,7 @@ class Nusimdata(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nusimdata"
     url      = "https://cdcvs.fnal.gov/projects/nusimdata"
+    version('1.22.03', tag='v1_22_03', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
 
     version('MVP1a', git='https://cdcvs.fnal.gov/projects/nusimdata', branch='feature/MVP1a', preferred=True)
     version('1.19.01', tag='v1_19_01', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)

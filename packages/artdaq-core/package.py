@@ -70,3 +70,9 @@ class ArtdaqCore(CMakePackage):
                 '-DBoost_THREAD_LIBRARY=-lboost_thread',
                ]
         return args
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

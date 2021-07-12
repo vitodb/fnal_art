@@ -29,6 +29,7 @@ class Nutools(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nutools/wiki"
     url      = "https://cdcvs.fnal.gov/projects/nutools/"
+    version('3.09.02', tag='v3_09_02', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
 
     version('MVP1a', git="https://cdcvs.fnal.gov/projects/nutools", branch='feature/MVP1a')
     version('3.04.02', tag='v3_04_02', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
@@ -58,7 +59,7 @@ class Nutools(CMakePackage):
     depends_on('nusimdata')
     depends_on('dk2nugenie')
     depends_on('genie')
-    depends_on('geant4 ~data')
+    depends_on('geant4')
     depends_on('xerces-c')
     depends_on('cry')
     depends_on('ifdh-art')

@@ -33,7 +33,9 @@ class CanvasRootIo(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/canvas_root_io'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/canvas-root-io.v1_05_00.tbz2'
 
+    version('1.07.02', tag="v1_07_02", git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
@@ -116,3 +118,9 @@ class CanvasRootIo(CMakePackage):
         sanitize_environments(spack_env, run_env)
         spack_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
         run_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

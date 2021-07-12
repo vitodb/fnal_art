@@ -31,6 +31,9 @@ class Larsoft(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoft"
     url      = "https://github.com/LArSoft/larsoft.git"
+    version('09.24.01', tag='v09_24_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
+    version('09.23.01.01', tag='v09_23_01_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
+    version('09.22.01', tag='v09_22_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larsoft.git', branch='feature/MVP1a')
     version('09.09.00', tag='v09_09_00', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
@@ -48,17 +51,19 @@ class Larsoft(CMakePackage):
             description='Use the specified C++ standard when building.')
 
 
+    depends_on('cetmodules', type='build')
+    depends_on('ifdh-art')
+    depends_on('larana')
     depends_on('lareventdisplay')
     depends_on('larexamples')
-    depends_on('larana')
-    depends_on('larreco')
     depends_on('larg4')
     depends_on('larpandora')
-    depends_on('larwirecell')
-    depends_on('larsoftobj')
+    depends_on('larreco')
+    depends_on('larrecodnn')
+    depends_on('larsimrad')
     depends_on('larsoft-data')
-    depends_on('ifdh-art')
-    depends_on('cetmodules', type='build')
+    depends_on('larsoftobj')
+    depends_on('larwirecell')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -83,3 +88,10 @@ class Larsoft(CMakePackage):
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
+
+    @run_after('install')
+    def rename_bin_python(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "bin/python"),
+                   join_path(self.spec.prefix, "bin/python-scripts"))
+

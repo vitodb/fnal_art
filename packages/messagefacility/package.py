@@ -36,6 +36,7 @@ class Messagefacility(CMakePackage):
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('v2_06-branch', branch='v2_06-branch', git=git_base, get_full_repo=True)
+    version('2.08.00', tag='v2_08_00', git=git_base, get_full_repo=True)
     version('2.06.01', tag='v2_06_01', git=git_base, get_full_repo=True)
     version('2.03.00', tag='v2_03_00', git=git_base, get_full_repo=True)
     version('2.03.01', tag='v2_03_01', git=git_base, get_full_repo=True)
@@ -116,3 +117,9 @@ class Messagefacility(CMakePackage):
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

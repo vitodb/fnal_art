@@ -12,7 +12,9 @@ class Ifbeam(MakefilePackage):
     """Data handling client code for intensity frontier experiments"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifbeam"
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/ifbeam.v2_3_0.tbz2'
 
+    version('2.4.8', sha256='676b43be56c51f68c189d19e8c23a68e9bc489a7e3aaedb632e7600a168d9448')
     version('2.3.0', sha256='4b6a29443b631957ca2a7712b5c577620c6543e542ee9c77d246cef1e10f7324')
     version('2.2.13', sha256='b341ffc73421b7187b06c205f9feaccf117bdba06509e9b1b8f491fdc182029c')
 
@@ -31,6 +33,7 @@ class Ifbeam(MakefilePackage):
     
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+
         return url.format('ifdhc-' + self.name, version.underscored)
 
     @property

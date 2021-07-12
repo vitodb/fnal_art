@@ -15,8 +15,6 @@ if not libdir in sys.path:
 def patcher(x):
     cetmodules_20_migrator(".","artg4tk","9.07.01")
 
-
-
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -33,6 +31,7 @@ class Art(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/art'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art.v3_0_2.tbz2'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
@@ -50,6 +49,8 @@ class Art(CMakePackage):
     version('3.02.06', tag='v3_02_06', git=git_base, get_full_repo=True)
     version('3.03.01', tag='v3_03_01', git=git_base, get_full_repo=True)
     version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
+    version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
+    version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -79,7 +80,8 @@ class Art(CMakePackage):
     depends_on('rapidjson', when='@3.06:')
 
     patch('art.external_rapidjson.patch',when='@3.06:')
-    patch('art.ScheduleID.patch',when='@develop')
+    #patch('art.ScheduleID.patch',when='@develop')
+    #patch('art.ScheduleID.patch',when='@3.06:')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -138,3 +140,9 @@ class Art(CMakePackage):
         sanitize_environments(spack_env, run_env)
         spack_env.set("ART_DIR",self.prefix)
         run_env.set("ART_DIR",self.prefix)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

@@ -70,7 +70,7 @@ class IcarusSignalProcessing(CMakePackage):
     depends_on('fftw', type=('build','run'))
     depends_on('marley', type=('build','run'))
     depends_on('larsoft-data', type=('build','run'))
-    depends_on('eigen+fftw', type=('build','run'))
+    depends_on('eigen', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

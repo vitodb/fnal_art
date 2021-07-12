@@ -38,6 +38,7 @@ class Cetlib(CMakePackage):
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('3.13.01', tag='v3_13_01', git=git_base, get_full_repo=True)
     version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
     version('3.05.00', tag='v3_05_00', git=git_base, get_full_repo=True)
     version('3.05.01', tag='v3_05_01', git=git_base, get_full_repo=True)
@@ -105,3 +106,9 @@ class Cetlib(CMakePackage):
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         run_env.set('CETLIB_DIR', self.prefix)
         spack_env.set('CETLIB_DIR', self.prefix)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

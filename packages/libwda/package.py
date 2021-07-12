@@ -12,7 +12,9 @@ class Libwda(MakefilePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/libwda"
     git_base = "https://cdcvs.fnal.gov/projects/ifdhc-libwda"
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/libwda.v2_22_2.tbz2'
 
+    version('2.29.1', tag='v2_29_1', git=git_base, get_full_repo=True)
     version('develop', git=git_base, branch='develop')
     version('2.26.0', sha256='4df374bbf36030241a9714d5e08cd9b2b5e1b3374da1a97ec793cd37eba40fc2')
     version('2.22.2', tag='v2_22_2', git=git_base, get_full_repo=True)

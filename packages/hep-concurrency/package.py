@@ -28,7 +28,9 @@ class HepConcurrency(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/hep_concurrency'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/hep-concurrency.v1_04_00.tbz2'
 
+    version('1.07.00', sha256='4f6940ee139a7f1164b5c15c323bc5699713ad228faaf6e9e8cbb40c90607e9f')
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
@@ -63,6 +65,7 @@ class HepConcurrency(CMakePackage):
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{package}.{v}{version}.tbz2'
+
         return url.format(package='hep_concurrency',
                           v='v' if type(version.version[0]) == int else '',
                           version=version.underscored)

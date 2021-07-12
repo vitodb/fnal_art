@@ -31,11 +31,15 @@ class Canvas(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/canvas'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/canvas.v3_05_01.tbz2'
 
+    version('3.09.00', tag='v3_09_00', git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base,get_full_repo=True)
+    version('3.12.00', tag='v3_12_00', git=git_base, get_full_repo=True)
+    version('3.10.00', tag='v3_10_00', git=git_base, get_full_repo=True)
     version('3.05.00', tag='v3_05_00', git=git_base, get_full_repo=True)
     version('3.05.01', tag='v3_05_01', git=git_base, get_full_repo=True)
     version('3.07.03', tag='v3_07_03', git=git_base, get_full_repo=True)
@@ -91,3 +95,9 @@ class Canvas(CMakePackage):
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    @run_after('install')
+    def rename_README(self):
+        import os
+        os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))

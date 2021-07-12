@@ -15,6 +15,11 @@ class Dk2nudata(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/dk2nu"
     url      = "https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
+    version('01.10.00', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_10_00")
+    version('01.09.02', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_09_02")
+    version('01.09.01', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_09_01")
+    version('01.09.00', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_09_00")
+    version('01.08.00', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
     version('01.07.02', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
     version('01.08.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
 
@@ -40,12 +45,8 @@ class Dk2nudata(CMakePackage):
         prefix=self.spec.prefix
         args = [
                 '-DWITH_GENIE=OFF',
-                '-DTBB_LIBRARY=%s'%self.spec['intel-tbb'].prefix.lib]
+                '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['intel-tbb'].prefix.lib]
         return args
-
-    def build(self, spec, prefix):
-        with working_dir('%s/spack-build'%self.stage.path, create=True):
-            make('VERBOSE=t', 'all')
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.

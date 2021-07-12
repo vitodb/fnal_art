@@ -33,6 +33,7 @@ class ArtRootIo(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/art_root_io'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art_root_io.v1_02_01.tbz2'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
@@ -40,6 +41,7 @@ class ArtRootIo(CMakePackage):
     version('1.02.01', tag='v1_02_01', git=git_base, get_full_repo=True)
     version('1.02.00', tag='v1_02_00', git=git_base, get_full_repo=True)
     version('1.03.00', tag='v1_03_00', git=git_base, get_full_repo=True)
+    version('1.05.02', tag='v1_05_02', git=git_base, get_full_repo=True)
 
     variant('cxxstd',
             default='17',

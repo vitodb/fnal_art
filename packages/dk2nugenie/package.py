@@ -26,6 +26,7 @@ class Dk2nugenie(CMakePackage):
 
 
 
+    version('3.00.06',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v03_00_06")
     version('01_07_02',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
     version('01.08.00.ub1',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00.ub1")
     version('01.08.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")

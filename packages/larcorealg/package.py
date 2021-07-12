@@ -30,6 +30,7 @@ class Larcorealg(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcorealg"
     url      = "https://github.com/LArSoft/larcorealg.git"
+    version('09.01.01', tag='v09_01_01', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larcorealg.git', branch='feature/MVP1a', preferred=True)
     version('09.00.01', tag='v09_00_01', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)

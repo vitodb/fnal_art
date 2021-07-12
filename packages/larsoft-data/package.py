@@ -18,7 +18,11 @@ def patcher(x):
 class LarsoftData(Package):
     """LarsoftData"""
 
-    version('1.02.01', '9b3e5d763f4a44f0fae7a2b59d583a8b25054f7f06645fa48e331377cf33baca')
+    homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoft"
+
+    url = 'https://scisoft.fnal.gov/scisoft/packages/larsoft_data/v1_02_01/larsoft_data-1_02_01-noarch.tar.bz2'
+
+    version('1.02.01', sha256='9b3e5d763f4a44f0fae7a2b59d583a8b25054f7f06645fa48e331377cf33baca')
 
     def url_for_version(self, version):
         url = 'https://scisoft.fnal.gov/scisoft/packages/larsoft_data/v{0}/larsoft_data-{1}-noarch.tar.bz2'

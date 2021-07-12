@@ -30,8 +30,9 @@ class Wirecell(Package):
     https://github.com/WireCell/wire-cell-spack/blob/master/repo/packages/wirecell-toolkit/package.py"""
 
     homepage = "https://wirecell.github.io"
-    url = "https://github.com/WireCell/wire-cell-toolkit/archive/0.13.1.tar.gz"
+    url = "https://github.com/WireCell/wire-cell-toolkit/archive/refs/tags/0.13.0.tar.gz"
 
+    version('0.14.0', sha256='f7d792ef3c73744b395a6880018a4ba3349f2c5ba2f96399ad1a4d17be8f6092')
     version('0.13.1', sha256='d9ce092f9ebae91607213b62bf015ac6ac08c33ce97b6fbd67494d42c1f75bdb')
     version('0.13.0', sha256='eedc7db7ce75d2f7ef1b23461d1a2d780fd8409187eb851ced1e8ab4b7a10d8e')
     version('0.12.2', sha256='83387ebe6a517353daae69b05e86dd274f66ba80e6b120fb219b5c260c383e21')
@@ -48,7 +49,10 @@ class Wirecell(Package):
     depends_on("jsonnet")
 
     depends_on("fftw")
-    depends_on("eigen+fftw")
+    depends_on("eigen")
+    depends_on("spdlog")
+    depends_on("hdf5")
+    depends_on("h5cpp")
 
 
     # Do not currently make use of TBB.  When we get back to this,

@@ -29,11 +29,11 @@ class Larsimrad(CMakePackage):
     """larsimrad """
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsimrad"
-    url      = "https://cdcvs.fnal.gov/projects/larsimrad"
     git_base = 'https://github.com/SBNSoftware/larsimrad.git'
+    url      = "https://cdcvs.fnal.gov/projects/larsimrad"
 
-
-
+    version('09.01.08', tag='v09_01_08', git=git_base, get_full_repo=True)
+    version('09.01.08', tag='v09_01_08', git=git_base, get_full_repo=True)
     version('09.00.13', tag='v09_00_13', git=git_base, get_full_repo=True)
     version('09.00.12', tag='v09_00_12', git=git_base, get_full_repo=True)
     version('09.00.11', tag='v09_00_11', git=git_base, get_full_repo=True)
@@ -48,6 +48,7 @@ class Larsimrad(CMakePackage):
     depends_on('larbatch')
     depends_on('py-pycurl')
     depends_on('cetmodules', type='build')
+    depends_on('bxdecay0')
 
 
     def cmake_args(self):

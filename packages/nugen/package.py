@@ -31,7 +31,9 @@ class Nugen(CMakePackage):
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/nugen'
     git_base = 'https://cdcvs.fnal.gov/projects/nugen'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nugen.v1_10_02.tbz2'
 
+    version('1.12.00', tag='v1_12_00', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base)
     version('1.10.02', tag='v1_10_02', git=git_base, get_full_repo=True)
     version('1.10.01', tag='v1_10_01', git=git_base, get_full_repo=True)

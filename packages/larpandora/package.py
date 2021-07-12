@@ -30,6 +30,7 @@ class Larpandora(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandora"
     url      = "https://github.com/LArSoft/larpandora.git"
+    version('09.05.09', tag='v09_05_09', git='https://github.com/LArSoft/larpandora.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larpandora.git', branch='feature/MVP1a')
     version('09.03.01', tag='v09_03_01', git='https://github.com/LArSoft/larpandora.git', get_full_repo=True)
