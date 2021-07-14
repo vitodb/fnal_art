@@ -22,7 +22,10 @@ class Artg4tk(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
     url      = "https://cdcvs.fnal.gov/projects/artg4tk"
+
     version('10.02.01', tag='v10_02_01', git=url, extention='tar.bz2', get_full_repo=True)
+
+    version('10.02.01.01', tag='v10_02_01_01', git=url, extention='tar.bz2', get_full_repo=True) 
 
     version('MVP1a', git = url, branch = 'feature/Spack-MVP1a',
             extention='tar.bz2')

@@ -54,6 +54,7 @@ class Nurandom(CMakePackage):
     depends_on('art-root-io')
     depends_on('cetlib')
     depends_on('cetlib-except')
+    depends_on('clhep')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -103,3 +104,4 @@ class Nurandom(CMakePackage):
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nurandom', get_full_repo=True)

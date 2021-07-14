@@ -6,15 +6,6 @@
 from spack import *
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larana","08.16.03")
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -102,7 +93,10 @@ class Larana(CMakePackage):
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
 
-    def foo(self):
-         pass
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
 
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larana.git', get_full_repo=True)

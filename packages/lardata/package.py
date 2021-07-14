@@ -6,15 +6,6 @@
 from spack import *
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -63,6 +54,12 @@ class Lardata(CMakePackage):
                 format(self.spec.variants['cxxstd'].value)
                ]
         return args
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
 
     def setup_environment(self, spack_env, run_env):
         # Binaries.

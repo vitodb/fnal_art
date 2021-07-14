@@ -6,16 +6,6 @@
 from spack import *
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -40,6 +30,7 @@ class Nugen(CMakePackage):
     version('1.10.00', tag='v1_10_00', git=git_base, get_full_repo=True)
     version('1.09.00', tag='v1_09_00', git=git_base, get_full_repo=True)
     version('1.08.00', tag='v1_08_00', git=git_base, get_full_repo=True)
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nugen', get_full_repo=True)
 
 
 
@@ -83,7 +74,7 @@ class Nugen(CMakePackage):
     depends_on('ifbeam')
     depends_on('nucondb')
     depends_on('libwda')
-
+    depends_on('log4cpp')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

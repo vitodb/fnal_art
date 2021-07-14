@@ -7,14 +7,6 @@ from spack import *
 import os
 
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","lareventdisplay","08.12.03")
-
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -31,6 +23,7 @@ class Lareventdisplay(CMakePackage):
     url      = "https://github.com/LArSoft/lareventdisplay.git"
     version('09.01.08', tag='v09_01_08', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lareventdisplay.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/lareventdisplay.git', branch='feature/MVP1a')
     version('09.00.11', tag='v09_00_11', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
     version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/lareventdisplay.git', get_full_repo=True)
@@ -104,4 +97,11 @@ class Lareventdisplay(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lareventdisplay.git', get_full_repo=True)
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
+
+

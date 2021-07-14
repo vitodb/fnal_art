@@ -5,15 +5,7 @@
 
 from spack import *
 import os
-
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larevt","08.10.03")
 
 
 def sanitize_environments(*args):
@@ -56,6 +48,7 @@ class Larevt(CMakePackage):
 
     depends_on('libwda')
     depends_on('lardata')
+    depends_on('sqlite')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):

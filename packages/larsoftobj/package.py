@@ -4,17 +4,9 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-
-
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
 
-
-def patcher(x):
-    cetmodules_20_migrator(".","larsoftobj","08.26.02")
 
 def sanitize_environments(*args):
     for env in args:
@@ -60,6 +52,14 @@ class Larsoftobj(CMakePackage):
                 format(self.spec.variants['cxxstd'].value)
                ]
         return args
+
+    @run_before('install')
+    def install_something(self):
+        ''' this pacakge doesn't really contain anything, but
+            Spack doesn't like empty products, so put in a README...'''
+        f = open(self.prefix + "/README.larsoftobj", "w")
+        f.write("larsoftobj is just a bunde with dependencies")
+        f.close()
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.

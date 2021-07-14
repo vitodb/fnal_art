@@ -5,15 +5,7 @@
 
 from spack import *
 import os
-
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larsim","08.19.03")
 
 def sanitize_environments(*args):
     for env in args:
@@ -65,8 +57,9 @@ class Larsim(CMakePackage):
     depends_on('nug4')
     depends_on('nugen')
     depends_on('nurandom')
+    depends_on('sqlite')
     depends_on('cetmodules', type='build')
-
+  
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
@@ -84,6 +77,12 @@ class Larsim(CMakePackage):
                 format(self.spec['larsoft-data'].version.underscored),
         ]
         return args
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
 
     def setup_environment(self, spack_env, run_env):
         # Binaries.

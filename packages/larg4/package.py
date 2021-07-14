@@ -7,13 +7,6 @@ from spack import *
 import os
 
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larg4","08.12.01")
 
 def sanitize_environments(*args):
     for env in args:
@@ -49,12 +42,14 @@ class Larg4(CMakePackage):
 
 
 
+    depends_on('clhep')
     depends_on('artg4tk')
     depends_on('larevt')
     depends_on('art')
     depends_on('canvas-root-io')
     depends_on('art-root-io')
     depends_on('nug4')
+    depends_on('nurandom')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
@@ -93,6 +88,12 @@ class Larg4(CMakePackage):
         run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.
