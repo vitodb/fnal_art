@@ -38,6 +38,7 @@ class ArtRootIo(CMakePackage):
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('develop', branch='develop', git=git_base)
+    version('1.08.01', tag='v1_08_01', git=git_base, get_full_repo=True)
     version('1.02.01', tag='v1_02_01', git=git_base, get_full_repo=True)
     version('1.02.00', tag='v1_02_00', git=git_base, get_full_repo=True)
     version('1.03.00', tag='v1_03_00', git=git_base, get_full_repo=True)

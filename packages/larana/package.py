@@ -105,3 +105,4 @@ class Larana(CMakePackage):
     def foo(self):
          pass
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larana.git', get_full_repo=True)

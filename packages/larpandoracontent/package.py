@@ -58,3 +58,4 @@ class Larpandoracontent(CMakePackage):
                 '-DPandoraMonitoring_DIR={0}/cmakemodules'.format(self.spec['pandora'].prefix),
                ]
         return args
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larpandoracontent.git', get_full_repo=True)

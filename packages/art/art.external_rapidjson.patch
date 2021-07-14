@@ -1,38 +1,30 @@
---- spack-src/art/Framework/Core/CMakeLists.txt.orig	2021-03-23 20:37:19.129845000 +0000
-+++ spack-src/art/Framework/Core/CMakeLists.txt	2021-03-23 20:51:32.504979000 +0000
-@@ -82,7 +82,6 @@
-     cetlib::container_algorithms
-     hep_concurrency::macros
-     Boost::graph
--    rapidjson
- )
- 
- cet_make_library(LIBRARY_NAME module INTERFACE
---- spack-src/art/Framework/Services/System/CMakeLists.txt.orig	2021-03-23 20:37:32.538845000 +0000
-+++ spack-src/art/Framework/Services/System/CMakeLists.txt	2021-03-23 20:51:41.754979000 +0000
-@@ -17,7 +17,7 @@
-     fhiclcpp::types
-     cetlib::container_algorithms
-     cetlib::cetlib
--  PRIVATE rapidjson)
-+    )
- ########################################################################
- 
- # FloatingPoint is a true "system" service (constructed explicitly by
---- spack-src/CMakeLists.txt.orig	2021-03-23 20:51:56.919979000 +0000
-+++ spack-src/CMakeLists.txt	2021-03-23 20:50:55.425467000 +0000
-@@ -49,9 +49,12 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 46e3ff3..8d3666f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -49,9 +49,23 @@ cet_report_compiler_flags(REPORT_THRESHOLD VERBOSE)
  
  cet_register_export_set(SET_NAME art NAMESPACE art)
  
 -add_subdirectory(third_party/RapidJSON)
-+#add_subdirectory(third_party/RapidJSON)
++find_package(RapidJSON)
++if(RapidJSON_FOUND)
++
++  message("using found RapidJson")
++  add_library(rapidjson INTERFACE)
++  target_include_directories(rapidjson PUBLIC ${RapidJSON_INCLUDE})
++endif()
++
++
++if(NOT RapidJSON_FOUND)
++
++  message("using third_party/RapidJson")
++  add_subdirectory(third_party/RapidJSON)
++  list(PREPEND CMAKE_PREFIX_PATH ${PROJECT_BINARY_DIR}/third_party/RapidJSON/rapidjson)
++
++endif()
  
 -list(PREPEND CMAKE_PREFIX_PATH ${PROJECT_BINARY_DIR}/third_party/RapidJSON/rapidjson)
-+#list(PREPEND CMAKE_PREFIX_PATH ${PROJECT_BINARY_DIR}/third_party/RapidJSON/rapidjson)
-+
-+find_package(RapidJSON REQUIRED)
-+include_directories(${RapidJSON_INCLUDE})
  
  # Plugin skeleton generators for cetskelgen.
  add_subdirectory(perllib)

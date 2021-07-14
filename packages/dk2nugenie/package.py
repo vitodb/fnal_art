@@ -25,8 +25,7 @@ class Dk2nugenie(CMakePackage):
     url      = "https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
 
-
-    version('3.00.06',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v03_00_06")
+    version('1.10.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_10_00")
     version('01_07_02',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
     version('01.08.00.ub1',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00.ub1")
     version('01.08.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
@@ -70,5 +69,5 @@ class Dk2nugenie(CMakePackage):
         return args
 
     def build(self, spec, prefix):
-        with working_dir('%s/spack-build'%self.stage.path, create=True):
+        with working_dir(self.build_directory, create=True):
             make('VERBOSE=t', 'all')

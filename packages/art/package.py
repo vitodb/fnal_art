@@ -24,6 +24,7 @@ class Art(CMakePackage):
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/art'
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art.v3_0_2.tbz2'
+    version('3.09.01', tag='v3_09_01', git=git_base, get_full_repo=True)
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)

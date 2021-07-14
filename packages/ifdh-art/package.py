@@ -12,18 +12,13 @@ if not libdir in sys.path:
 
 
 
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
-
-
 class IfdhArt(CMakePackage):
     """The ifdh_art package provides ART service access to the libraries 
 from the ifdhc package."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
     url      = "https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
-    version('3.06.03',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v3_06_03', get_full_repo=True)
+    version('2.12.02.01',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_12_02_01', get_full_repo=True)
     version('2.11.05',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_11_05', get_full_repo=True)
 
 
@@ -63,8 +58,8 @@ from the ifdhc package."""
         run_env.prepend_path('PATH', self.prefix.bin)
 
 
-    @run_after('install')
-    def rename_README(self):
-        import os
-        os.rename( join_path(self.spec.prefix, "README"),
-                   join_path(self.spec.prefix, "README_%s"%self.spec.name))
+    #@run_after('install')
+    #def rename_README(self):
+    #    import os
+    #    os.rename( join_path(self.spec.prefix, "README"),
+    #               join_path(self.spec.prefix, "README_%s"%self.spec.name))

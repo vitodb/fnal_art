@@ -95,3 +95,4 @@ class Larsoft(CMakePackage):
         os.rename( join_path(self.spec.prefix, "bin/python"),
                    join_path(self.spec.prefix, "bin/python-scripts"))
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsoft.git', get_full_repo=True)
