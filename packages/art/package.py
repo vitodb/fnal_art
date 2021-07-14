@@ -6,14 +6,6 @@
 from spack import *
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
 
 def sanitize_environments(*args):
     for env in args:
@@ -79,7 +71,7 @@ class Art(CMakePackage):
     depends_on('range-v3', when="@3.04.00:")
     depends_on('rapidjson', when='@3.06:')
 
-    patch('art.external_rapidjson.patch',when='@3.06:')
+    #patch('art.external_rapidjson.patch',when='@3.06:')
     #patch('art.ScheduleID.patch',when='@develop')
     #patch('art.ScheduleID.patch',when='@3.06:')
 

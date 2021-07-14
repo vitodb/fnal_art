@@ -7,13 +7,13 @@
 from spack import *
 
 
-class Gm2unpacker(CMakePackage):
+class Gm2unpackers(CMakePackage):
     """FIXME: Put a proper description of your package here."""
 
-    homepage = "https://redmine.fnal.gov/projects/gm2unpacker"
-    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2unpacker.v9_60_00.tbz2" 
+    homepage = "https://redmine.fnal.gov/projects/gm2unpackers"
+    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2unpackers.v9_60_00.tbz2" 
     def url_for_version(self, version):
-        return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2unpacker.v%s.tbz2" % version.underscored
+        return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2unpackers.v%s.tbz2" % version.underscored
 
     version('9.60.00', sha256='1efd2e99333d99c8fcbaa6743e5e5b86aa0f6d93f7c2c7db823ff08980feedde')
 
