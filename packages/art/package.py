@@ -72,7 +72,7 @@ class Art(CMakePackage):
     depends_on('range-v3', when="@3.04.00:")
     depends_on('rapidjson', when='@3.06:')
 
-    #patch('art.external_rapidjson.patch',when='@3.06:')
+    patch('art.external_rapidjson.patch',when='@3.06:3.09.01')
     #patch('art.ScheduleID.patch',when='@develop')
     #patch('art.ScheduleID.patch',when='@3.06:')
 
