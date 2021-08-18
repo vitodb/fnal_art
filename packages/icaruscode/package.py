@@ -56,6 +56,8 @@ class Icaruscode(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
+    depends_on('icarusalg', type=('build','run'))
+    depends_on('icarus-data', type=('build','run'))
     depends_on('artdaq-core', type=('build','run'))
     depends_on('art-root-io', type=('build','run'))
     depends_on('art', type=('build','run'))
@@ -74,6 +76,7 @@ class Icaruscode(CMakePackage):
     depends_on('geant4', type=('build','run'))
     #depends_on('icarus-signal-processing', type=('build','run'),when="@09.00:")
     depends_on('icarusutil', type=('build','run'))
+    depends_on('larsoft', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))
     depends_on('larcore', type=('build','run'))

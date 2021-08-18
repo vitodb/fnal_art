@@ -13,7 +13,7 @@ class IcarusData(Package):
         copy_files(self.build_dir, prefix)
 
     def setup_run_environment(self, env):
-        env.set(${UPS_PROD_NAME_UC}_VERSION, v09_28_01 % self.prefix )
+        env.set('ICARUS_DATA_VERSION', 'v%' % self.version.underscored )
         env.prepend_path('WIRECELL_PATH', '%s/icarus_data/WirecellData'  % self.prefix )
         env.prepend_path('FW_SEARCH_PATH', '%s/icarus_data'  % self.prefix )
         env.prepend_path('FW_SEARCH_PATH', '%s/icarus_data/NoiseHistos'  % self.prefix )
