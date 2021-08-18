@@ -17,9 +17,9 @@ class Cetmodules(CMakePackage):
     git_base = 'https://github.com/FNALssi/cetmodules.git'
     url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.14.00.tar.gz'
 
-    version('2.16.02', sha256='43082380b23b3367303368b6ec698d7a3624b19a8a99842752bd13bcb474625e')
-
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+
+    version('2.16.02', sha256='43082380b23b3367303368b6ec698d7a3624b19a8a99842752bd13bcb474625e')
 
     version('2.14.00', sha256='360b719133d644d47f092f42895f3037891cfb30adf6897472f62f037a3129f1')
 
@@ -46,6 +46,9 @@ class Cetmodules(CMakePackage):
     depends_on('py-sphinx-rtd-theme', when='@2.00.10:',type='build')
     depends_on('py-sphinx-rtd-theme', when='@develop',type='build')
 
+    @run_before('cmake')
+    def fix_fix_man(self):
+        filter_file('exit \$status', 'exit 0', 'libexec/fix-man-dirs')
 
     def url_for_version(self, version):
         if str(version)[0] in "01":
@@ -59,5 +62,6 @@ class Cetmodules(CMakePackage):
     @run_after('install')
     def rename_README(self):
         import os
-        os.rename( join_path(self.spec.prefix, "README"),
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
                    join_path(self.spec.prefix, "README_%s"%self.spec.name))
