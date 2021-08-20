@@ -19,6 +19,8 @@ class Cetmodules(CMakePackage):
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
 
+    #version('2.25.01', sha256='cb58c8a759589e08dcd11e6a9bf6341a130d18e2cbe53abc359a7514aacba5b2')
+
     version('2.16.02', sha256='43082380b23b3367303368b6ec698d7a3624b19a8a99842752bd13bcb474625e')
 
     version('2.14.00', sha256='360b719133d644d47f092f42895f3037891cfb30adf6897472f62f037a3129f1')
@@ -38,9 +40,10 @@ class Cetmodules(CMakePackage):
     version('1.01.00', sha256='80bf9a77852751f90b1446e5d5966bea9b73d5b35e024195b35c851dc93a5443')
     version('1.00.00', sha256='67438bb1ee9acdaadb6e245ff670463c4603c3283c69b3c9d1a04d6ee9a3fd16')
     version('0.07.00', md5='60fb6f9ff26605ea4c0648fa43d0a516')
+
     depends_on('cmake@3.11:', type='build', when='@:1.01.99')
     depends_on('cmake@3.12:', type='build', when='@1.02.00:')
-    depends_on('cmake@3.18:', type='build', when='@3.07.00:')
+    depends_on('cmake@3.18:', type='build', when='@2.07.00:')
     depends_on('py-sphinxcontrib-moderncmakedomain', when='@2.00.10:', type='build')
     depends_on('py-sphinxcontrib-moderncmakedomain', when='@develop',type='build')
     depends_on('py-sphinx-rtd-theme', when='@2.00.10:',type='build')
@@ -48,7 +51,7 @@ class Cetmodules(CMakePackage):
 
     @run_before('cmake')
     def fix_fix_man(self):
-        filter_file('exit \$status', 'exit 0', 'libexec/fix-man-dirs')
+        filter_file('exit \$status', 'exit 0', '%s/libexec/fix-man-dirs' % self.stage.source_path)
 
     def url_for_version(self, version):
         if str(version)[0] in "01":

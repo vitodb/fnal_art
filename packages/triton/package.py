@@ -88,8 +88,12 @@ class Triton(CMakePackage):
             '-DTRITON_CLIENT_ENABLE_HTTP:BOOL=OFF',
             '-DTRITON_CLIENT_ENABLE_GRPC:BOOL=ON',
             '-DTRITON_VERSION={0}'.format(self.spec.version),
-            '-DProtobuf_DIR={0}/lib/cmake/protobuf'.format(self.spec['protobuf'].prefix),
+            '-DProtobuf_DIR={0}/lib64/cmake/protobuf'.format(self.spec['protobuf'].prefix),
             '-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
+            '-DTRITON_COMMON_REPO_TAG:STRING=main',
+            '-DTRITON_CORE_REPO_TAG:STRING=main',
+            '-DTRITON_THIRD_PARTY_REPO_TAG:STRING=main',
+            '-DTRITON_BACKEND_REPO_TAG:STRING=main'
         ]
 
         if ('+cuda' in self.spec):
