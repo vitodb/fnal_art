@@ -33,7 +33,7 @@ class Dk2nudata(CMakePackage):
 
     depends_on('cmake', type='build')
     depends_on('root')
-    depends_on('intel-tbb')
+    depends_on('tbb')
     depends_on('libxml2')
     depends_on('log4cpp')
  
