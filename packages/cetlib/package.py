@@ -59,7 +59,7 @@ class Cetlib(CMakePackage):
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules', type='build')
     depends_on('catch2@2.3.0:', type=('build', 'link'))
-    depends_on('intel-tbb', type=('build', 'link'))
+    depends_on('tbb', type=('build', 'link'))
 
     # Build / link dependencies.
     depends_on('boost')

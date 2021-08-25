@@ -72,7 +72,7 @@ class Icaruscode(CMakePackage):
     depends_on('fftw', type=('build','run'))
     depends_on('hep-concurrency', type=('build','run'))
     depends_on('ifdh-art', type=('build','run'))
-    depends_on('intel-tbb', type=('build','run'))
+    depends_on('tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
     #depends_on('icarus-signal-processing', type=('build','run'),when="@09.00:")
     depends_on('icarusutil', type=('build','run'))
