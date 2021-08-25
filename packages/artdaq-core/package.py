@@ -51,7 +51,7 @@ class ArtdaqCore(CMakePackage):
     depends_on('messagefacility')
     depends_on('root')
     depends_on('sqlite')
-    depends_on('intel-tbb')
+    depends_on('tbb')
     depends_on('trace')
 
     def setup_environment(self, spack_env, run_env):
