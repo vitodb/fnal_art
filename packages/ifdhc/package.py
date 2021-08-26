@@ -23,8 +23,6 @@ class Ifdhc(MakefilePackage):
     version('2.5.12', sha256='e8a8af62e5e9917e51c88b2cda889c2a195dfb7911e09c28aeaf10f54e8abf49')
     version('2.5.14', sha256='66ab9126bb3cb1f8d8dafb69568569d8856ab6770322efc7c5064252f27a8fda')
 
-
-
     depends_on('python')
     depends_on('swig', type='build', when='@:2.5.0')
     depends_on('zlib')
