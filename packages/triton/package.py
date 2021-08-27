@@ -52,6 +52,8 @@ class Triton(CMakePackage):
     depends_on('libb64')
     depends_on('libevent')
     depends_on('libevhtp')
+    depends_on('c-ares')
+    depends_on('abseil-cpp')
     depends_on('grpc')
     depends_on('prometheus-cpp')
     depends_on('curl@7.56:')
@@ -85,11 +87,12 @@ class Triton(CMakePackage):
             '-DCMAKE_CXX_COMPILER=c++',
             '-DTRITON_CURL_WITHOUT_CONFIG:BOOL=ON',
             '-DTRITON_CLIENT_SKIP_EXAMPLES:BOOL=ON',
-            '-DTRITON_CLIENT_ENABLE_HTTP:BOOL=OFF',
-            '-DTRITON_CLIENT_ENABLE_GRPC:BOOL=ON',
+            '-DTRITON_ENABLE_HTTP:BOOL=OFF',
+            '-DTRITON_ENABLE_GRPC:BOOL=ON',
             '-DTRITON_VERSION={0}'.format(self.spec.version),
-            '-DProtobuf_DIR={0}/lib/cmake/protobuf'.format(self.spec['protobuf'].prefix),
             '-DCMAKE_CXX_STANDARD={0}'.format(self.spec.variants['cxxstd'].value),
+            '-DTRITON_COMMON_REPO_TAG:STRING=main',
+            '-DTRITON_CORE_REPO_TAG:STRING=main'
         ]
 
         if ('+cuda' in self.spec):

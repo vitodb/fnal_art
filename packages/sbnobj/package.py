@@ -66,7 +66,7 @@ class Sbnobj(CMakePackage):
     depends_on('fftw', type=('build','run'))
     depends_on('hep-concurrency', type=('build','run'))
     depends_on('ifdh-art', type=('build','run'))
-    depends_on('intel-tbb', type=('build','run'))
+    depends_on('tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
     depends_on('sbn_signal_processing', type=('build','run'))
     depends_on('larana', type=('build','run'))

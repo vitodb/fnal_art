@@ -21,12 +21,12 @@ class Ifdhc(MakefilePackage):
     #version('2.5.4', git=git_base, tag='v2_5_4', get_full_repo=True)
     version('2.5.4', sha256='48bf6807cb8b3092677768f763c1f18940d852d685424a1ea386acf7f1606608')
     version('2.5.12', sha256='e8a8af62e5e9917e51c88b2cda889c2a195dfb7911e09c28aeaf10f54e8abf49')
-
+    version('2.5.14', sha256='66ab9126bb3cb1f8d8dafb69568569d8856ab6770322efc7c5064252f27a8fda')
 
     depends_on('python')
     depends_on('swig', type='build', when='@:2.5.0')
     depends_on('zlib')
-    depends_on('libuuid')
+    depends_on('uuid')
 
     variant('cxxstd',
             default='17',
@@ -42,6 +42,8 @@ class Ifdhc(MakefilePackage):
         for hfile in (os.path.join('ifdh', 'ifdh.h'),
                       os.path.join('numsg', 'numsg.h')):
             filter_file(r'^(\s*#\s*include\s+["<])../util/', r'\1', hfile)
+        filter_file(r'(CFLAGS=.*) -Werror',r'\1', 'util/Makefile')
+
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -50,14 +52,23 @@ class Ifdhc(MakefilePackage):
 
     @property
     def build_targets(self):
+        uuidflags = " -L %s -I %s " % (
+           self.spec['uuid'].prefix.lib, 
+           self.spec['uuid'].prefix.include )
         cxxstd = self.spec.variants['cxxstd'].value
         cxxstdflag =  '' if cxxstd == 'default' else \
                       getattr(self.compiler, 'cxx{0}_flag'.format(cxxstd))
-        return ('SHELL=/bin/bash', 'ARCH=' + '-g -O3 -DNDEBUG ' + cxxstdflag,)
+        return (
+            'SHELL=/bin/bash', 
+            'ARCH=-g -O3 -DNDEBUG %s %s'%(cxxstdflag,uuidflags), 
+            'all')
 
     @property
     def install_targets(self):
-        return ('SHELL=/bin/bash', 'DESTDIR={0}/'.format(self.prefix), 'install')
+        return (
+            'SHELL=/bin/bash', 
+            'DESTDIR={0}/'.format(self.prefix), 
+            'install')
 
     @run_after('install')
     def install_cfg(self):

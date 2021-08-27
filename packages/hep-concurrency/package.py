@@ -56,7 +56,7 @@ class HepConcurrency(CMakePackage):
     # Build / link dependencies.
     depends_on('cppunit')
     depends_on('catch2')
-    depends_on('intel-tbb')
+    depends_on('tbb')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

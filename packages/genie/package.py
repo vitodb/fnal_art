@@ -39,7 +39,7 @@ global analysis of neutrino scattering data.
     depends_on('root+pythia6')
     depends_on('lhapdf')
     depends_on('pythia6+root')
-    depends_on('libxml2+python')
+    depends_on('libxml2')
     depends_on('log4cpp')
     depends_on('gsl')
 
