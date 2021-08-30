@@ -86,7 +86,7 @@ class Triton(CMakePackage):
             '-DCMAKE_C_COMPILER=cc',
             '-DCMAKE_CXX_COMPILER=c++',
             '-DTRITON_CURL_WITHOUT_CONFIG:BOOL=ON',
-            '-DTRITON_CLIENT_SKIP_EXAMPLES:BOOL=ON',
+            '-DTRITON_CLIENT_SKIP_EXAMPLES:BOOL=OFF',
             '-DTRITON_ENABLE_HTTP:BOOL=OFF',
             '-DTRITON_ENABLE_GRPC:BOOL=ON',
             '-DTRITON_VERSION={0}'.format(self.spec.version),
@@ -127,37 +127,12 @@ class Triton(CMakePackage):
         pass
 
 
-    def install(self, spec, prefix):
-        with working_dir(self.build_directory + '/src/clients/c++'):
-            make('install')
+    # we had two of these, the last one wins...
+    #def install(self, spec, prefix):
+    #    with working_dir(self.build_directory + '/src/clients/c++'):
+    #        make('install')
 
     root_cmakelists_dir = 'build/client'
-
-    # trying doubled build...
-    build = tryagain(CMakePackage.build)
-  
-
-    #
-    # we want our cmake/modules directory in the CMAKE_PREFIX_PATH
-    # but its built in _std_args(), and we want all that plus ours...
-    #
-    @property
-    def std_cmake_args(self):
-        std_cmake_args = CMakePackage._std_args(self)
-        fixed = []
-        for arg in std_cmake_args:
-            if arg.startswith("-DCMAKE_PREFIX_PATH:STRING="):
-                fixed.append(arg + ";" + self.stage.source_path +'/cmake/modules')
-            else:
-                fixed.append(arg)
-        return fixed
-
-    #
-    # also push our cmake/modules on the environment CMAKE_PREFIX_PATH for  ExternalPackage calls...
-    #
-    def setup_build_environment(self, env):
-        env.prepend_path('CMAKE_PREFIX_PATH', self.stage.source_path +'/cmake/modules')
-        pass
 
     def flag_handler(self, name, flags):
         if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':

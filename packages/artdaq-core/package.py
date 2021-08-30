@@ -57,6 +57,8 @@ class ArtdaqCore(CMakePackage):
     def setup_environment(self, spack_env, run_env):
         spack_env.set('MESSAGEFACILITY_VERSION', self.spec['messagefacility'].version)
         spack_env.set('CANVAS_VERSION', self.spec['canvas'].version)
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
  
  
     def cmake_args(self):
