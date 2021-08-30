@@ -12,7 +12,9 @@ class IcarusData(Package):
             url="https://scisoft.fnal.gov/scisoft/packages/icarus_data/v09_26_00/icarus_data-09.26.00-noarch.tar.bz2")
 
     def install(self, spec, prefix):
-        install_tree('%s/v%s/icarus_data' % (self.stage.source_path, self.version.underscored) , prefix)
+        dest = '%s/v%s/icarus_data' % (self.stage.source_path, self.version.underscored)
+        os.makedirs(dest)
+        install_tree(dest , prefix)
 
     def setup_run_environment(self, env):
         env.set('ICARUS_DATA_VERSION', 'v%s' % self.version.underscored )
