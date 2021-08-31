@@ -70,9 +70,12 @@ class Triton(CMakePackage):
 
     @run_before('cmake')
     def patch_version(self):
-        filter_file('^project.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
+        filter_file( r'^project.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
            .format('client', self.version), 
            'build/client/CMakeLists.txt')
+        filter_file( r'data_files \+= \[\("bin", \["perf_analyzer", "perf_client"\]\)\]', 'data_files = data_files','src/clients/python/library/setup.py')
+        filter_file( r'.*\.\./\.\./\.\./(protobuf|grpc)/.*','','src/clients/c++/library/CMakeLists.txt')
+
 
     def flag_handler(self, name, flags):
         if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
@@ -86,7 +89,7 @@ class Triton(CMakePackage):
             '-DCMAKE_C_COMPILER=cc',
             '-DCMAKE_CXX_COMPILER=c++',
             '-DTRITON_CURL_WITHOUT_CONFIG:BOOL=ON',
-            '-DTRITON_CLIENT_SKIP_EXAMPLES:BOOL=OFF',
+            '-DTRITON_CLIENT_SKIP_EXAMPLES:BOOL=ON',
             '-DTRITON_ENABLE_HTTP:BOOL=OFF',
             '-DTRITON_ENABLE_GRPC:BOOL=ON',
             '-DTRITON_VERSION={0}'.format(self.spec.version),
@@ -126,12 +129,6 @@ class Triton(CMakePackage):
         env.prepend_path('CMAKE_PREFIX_PATH', self.stage.source_path +'/cmake/modules')
         pass
 
-
-    # we had two of these, the last one wins...
-    #def install(self, spec, prefix):
-    #    with working_dir(self.build_directory + '/src/clients/c++'):
-    #        make('install')
-
     root_cmakelists_dir = 'build/client'
 
     def flag_handler(self, name, flags):
@@ -139,6 +136,11 @@ class Triton(CMakePackage):
             flags.append('-Wno-error=deprecated-declarations')
             flags.append('-Wno-error=class-memaccess')
         return (flags, None, None)
+
+    @tryagain
+    def build(self, spec, prefix):
+        with working_dir(self.build_directory):
+            make('cshm','all')
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
