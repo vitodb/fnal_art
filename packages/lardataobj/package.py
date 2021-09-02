@@ -32,7 +32,7 @@ class Lardataobj(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataobj"
     url      = "https://github.com/LArSoft/lardataobj.git"
 
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardataovj.git', get_full_repo=True)
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardataobj.git', get_full_repo=True)
     version('09.01.02.01', tag='v09_01_02_01', git='https://github.com/LArSoft/lardataobj.git', get_full_repo=True)
     version('09.01.02', tag='v09_01_02', git='https://github.com/LArSoft/lardataobj.git', get_full_repo=True)
 

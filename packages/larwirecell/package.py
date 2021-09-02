@@ -31,7 +31,7 @@ class Larwirecell(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larwirecell"
     url      = "https://github.com/LArSoft/larwirecell.git"
 
-    version('09.30.00.rc', branch='origin/v09_30_00_rc_br', git='https://github.com/gartung/larwirecell.git', get_full_repo=True)
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larwirecell.git', get_full_repo=True)
 
     version('09.02.05', tag='v09_02_05', git='https://github.com/LArSoft/larwirecell.git', get_full_repo=True)
 
