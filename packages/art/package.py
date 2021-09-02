@@ -72,10 +72,6 @@ class Art(CMakePackage):
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
 
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
-
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
