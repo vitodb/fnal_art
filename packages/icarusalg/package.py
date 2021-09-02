@@ -50,8 +50,9 @@ class Icarusalg(CMakePackage):
     depends_on('lardataobj', type=('build','run'))
     depends_on('canvas-root-io', type=('build','run'))
     depends_on('canvas', type=('build','run'))
+    depends_on('boost', type=('build','run'))
 
-    patch('cetmodule2.patch')
+    patch('cetmodules2.patch')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

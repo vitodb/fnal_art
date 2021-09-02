@@ -22,29 +22,19 @@ class Art(CMakePackage):
     """
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/art'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art.v3_0_2.tbz2'
-    version('3.09.03', tag='v3_09_03', git=git_base, get_full_repo=True)
-    version('3.09.01', tag='v3_09_01', git=git_base, get_full_repo=True)
+    git_base = 'https://github.com/art-framework-suite/art.git'
+    url = 'https://github.com/art-framework-suite/art/archive/refs/tags/v3_09_01.tar.gz'
 
-    version('MVP1a', branch='feature/Spack-MVP1a',
-            git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
-    version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('v20_6-branch', branch='v2_06-branch', git=git_base, get_full_repo=True)
-    version('3.02.03', tag='v3_02_03', git=git_base, get_full_repo=True)
-    version('3.02.04', tag='v3_02_04', git=git_base, get_full_repo=True)
-    version('3.02.05', tag='v3_02_05', git=git_base, get_full_repo=True)
-    version('3.02.06', tag='v3_02_06', git=git_base, get_full_repo=True)
-    version('3.03.01', tag='v3_03_01', git=git_base, get_full_repo=True)
-    version('3.02.03', tag='v3_02_03', git=git_base, get_full_repo=True)
-    version('3.02.04', tag='v3_02_04', git=git_base, get_full_repo=True)
-    version('3.02.05', tag='v3_02_05', git=git_base, get_full_repo=True)
-    version('3.02.06', tag='v3_02_06', git=git_base, get_full_repo=True)
-    version('3.03.01', tag='v3_03_01', git=git_base, get_full_repo=True)
-    version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
-    version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
-    version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
+    version('3.09.03', sha256='f185fecd5593217185d2852d2ecf0a818326e7b4784180237461316b1c11f60d')
+    version('3.09.02', sha256='76ac3cd3de86c2b935ba6c32c3e4524d607b489e5ca2d3f10905010337144d6c')
+    version('3.09.01', sha256='f0039080405b27b798cbdef0948af725ab4efa27f0069f8cc27b4312d5ad6314')
+    version('MVP1a', branch='feature/Spack-MVP1a', git=git_base, preferred=True)
+    version('MVP', branch='feature/for_spack', git=git_base)
+    version('develop', branch='develop', git=git_base)
+
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
 
     variant('cxxstd',
             default='17',
