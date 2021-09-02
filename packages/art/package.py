@@ -4,8 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from llnl.util import tty
 import sys
 import os
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -24,6 +26,7 @@ class Art(CMakePackage):
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://github.com/art-framework-suite/art.git'
     url = 'https://github.com/art-framework-suite/art/archive/refs/tags/v3_09_01.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/art/tags'
 
     version('3.09.03', sha256='f185fecd5593217185d2852d2ecf0a818326e7b4784180237461316b1c11f60d')
     version('3.09.02', sha256='76ac3cd3de86c2b935ba6c32c3e4524d607b489e5ca2d3f10905010337144d6c')
@@ -35,6 +38,19 @@ class Art(CMakePackage):
     def url_for_version(self, version):
         url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
         return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        # FIXME: probably want to deal with pagination here (see
+        #        https://docs.github.com/en/rest/guides/traversing-with-pagination)
+        #        and possible error conditions like GitHub's rate
+        #        limiting.
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
