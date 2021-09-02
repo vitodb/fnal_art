@@ -33,6 +33,7 @@ class Nusimdata(CMakePackage):
 
     version('1.22.03', tag='v1_22_03', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
 
+    version('develop', git='https://cdcvs.fnal.gov/projects/nusimdata', branch='develop', get_full_repo=True)
     version('MVP1a', git='https://cdcvs.fnal.gov/projects/nusimdata', branch='feature/MVP1a', preferred=True)
     version('1.19.01', tag='v1_19_01', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
     version('1.19.02', tag='v1_19_02', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
@@ -43,6 +44,8 @@ class Nusimdata(CMakePackage):
     version('1.21.02', tag='v1_21_02', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
 
     patch('nusimdata.patch',when='@1.22.03') 
+
+    patch('cetmodules2.patch', when='@develop')
 
     variant('cxxstd',
             default='17',
@@ -56,6 +59,7 @@ class Nusimdata(CMakePackage):
     depends_on('canvas-root-io')
     depends_on('dk2nudata')
     depends_on('cetmodules', type='build')
+    depends_on('cetbuildtools', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -63,6 +67,11 @@ class Nusimdata(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        # Set LD_LIBRARY_PATH so CheckClassVersion.py can find cppyy lib
+        spack_env.prepend_path('LD_LIBRARY_PATH',
+                                join_path(self.spec['root'].prefix.lib))
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

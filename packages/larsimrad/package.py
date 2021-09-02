@@ -23,6 +23,7 @@ class Larsimrad(CMakePackage):
     git_base = 'https://github.com/SBNSoftware/larsimrad.git'
     url      = "https://cdcvs.fnal.gov/projects/larsimrad"
 
+    version('09.30.00.rc', branch='origin/v09_30_00_rc_br', git='https://github.com/gartung/larsimrad.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsimrad.git', get_full_repo=True)
     version('09.01.08', tag='v09_01_08', git=git_base, get_full_repo=True)
     version('09.01.08', tag='v09_01_08', git=git_base, get_full_repo=True)

@@ -30,6 +30,8 @@ class Larcorealg(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcorealg"
     url      = "https://github.com/LArSoft/larcorealg.git"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larcorealg.git', get_full_repo=True)
     version('09.01.01', tag='v09_01_01', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larcorealg.git', branch='feature/MVP1a', preferred=True)
@@ -61,6 +63,9 @@ class Larcorealg(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix) 
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

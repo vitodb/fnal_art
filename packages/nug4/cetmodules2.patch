@@ -1,0 +1,202 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a55337a..9313e44 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,10 +15,9 @@
+ 
+ cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
+ 
+-project(nug4 LANGUAGES CXX)
++project(nug4 VERSION 1.07.01 LANGUAGES CXX)
+ 
+-# cetbuildtools contains our cmake modules
+-find_package(cetbuildtools REQUIRED)
++find_package(cetmodules REQUIRED)
+ 
+ include(CetCMakeEnv)
+ cet_cmake_env()
+@@ -32,18 +31,41 @@ cet_set_compiler_flags(DIAGS CAUTIOUS WERROR
+ cet_report_compiler_flags()
+ 
+ # these are minimum required versions, not the actual product versions
+-find_ups_product( art )
+ find_ups_product(art_root_io)
+ find_ups_product(canvas_root_io)
+ find_ups_product( nusimdata )
+ find_ups_product( clhep )
+ find_ups_product( cetlib )
+ find_ups_product( cetlib_except )
+-find_ups_geant4( )
+ find_ups_root()
++find_package( art )
++find_package( Geant4 REQUIRED CONFIG OPTIONAL_COMPONENTS 
++    Geant4::G4FR
++    Geant4::G4GMocren
++    Geant4::G4RayTracer
++    Geant4::G4Tree
++    Geant4::G4VRML
++    Geant4::G4event
++    Geant4::G4geometry
++    Geant4::G4global
++    Geant4::G4intercoms
++    Geant4::G4materials
++    Geant4::G4modeling
++    Geant4::G4particles
++    Geant4::G4persistency
++    Geant4::G4physicslists
++    Geant4::G4processes
++    Geant4::G4readout
++    Geant4::G4run
++    Geant4::G4tracking
++    Geant4::G4visHepRep
++    Geant4::G4vis_management
++)
+ 
+ message(STATUS "ROOTSYS is ${ROOTSYS}")
+ 
++find_package(messagefacility)
++
+ # macros
+ include(ArtMake)
+ include(BuildPlugins)
+@@ -53,7 +75,9 @@ include(CetRootCint)
+ add_subdirectory (nug4)
+ 
+ # ups - table and config files
++if(WANT_UPS)
+ add_subdirectory(ups)
++endif()
+ 
+ # packaging utility
+ include(UseCPack)
+diff --git a/nug4/G4Base/CMakeLists.txt b/nug4/G4Base/CMakeLists.txt
+index a587ad0..66449d1 100644
+--- a/nug4/G4Base/CMakeLists.txt
++++ b/nug4/G4Base/CMakeLists.txt
+@@ -2,34 +2,34 @@
+ art_make( LIB_LIBRARIES nusimdata_SimulationBase
+                         nug4_MagneticFieldServices_MagneticFieldServiceStandard_service
+                         nug4_MagneticField
+-			                  canvas::canvas
+-                        ART_FRAMEWORK_SERVICES_REGISTRY
+-                        MF_MESSAGELOGGER
+-                        FHICLCPP
++			canvas::canvas
++                        art::Framework_Services_Registry
++                        messagefacility::MF_MessageLogger
++                        messagefacility::headers
++                        fhiclcpp::fhiclcpp fhiclcpp::types
+                         cetlib::cetlib
+                         cetlib_except::cetlib_except
+-                        G4FR
+-                        G4GMOCREN
+-                        G4RAYTRACER
+-                        G4TREE
+-                        G4VRML
+-                        G4EVENT
+-                        G4GEOMETRY
+-                        G4GLOBAL
+-                        G4INTERCOMS
+-                        G4MATERIALS
+-                        G4MODELING
+-                        G4PARTICLES
+-                        G4PERSISTENCY
+-                        G4PHYSICSLISTS
+-                        G4PROCESSES
+-                        G4READOUT
+-                        G4RUN
+-                        G4TRACKING
+-                        G4VISHEPREP
+-                        G4VIS_MANAGEMENT
+-                        XERCESC
+-                        CLHEP
++                        Geant4::G4FR
++                        Geant4::G4GMocren
++                        Geant4::G4RayTracer
++                        Geant4::G4Tree
++                        Geant4::G4VRML
++                        Geant4::G4event
++                        Geant4::G4geometry
++                        Geant4::G4global
++                        Geant4::G4intercoms
++                        Geant4::G4materials
++                        Geant4::G4modeling
++                        Geant4::G4particles
++                        Geant4::G4persistency
++                        Geant4::G4physicslists
++                        Geant4::G4processes
++                        Geant4::G4readout
++                        Geant4::G4run
++                        Geant4::G4tracking
++                        Geant4::G4visHepRep
++                        Geant4::G4vis_management
++                        ${XERCESC}
+                         )
+ 
+ install_headers()
+diff --git a/nug4/MagneticField/CMakeLists.txt b/nug4/MagneticField/CMakeLists.txt
+index cdf4437..88e5298 100644
+--- a/nug4/MagneticField/CMakeLists.txt
++++ b/nug4/MagneticField/CMakeLists.txt
+@@ -2,14 +2,12 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+ 
+ art_make(NO_PLUGINS
+           LIB_LIBRARIES
+-          G4GEOMETRY
+           messagefacility::MF_MessageLogger
+-          ${MF_UTILITIES}
++          messagefacility::headers
+           canvas::canvas
+-          fhiclcpp::fhiclcpp
++          fhiclcpp::fhiclcpp fhiclcpp::types
+           cetlib::cetlib
+           cetlib_except::cetlib_except
+-          ${CLHEP}
+           ${ROOT_BASIC_LIB_LIST}
+           ${ROOT_GEOM}
+           PUBLIC ${G4GEOMETRY}
+diff --git a/nug4/MagneticFieldServices/CMakeLists.txt b/nug4/MagneticFieldServices/CMakeLists.txt
+index de3854e..dc7387c 100644
+--- a/nug4/MagneticFieldServices/CMakeLists.txt
++++ b/nug4/MagneticFieldServices/CMakeLists.txt
+@@ -1,12 +1,11 @@
+ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+ 
+ simple_plugin( MagneticFieldServiceStandard "service"
++            LIBRARIES
+             messagefacility::MF_MessageLogger
+-            ${MF_UTILITIES}
++            messagefacility::headers
+             cetlib_except::cetlib_except
+             nug4_MagneticField
+-            G4GEOMETRY
+-            ${CLHEP}
+             ${ROOT_BASIC_LIB_LIST}
+             ${ROOT_GEOM} )
+ 
+diff --git a/nug4/ParticleNavigation/CMakeLists.txt b/nug4/ParticleNavigation/CMakeLists.txt
+index e526764..95d2aec 100644
+--- a/nug4/ParticleNavigation/CMakeLists.txt
++++ b/nug4/ParticleNavigation/CMakeLists.txt
+@@ -4,17 +4,15 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+ 
+ art_make( NO_PLUGINS
+           LIB_LIBRARIES nusimdata_SimulationBase
+-                        art::Framework_Core
+-			art::Framework_Principal
+-			art::Framework_Services_Registry
+ 			art::Persistency_Common
+ 			art::Persistency_Provenance
+ 			art::Utilities
+ 			canvas::canvas
++                        messagefacility::MF_MessageLogger
++                        cetlib::cetlib
++                        cetlib_except::cetlib_except
+ 			messagefacility::MF_MessageLogger
+-			${MF_UTILITIES}
+-        		cetlib::cetlib
+-			cetlib_except::cetlib_except
++			messagefacility::headers
+ 			${ROOT_BASIC_LIB_LIST}
+         )
+ 

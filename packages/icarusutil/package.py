@@ -49,7 +49,9 @@ class Icarusutil(CMakePackage):
     depends_on('larbatch')
     depends_on('py-pycurl')
     depends_on('cetmodules', type='build')
+    depends_on('cetbuildtools', type='build')
 
+    patch('cetmodules2.patch')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -57,7 +59,9 @@ class Icarusutil(CMakePackage):
                ]
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
@@ -68,17 +72,20 @@ class Icarusutil(CMakePackage):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
+        sanitize_environments(spack_env)
+
+    def setup_run_environment(self, run_env):
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
-            spack_env.prepend_path('ROOT_INCLUDE_PATH',
+            run_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.set('ICARUSUTIL_INC',self.prefix.include)

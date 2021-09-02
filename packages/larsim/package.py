@@ -21,6 +21,9 @@ class Larsim(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsim"
     url      = "https://github.com/LArSoft/larsim.git"
+
+    version('09.30.00.rc', branch='origin/v09_30_00_rc_br', git='https://github.com/gartung/larsim.git', get_full_repo=True)
+
     version('09.13.02.01', tag='v09_13_02_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
     version('09.13.01', tag='v09_13_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
 
@@ -59,7 +62,7 @@ class Larsim(CMakePackage):
     depends_on('nurandom')
     depends_on('sqlite')
     depends_on('cetmodules', type='build')
-  
+
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),

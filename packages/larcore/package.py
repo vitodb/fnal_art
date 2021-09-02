@@ -24,6 +24,7 @@ class Larcore(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcore"
     url      = "https://github.com/LArSoft/larcore.git"
 
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larcore.git', get_full_repo=True)
     version('09.24.01.01', tag='v09_02_01_01', git='https://github.com/marcmengel/larcore.git', get_full_repo=True)
     version('09.02.01', tag='v09_02_01', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
 

@@ -1,0 +1,124 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d4a3292..2ee3522 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -17,12 +17,9 @@ cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
+ 
+ project(nurandom VERSION 1.07.05 LANGUAGES CXX)
+ 
+-# cetbuildtools contains our cmake modules
+-find_package(cetbuildtools REQUIRED)
+-
+-list(APPEND CMAKE_MODULE_PATH
+-  $ENV{CANVAS_ROOT_IO_DIR}/Modules
+-  $ENV{ART_DIR}/Modules)
++find_package(cetmodules REQUIRED)
++find_package(canvas_root_io)
++find_package(art)
+ 
+ include(CetCMakeEnv)
+ cet_cmake_env()
+@@ -35,8 +32,9 @@ cet_report_compiler_flags()
+ 
+ # these are minimum required versions, not the actual product versions
+ find_ups_product(art_root_io)
+-find_ups_product( clhep )
++find_package(CLHEP COMPONENTS Random )
+ find_ups_root()
++find_package(messagefacility)
+ 
+ # macros
+ include(ArtMake)
+@@ -47,7 +45,9 @@ add_subdirectory (nurandom)
+ add_subdirectory (test)
+ 
+ # ups - table and config files
++if(WANT_UPS)
+ add_subdirectory(ups)
++endif()
+ 
+ # packaging utility
+ include(UseCPack)
+diff --git a/test/RandomUtils/CMakeLists.txt b/test/RandomUtils/CMakeLists.txt
+index 6956eeb..a9b4788 100644
+--- a/test/RandomUtils/CMakeLists.txt
++++ b/test/RandomUtils/CMakeLists.txt
+@@ -5,14 +5,14 @@ art_make(
+   LIB_LIBRARIES
+     nurandom_RandomUtils_NuRandomService_service
+     art::Framework_Core
+-    ${ART_FRAMEWORK_UTILITIES}
+-    ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
++    art::Utilities
++    art::Framework_Services_System_FloatingPointControl_service
+     messagefacility::MF_MessageLogger
+-    ${MF_UTILITIES}
+-    fhiclcpp::fhiclcpp
+-    cetlib::cetlib
+-    cetlib_except::cetlib_except
+-    ${CLHEP}
++    messagefacility::headers
++    fhiclcpp::fhiclcpp fhiclcpp::types
++    cetlib
++    cetlib_except
++    
+     NO_INSTALL
+   MODULE_LIBRARIES
+     nurandom_test_RandomUtils
+@@ -20,26 +20,28 @@ art_make(
+     art::Framework_Core
+     art::Framework_Principal
+     art::Framework_Services_Registry
+-    ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
++    art::Framework_Services_System_FloatingPointControl_service
+     messagefacility::MF_MessageLogger
+-    ${MF_UTILITIES}
+-    fhiclcpp::fhiclcpp
+-    cetlib::cetlib
+-    cetlib_except::cetlib_except
+-    ${CLHEP}
++    messagefacility::headers
++    fhiclcpp::fhiclcpp fhiclcpp::types
++    cetlib
++    cetlib_except
++    CLHEP::Random
++    
+     NO_INSTALL
+   SERVICE_LIBRARIES
+     nurandom_RandomUtils_NuRandomService_service
+-    art::Utilities
+-    canvas::canvas
++    art_Utilities
++    canvas
+     art::Framework_Services_Registry
+     messagefacility::MF_MessageLogger
+-    ${MF_UTILITIES}
+-    fhiclcpp::fhiclcpp
+-    cetlib::cetlib
+-    cetlib_except::cetlib_except
+-    ROOT::Core
++    messagefacility::headers
++    fhiclcpp::fhiclcpp fhiclcpp::types
++    cetlib
++    cetlib_except
++    ${ROOT_CORE}
+     ${ROOT_MATHCORE}
++    CLHEP::Random
+     NO_INSTALL
+   USE_PRODUCT_NAME
+ )
+diff --git a/test/RandomUtils/Providers/CMakeLists.txt b/test/RandomUtils/Providers/CMakeLists.txt
+index b480d51..ac127c4 100644
+--- a/test/RandomUtils/Providers/CMakeLists.txt
++++ b/test/RandomUtils/Providers/CMakeLists.txt
+@@ -6,8 +6,8 @@ cet_test( SeedMaster_test
+     art::Utilities
+     canvas::canvas
+     messagefacility::MF_MessageLogger
+-    ${MF_UTILITIES}
+-    fhiclcpp::fhiclcpp
++    messagefacility::headers
++    fhiclcpp::fhiclcpp fhiclcpp::types
+     cetlib::cetlib
+     cetlib_except::cetlib_except
+ )

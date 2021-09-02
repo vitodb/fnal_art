@@ -21,6 +21,8 @@ class Lardataalg(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataalg"
     url      = "https://github.com/LArSoft/lardataalg.git"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardataalg.git', get_full_repo=True)
     version('09.04.03.01', tag='v09_04_03_01', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
     version('09.04.03', tag='v09_04_03', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
 
@@ -51,6 +53,9 @@ class Lardataalg(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix) 
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

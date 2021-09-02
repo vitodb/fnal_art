@@ -22,6 +22,8 @@ class Larsoftobj(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoftobj"
     url      = "https://github.com/LArSoft/larsoftobj.git"
+
+    version('09.30.00.rc', branch='origin/v09_30_00_rc_br', git='https://github.com/gartung/larsoftobj.git', get_full_repo=True)
     version('09.05.03.01', tag='v09_05_03_01', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
     version('09.05.03', tag='v09_05_03', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
 
@@ -39,8 +41,6 @@ class Larsoftobj(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-
 
     depends_on('gallery')
     depends_on('lardataobj')

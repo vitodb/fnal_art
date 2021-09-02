@@ -21,6 +21,8 @@ class Larana(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larana"
     url      = "https://github.com/LArSoft/larana.git"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsoft.git', get_full_repo=True)
     version('09.02.05.01', tag='v09_02_05_01', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
     version('09.02.04', tag='v09_02_04', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
 
@@ -43,7 +45,6 @@ class Larana(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
 
 
     depends_on('larreco')

@@ -29,6 +29,7 @@ class Cetbuildtools(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/cetbuildtools"
 
     version('8.06.00', sha256='eeceb410c6ec710c384ea4b3bca4d02adc8b6d8c84886d9d3647204c32d3d8ef')
+    version('8.15.00', sha256='b9cd2ee60f282716b9cd42a3a569c25e549a6a3fae3d1fc95b845187a05ce13f')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'

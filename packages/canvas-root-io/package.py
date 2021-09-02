@@ -35,6 +35,7 @@ class CanvasRootIo(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/canvas_root_io'
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/canvas-root-io.v1_05_00.tbz2'
 
+    version('1.09.04', tag="v1_09_04", git=git_base, get_full_repo=True)
     version('1.09.02', tag="v1_09_02", git=git_base, get_full_repo=True)
     version('1.07.02', tag="v1_07_02", git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
@@ -95,6 +96,10 @@ class CanvasRootIo(CMakePackage):
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+
+        # Set LD_LIBRARY_PATH sp CheckClassVersion.py can find cppyy lib
+        spack_env.prepend_path('LD_LIBRARY_PATH',
+                                join_path(self.spec['root'].prefix.lib))
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
