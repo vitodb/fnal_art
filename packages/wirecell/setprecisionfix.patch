@@ -1,0 +1,10 @@
+--- spack-src/util/test/test_interpolate.cxx.orig	2021-09-05 20:49:47.861576962 -0500
++++ spack-src/util/test/test_interpolate.cxx	2021-09-05 20:50:05.319742885 -0500
+@@ -2,6 +2,7 @@
+ #include <boost/math/interpolators/cubic_b_spline.hpp>
+ 
+ #include <iostream>
++#include <iomanip>
+ 
+ // https://www.boost.org/doc/libs/1_65_0/libs/math/doc/html/math_toolkit/interpolate/cubic_b.html
+ 
