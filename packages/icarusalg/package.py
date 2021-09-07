@@ -47,7 +47,12 @@ class Icarusalg(CMakePackage):
 
     # Build and link dependencies.
     depends_on('gsl', type=('build','run'))
-    depends_on('larsoftobj', type=('build','run'))
+    depends_on('lardataobj', type=('build','run'))
+    depends_on('canvas-root-io', type=('build','run'))
+    depends_on('canvas', type=('build','run'))
+    depends_on('boost', type=('build','run'))
+
+    patch('cetmodules2.patch')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

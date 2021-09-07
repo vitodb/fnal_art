@@ -31,6 +31,8 @@ class Larsoft(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoft"
     url      = "https://github.com/LArSoft/larsoft.git"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsoft.git', get_full_repo=True)
     version('09.24.01', tag='v09_24_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
     version('09.23.01.01', tag='v09_23_01_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
     version('09.22.01', tag='v09_22_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)

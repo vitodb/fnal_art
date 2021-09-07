@@ -1,0 +1,72 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 536dfee..78066fd 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,10 +15,9 @@
+ 
+ cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
+ 
+-project(nutools LANGUAGES CXX)
++project(nutools VERSION 3.09.02 LANGUAGES CXX)
+ 
+-# cetbuildtools contains our cmake modules
+-find_package(cetbuildtools REQUIRED)
++find_package(cetmodules REQUIRED)
+ 
+ include(CetCMakeEnv)
+ cet_cmake_env()
+@@ -45,7 +44,7 @@ message(STATUS "ROOTSYS is ${ROOTSYS}")
+ 
+ ## find_library directives
+ # other dependencies
+-cet_find_library( CRY NAMES CRY PATHS ENV CRY_LIB NO_DEFAULT_PATH )
++cet_find_library( CRY NAMES CRY PATHS ENV CRY_LIB )
+ 
+ # macros
+ include(ArtMake)
+@@ -66,7 +65,9 @@ add_subdirectory (tools)
+ add_subdirectory (bundle)
+ 
+ # ups - table and config files
++if(WANT_UPS)
+ add_subdirectory(ups)
++endif()
+ 
+ # packaging utility
+ include(UseCPack)
+diff --git a/nutools/EventGeneratorBase/CRY/CMakeLists.txt b/nutools/EventGeneratorBase/CRY/CMakeLists.txt
+index 00dc51a..3788368 100644
+--- a/nutools/EventGeneratorBase/CRY/CMakeLists.txt
++++ b/nutools/EventGeneratorBase/CRY/CMakeLists.txt
+@@ -1,9 +1,11 @@
+ 
+ art_make( LIB_LIBRARIES nusimdata_SimulationBase
+-                        CRY
++                        ${CRY}
+                         messagefacility::MF_MessageLogger
+-                        ${MF_UTILITIES}
+-                        fhiclcpp::fhiclcpp
++                        messagefacility::headers
++                        fhiclcpp::fhiclcpp fhiclcpp::types
++                        cetlib
++			cetlib_except
+                         cetlib::cetlib
+ 			cetlib_except::cetlib_except
+                         ${ROOT_GEOM}
+diff --git a/tools/CMakeLists.txt b/tools/CMakeLists.txt
+index 8ae01eb..4f7cdfd 100644
+--- a/tools/CMakeLists.txt
++++ b/tools/CMakeLists.txt
+@@ -3,10 +3,10 @@ macro( _nu_install_tools )
+   cmake_parse_arguments( NT "" "DIRNAME" "SCRIPT_LIST" ${ARGN})
+   if( NT_DIRNAME )
+     install( PROGRAMS ${NT_SCRIPT_LIST}
+-             DESTINATION "${product}/${version}/tools/${NT_DIRNAME}" )
++             DESTINATION "${PROJECT_NAME}/${PROJECT_VERSION}/tools/${NT_DIRNAME}" )
+   else()
+     install( PROGRAMS ${NT_SCRIPT_LIST}
+-             DESTINATION "${product}/${version}/tools" )
++             DESTINATION "${PROJECT_NAME}/${PROJECT_VERSION}/tools" )
+   endif()
+ endmacro( _nu_install_tools )
+ 

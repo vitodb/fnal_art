@@ -88,6 +88,9 @@ class Gallery(CMakePackage):
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Set LD_LIBRARY_PATH sp CheckClassVersion.py can find cppyy lib
+        spack_env.prepend_path('LD_LIBRARY_PATH',
+                                join_path(self.spec['root'].prefix.lib))
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):

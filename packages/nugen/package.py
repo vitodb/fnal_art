@@ -24,7 +24,7 @@ class Nugen(CMakePackage):
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nugen.v1_10_02.tbz2'
 
     version('1.12.00', tag='v1_12_00', git=git_base, get_full_repo=True)
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('1.10.02', tag='v1_10_02', git=git_base, get_full_repo=True)
     version('1.10.01', tag='v1_10_01', git=git_base, get_full_repo=True)
     version('1.10.00', tag='v1_10_00', git=git_base, get_full_repo=True)
@@ -39,6 +39,8 @@ class Nugen(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('cetmodules2.patch', when='@develop')
 
     # Build-only dependencies.
     depends_on('cmake@3.12:', type='build')

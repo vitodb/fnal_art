@@ -25,6 +25,8 @@ class Larrecodnn(CMakePackage):
     url      = "https://github.com/LArSoft/larrecodnn.git"
 
 
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larrecodnn.git', get_full_repo=True)
+
     version('09.06.07', sha256='f0aca1bc7b53f07a377006c8f36e3682d29e29c2a1cedf478be40d263e03658f')
     version('9.06.06', sha256='b914e26f2537d1f26035a8c357f0ad09ba5c80d1c38fdaa62de9b72b559b0499')
     version('9.06.05', sha256='a99775d149afaf072a1b139795f9ba5075525ab85e42f52267bcced105257c2d')

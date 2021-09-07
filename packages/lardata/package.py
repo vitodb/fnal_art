@@ -21,6 +21,9 @@ class Lardata(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardata"
     url      = "https://github.com/LArSoft/lardata.git"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardata.git', get_full_repo=True)
+
     version('09.02.03', tag='v09_02_03', git='https://github.com/LArSoft/lardata.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/lardata.git', branch='feature/MVP1a')
@@ -51,7 +54,8 @@ class Lardata(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)
+                format(self.spec.variants['cxxstd'].value),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
                ]
         return args
 

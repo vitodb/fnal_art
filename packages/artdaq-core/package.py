@@ -26,8 +26,8 @@ class ArtdaqCore(CMakePackage):
  format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/artdaq-core.v1_2_3.tbz2"
-    version('develop', git = url, branch="develop")
+    url      = "https://cdcvs.fnal.gov/cvs/projects/artdaq-core"
+    version('develop', git = 'http://cdcvs.fnal.gov/projects/artdaq-core', branch="develop", git_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -39,27 +39,34 @@ class ArtdaqCore(CMakePackage):
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
+        return url.format( version.underscored)
 
 
     depends_on('art')
     depends_on('boost')
     depends_on('canvas')
     depends_on('canvas-root-io')
+    depends_on('art-root-io')
     depends_on('cetmodules', type='build')
+    depends_on('cetbuildtools', type='build')
     depends_on('clhep')
+    depends_on('fhicl-cpp')
     depends_on('messagefacility')
     depends_on('root')
     depends_on('sqlite')
     depends_on('tbb')
     depends_on('trace')
 
-    def setup_environment(self, spack_env, run_env):
+    patch('cetmodules2.patch')
+
+    def setup_build_environment(self, spack_env):
         spack_env.set('MESSAGEFACILITY_VERSION', self.spec['messagefacility'].version)
         spack_env.set('CANVAS_VERSION', self.spec['canvas'].version)
+        spack_env.set('FHICLCPP_VERSION', self.spec['fhicl-cpp'].version)
         spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
-        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
- 
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix) 
+        spack_env.set('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
+        spack_env.set('DISABLE_DOXYGEN', '1')
  
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
