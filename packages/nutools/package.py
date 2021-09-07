@@ -33,6 +33,7 @@ class Nutools(CMakePackage):
     version('develop', git="https://cdcvs.fnal.gov/projects/nutools", branch='develop', get_full_repo=True)
     version('3.09.02', tag='v3_09_02', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nutools', get_full_repo=True)
     version('MVP1a', git="https://cdcvs.fnal.gov/projects/nutools", branch='feature/MVP1a')
     version('3.04.02', tag='v3_04_02', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
     version('3.04.03', tag='v3_04_03', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
@@ -119,4 +120,3 @@ class Nutools(CMakePackage):
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
-    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nutools', get_full_repo=True)

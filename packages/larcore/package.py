@@ -22,12 +22,13 @@ class Larcore(CMakePackage):
     """Larcore"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcore"
-    url      = "https://github.com/LArSoft/larcore.git"
+    url      = "https://github.com/LArSoft/larcore/archive/v01_02_03.tar.gz"
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larcore.git', get_full_repo=True)
     version('09.24.01.01', tag='v09_02_01_01', git='https://github.com/marcmengel/larcore.git', get_full_repo=True)
     version('09.02.01', tag='v09_02_01', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larcore.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larcore.git', branch='feature/MVP1a')
     version('09.00.01', tag='v09_00_01', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
     version('08.07.00', tag='v08_07_00', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
@@ -118,4 +119,3 @@ class Larcore(CMakePackage):
             flags.append('-Wno-error=class-memaccess')
         return (flags, None, None)
 
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larcore.git', get_full_repo=True)

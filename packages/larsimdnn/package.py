@@ -21,7 +21,7 @@ class Larsimdnn(CMakePackage):
     """Larsim"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsim"
-    url      = "https://github.com/LArSoft/larsimdnn.git"
+    url      = "https://github.com/LArSoft/larsimdnn/archive/v01_02_03.tar.gz"
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsimdnn.git', get_full_repo=True)
 

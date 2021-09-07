@@ -11,7 +11,7 @@ class Larpandoracontent(CMakePackage):
     """Larpandoracontent"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
-    url      = "https://github.com/LArSoft/larpandoracontent.git"
+    url      = "https://github.com/LArSoft/larpandoracontent/archive/v01_02_03.tar.gz"
 
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larpandoracontent.git', get_full_repo=True)
@@ -42,8 +42,8 @@ class Larpandoracontent(CMakePackage):
     depends_on('pandora')
     depends_on('py-torch')
 
-    def setup_build_environment(self, env):
-        env.set("CETBUILDTOOLS_VERSION","cetmodules")
+    #def setup_build_environment(self, env):
+    #    env.set("CETBUILDTOOLS_VERSION","cetmodules")
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -53,5 +53,7 @@ class Larpandoracontent(CMakePackage):
                 '-DLAR_CONTENT_LIBRARY_NAME=LArPandoraContent',
                 '-DPandoraSDK_DIR={0}/cmakemodules'.format(self.spec['pandora'].prefix),
                 '-DPandoraMonitoring_DIR={0}/cmakemodules'.format(self.spec['pandora'].prefix),
+                '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))
                ]
         return args

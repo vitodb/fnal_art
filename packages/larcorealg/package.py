@@ -29,11 +29,12 @@ class Larcorealg(CMakePackage):
     """Larcorealg"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcorealg"
-    url      = "https://github.com/LArSoft/larcorealg.git"
+    url      = "https://github.com/LArSoft/larcorealg/archive/v01_02_03.tar.gz"
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larcorealg.git', get_full_repo=True)
     version('09.01.01', tag='v09_01_01', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larcorealg.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larcorealg.git', branch='feature/MVP1a', preferred=True)
     version('09.00.01', tag='v09_00_01', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
     version('09.00.00', tag='v09_00_00', git='https://github.com/LArSoft/larcorealg.git', get_full_repo=True)
@@ -107,4 +108,3 @@ class Larcorealg(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larcorealg.git', get_full_repo=True)

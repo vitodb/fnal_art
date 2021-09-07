@@ -20,12 +20,13 @@ class Larsim(CMakePackage):
     """Larsim"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsim"
-    url      = "https://github.com/LArSoft/larsim.git"
+    url      = "https://github.com/LArSoft/larsim/archive/v01_02_03.tar.gz"
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsim.git', get_full_repo=True)
 
     version('09.13.02.01', tag='v09_13_02_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
     version('09.13.01', tag='v09_13_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsim.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larsim.git', branch='feature/MVP1a')
     version('09.06.00', tag='v09_06_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
@@ -78,6 +79,7 @@ class Larsim(CMakePackage):
                 format(self.spec['larsoft-data'].prefix),
                 '-DLARSOFT_DATA_VERSION=v{0}'.
                 format(self.spec['larsoft-data'].version.underscored),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
         ]
         return args
 
@@ -88,6 +90,7 @@ class Larsim(CMakePackage):
         return (flags, None, None)
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
@@ -130,4 +133,3 @@ class Larsim(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsim.git', get_full_repo=True)

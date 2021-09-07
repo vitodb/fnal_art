@@ -51,6 +51,7 @@ class Icarusalg(CMakePackage):
     depends_on('canvas-root-io', type=('build','run'))
     depends_on('canvas', type=('build','run'))
     depends_on('boost', type=('build','run'))
+    depends_on('range-v3', type=('build','run'))
 
     patch('cetmodules2.patch')
 
@@ -71,6 +72,7 @@ class Icarusalg(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

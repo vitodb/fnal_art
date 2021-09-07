@@ -20,12 +20,13 @@ class Larana(CMakePackage):
     """Larana"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larana"
-    url      = "https://github.com/LArSoft/larana.git"
+    url      = "https://github.com/LArSoft/larana/archive/v01_02_03.tar.gz"
 
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsoft.git', get_full_repo=True)
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larana.git', get_full_repo=True)
     version('09.02.05.01', tag='v09_02_05_01', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
     version('09.02.04', tag='v09_02_04', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larana.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larana.git', branch='feature/MVP1a')
     version('09.00.15', tag='v09_00_15', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
     version('08.13.03', tag='v08_13_03', git='https://github.com/LArSoft/larana.git', get_full_repo=True)
@@ -99,5 +100,3 @@ class Larana(CMakePackage):
             flags.append('-Wno-error=deprecated-declarations')
             flags.append('-Wno-error=class-memaccess')
         return (flags, None, None)
-
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larana.git', get_full_repo=True)
