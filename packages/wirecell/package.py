@@ -64,6 +64,8 @@ class Wirecell(Package):
     # match what is listed in wire-cell-build/wscript
     depends_on("boost")
 
+    patch("setprecisionfix.patch",when="@0.14.0")
+
 
     def install(self, spec, prefix):
 
@@ -109,3 +111,9 @@ class Wirecell(Package):
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Cleanup.
         sanitize_environments(spack_env, run_env)
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
