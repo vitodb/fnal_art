@@ -5,6 +5,7 @@
 
 from spack import *
 import os
+import glob
 
 # decorator to try a method twice...
 def tryagain(f):
@@ -137,12 +138,18 @@ class Triton(CMakePackage):
             flags.append('-Wno-error=class-memaccess')
         return (flags, None, None)
 
-    @tryagain
-    def build(self, spec, prefix):
-        with working_dir(self.build_directory):
-            make('cshm','all')
+#    @tryagain
+#    def build(self, spec, prefix):
+#        with working_dir(self.build_directory):
+#            make('cshm','all')
 
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
             make('install')
+
+    @run_before('install')
+    def install_model_headers(self):
+        mkdirp(self.prefix.include)
+        for f in glob.glob(join_path(self.build_directory, 'src/core/*.pb.h' )):
+             copy(f, join_path(self.prefix.include, os.path.basename(f)))
 
