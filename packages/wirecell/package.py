@@ -65,6 +65,7 @@ class Wirecell(Package):
     depends_on("boost")
 
     patch("setprecisionfix.patch",when="@0.14.0")
+    patch("boost_spline.patch",when="@0.14.0")
 
 
     def install(self, spec, prefix):
