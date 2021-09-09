@@ -18,6 +18,8 @@ from the ifdhc package."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
     url      = "https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
+
+    version('2.12.04',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_12_02_01', get_full_repo=True)
     version('2.12.02.01',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_12_02_01', get_full_repo=True)
     version('2.11.05',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_11_05', get_full_repo=True)
 
@@ -31,7 +33,7 @@ from the ifdhc package."""
     version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02', get_full_repo=True)
     version('2.10.04',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_04', get_full_repo=True)
 
-    patch('cetmodules2.patch')
+    patch('cetmodules2.patch', when='@:2.12.03')
 
     variant('cxxstd',
             default='17',
