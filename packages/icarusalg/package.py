@@ -25,7 +25,7 @@ class Icarusalg(CMakePackage):
     #git_base = 'https://cdcvs.fnal.gov/projects/icarusalg'
     git_base = 'https://github.com/SBNSoftware/icarusalg.git'
 
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git='https://github.com/gartung/icarusalg.git', get_full_repo=True)
     version('09.06.00', tag='v09_06_00', git=git_base, get_full_repo=True)
     version('09.07.00', tag='v09_07_00', git=git_base, get_full_repo=True)
     version('09.08.00', tag='v09_08_00', git=git_base, get_full_repo=True)
@@ -46,13 +46,23 @@ class Icarusalg(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
+    depends_on('clhep', type=('build','run'))
     depends_on('gsl', type=('build','run'))
+    depends_on('cppgsl', type=('build','run'))
     depends_on('lardataobj', type=('build','run'))
+    depends_on('larcoreobj', type=('build','run'))
+    depends_on('lardataalg', type=('build','run'))
+    depends_on('larcorealg', type=('build','run'))
     depends_on('canvas-root-io', type=('build','run'))
     depends_on('canvas', type=('build','run'))
+    depends_on('cetlib-except', type=('build','run'))
+    depends_on('cetlib', type=('build','run'))
+    depends_on('messagefacility', type=('build','run'))
     depends_on('boost', type=('build','run'))
+    depends_on('tbb', type=('build','run'))
+    depends_on('range-v3', type=('build','run'))
+    depends_on('hep-concurrency', type=('build','run'))
 
-    patch('cetmodules2.patch')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -67,10 +77,13 @@ class Icarusalg(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-DCPPGSL_INC={0}'.
+                format(self.spec['cppgsl'].prefix.include)]
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

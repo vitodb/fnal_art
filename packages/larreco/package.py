@@ -29,13 +29,14 @@ class Larreco(CMakePackage):
     """Larreco"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larreco"
-    url      = "https://github.com/LArSoft/larreco.git"
+    url      = "https://github.com/LArSoft/larreco/archive/v01_02_03.tar.gz"
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larreco.git', get_full_repo=True)
 
     version('09.06.05.01', tag='v09_06_05_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
     version('09.06.04', tag='v09_06_04', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larreco.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larreco.git', branch='feature/MVP1a')
     version('09.04.01', tag='v09_04_01', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
     version('08.25.00', tag='v08_25_00', git='https://github.com/LArSoft/larreco.git', get_full_repo=True)
@@ -64,6 +65,7 @@ class Larreco(CMakePackage):
     depends_on('boost')
     depends_on('art')
     depends_on('canvas-root-io')
+    depends_on('cetlib-except')
     depends_on('larsim')
     depends_on('larsoft-data')
     depends_on('marley')
@@ -74,7 +76,8 @@ class Larreco(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)
+                format(self.spec.variants['cxxstd'].value),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
                ]
         return args
 
@@ -125,4 +128,3 @@ class Larreco(CMakePackage):
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
 
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larreco.git', get_full_repo=True)

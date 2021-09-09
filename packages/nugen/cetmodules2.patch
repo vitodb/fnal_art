@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4619f28..6de62e3 100644
+index 4619f28..6bdbc6c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -15,10 +15,9 @@
@@ -148,7 +148,7 @@ index 4619f28..6de62e3 100644
  
    # GENIE pre-R-3 used GSL via ROOT's Math libs, now makes direct call not available via that route
    find_ups_product(gsl)
-@@ -204,31 +204,41 @@ string(SUBSTRING "${GENIE_CONFIG_VERSION}" ${GCVMINORS} ${GCVMINORL} VMIN)
+@@ -204,31 +204,42 @@ string(SUBSTRING "${GENIE_CONFIG_VERSION}" ${GCVMINORS} ${GCVMINORL} VMIN)
  
  
  # dk2nu
@@ -190,6 +190,7 @@ index 4619f28..6de62e3 100644
  # source
  add_subdirectory (nugen)
  add_subdirectory (tools)
++add_subdirectory (cmakeConfig)
  
  # ups - table and config files
 +if(WANT_UPS)
@@ -198,6 +199,27 @@ index 4619f28..6de62e3 100644
  
  # packaging utility
  include(UseCPack)
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..3629050
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,3 @@
++
++# create package configuration and version files
++cet_cmake_config(CONFIG_FRAGMENTS nugen-fragment.cmake.in)
+diff --git a/cmakeConfig/nugen-fragment.cmake.in b/cmakeConfig/nugen-fragment.cmake.in
+new file mode 100644
+index 0000000..18ff201
+--- /dev/null
++++ b/cmakeConfig/nugen-fragment.cmake.in
+@@ -0,0 +1,6 @@
++find_package( ROOT REQUIRED COMPONENTS MathCore Geom GeomPainter GX11 EG EGPythia6 Gui)
++find_package( art REQUIRED)
++find_package( art_root_io REQUIRED)
++find_package( cetlib REQUIRED)
++find_package( cetlib_except REQUIRED)
++find_package( nusimdata REQUIRED )
 diff --git a/nugen/EventGeneratorBase/test/CMakeLists.txt b/nugen/EventGeneratorBase/test/CMakeLists.txt
 index 5c9f58a..cd466f4 100644
 --- a/nugen/EventGeneratorBase/test/CMakeLists.txt

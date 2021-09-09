@@ -32,10 +32,9 @@ class Icaruscode(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/icaruscode'
-    git_base = 'https://cdcvs.fnal.gov/projects/icaruscode'
     git_base = 'https://github.com/SBNSoftware/icaruscode.git'
 
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git='https://github.com/gartung/icaruscode.git', get_full_repo=True)
     version('08.43.00', tag='v08_43_00', git=git_base, get_full_repo=True)
     version('08.41.00', tag='v08_41_00', git=git_base, get_full_repo=True)
     version('08.40.00', tag='v08_40_00', git=git_base, get_full_repo=True)

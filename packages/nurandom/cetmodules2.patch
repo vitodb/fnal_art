@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index d4a3292..2ee3522 100644
+index d4a3292..ee5a306 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -17,12 +17,9 @@ cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
@@ -18,20 +18,24 @@ index d4a3292..2ee3522 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -35,8 +32,9 @@ cet_report_compiler_flags()
+@@ -35,8 +32,10 @@ cet_report_compiler_flags()
  
  # these are minimum required versions, not the actual product versions
  find_ups_product(art_root_io)
 -find_ups_product( clhep )
 +find_package(CLHEP COMPONENTS Random )
++find_package(Boost COMPONENTS system )
  find_ups_root()
 +find_package(messagefacility)
  
  # macros
  include(ArtMake)
-@@ -47,7 +45,9 @@ add_subdirectory (nurandom)
+@@ -45,9 +44,11 @@ include(BuildPlugins)
+ # source
+ add_subdirectory (nurandom)
  add_subdirectory (test)
- 
+-
++add_subdirectory(cmakeConfig)
  # ups - table and config files
 +if(WANT_UPS)
  add_subdirectory(ups)
@@ -39,8 +43,89 @@ index d4a3292..2ee3522 100644
  
  # packaging utility
  include(UseCPack)
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..e3d411c
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,3 @@
++
++# create package configuration and version files
++cet_cmake_config(CONFIG_FRAGMENTS nurandom-fragment.cmake.in)
+diff --git a/cmakeConfig/nurandom-fragment.cmake.in b/cmakeConfig/nurandom-fragment.cmake.in
+new file mode 100644
+index 0000000..dbfc3f5
+--- /dev/null
++++ b/cmakeConfig/nurandom-fragment.cmake.in
+@@ -0,0 +1,9 @@
++find_package( ROOT REQUIRED COMPONENTS MathCore Geom GeomPainter GX11 EG EGPythia6 Gui)
++find_package( art REQUIRED)
++find_package( art_root_io REQUIRED)
++find_package( Boost REQUIRED COMPONENTS system)
++find_package( cetlib REQUIRED)
++find_package( cetlib_except REQUIRED)
++find_package( nusimdata REQUIRED )
++find_package( Geant4 REQUIRED)
++
+diff --git a/nurandom/RandomUtils/CMakeLists.txt b/nurandom/RandomUtils/CMakeLists.txt
+index 55ecfc0..0682a6b 100644
+--- a/nurandom/RandomUtils/CMakeLists.txt
++++ b/nurandom/RandomUtils/CMakeLists.txt
+@@ -3,28 +3,28 @@ add_subdirectory(Providers)
+ art_make(
+   SERVICE_LIBRARIES
+     nurandom_RandomUtils_Providers
+-    art_Framework_Core
++    art::Framework_Core
+     art::Framework_Principal
+     art::Framework_Services_Registry
+     art::Persistency_Provenance
+     art::Utilities
+     art::Framework_Services_Optional_RandomNumberGenerator_service
+     canvas::canvas
+-    MF_MessageLogger
+-    fhiclcpp
++    messagefacility::MF_MessageLogger
++    fhiclcpp::fhiclcpp
+     cetlib::cetlib
+     cetlib_except::cetlib_except
+     ROOT::Core
+   PLUGIN_LIBRARIES
+-    art_Framework_Core
++    art::Framework_Core
+     art::Persistency_Provenance
+     canvas::canvas
+-    MF_MessageLogger
+-    fhiclcpp
++    messagefacility::MF_MessageLogger
++    fhiclcpp::fhiclcpp
+     cetlib::cetlib
+     cetlib_except::cetlib_except
+-    ${Boost_FILESYSTEM_LIBRARY}
+-    ${Boost_SYSTEM_LIBRARY}
++    Boost::filesystem
++    Boost::system
+ )
+ 
+ install_source()
+diff --git a/nurandom/RandomUtils/Providers/CMakeLists.txt b/nurandom/RandomUtils/Providers/CMakeLists.txt
+index 8fc0d89..03ca2b3 100644
+--- a/nurandom/RandomUtils/Providers/CMakeLists.txt
++++ b/nurandom/RandomUtils/Providers/CMakeLists.txt
+@@ -1,8 +1,8 @@
+ cet_make(
+   LIBRARIES
+-    fhiclcpp
+-    cetlib
+-    cetlib_except
++    fhiclcpp::fhiclcpp
++    cetlib::cetlib
++    cetlib_except::cetlib_except
+ )
+ 
+ 
 diff --git a/test/RandomUtils/CMakeLists.txt b/test/RandomUtils/CMakeLists.txt
-index 6956eeb..a9b4788 100644
+index 6956eeb..0ae4444 100644
 --- a/test/RandomUtils/CMakeLists.txt
 +++ b/test/RandomUtils/CMakeLists.txt
 @@ -5,14 +5,14 @@ art_make(
@@ -54,13 +139,11 @@ index 6956eeb..a9b4788 100644
      messagefacility::MF_MessageLogger
 -    ${MF_UTILITIES}
 -    fhiclcpp::fhiclcpp
--    cetlib::cetlib
--    cetlib_except::cetlib_except
--    ${CLHEP}
 +    messagefacility::headers
 +    fhiclcpp::fhiclcpp fhiclcpp::types
-+    cetlib
-+    cetlib_except
+     cetlib::cetlib
+     cetlib_except::cetlib_except
+-    ${CLHEP}
 +    
      NO_INSTALL
    MODULE_LIBRARIES
@@ -74,13 +157,11 @@ index 6956eeb..a9b4788 100644
      messagefacility::MF_MessageLogger
 -    ${MF_UTILITIES}
 -    fhiclcpp::fhiclcpp
--    cetlib::cetlib
--    cetlib_except::cetlib_except
--    ${CLHEP}
 +    messagefacility::headers
 +    fhiclcpp::fhiclcpp fhiclcpp::types
-+    cetlib
-+    cetlib_except
+     cetlib::cetlib
+     cetlib_except::cetlib_except
+-    ${CLHEP}
 +    CLHEP::Random
 +    
      NO_INSTALL
@@ -94,15 +175,13 @@ index 6956eeb..a9b4788 100644
      messagefacility::MF_MessageLogger
 -    ${MF_UTILITIES}
 -    fhiclcpp::fhiclcpp
--    cetlib::cetlib
--    cetlib_except::cetlib_except
--    ROOT::Core
 +    messagefacility::headers
 +    fhiclcpp::fhiclcpp fhiclcpp::types
-+    cetlib
-+    cetlib_except
-+    ${ROOT_CORE}
-     ${ROOT_MATHCORE}
+     cetlib::cetlib
+     cetlib_except::cetlib_except
+     ROOT::Core
+-    ${ROOT_MATHCORE}
++    ROOT::MathCore
 +    CLHEP::Random
      NO_INSTALL
    USE_PRODUCT_NAME

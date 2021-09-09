@@ -28,12 +28,13 @@ class Larexamples(CMakePackage):
     """Larexamples"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larexamples"
-    url      = "https://github.com/LArSoft/larexamples.git"
+    url      = "https://github.com/LArSoft/larexamples/archive/v01_02_03.tar.gz"
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larexamples.git', get_full_repo=True)
     version('09.01.09.01', tag='v09_01_09_01', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
     version('09.01.08', tag='v09_01_08', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larexamples.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larexamples.git', branch='feature/MVP1a')
     version('08.04.01', tag='v08_04_01', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
     version('08.05.00', tag='v08_05_00', git='https://github.com/LArSoft/larexamples.git', get_full_repo=True)
@@ -53,6 +54,7 @@ class Larexamples(CMakePackage):
 
 
     depends_on('larsim')
+    depends_on('root')
     depends_on('cetmodules', type='build')
     depends_on('larsoft-data', type='build')
 
@@ -63,6 +65,7 @@ class Larexamples(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
@@ -105,4 +108,3 @@ class Larexamples(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larexamples.git', get_full_repo=True)

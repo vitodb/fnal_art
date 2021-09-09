@@ -33,6 +33,7 @@ class Nurandom(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/nurandom'
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nurandom.v1_05_02.tbz2'
 
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nurandom', get_full_repo=True)
     version('1.05.02', tag='v1_05_02', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
@@ -109,4 +110,3 @@ class Nurandom(CMakePackage):
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env, run_env)
-    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nurandom', get_full_repo=True)

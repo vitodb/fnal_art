@@ -21,12 +21,13 @@ class Larevt(CMakePackage):
     """Larevt"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larevt"
-    url      = "https://github.com/LArSoft/larevt.git"
+    url      = "https://github.com/LArSoft/larevt/archive/v01_02_03.tar.gz"
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larevt.git', get_full_repo=True)
     version('09.02.05.01', tag='v09_02_05_01', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
     version('09.02.04', tag='v09_02_04', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larevt.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larevt.git', branch='feature/MVP1a')
     version('09.00.08', tag='v09_00_08', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
     version('09.00.00', tag='v09_00_00', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
@@ -101,4 +102,3 @@ class Larevt(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larevt.git', get_full_repo=True)
