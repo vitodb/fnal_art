@@ -81,6 +81,7 @@ class Nutools(CMakePackage):
                 format(self.spec.variants['cxxstd'].value),
                 '-DCRYHOME={0}'.format(self.spec['cry'].prefix),
                 '-DGENIE_INC={0}'.format(self.spec['genie'].prefix),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
                ]
         return args
 

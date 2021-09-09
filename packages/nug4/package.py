@@ -43,6 +43,7 @@ class Nug4(CMakePackage):
     depends_on('cetbuildtools', type='build')
     depends_on('art')
     depends_on('art-root-io')
+    depends_on('boost')
     depends_on('nusimdata')
     depends_on('cetlib')
     depends_on('cetlib-except')
@@ -58,7 +59,8 @@ class Nug4(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1']
         return args
 
     def setup_environment(self, spack_env, run_env):

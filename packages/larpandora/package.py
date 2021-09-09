@@ -46,6 +46,8 @@ class Larpandora(CMakePackage):
     depends_on('messagefacility')
     depends_on('canvas')
     depends_on('art-root-io')
+    depends_on('nug4')
+    depends_on('nusimdata')
     depends_on('larreco')
     depends_on('larpandoracontent')
     depends_on('root')
