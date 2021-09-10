@@ -7,15 +7,6 @@ from spack import *
 
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
 
 class Artg4tk(CMakePackage):
     """Artg4tk """
@@ -51,7 +42,7 @@ class Artg4tk(CMakePackage):
             description='Use the specified C++ standard when building.')
 
 
-    patch('cetmodules2.patch')
+    patch('mwm.patch')
     depends_on('cetmodules', type='build')
     depends_on('cetbuildtools', type='build')
     depends_on('art')

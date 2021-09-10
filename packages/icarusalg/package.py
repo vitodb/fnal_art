@@ -33,6 +33,7 @@ class Icarusalg(CMakePackage):
     version('09.09.01', tag='v09_09_01', git=git_base, get_full_repo=True)
     version('09.10.01', tag='v09_10_01', git=git_base, get_full_repo=True)
 
+    patch('mwm.patch', when='@09.28.01')
 
 
     variant('cxxstd',
@@ -83,6 +84,11 @@ class Icarusalg(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+$ENV{NUSIMDATA_INC} $ENV{LARCOREOBJ_INC} $ENV{LARDATAOBJ_INC}
+        # easier to set these than patch the CMakeLists.txts for now
+        spack_env.setenv('NUSIMDATA_INC',self.spec['nusimdata'].prefix.include)
+        spack_env.setenv('LARCOREOBJ_INC',self.spec['larcoreobj'].prefix.include)
+        spack_env.setenv('LARDATAOBJ_INC',self.spec['lardataobj'].prefix.include)
         spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',

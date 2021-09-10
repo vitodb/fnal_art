@@ -57,7 +57,10 @@ class ArtdaqCore(CMakePackage):
     depends_on('tbb')
     depends_on('trace')
 
-    patch('cetmodules2.patch')
+    # patch('cetmodules2.patch')
+
+    def patch(self):
+        filter_file(r'add_subdirectory\(ups\)','if(WANT_UPS)\nadd_subdirectory(ups)\nendif()','CMakeLists.txt')
 
     def setup_build_environment(self, spack_env):
         spack_env.set('MESSAGEFACILITY_VERSION', self.spec['messagefacility'].version)
