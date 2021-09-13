@@ -42,8 +42,8 @@ class Larpandoracontent(CMakePackage):
     depends_on('pandora')
     depends_on('py-torch')
 
-    #def setup_build_environment(self, env):
-    #    env.set("CETBUILDTOOLS_VERSION","cetmodules")
+    def setup_build_environment(self, env):
+        env.set("CETBUILDTOOLS_VERSION","1")
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

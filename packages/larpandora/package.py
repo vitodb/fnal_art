@@ -50,13 +50,16 @@ class Larpandora(CMakePackage):
     depends_on('nusimdata')
     depends_on('larreco')
     depends_on('larpandoracontent')
+    depends_on('py-torch')
     depends_on('root')
     depends_on('postgresql')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)
+                format(self.spec.variants['cxxstd'].value),
+                '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))
                ]
         return args
 

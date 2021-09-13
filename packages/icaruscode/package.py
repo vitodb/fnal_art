@@ -94,8 +94,11 @@ class Icaruscode(CMakePackage):
     depends_on('postgresql', type=('build','run'))
     depends_on('range-v3', type=('build','run'))
     depends_on('sbndaq-artdaq-core', type=('build','run'))
+    depends_on('sbnobj', type=('build','run'))
     depends_on('sqlite', type=('build','run'))
     depends_on('trace', type=('build','run'))
+    depends_on('protobuf', type=('build','run'))
+    depends_on('py-torch', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -110,10 +113,19 @@ class Icaruscode(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-Dicaruscode_FW_DIR=fw',
+                '-Dicaruscode_WP_DIR={0}'.
+                format(self.spec['wirecell'].prefix), 
+                '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))
+                ]
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
