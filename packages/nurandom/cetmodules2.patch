@@ -68,14 +68,16 @@ index 0000000..dbfc3f5
 +find_package( Geant4 REQUIRED)
 +
 diff --git a/nurandom/RandomUtils/CMakeLists.txt b/nurandom/RandomUtils/CMakeLists.txt
-index 55ecfc0..0682a6b 100644
+index 55ecfc0..a038e70 100644
 --- a/nurandom/RandomUtils/CMakeLists.txt
 +++ b/nurandom/RandomUtils/CMakeLists.txt
-@@ -3,28 +3,28 @@ add_subdirectory(Providers)
+@@ -2,29 +2,29 @@ add_subdirectory(Providers)
+ 
  art_make(
    SERVICE_LIBRARIES
-     nurandom_RandomUtils_Providers
+-    nurandom_RandomUtils_Providers
 -    art_Framework_Core
++    nurandom::RandomUtils_Providers
 +    art::Framework_Core
      art::Framework_Principal
      art::Framework_Services_Registry
@@ -108,6 +110,28 @@ index 55ecfc0..0682a6b 100644
  )
  
  install_source()
+diff --git a/nurandom/RandomUtils/NuRandomService.h b/nurandom/RandomUtils/NuRandomService.h
+index 4261b5a..bab2578 100644
+--- a/nurandom/RandomUtils/NuRandomService.h
++++ b/nurandom/RandomUtils/NuRandomService.h
+@@ -289,7 +289,7 @@ namespace rndm {
+    * the seed of the engine to that value, and it will mark the engine as
+    * "frozen" (meaning that `NuRandomService` will not ever set a seed again on
+    * that engine). [see also the
+-   * @link nurandom_NuRandomService_SpecialSeedValue "exception to this rule"
++   * @link nurandom::NuRandomService_SpecialSeedValue "exception to this rule"
+    * below]
+    * Likewise, if the optional parameter is specified, its value will be
+    * honored, and the service will be queried for an automatic seed otherwise.
+@@ -308,7 +308,7 @@ namespace rndm {
+    * "Seed", then "MySeed" in this example). In other words, if "Seed" exists,
+    * its value is used as seed, otherwise if "MySeed" exists, its value is used
+    * instead, and otherwise NuRandomService is given control on that seed.
+-   * @anchor nurandom_NuRandomService_SpecialSeedValue
++   * @anchor nurandom::NuRandomService_SpecialSeedValue
+    * The exception is that if the specified seed is a "magic value", the
+    * `InvalidSeed` (`0`), it is interpreted as a request to ignore the parameter
+    * and use the service to get the seed. This is made as a quick way to remove
 diff --git a/nurandom/RandomUtils/Providers/CMakeLists.txt b/nurandom/RandomUtils/Providers/CMakeLists.txt
 index 8fc0d89..03ca2b3 100644
 --- a/nurandom/RandomUtils/Providers/CMakeLists.txt
@@ -125,12 +149,15 @@ index 8fc0d89..03ca2b3 100644
  
  
 diff --git a/test/RandomUtils/CMakeLists.txt b/test/RandomUtils/CMakeLists.txt
-index 6956eeb..0ae4444 100644
+index 6956eeb..97847b1 100644
 --- a/test/RandomUtils/CMakeLists.txt
 +++ b/test/RandomUtils/CMakeLists.txt
-@@ -5,14 +5,14 @@ art_make(
+@@ -3,43 +3,45 @@ add_subdirectory(Providers)
+ art_make(
+   EXCLUDE GeneratedEventTimestampTestPlugin_plugin.cc
    LIB_LIBRARIES
-     nurandom_RandomUtils_NuRandomService_service
+-    nurandom_RandomUtils_NuRandomService_service
++    nurandom::RandomUtils_NuRandomService_service
      art::Framework_Core
 -    ${ART_FRAMEWORK_UTILITIES}
 -    ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
@@ -147,8 +174,10 @@ index 6956eeb..0ae4444 100644
 +    
      NO_INSTALL
    MODULE_LIBRARIES
-     nurandom_test_RandomUtils
-@@ -20,26 +20,28 @@ art_make(
+-    nurandom_test_RandomUtils
+-    nurandom_RandomUtils_NuRandomService_service
++    nurandom::test_RandomUtils
++    nurandom::RandomUtils_NuRandomService_service
      art::Framework_Core
      art::Framework_Principal
      art::Framework_Services_Registry
@@ -166,10 +195,10 @@ index 6956eeb..0ae4444 100644
 +    
      NO_INSTALL
    SERVICE_LIBRARIES
-     nurandom_RandomUtils_NuRandomService_service
--    art::Utilities
+-    nurandom_RandomUtils_NuRandomService_service
++    nurandom::RandomUtils_NuRandomService_service
+     art::Utilities
 -    canvas::canvas
-+    art_Utilities
 +    canvas
      art::Framework_Services_Registry
      messagefacility::MF_MessageLogger
@@ -187,10 +216,15 @@ index 6956eeb..0ae4444 100644
    USE_PRODUCT_NAME
  )
 diff --git a/test/RandomUtils/Providers/CMakeLists.txt b/test/RandomUtils/Providers/CMakeLists.txt
-index b480d51..ac127c4 100644
+index b480d51..2de5ed7 100644
 --- a/test/RandomUtils/Providers/CMakeLists.txt
 +++ b/test/RandomUtils/Providers/CMakeLists.txt
-@@ -6,8 +6,8 @@ cet_test( SeedMaster_test
+@@ -2,12 +2,12 @@
+ cet_test( SeedMaster_test
+   NO_AUTO
+   LIBRARIES
+-    nurandom_RandomUtils_Providers
++    nurandom::RandomUtils_Providers
      art::Utilities
      canvas::canvas
      messagefacility::MF_MessageLogger
