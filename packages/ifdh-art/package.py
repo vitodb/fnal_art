@@ -33,7 +33,7 @@ from the ifdhc package."""
     version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02', get_full_repo=True)
     version('2.10.04',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_04', get_full_repo=True)
 
-    patch('cetmodules2.patch', when='@:2.12.03')
+    patch('cetmodules2.patch', when='@develop')
 
     variant('cxxstd',
             default='17',
@@ -48,6 +48,7 @@ from the ifdhc package."""
     depends_on('libwda')
     depends_on('cetmodules', type='build')
     depends_on('cetbuildtools', type='build')
+
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

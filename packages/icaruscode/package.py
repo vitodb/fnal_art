@@ -73,7 +73,7 @@ class Icaruscode(CMakePackage):
     depends_on('ifdh-art', type=('build','run'))
     depends_on('tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
-    #depends_on('icarus-signal-processing', type=('build','run'),when="@09.00:")
+    depends_on('icarus-signal-processing', type=('build','run'))
     depends_on('icarusutil', type=('build','run'))
     depends_on('larsoft', type=('build','run'))
     depends_on('larana', type=('build','run'))
@@ -82,6 +82,7 @@ class Icaruscode(CMakePackage):
     depends_on('lardataobj', type=('build','run'))
     depends_on('lardata', type=('build','run'))
     depends_on('larevt', type=('build','run'))
+    depends_on('pandora', type=('build','run'))
     depends_on('larpandora', type=('build','run'))
     depends_on('larpandoracontent', type=('build','run'))
     depends_on('larreco', type=('build','run'))
@@ -89,7 +90,6 @@ class Icaruscode(CMakePackage):
     depends_on('libwda', type=('build','run'))
     depends_on('marley', type=('build','run'))
     depends_on('nug4', type=('build','run'))
-    # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
     depends_on('range-v3', type=('build','run'))
@@ -118,7 +118,11 @@ class Icaruscode(CMakePackage):
                 '-Dicaruscode_WP_DIR={0}'.
                 format(self.spec['wirecell'].prefix), 
                 '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
-                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2)),
+                '-DCPPGSL_INC={0}'.
+                format(self.spec['cppgsl'].prefix.include),
+                '-DTRACE_INC={0}'.
+                format(self.spec['trace'].prefix.include),
                 ]
         return args
 

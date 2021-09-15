@@ -35,7 +35,7 @@ class IcarusSignalProcessing(CMakePackage):
     #git_base = 'https://cdcvs.fnal.gov/projects/icarus_signal_processing'
     git_base = 'https://github.com/SBNSoftware/icarus_signal_processing.git'
 
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('08.44.00', tag='v08_44_00', git=git_base, get_full_repo=True)
     version('08.47.00', tag='v08_47_00', git=git_base, get_full_repo=True)
     version('08.50.00', tag='v08_50_00', git=git_base, get_full_repo=True)
@@ -53,25 +53,11 @@ class IcarusSignalProcessing(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
-    depends_on('art', type=('build','run'))
-    depends_on('boost', type=('build','run'))
-    depends_on('canvas', type=('build','run'))
-    depends_on('canvas-root-io', type=('build','run'))
-    depends_on('clhep', type=('build','run'))
-    depends_on('hep-concurrency', type=('build','run'))
-    depends_on('nutools', type=('build','run'))
-    depends_on('larsoft', type=('build','run'))
-    depends_on('cetlib-except', type=('build','run'))
-    depends_on('range-v3', type=('build','run'))
-    depends_on('geant4', type=('build','run'))
-    depends_on('postgresql', type=('build','run'))
-    depends_on('artg4tk', type=('build','run'))
-    depends_on('larpandoracontent', type=('build','run'))
     depends_on('fftw', type=('build','run'))
-    depends_on('marley', type=('build','run'))
-    depends_on('larsoft-data', type=('build','run'))
-    depends_on('eigen', type=('build','run'))
+    depends_on('root', type=('build','run'))
 
+    patch('cetmodules2.patch')
+    
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):

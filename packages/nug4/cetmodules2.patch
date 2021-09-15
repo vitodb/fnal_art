@@ -103,17 +103,21 @@ index 0000000..d022213
 +find_package( Geant4 REQUIRED)
 +
 diff --git a/nug4/G4Base/CMakeLists.txt b/nug4/G4Base/CMakeLists.txt
-index a587ad0..66449d1 100644
+index a587ad0..4b538e3 100644
 --- a/nug4/G4Base/CMakeLists.txt
 +++ b/nug4/G4Base/CMakeLists.txt
-@@ -2,34 +2,34 @@
- art_make( LIB_LIBRARIES nusimdata_SimulationBase
-                         nug4_MagneticFieldServices_MagneticFieldServiceStandard_service
-                         nug4_MagneticField
+@@ -1,35 +1,35 @@
+ 
+-art_make( LIB_LIBRARIES nusimdata_SimulationBase
+-                        nug4_MagneticFieldServices_MagneticFieldServiceStandard_service
+-                        nug4_MagneticField
 -			                  canvas::canvas
 -                        ART_FRAMEWORK_SERVICES_REGISTRY
 -                        MF_MESSAGELOGGER
 -                        FHICLCPP
++art_make( LIB_LIBRARIES nusimdata::SimulationBase
++                        nug4::MagneticFieldServices_MagneticFieldServiceStandard_service
++                        nug4::MagneticField
 +			canvas::canvas
 +                        art::Framework_Services_Registry
 +                        messagefacility::MF_MessageLogger
@@ -218,16 +222,18 @@ index de3854e..c379ef3 100644
  install_headers()
  install_fhicl()
 diff --git a/nug4/ParticleNavigation/CMakeLists.txt b/nug4/ParticleNavigation/CMakeLists.txt
-index e526764..0cc082e 100644
+index e526764..966d2e5 100644
 --- a/nug4/ParticleNavigation/CMakeLists.txt
 +++ b/nug4/ParticleNavigation/CMakeLists.txt
-@@ -4,18 +4,16 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+@@ -3,19 +3,17 @@
+ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
  
  art_make( NO_PLUGINS
-           LIB_LIBRARIES nusimdata_SimulationBase
+-          LIB_LIBRARIES nusimdata_SimulationBase
 -                        art::Framework_Core
 -			art::Framework_Principal
 -			art::Framework_Services_Registry
++          LIB_LIBRARIES nusimdata::SimulationBase
  			art::Persistency_Common
  			art::Persistency_Provenance
  			art::Utilities

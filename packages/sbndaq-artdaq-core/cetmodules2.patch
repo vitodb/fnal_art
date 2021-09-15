@@ -63,6 +63,19 @@ index ff6223d..bf2c76e 100644
  # packaging utility
 -include(UseCPack)
 +cet_cmake_config()
+diff --git a/sbndaq-artdaq-core/Overlays/Common/CMakeLists.txt b/sbndaq-artdaq-core/Overlays/Common/CMakeLists.txt
+index e0450e0..8c42075 100644
+--- a/sbndaq-artdaq-core/Overlays/Common/CMakeLists.txt
++++ b/sbndaq-artdaq-core/Overlays/Common/CMakeLists.txt
+@@ -28,7 +28,7 @@ cet_make_library( LIBRARY_NAME sbndaq-artdaq-core_Overlays_Common
+ 		  ${CETLIB_EXCEPT}
+ 		  ${ROOT_BASIC_LIB_LIST}
+ 		  ${ARTDAQ-CORE_UTILITIES}
+-                  artdaq-core_Data
++                  artdaq_core::artdaq-core_Data
+ )
+ 
+ 
 diff --git a/ups/CMakeLists.txt b/ups/CMakeLists.txt
 deleted file mode 100644
 index 9e83be7..0000000

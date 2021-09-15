@@ -1,254 +1,192 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 473ca94..54ccfb6 100644
+index dc63334..406b10d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -11,21 +11,13 @@
+@@ -11,16 +11,16 @@
  #  make install
  #  make package (builds distribution tarfile)
  # ======================================================================
--
- # use cmake 3.12 or later
--cmake_minimum_required (VERSION 3.12)
 +cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
  
--project(ifdh_art VERSION 2.12.04 LANGUAGES CXX)
+ 
+-cmake_minimum_required (VERSION 3.12...3.18 FATAL_ERROR)
+ 
+-project(icarus_signal_processing LANGUAGES CXX)
++find_package(cetmodules 2.25.05 REQUIRED)
++project(icarus_signal_processing VERSION 09.26.01 LANGUAGES CXX)
  
 -# cetbuildtools contains our cmake modules
--SET ( CETBUILDTOOLS_VERSION $ENV{CETBUILDTOOLS_VERSION} )
--IF (NOT CETBUILDTOOLS_VERSION)
--    MESSAGE (FATAL_ERROR "ERROR: setup cetbuildtools to get the cmake modules")
--ENDIF()
-+find_package(cetmodules 2.25.05 REQUIRED)
-+project(ifdh_art VERSION 2.12.04 LANGUAGES CXX)
+-find_package(cetbuildtools REQUIRED)
++# cetbuildtools contains our cmake modules ### MIGRATE-ACTION-REQUIRED: remove
  
--set(CMAKE_MODULE_PATH $ENV{ART_DIR}/Modules
--                      $ENV{CETBUILDTOOLS_DIR}/Modules
--                      ${CMAKE_MODULE_PATH})
+-list(APPEND CMAKE_MODULE_PATH
++list(APPEND CMAKE_MODULE_PATH ### MIGRATE-ACTION-REQUIRED: remove
+ #     ${CMAKE_CURRENT_SOURCE_DIR}/Modules
+ )
  
- include(CetCMakeEnv)
- cet_cmake_env()
-@@ -36,40 +28,39 @@ cet_set_compiler_flags(DIAGS VIGILANT
-   EXTRA_FLAGS -pedantic
+@@ -34,22 +34,22 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+   EXTRA_CXX_FLAGS -Wno-unused-local-typedefs
  )
  
 -cet_report_compiler_flags()
 +cet_report_compiler_flags(REPORT_THRESHOLD VERBOSE)
  
--find_ups_product( art )
--find_ups_product( ifdhc  )
--find_ups_product( ifbeam  )
--find_ups_product( nucondb  )
--find_ups_product( libwda  )
--find_ups_product( cetbuildtools  )
--find_ups_product( cetlib_except )
-+cet_find_package( art ) 
-+cet_find_package( ifdhc  ) 
-+cet_find_package( ifbeam  ) 
-+cet_find_package( nucondb  ) 
-+cet_find_package( libwda  ) 
-+cet_find_package( cetlib_except ) 
+ # these are minimum required versions, not the actual product versions
+-find_ups_product( fftw )
+-
++find_package( FFTW3 )
++find_package( ROOT )
+ # macros for dictionary and simple_plugin
+ include(CetMake)
  
- # include search path
- # decide if we have IFDHC_FQ_DIR or IFDHC_DIR
- if ( $ENV{IFDHC_FQ_DIR} MATCHES "ifdhc" )
-   message(STATUS "using FQ_DIR")
--  include_directories($ENV{IFDHC_FQ_DIR}/inc)
--  include_directories($ENV{LIBWDA_FQ_DIR}/include)
--  include_directories($ENV{IFBEAM_FQ_DIR}/include)
--  include_directories($ENV{NUCONDB_FQ_DIR}/include)
-+  include_directories($ENV{IFDHC_FQ_DIR}/inc) 
-+  include_directories($ENV{LIBWDA_FQ_DIR}/include) 
-+  include_directories($ENV{IFBEAM_FQ_DIR}/include) 
-+  include_directories($ENV{NUCONDB_FQ_DIR}/include) 
- else()
-   message(STATUS "using DIR")
--  include_directories($ENV{IFDHC_DIR}/inc)
--  include_directories($ENV{LIBWDA_DIR}/include)
--  include_directories($ENV{IFBEAM_DIR}/include)
--  include_directories($ENV{NUCONDB_DIR}/include)
-+  include_directories($ENV{IFDHC_DIR}/inc) 
-+  include_directories($ENV{LIBWDA_DIR}/include) 
-+  include_directories($ENV{IFBEAM_DIR}/include) 
-+  include_directories($ENV{NUCONDB_DIR}/include) 
- endif()
+ # add cet_find_library commands here when needed
  
- #ifdhc
--cet_find_library( IFDH    NAMES ifdh    PATHS ENV IFDHC_LIB   NO_DEFAULT_PATH )
--cet_find_library( IFBEAM  NAMES ifbeam  PATHS ENV IFBEAM_LIB  NO_DEFAULT_PATH )
--cet_find_library( NUCONDB NAMES nucondb PATHS ENV NUCONDB_LIB NO_DEFAULT_PATH )
--cet_find_library( WDA     NAMES wda     PATHS ENV LIBWDA_LIB  NO_DEFAULT_PATH )
-+#cet_find_library( IFDH    NAMES ifdh    PATHS ENV IFDHC_LIB   NO_DEFAULT_PATH ) 
-+#cet_find_library( IFBEAM  NAMES ifbeam  PATHS ENV IFBEAM_LIB  NO_DEFAULT_PATH ) 
-+#cet_find_library( NUCONDB NAMES nucondb PATHS ENV NUCONDB_LIB NO_DEFAULT_PATH ) 
-+#cet_find_library( WDA     NAMES wda     PATHS ENV LIBWDA_LIB  NO_DEFAULT_PATH ) 
+ ##cet_find_library(FFTW_LIBRARY NAMES fftw3f fftw3 fftw3q fftw3l fftw3_threads fftw3f_threads fftw3q_threads PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS $ENV{FFTW_LIBRARY} )
+-cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS $ENV{FFTW_LIBRARY} )
+-set(ICARUS_FFTW_LIBRARIES ${ICARUS_FFTW3_LIBRARY} ${ICARUS_FFTW3F_LIBRARY} ${ICARUS_FFTW3L_LIBRARY} ${ICARUS_FFTW3Q_LIBRARY})
++cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  PATHS ${FFTW3_LIBRARY_DIRS} )
++cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS ${FFTW3_LIBRARY_DIRS} )
++cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS ${FFTW3_LIBRARY_DIRS} )
++cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS ${FFTW3_LIBRARY_DIRS} )
++set(ICARUS_FFTW_LIBRARIES ICARUS_FFTW3_LIBRARY ICARUS_FFTW3F_LIBRARY ICARUS_FFTW3L_LIBRARY ICARUS_FFTW3Q_LIBRARY)
  
- # SQLite
--cet_find_library(SQLITE3 NAMES sqlite3 PATHS ENV SQLITE_LIB NO_DEFAULT_PATH)
-+cet_find_library(SQLITE3 NAMES sqlite3 PATHS ENV SQLITE_LIB NO_DEFAULT_PATH) 
+ # ADD SOURCE CODE SUBDIRECTORIES HERE
+ add_subdirectory(icarus_signal_processing)
+@@ -59,7 +59,6 @@ add_subdirectory(test)
  
- # macros
- include(ArtMake)
-@@ -77,7 +68,6 @@ include(BuildPlugins)
+ # ups - table and config files
+ # must be AFTER all other subdirectories
+-add_subdirectory(ups)
  
- add_subdirectory (src)
- #add_subdirectory (tests)
--add_subdirectory (ups)
- 
- # packaging utility
+ # packaging utility - must be last
 -include(UseCPack)
 +cet_cmake_config()
-diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index b52a789..95a5aff 100644
---- a/src/CMakeLists.txt
-+++ b/src/CMakeLists.txt
-@@ -1,6 +1,6 @@
+diff --git a/icarus_signal_processing/CMakeLists.txt b/icarus_signal_processing/CMakeLists.txt
+old mode 100755
+new mode 100644
+index 819c2a7..55c3c0a
+--- a/icarus_signal_processing/CMakeLists.txt
++++ b/icarus_signal_processing/CMakeLists.txt
+@@ -2,17 +2,19 @@ add_subdirectory(Filters)
+ add_subdirectory(Detection)
  
- macro( install_ifdh_headers   )
--  set(header_install_dir ${${product}_inc_dir} )
-+  set(header_install_dir ${${CETMODULES_CURRENT_PROJECT_NAME}_INCLUDE_DIR} )
-   message( STATUS "install_ifdh_headers: headers will be installed in ${header_install_dir}" )
-   FILE(GLOB headers [^.]*.h [^.]*.hh [^.]*.icc )
-   if( headers )
-diff --git a/src/IFBeamService/CMakeLists.txt b/src/IFBeamService/CMakeLists.txt
-index 02cc49b..87461ed 100644
---- a/src/IFBeamService/CMakeLists.txt
-+++ b/src/IFBeamService/CMakeLists.txt
-@@ -1,11 +1,11 @@
- simple_plugin(IFBeam "service"
--  IFBEAM
--  WDA
--  IFDH
--  MF_MESSAGELOGGER
--  ART_UTILITIES
--  FHICLCPP
--  CETLIB
-+  ifbeam
-+  wda
-+  ifdh
-+  messagefacility::MF_MessageLogger
-+  art::Utilities
-+  fhiclcpp::fhiclcpp
-+  cetlib::cetlib
-   BASENAME_ONLY
-   )
+ add_definitions(-DEIGEN_FFTW_DEFAULT)
++include_directories(${FFTW3_INCLUDE_DIRS})
++link_directories(${FFTW3_LIBRARY_DIRS})
  
-diff --git a/src/IFCatalogInterface/CMakeLists.txt b/src/IFCatalogInterface/CMakeLists.txt
-index ecadded..446354c 100644
---- a/src/IFCatalogInterface/CMakeLists.txt
-+++ b/src/IFCatalogInterface/CMakeLists.txt
-@@ -1,15 +1,15 @@
+-cet_make( 
++cet_make(  ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
+           LIBRARIES 
+                           icarus_signal_processing_Detection
+                           icarus_signal_processing_Filters
+                           ${ICARUS_FFTW_LIBRARIES}
+-                          ${ROOT_GEOM}
+-                          ${ROOT_XMLIO}
+-                          ${ROOT_GDML}
+-                          ${ROOT_FFTW}
+-                          ${ROOT_BASIC_LIB_LIST}
++                          ROOT::Geom
++                          ROOT::XMLIO
++                          ROOT::Gdml
++                          ROOT::FFTW
++                          ROOT::Core
+        )
  
- simple_plugin(IFCatalogInterface "service" 
--  IFDH
--  ART_FRAMEWORK_CORE
--  ART_UTILITIES
--  MF_MESSAGELOGGER
--  FHICLCPP
--  CETLIB CETLIB_EXCEPT
-+  ifdh
-+  art::Framework_Core
-+  art::Utilities
-+  messagefacility::MF_MessageLogger
-+  fhiclcpp::fhiclcpp
-+  cetlib::cetlib cetlib_except::cetlib_except
-   BASENAME_ONLY
- 	)
+ install_headers()
+diff --git a/icarus_signal_processing/Detection/CMakeLists.txt b/icarus_signal_processing/Detection/CMakeLists.txt
+old mode 100755
+new mode 100644
+index 8a62ecf..2b5fa3c
+--- a/icarus_signal_processing/Detection/CMakeLists.txt
++++ b/icarus_signal_processing/Detection/CMakeLists.txt
+@@ -1,12 +1,12 @@
  
--include_directories(../IFDHService)
-+include_directories(../IFDHService) 
+-cet_make( 
++cet_make(  ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
+           LIBRARIES 
+                           icarus_signal_processing_Filters
+-                          ${ROOT_GEOM}
+-                          ${ROOT_XMLIO}
+-                          ${ROOT_GDML}
+-                          ${ROOT_FFTW}
+-                          ${ROOT_BASIC_LIB_LIST}
++                          ROOT::Geom
++                          ROOT::XMLIO
++                          ROOT::Gdml
++                          ROOT::FFTW
++                          ROOT::Core
+        )
  
- install_ifdh_headers()
- install_source()
-diff --git a/src/IFDHService/CMakeLists.txt b/src/IFDHService/CMakeLists.txt
-index aa3d3ec..1578e13 100644
---- a/src/IFDHService/CMakeLists.txt
-+++ b/src/IFDHService/CMakeLists.txt
-@@ -1,9 +1,9 @@
- simple_plugin(IFDH service
--  IFDH
--  ART_UTILITIES
--  MF_MESSAGELOGGER
--  FHICLCPP
--  CETLIB CETLIB_EXCEPT
-+  ifdh
-+  art::Utilities
-+  messagefacility::MF_MessageLogger
-+  fhiclcpp::fhiclcpp
-+  cetlib::cetlib cetlib_except::cetlib_except
-   BASENAME_ONLY
-   )
+ install_headers()
+diff --git a/icarus_signal_processing/Filters/CMakeLists.txt b/icarus_signal_processing/Filters/CMakeLists.txt
+old mode 100755
+new mode 100644
+index 0d1537c..5c96851
+--- a/icarus_signal_processing/Filters/CMakeLists.txt
++++ b/icarus_signal_processing/Filters/CMakeLists.txt
+@@ -1,13 +1,14 @@
+ add_definitions(-DEIGEN_FFTW_DEFAULT)
+-
+-cet_make( 
++include_directories(${FFTW3_INCLUDE_DIRS})
++link_directories(${FFTW3_LIBRARY_DIRS})
++cet_make(  ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
+           LIBRARIES 
+                           ${ICARUS_FFTW_LIBRARIES}
+-                          ${ROOT_GEOM}
+-                          ${ROOT_XMLIO}
+-                          ${ROOT_GDML}
+-                          ${ROOT_FFTW}
+-                          ${ROOT_BASIC_LIB_LIST}
++                          ROOT::Geom
++                          ROOT::XMLIO
++                          ROOT::Gdml
++                          ROOT::FFTW
++                          ROOT::Core
+        )
  
-diff --git a/src/IFFileTransfer/CMakeLists.txt b/src/IFFileTransfer/CMakeLists.txt
-index f54dbb5..87cfc63 100644
---- a/src/IFFileTransfer/CMakeLists.txt
-+++ b/src/IFFileTransfer/CMakeLists.txt
-@@ -1,13 +1,12 @@
--include_directories(../IFDHService)
-+include_directories(../IFDHService) 
+ install_headers()
+diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
+index 7966219..67b6d87 100644
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -3,4 +3,4 @@
+ # Enable asserts
+ cet_enable_asserts()
  
- simple_plugin(IFFileTransfer "service" 
--  IFDH
--  ART_FRAMEWORK_CORE
--  ART_UTILITIES
--  MF_MESSAGELOGGER
--  FHICLCPP
--  CETLIB
--  CETLIB_EXCEPT
-+  ifdh
-+  art::Framework_Core
-+  art::Utilities
-+  messagefacility::MF_MessageLogger
-+  fhiclcpp::fhiclcpp
-+  cetlib::cetlib cetlib_except::cetlib_except
-   BASENAME_ONLY
-   )
- 
-diff --git a/src/nucondbService/CMakeLists.txt b/src/nucondbService/CMakeLists.txt
-index e66d551..b042bc7 100644
---- a/src/nucondbService/CMakeLists.txt
-+++ b/src/nucondbService/CMakeLists.txt
-@@ -1,11 +1,11 @@
- simple_plugin(nucondb "service" 
--  NUCONDB
--  WDA
--  IFDH
--  ART_UTILITIES
--  MF_MESSAGELOGGER
--  FHICLCPP
--  CETLIB
-+  nucondb
-+  wda
-+  ifdh
-+  messagefacility::MF_MessageLogger
-+  art::Utilities
-+  fhiclcpp::fhiclcpp
-+  cetlib::cetlib
-   BASENAME_ONLY
-   )
- 
+-# Add test items here
+\ No newline at end of file
++# Add test items here
 diff --git a/ups/CMakeLists.txt b/ups/CMakeLists.txt
 deleted file mode 100644
-index fe33cc7..0000000
+index e327d47..0000000
 --- a/ups/CMakeLists.txt
 +++ /dev/null
 @@ -1,6 +0,0 @@
--
 -# create package configuration and version files
 -
 -process_ups_files()
 -
 -cet_cmake_config()
+-
 diff --git a/ups/product-config.cmake.in b/ups/product-config.cmake.in
 deleted file mode 100644
-index 4e22a3b..0000000
+index 7599d2e..0000000
 --- a/ups/product-config.cmake.in
 +++ /dev/null
-@@ -1,12 +0,0 @@
+@@ -1,16 +0,0 @@
 -
 -set( @product@_VERSION @cet_dot_version@ )
 -set( @product@_UPS_VERSION @version@ )
 -
 -@PACKAGE_INIT@
+-
+-if (IS_DIRECTORY "${PACKAGE_PREFIX_DIR}/@product@/@version@/Modules")
+-  list(APPEND CMAKE_MODULE_PATH "${PACKAGE_PREFIX_DIR}/@product@/@version@/Modules")
+-endif()
 -
 -@CONFIG_FIND_UPS_COMMANDS@
 -
@@ -257,27 +195,11 @@ index 4e22a3b..0000000
 -check_required_components(@product@)
 -
 diff --git a/ups/product_deps b/ups/product_deps
-index cd94b77..78d1066 100644
+index 0553bd7..83d93f2 100644
 --- a/ups/product_deps
 +++ b/ups/product_deps
-@@ -1,35 +1,336 @@
--: The parent line must be the first non-comment line in the file
--# This line defines the product name and version
--parent ifdh_art
--defaultqual e20
--
--# Format: directory_type directory_path directory_name
--incdir      fq_dir	inc
--fcldir      -
--
--# new option: distinguishing qualifier to allow building
--# against different versions of some dependent product IFF
--# there are no changes required in the code for the different dependencies
--product		version		distinguishing-qualifier
--art             v3_09_03
--ifbeam          v2_5_1
--nucondb         v2_5_1
--cetbuildtools   v8_11_02       -       only_for_build
+@@ -1,55 +1,337 @@
+-# This @product_deps@ file defines dependencies for this package.
 +########################################################################
 +# product_deps
 +#
@@ -287,26 +209,47 @@ index cd94b77..78d1066 100644
 +# This file is parsed as a consequence of sourcing the
 +# setup_for_development or setup_deps shell-agnostic scripts.
 +#
-+# Generated by cetmodules 2.25.05 at Wed Sep 01 14:02:07 CDT
++# Generated by cetmodules 2.25.05 at Wed Sep 15 10:24:28 CDT
 +########################################################################
-+
+ 
+-# The *parent* line must the first non-commented line and defines this product and version
+-# The version should be of the form vxx_yy_zz (e.g. v01_02_03)
+-parent icarus_signal_processing v09_26_01
+-defaultqual e19
 +####################################
 +# Basic information.
-+
+ 
+-# These optional lines define the installed directories where headers,
+-# libraries, and executables will be found.
+-# Use them only if your product does not conform to the defaults
 +##################
 +# parent
 +##################
-+#
+ #
+-# Format: directory_type directory_path directory_name
 +# The parent line - if present - must be the first non-comment line in
 +# the file, defining the product's name and version. Any information not
 +# specified will be taken from the CMake project(<project-name> VERSION
 +# <dot-version>) call in the CMakeLists.txt in the parent directory to
 +# the one containing this file.
-+#
+ #
+-# The only recognized values of the first field are fcldir, gdmldir, incdir, libdir, and bindir
+-# The only recognized values of the second field are product_dir, fq_dir, and -
+-# The third field is not constrained.
 +# Recommended:
-+#
+ #
+-# Defaults:
+-# incdir  product_dir  include
+-# fcldir  product_dir  fcl
+-# libdir  fq_dir       lib
+-# bindir  fq_dir       bin
+-# gdmldir -
+-# fwdir   -
 +#>  parent <product-name>
-+#
+ #
+-incdir	product_dir	include
+-libdir	fq_dir		lib
+-bindir	fq_dir		bin
 +# Deprecated (will produce a warning):
 +#
 +#>  parent <product-name> <product-ups-version> [<chain>]...
@@ -332,7 +275,9 @@ index cd94b77..78d1066 100644
 +# invocation of setup_for_development or setup_deps.
 +#
 +#>  defaultqual <qualifiers>
-+
+ 
+-# With "product  version" table below, we now define depdendencies
+-# Add the dependent product and version
 +##################
 +# noarch
 +##################
@@ -342,7 +287,10 @@ index cd94b77..78d1066 100644
 +# fully-qualified (fq) subdirectory in the installed package.
 +#
 +#>  noarch
-+
+ 
+-product          version
+-fftw            v3_3_8a
+-root            v6_22_08b
 +##################
 +# no_fq_dir
 +##################
@@ -366,8 +314,8 @@ index cd94b77..78d1066 100644
 +#
 +#>  define_pythonpath
 +####################################
-+parent		ifdh_art
-+defaultqual	e20
++parent		icarus_signal_processing
++defaultqual	e19
 +####################################
 +
 +####################################
@@ -453,10 +401,12 @@ index cd94b77..78d1066 100644
 +#     Wirecell data.
 +#
 +####################################
-+fcldir	-
-+incdir	fq_dir	inc
++bindir	fq_dir		bin
++incdir	product_dir	include
++libdir	fq_dir		lib
 +####################################
-+
+ 
+-cetbuildtools	v7_17_01	-	only_for_build
 +####################################
 +# Product table.
 +#
@@ -528,21 +478,21 @@ index cd94b77..78d1066 100644
 +#
 +####################################
 +product		version		qual	flags		<table_format=2>
-+art		v3_09_03	-
-+ifbeam		v2_5_1		-
-+nucondb		v2_5_1		-
++fftw		v3_3_9		-
++root		v6_22_08d	-
 +cetmodules	v2_25_05	-	only_for_build
  end_product_list
 +####################################
  
--# -nq- here means there is no qualifier
--qualifier      art            ifbeam            nucondb
--c7:debug       c7:debug       c7:p392:debug    c7:p392:debug
--c7:prof        c7:prof        c7:p392:prof     c7:p392:prof
--e20:debug      e20:debug      e20:p392:debug   e20:p392:debug
--e20:prof       e20:prof       e20:p392:prof    e20:p392:prof
--e19:debug      e19:debug      e19:p392:debug   e19:p392:debug
--e19:prof       e19:prof       e19:p392:prof    e19:p392:prof
+-# We now define allowed qualifiers and the corresponding qualifiers for the depdencies.
+-# Make a table by adding columns before "notes".
+-qualifier	    root	       fftw   notes
+-e20:debug	    e20:p383b:debug      debug
+-e20:prof	    e20:p383b:prof       prof
+-e19:debug	    e19:p383b:debug      debug
+-e19:prof	    e19:p383b:prof       prof
+-c7:debug	    c7:p383b:debug       debug
+-c7:prof		    c7:p383b:prof        prof
 +####################################
 +# Qualifier table.
 +#
@@ -594,13 +544,13 @@ index cd94b77..78d1066 100644
 +#   case it is optional.
 +#
 +####################################
-+qualifier	art		ifbeam		nucondb
-+c7:debug	c7:debug	c7:p392:debug	c7:p392:debug
-+c7:prof		c7:prof		c7:p392:prof	c7:p392:prof
-+e19:debug	e19:debug	e19:p392:debug	e19:p392:debug
-+e19:prof	e19:prof	e19:p392:prof	e19:p392:prof
-+e20:debug	e20:debug	e20:p392:debug	e20:p392:debug
-+e20:prof	e20:prof	e20:p392:prof	e20:p392:prof
++qualifier	root		fftw	notes
++c7:debug	c7:p383b:debug	-nq-
++c7:prof		c7:p383b:prof	-nq-
++e19:debug	e19:p383b:debug	-nq-
++e19:prof	e19:p383b:prof	-nq-
++e20:debug	e20:p383b:debug	-nq-
++e20:prof	e20:p383b:prof	-nq-
  end_qualifier_list
 +####################################
 +
@@ -621,9 +571,105 @@ index cd94b77..78d1066 100644
 +### mode: sh
  ### tab-width: 8
  ### End:
- 
++
++# vi:set ts=8 noexpandtab:
+diff --git a/ups/setup_deps b/ups/setup_deps
+deleted file mode 100644
+index 72c2e32..0000000
+--- a/ups/setup_deps
++++ /dev/null
+@@ -1,89 +0,0 @@
+-# NO USER-SERVICEABLE PARTS BELOW.
+-#
+-# There should be as little as possible here,
+-# with most of the heavy lifting done by other small scripts
+-#
+-# When sourcing this file from a script, you may have to tell this
+-# source file where it is via the fw_db shell (or env) variable.
+-# I.e.:
+-#    set fw_db=/some/path; source /some/path/this_file
+-# or  fw_db=/some/path; . /some/path/this_file
+-
+-test $?shell = 1 && set ss=csh || ss=sh
+-#echo Shell type is $ss.
+-
+-# make some things similar. need to use set_ because sh builtin set would hide function set
+-# Note: perhaps the trickiest thing in this file is the sh set_ function tries to return the same status
+-#       as at the start of the function (which most likely is the result of a back-tick expression
+-test "$ss" = csh && alias set_ set && alias vecho_ 'if ($?vv == 1) echo \!*' || eval 'vecho_() { test -n "${vv-}" && echo "$@"; return 0; }'
+-test "$ss" =  sh && eval 'set_() { sts=$?;for xx in "$@";do var=`expr "$xx" : "\([^=]*\)"`;val=`expr "$xx" : "[^=]*=\(.*\)"`;eval "$var=\"$val\"";done;return $sts; }'
+-test "$ss" =  sh && eval 'setenv() { export $1;eval "$1=\"\${2-}\""; }; source() { file=$1; shift; . $file "$@"; }; unsetenv_() { unset "$@"; }'
+-test "$ss" =  sh && eval 'tnotnull() { eval "test -n \"\${$1-}\""; }'                             && eval 'nullout() { "$@" >/dev/null 2>&1; }'
+-test "$ss" = csh && alias tnotnull "eval '"'test $?'"\!* -eq 1' && eval '"'test -n "$'"\!*"'"'"'" && alias nullout "\!* >& /dev/null" && alias unsetenv_ unsetenv
+-test "$ss" = csh && alias return exit
+-
+-set_ msg1='ERROR: You MUST setup ups'
+-test -z $UPS_DIR && ( echo ""; echo "$msg1"; echo "" ) && return
+-
+-set_ msg3='ERROR: You MUST specify either -o, -p, or -d'
+-set_ msg4='Usage: setup_deps <-d|-o|-p> <qualifier list>'
+-test -z "$1" && ( echo ""; echo "$msg4"; echo "$msg3"; echo "" ) && return
+-
+-# make sure we know where this script lives
+-# now if we were passed a path or if not, we can figure it out (maybe if we are interactive)
+-#   bash, zsh, ksh and tcsh pass params to a source file, csh does not. but someone will be writing csh scripts
+-set_ msg2='Please set shell or env. variable fw_db (to be the path to the framework source code). Fix this and other errors may go away.'
+-tnotnull fw_db && set_ db=`sh -c "cd $fw_db >/dev/null 2>&1 && pwd"` && vecho_ 'setting db from fw_db variable' || set_ db=
+-
+-test -z "$db" && tnotnull BASH_SOURCE && set_ me=`dirname $BASH_SOURCE` && set_ db=`sh -c "cd $me >/dev/null 2>&1 && pwd"` && vecho_ 'setting db via BASH_SOURCE'
+-
+-# history is applicable only for interactive t/csh
+-test -z "$db" -a "$ss" = csh && test $?history = 0 && set history=5  # make sure history 1 works
+-test -z "$db" -a "$ss" = csh && set me=`history 1|sed 's/^[ 	0-9:]*//'` && test -n "$me" && set me=`dirname $me[2]` \
+-    && set db=`sh -c "cd $me >/dev/null 2>&1 && pwd"` && vecho_ 'setting db via interactive history'
+-#echo This script lives in $db
+-
+-test -z "$db" && echo "$msg2" || vecho_ "db=$db"
+-test -n "$db" && setenv CETPKG_SOURCE `dirname $db`
+-
+-# make sure we know the current directory
+-set_ myname=`whoami`
+-setenv CETPKG_BUILD /tmp/$myname/setup_deps
+-rm -rf $CETPKG_BUILD
+-mkdir -p $CETPKG_BUILD
+-#echo Build directory is $CETPKG_BUILD
+-
+-echo The source code directory is $CETPKG_SOURCE
+-
+-set_ msg5='ERROR: setup of required products has failed'
+-
+-echo ----------- check this block for errors -----------------------
+-set_ setup_fail="false"
+-set_ exit_now="false"
+-set_ cetb=` grep -e '^[ \t]*cetbuildtools' $CETPKG_SOURCE/ups/product_deps | grep  only_for_build| awk '{ print $1 }' `
+-set_ cetv=` grep -e '^[ \t]*cetbuildtools' $CETPKG_SOURCE/ups/product_deps | grep  only_for_build| awk '{ print $2 }' `
+-#echo Found $cetb $cetv
+-setup -B $cetb $cetv
+-test "$?" = 0 || set_ setup_fail="true"
+-# now get the rest of the products
+-set_ cmd="$CETBUILDTOOLS_DIR/bin/set_dev_products $CETPKG_SOURCE $CETPKG_BUILD $*"
+-#echo Ready to run $cmd
+-source `$cmd`
+-test "$?" = 0 || set_ setup_fail="true"
+-#echo "$cmd returned $setup_fail"
+-test "$setup_fail" = "true" && echo "$msg5"
+-test "$setup_fail" = "true" && set_ exit_now="true"
+-test -e "$CETPKG_BUILD/diag_report" && cat $CETPKG_BUILD/diag_report
+-echo ----------------------------------------------------------------
+-
+-test "${exit_now}" = "true" && test "$ss" = csh && unalias tnotnull nullout set_ vecho_ return
+-test "${exit_now}" = "true" && unset ss db me thisdir msg1 msg2 msg3 msg4 msg5 setup_fail set_ setenv unsetenv_ tnotnull nullout vecho_
+-test "${exit_now}" = "true" && return 1
+-
+-# final sanity check and report
+-source $CETBUILDTOOLS_DIR/bin/set_dep_check_report
+-
+-# cleanup before exiting
+-test "$ss" = csh && unalias tnotnull nullout set_ vecho_ return
+-unset ss db me thisdir msg1 msg2 msg3 msg4 msg5 setup_fail
+-unset set_ setenv unsetenv_ tnotnull nullout vecho_
 diff --git a/ups/setup_for_development b/ups/setup_for_development
-index 8c5bedf..1d0240b 100644
+index 8c5bedf..5eab3a6 100644
 --- a/ups/setup_for_development
 +++ b/ups/setup_for_development
 @@ -1,96 +1,239 @@
@@ -644,7 +690,7 @@ index 8c5bedf..1d0240b 100644
  #    set fw_db=/some/path; source /some/path/this_file
  # or  fw_db=/some/path; . /some/path/this_file
 +#
-+# Generated by cetmodules 2.25.05 at Wed Sep 01 14:02:07 CDT
++# Generated by cetmodules 2.25.05 at Wed Sep 15 10:24:28 CDT
 +########################################################################
 +
 +########################################################################
