@@ -23,6 +23,7 @@ class Nugen(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/nugen'
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nugen.v1_10_02.tbz2'
 
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nugen', get_full_repo=True)
     version('1.12.00', tag='v1_12_00', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('1.10.02', tag='v1_10_02', git=git_base, get_full_repo=True)
@@ -30,7 +31,6 @@ class Nugen(CMakePackage):
     version('1.10.00', tag='v1_10_00', git=git_base, get_full_repo=True)
     version('1.09.00', tag='v1_09_00', git=git_base, get_full_repo=True)
     version('1.08.00', tag='v1_08_00', git=git_base, get_full_repo=True)
-    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nugen', get_full_repo=True)
 
 
 
