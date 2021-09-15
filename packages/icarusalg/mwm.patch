@@ -29,3 +29,29 @@
  
  # packaging utility
  include(UseCPack)
+--- spack-src/icarusalg/gallery/CMakeLists.txt.orig	2021-09-15 10:59:43.056913908 -0500
++++ spack-src/icarusalg/gallery/CMakeLists.txt	2021-09-15 11:05:53.774202574 -0500
+@@ -2,19 +2,11 @@
+ add_subdirectory(helpers)
+ 
+ # examples
+-foreach(ExampleDir IN ITEMS galleryAnalysis DetectorActivityRatePlots )
+-  
+-  # take *all* the files from the listed directory
+-  file(GLOB_RECURSE GalleryExamples RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${ExampleDir}/* )
+-  
+-  # cet_install_files() will reproduce the intermediate subdirectories from the
+-  # source list into the destination directory
+-  cet_install_files(
+-    LIST ${GalleryExamples}
+-    DIRNAME examples/gallery/${ExampleDir}
++install(
++    DIRECTORY galleryAnalysis DetectorAnalysis
++    DESTINATION examples/gallery
++    USE_SOURCE_PERMISSIONS
+     )
+-  
+-endforeach()
+ 
+ # other stuff
+ add_subdirectory(MCTruthBase)

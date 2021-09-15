@@ -21,7 +21,7 @@ class Artg4tk(CMakePackage):
     version('MVP1a', git = url, branch = 'feature/Spack-MVP1a',
             extention='tar.bz2')
     version('10.02.01', tag='v10_02_01', git=url, extention='tar.bz2', get_full_repo=True)
-    version('10.02.01.01', tag='v10_02_01_01', git=url, extention='tar.bz2', get_full_repo=True) 
+    version('10.02.01.01', tag='v10_02_01_01', git=url, get_full_repo=True) 
     version('09.04.04', tag='v09_04_04', git=url, extention='tar.bz2', get_full_repo=True)
     version('09.05.00', tag='v09_05_00', git=url, extention='tar.bz2', get_full_repo=True)
     version('09.05.01', tag='v09_05_01', git=url, extention='tar.bz2', get_full_repo=True)
@@ -42,7 +42,7 @@ class Artg4tk(CMakePackage):
             description='Use the specified C++ standard when building.')
 
 
-    patch('mwm.patch')
+    #patch('mwm.patch')
     depends_on('cetmodules', type='build')
     depends_on('cetbuildtools', type='build')
     depends_on('art')
