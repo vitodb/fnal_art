@@ -41,7 +41,7 @@ class Artg4tk(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
+    patch('cetmodules2.patch', when='@develop')
     #patch('mwm.patch')
     depends_on('cetmodules', type='build')
     depends_on('cetbuildtools', type='build')
