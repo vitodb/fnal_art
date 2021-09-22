@@ -57,7 +57,7 @@ class ArtdaqCore(CMakePackage):
     depends_on('tbb')
     depends_on('trace')
 
-    # patch('cetmodules2.patch')
+    patch('cetmodules2.patch')
 
     def patch(self):
         filter_file(r'add_subdirectory\(ups\)','if(WANT_UPS)\nadd_subdirectory(ups)\nendif()','CMakeLists.txt')
