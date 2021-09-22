@@ -81,7 +81,9 @@ class Cetlib(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+		'-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
+	]
         return args
 
     def setup_environment(self, spack_env, run_env):

@@ -1,56 +1,84 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 536ca45..227002c 100644
+diff --cc CMakeLists.txt
+index 536ca45,c7e9b1c..0000000
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -41,6 +41,7 @@ find_ups_product( fhiclcpp v3_04_00 )
- find_ups_product( messagefacility v1_14_01 )
- find_ups_product( sqlite v3_08_05_00 )
- find_ups_product( tbb )
-+
- find_ups_root( v5_34_20 )
- find_ups_product( TRACE v3_03_00 )
- 
-@@ -75,19 +76,19 @@ if(BTYPE_UC STREQUAL DEBUG)
- 		if($ENV{USE_ASAN} GREATER 0)
- 			message("!!! Address Sanitizer Activated!!!")
- 			add_compile_options(-fsanitize=address -Wno-unused-command-line-argument)
--			add_link_options(-lasan)
-+			add_link_options(-lasan) 
- 		endif()
- 	endif()
- 	if(DEFINED ENV{USE_TSAN})
- 		if($ENV{USE_TSAN} GREATER 0)
- 			message("!!! Thread Sanitizer Activated!!!")
- 			add_compile_options(-fsanitize=thread -Wno-unused-command-line-argument)
--			add_link_options(-ltsan)
-+			add_link_options(-ltsan) 
- 		endif()
- 	endif()
- 	if(DEFINED ENV{USE_GCOV})
- 		add_compile_options(-fprofile-arcs -ftest-coverage --coverage)
--		add_link_options(--coverage)
-+		add_link_options(--coverage) 
- 	endif()
- endif()
- 
-@@ -98,7 +99,7 @@ if(DEFINED ENV{USE_EXCEPTIONSTACKTRACE})
- 		add_definitions(-D EXCEPTIONSTACKTRACE)
- 		set( EXCEPTIONSTACKTRACE_LIB  artdaq-core_Utilities_ExceptionStackTrace )
- 		add_compile_options( -rdynamic -Wno-unused-command-line-argument )
--		add_link_options( -rdynamic )
-+		add_link_options( -rdynamic ) 
- 	endif()
- endif()
- 
+@@@ -33,16 -33,17 +33,17 @@@ cet_set_compiler_flags(DIAGS VIGILAN
+  
+  # these are minimum required versions, not the actual product versions
+  find_ups_boost(v1_53_0)
+ -#find_ups_product (cetbuildtools) ### MIGRATE-ACTION-REQUIRED: remove ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ -find_ups_product( canvas v1_00_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ -find_ups_product( cetlib v1_08_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ -find_ups_product( cetpkgsupport v1_08_03 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ -find_ups_product( clhep v2_2_0 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ -find_ups_product( fhiclcpp v3_04_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ -find_ups_product( messagefacility v1_14_01 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ -find_ups_product( sqlite v3_08_05_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ -find_ups_product( tbb ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ +find_ups_product( canvas v1_00_00 )
+ +find_ups_product( cetlib v1_08_00 )
+ +find_ups_product( cetpkgsupport v1_08_03 )
+ +find_ups_product( clhep v2_2_0 )
+ +find_ups_product( fhiclcpp v3_04_00 )
+ +find_ups_product( messagefacility v1_14_01 )
+ +find_ups_product( sqlite v3_08_05_00 )
+ +find_ups_product( tbb )
+++
+  find_ups_root( v5_34_20 )
+ -find_ups_product( TRACE v3_03_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ +find_ups_product( TRACE v3_03_00 )
+  
+  
+  string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "$ENV{MESSAGEFACILITY_VERSION}")
+@@@ -75,19 -76,19 +76,19 @@@ if(BTYPE_UC STREQUAL DEBUG
+  		if($ENV{USE_ASAN} GREATER 0)
+  			message("!!! Address Sanitizer Activated!!!")
+  			add_compile_options(-fsanitize=address -Wno-unused-command-line-argument)
+- 			add_link_options(-lasan)
+ -			add_link_options(-lasan) ### MIGRATE-ACTION-RECOMMENDED: use target_link_options()
+++			add_link_options(-lasan) 
+  		endif()
+  	endif()
+  	if(DEFINED ENV{USE_TSAN})
+  		if($ENV{USE_TSAN} GREATER 0)
+  			message("!!! Thread Sanitizer Activated!!!")
+  			add_compile_options(-fsanitize=thread -Wno-unused-command-line-argument)
+- 			add_link_options(-ltsan)
+ -			add_link_options(-ltsan) ### MIGRATE-ACTION-RECOMMENDED: use target_link_options()
+++			add_link_options(-ltsan) 
+  		endif()
+  	endif()
+  	if(DEFINED ENV{USE_GCOV})
+  		add_compile_options(-fprofile-arcs -ftest-coverage --coverage)
+- 		add_link_options(--coverage)
+ -		add_link_options(--coverage) ### MIGRATE-ACTION-RECOMMENDED: use target_link_options()
+++		add_link_options(--coverage) 
+  	endif()
+  endif()
+  
+@@@ -98,7 -99,7 +99,7 @@@ if(DEFINED ENV{USE_EXCEPTIONSTACKTRACE}
+  		add_definitions(-D EXCEPTIONSTACKTRACE)
+  		set( EXCEPTIONSTACKTRACE_LIB  artdaq-core_Utilities_ExceptionStackTrace )
+  		add_compile_options( -rdynamic -Wno-unused-command-line-argument )
+- 		add_link_options( -rdynamic )
+ -		add_link_options( -rdynamic ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_options()
+++		add_link_options( -rdynamic ) 
+  	endif()
+  endif()
+  
+diff --cc ups/setup_for_development
+index d705c1b,f1ddd2e..0000000
+--- a/ups/setup_for_development
++++ b/ups/setup_for_development
 diff --git a/artdaq-core/Core/CMakeLists.txt b/artdaq-core/Core/CMakeLists.txt
-index 4c7ca0e..e2d553d 100644
+index 504f4ee..e2d553d 100644
 --- a/artdaq-core/Core/CMakeLists.txt
 +++ b/artdaq-core/Core/CMakeLists.txt
 @@ -7,10 +7,10 @@
  # ----------------------------------------------------------------------
  # Build this project's library:
  
--cet_make(
+-cet_make( ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
 +cet_make( 
    LIBRARIES
 -  artdaq-core_Data
@@ -61,13 +89,11 @@ index 4c7ca0e..e2d553d 100644
    Boost::thread
    )
 diff --git a/artdaq-core/Data/CMakeLists.txt b/artdaq-core/Data/CMakeLists.txt
-old mode 100755
-new mode 100644
-index edd2893..824aa13
+index 33f83cd..824aa13 100644
 --- a/artdaq-core/Data/CMakeLists.txt
 +++ b/artdaq-core/Data/CMakeLists.txt
 @@ -1,7 +1,7 @@
--cet_make(
+-cet_make( ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
 +cet_make( 
  NO_DICTIONARY
    LIBRARIES
@@ -86,70 +112,36 @@ index edd2893..824aa13
  install_headers(SUBDIRS detail)
  install_source(SUBDIRS detail)
 diff --git a/artdaq-core/Generators/CMakeLists.txt b/artdaq-core/Generators/CMakeLists.txt
-index afff33e..d53b677 100644
+index 4222def..d53b677 100644
 --- a/artdaq-core/Generators/CMakeLists.txt
 +++ b/artdaq-core/Generators/CMakeLists.txt
-@@ -1,7 +1,7 @@
+@@ -1,5 +1,5 @@
  
--cet_make(
+-cet_make( ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
 +cet_make( 
    LIBRARIES
--  artdaq-core_Data
-+  artdaq_core::artdaq-core_Data
+   artdaq_core::artdaq-core_Data
    )
- 
- install_headers()
 diff --git a/artdaq-core/Utilities/CMakeLists.txt b/artdaq-core/Utilities/CMakeLists.txt
-index a527a61..cd022aa 100644
+index b625426..cd022aa 100644
 --- a/artdaq-core/Utilities/CMakeLists.txt
 +++ b/artdaq-core/Utilities/CMakeLists.txt
-@@ -1,11 +1,11 @@
+@@ -1,5 +1,5 @@
  
--cet_make(
+-cet_make( ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
 +cet_make( 
  	EXCLUDE GenFile_mfPlugin.cc ExceptionStackTrace.cc
    LIBRARIES
--  MF_MessageLogger
--  cetlib
--  cetlib_except
--  fhiclcpp
-+  messagefacility::MF_MessageLogger
-+  cetlib::cetlib
-+  cetlib_except::cetlib_except
-+  fhiclcpp::fhiclcpp
- 	${EXCEPTIONSTACKTRACE_LIB}
- 	Boost::filesystem
- )
-@@ -19,10 +19,10 @@ cet_make_library(
- )
+   messagefacility::MF_MessageLogger
+@@ -20,7 +20,7 @@ cet_make_library(
  
  basic_plugin( "GenFile" "mfPlugin"
--  MF_MessageLogger
--  cetlib
--  cetlib_except
--  fhiclcpp
-+  messagefacility::MF_MessageLogger
+   messagefacility::MF_MessageLogger
+-  cetlib:: cetlib
 +  cetlib::cetlib
-+  cetlib_except::cetlib_except
-+  fhiclcpp::fhiclcpp
+   cetlib_except::cetlib_except
+   fhiclcpp::fhiclcpp
  )
- 
- install_headers()
-diff --git a/doc/CMakeLists.txt b/doc/CMakeLists.txt
-old mode 100755
-new mode 100644
-index c50cf77..915dcd6
---- a/doc/CMakeLists.txt
-+++ b/doc/CMakeLists.txt
-@@ -3,7 +3,7 @@ include(FindLATEX)
- 
- SET(DOXYFILE_DIR ${CMAKE_CURRENT_LIST_DIR})
- function(create_pdf_documentation)
--	find_package(LATEX COMPONENTS PDFLATEX PS2PDF MAKEINDEX)
-+	cet_find_package(LATEX COMPONENTS PDFLATEX PS2PDF MAKEINDEX)
- 	find_program(EPSTOPDF_FOUND epstopdf)
- 
- 	if(LATEX_FOUND AND EPSTOPDF_FOUND)
 diff --git a/test/Core/CMakeLists.txt b/test/Core/CMakeLists.txt
 index 563271e..c89c1b8 100644
 --- a/test/Core/CMakeLists.txt
@@ -214,54 +206,40 @@ index 059e1af..ee64902 100644
 +  LIBRARIES artdaq_core::artdaq-core_Generators artdaq_core::artdaq-core_Data
    )
 diff --git a/test/Utilities/CMakeLists.txt b/test/Utilities/CMakeLists.txt
-index 73f8591..60fe360 100644
+index 895801c..60fe360 100644
 --- a/test/Utilities/CMakeLists.txt
 +++ b/test/Utilities/CMakeLists.txt
-@@ -1,30 +1,30 @@
- cet_test(TimeUtils_t USE_BOOST_UNIT
--	LIBRARIES artdaq-core_Utilities
-+	LIBRARIES artdaq_core::artdaq-core_Utilities
+@@ -3,28 +3,28 @@ cet_test(TimeUtils_t USE_BOOST_UNIT
  )
  
  cet_test(ExceptionHandler_t USE_BOOST_UNIT
--	LIBRARIES artdaq-core_Utilities
--	cetlib_except
--	${CANVAS}
+-	LIBRARIES artdaq_core::aartdaq-core_Utilities
 +	LIBRARIES artdaq_core::artdaq-core_Utilities
-+	cetlib_except::cetlib_except
-+	canvas::canvas
+ 	cetlib_except::cetlib_except
+ 	canvas::canvas
  )
  
  cet_test(SimpleLookupPolicy_t USE_BOOST_UNIT
  	DATAFILES fcl/LookupTarget.fcl
--	LIBRARIES artdaq-core_Utilities
--  MF_MessageLogger
+-	LIBRARIES artdaq_core::aartdaq-core_Utilities
 +	LIBRARIES artdaq_core::artdaq-core_Utilities
-+  messagefacility::MF_MessageLogger
+   messagefacility::MF_MessageLogger
  )
  
  cet_test(ExceptionStackTrace_t USE_BOOST_UNIT
--	LIBRARIES artdaq-core_Utilities_ExceptionStackTrace
--  MF_MessageLogger
+-	LIBRARIES artdaq_core::aartdaq-core_Utilities_ExceptionStackTrace
 +	LIBRARIES artdaq_core::artdaq-core_Utilities_ExceptionStackTrace
-+  messagefacility::MF_MessageLogger
+   messagefacility::MF_MessageLogger
  )
  
  cet_test(configureMessageFacility_t USE_BOOST_UNIT
--	LIBRARIES artdaq-core_Utilities
--  MF_MessageLogger
+-	LIBRARIES artdaq_core::aartdaq-core_Utilities
 +	LIBRARIES artdaq_core::artdaq-core_Utilities
-+  messagefacility::MF_MessageLogger
+   messagefacility::MF_MessageLogger
  )
  
  cet_test(GenFile_t USE_BOOST_UNIT
--	LIBRARIES artdaq-core_Utilities
--  MF_MessageLogger
--)
-\ No newline at end of file
+-	LIBRARIES artdaq_core::aartdaq-core_Utilities
 +	LIBRARIES artdaq_core::artdaq-core_Utilities
-+ messagefacility::MF_MessageLogger
-+)
-diff --git a/ups/product_deps b/ups/product_deps
-old mode 100755
-new mode 100644
+  messagefacility::MF_MessageLogger
+ )

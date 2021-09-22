@@ -56,29 +56,19 @@ index 8d9dbca..7dd85ec 100644
  
 +cet_cmake_config()
 diff --git a/nuevdb/EventDisplayBase/CMakeLists.txt b/nuevdb/EventDisplayBase/CMakeLists.txt
-index a227964..7036d73 100644
+index abfd06b..58b5223 100644
 --- a/nuevdb/EventDisplayBase/CMakeLists.txt
 +++ b/nuevdb/EventDisplayBase/CMakeLists.txt
-@@ -12,7 +12,7 @@ set( EVD_LIBS art::Framework_Services_Registry
+@@ -12,7 +12,6 @@ set( EVD_LIBS art::Framework_Services_Registry
                art::Utilities
                canvas::canvas
                messagefacility::MF_MessageLogger
--              ${MF_UTILITIES}
-+              messagefacility::headers
+-              
                fhiclcpp::fhiclcpp
                cetlib::cetlib
                cetlib_except::cetlib_except
-@@ -44,7 +44,7 @@ set( EVD_LIBS art::Framework_Services_Registry
- cet_rootcint( ${PACKAGE} )
- 
- art_make_library( SOURCE ${src_files} ${CMAKE_CURRENT_BINARY_DIR}/${PACKAGE}Cint.cc
--                  LIBRARIES nusimdata_SimulationBase ${EVD_LIBS} )
-+                  LIBRARIES nusimdata::SimulationBase ${EVD_LIBS} )
- 
- set( EVD_SERVICE_LIBS nuevdb_EventDisplayBase ${EVD_LIBS} )
- simple_plugin( EventDisplay service ${EVD_SERVICE_LIBS} )
 diff --git a/nuevdb/IFDatabase/CMakeLists.txt b/nuevdb/IFDatabase/CMakeLists.txt
-index ca2b83e..3e4ca51 100644
+index b33975b..58ffddd 100644
 --- a/nuevdb/IFDatabase/CMakeLists.txt
 +++ b/nuevdb/IFDatabase/CMakeLists.txt
 @@ -1,14 +1,19 @@
@@ -101,7 +91,7 @@ index ca2b83e..3e4ca51 100644
 -                  LIBRARIES     LIBWDA
 +                  LIBRARIES     ${WDA}
                                  Boost::date_time
--                                ${BOOST_SYSTEM}
+-                                
                                  Boost::filesystem
                                  Boost::thread
                                  Boost::regex

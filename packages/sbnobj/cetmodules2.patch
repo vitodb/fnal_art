@@ -121,11 +121,14 @@ index fc4b0f3..2454a3c 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt b/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
-index d81f1da..d248442 100644
+index d81f1da..857ae5a 100644
 --- a/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
 +++ b/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
-@@ -1,11 +1,12 @@
+@@ -1,11 +1,15 @@
 -cet_make( 
++cet_find_library( DK2NU_TREE NAMES dk2nuTree PATHS ENV DK2NUDATA_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMME
++include_directories( $ENV{DK2NUDATA_INC} ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
++
 +cet_make(  ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
    LIBRARIES
 -    cetlib_except
@@ -181,11 +184,14 @@ index eb5077f..6032f15 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/SBNEventWeight/CMakeLists.txt b/sbnobj/Common/SBNEventWeight/CMakeLists.txt
-index 555921e..88e9e05 100644
+index 555921e..f60d788 100644
 --- a/sbnobj/Common/SBNEventWeight/CMakeLists.txt
 +++ b/sbnobj/Common/SBNEventWeight/CMakeLists.txt
-@@ -1,15 +1,17 @@
+@@ -1,15 +1,20 @@
 -cet_make( 
++cet_find_library( DK2NU_TREE NAMES dk2nuTree PATHS ENV DK2NUDATA_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMME
++include_directories( $ENV{DK2NUDATA_INC} ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
++
 +cet_make(  ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
    NO_DICTIONARY
    LIBRARIES
@@ -280,6 +286,23 @@ index 3de9938..7652999 100644
  
 -art_dictionary(DICTIONARY_LIBRARIES sbnobj_SBND_CRT)
 +art_dictionary(DICTIONARY_LIBRARIES sbnobj::SBND_CRT)
+ 
+ install_headers()
+ install_source()
+diff --git a/sbnobj/SBND/Commissioning/CMakeLists.txt b/sbnobj/SBND/Commissioning/CMakeLists.txt
+index d83ec1f..24d4ea0 100644
+--- a/sbnobj/SBND/Commissioning/CMakeLists.txt
++++ b/sbnobj/SBND/Commissioning/CMakeLists.txt
+@@ -1,10 +1,10 @@
+ cet_make( 
+   LIBRARIES
+-    cetlib_except
++    cetlib_except::cetlib_except
+   NO_DICTIONARY
+   )
+ 
+-art_dictionary(DICTIONARY_LIBRARIES sbnobj_SBND_Commissioning)
++art_dictionary(DICTIONARY_LIBRARIES sbnobj_SBND_Commissioning lardataobj::RecoBase)
  
  install_headers()
  install_source()

@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index dc63334..406b10d 100644
+index dc63334..5d88fbf 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -11,16 +11,16 @@
+@@ -11,18 +11,14 @@
  #  make install
  #  make package (builds distribution tarfile)
  # ======================================================================
@@ -17,14 +17,15 @@ index dc63334..406b10d 100644
  
 -# cetbuildtools contains our cmake modules
 -find_package(cetbuildtools REQUIRED)
+-
+-list(APPEND CMAKE_MODULE_PATH
+-#     ${CMAKE_CURRENT_SOURCE_DIR}/Modules
+-)
 +# cetbuildtools contains our cmake modules ### MIGRATE-ACTION-REQUIRED: remove
  
--list(APPEND CMAKE_MODULE_PATH
-+list(APPEND CMAKE_MODULE_PATH ### MIGRATE-ACTION-REQUIRED: remove
- #     ${CMAKE_CURRENT_SOURCE_DIR}/Modules
- )
- 
-@@ -34,22 +34,22 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+ include(CetCMakeEnv)
+ cet_cmake_env()
+@@ -34,22 +30,19 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
    EXTRA_CXX_FLAGS -Wno-unused-local-typedefs
  )
  
@@ -34,7 +35,7 @@ index dc63334..406b10d 100644
  # these are minimum required versions, not the actual product versions
 -find_ups_product( fftw )
 -
-+find_package( FFTW3 )
++find_package( PkgConfig REQUIRED)
 +find_package( ROOT )
  # macros for dictionary and simple_plugin
  include(CetMake)
@@ -47,15 +48,12 @@ index dc63334..406b10d 100644
 -cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS $ENV{FFTW_LIBRARY} )
 -cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS $ENV{FFTW_LIBRARY} )
 -set(ICARUS_FFTW_LIBRARIES ${ICARUS_FFTW3_LIBRARY} ${ICARUS_FFTW3F_LIBRARY} ${ICARUS_FFTW3L_LIBRARY} ${ICARUS_FFTW3Q_LIBRARY})
-+cet_find_library(ICARUS_FFTW3_LIBRARY  NAMES fftw3  PATHS ${FFTW3_LIBRARY_DIRS} )
-+cet_find_library(ICARUS_FFTW3F_LIBRARY NAMES fftw3f PATHS ${FFTW3_LIBRARY_DIRS} )
-+cet_find_library(ICARUS_FFTW3L_LIBRARY NAMES fftw3l PATHS ${FFTW3_LIBRARY_DIRS} )
-+cet_find_library(ICARUS_FFTW3Q_LIBRARY NAMES fftw3q PATHS ${FFTW3_LIBRARY_DIRS} )
-+set(ICARUS_FFTW_LIBRARIES ICARUS_FFTW3_LIBRARY ICARUS_FFTW3F_LIBRARY ICARUS_FFTW3L_LIBRARY ICARUS_FFTW3Q_LIBRARY)
++pkg_search_module(FFTW3 REQUIRED IMPORTED_TARGET GLOBAL fftw3f fftw3 fftw3q fftw3l fftw3_threads fftw3f_threeads fftw3q_threads)
++set(ICARUS_FFTW_LIBRARIES PkgConfig::FFTW3)
  
  # ADD SOURCE CODE SUBDIRECTORIES HERE
  add_subdirectory(icarus_signal_processing)
-@@ -59,7 +59,6 @@ add_subdirectory(test)
+@@ -59,7 +52,6 @@ add_subdirectory(test)
  
  # ups - table and config files
  # must be AFTER all other subdirectories

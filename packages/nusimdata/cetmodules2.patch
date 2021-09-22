@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 7c98efb..4d51eef 100644
+index 7c98efb..dacc006 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -12,16 +12,15 @@
@@ -51,7 +51,7 @@ index 7c98efb..4d51eef 100644
 -add_subdirectory(ups)
  # packaging utility
 -include(UseCPack)
-+# cet_cmake_config()
++#cet_cmake_config()
 diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
 new file mode 100644
 index 0000000..f266c5d
@@ -68,7 +68,7 @@ index 0000000..c1ebe03
 @@ -0,0 +1 @@
 +find_package(canvas_root_io REQUIRED)
 diff --git a/nusimdata/SimulationBase/CMakeLists.txt b/nusimdata/SimulationBase/CMakeLists.txt
-index 95b4d51..30411c0 100644
+index ca37b9f..88d15b8 100644
 --- a/nusimdata/SimulationBase/CMakeLists.txt
 +++ b/nusimdata/SimulationBase/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -80,7 +80,7 @@ index 95b4d51..30411c0 100644
  
  # ROOT_BASIC_LIB_LIST is:
  #   Core RIO Net Imt Hist Graf Graf3d Gpad Tree Rint Postscript
-@@ -8,7 +8,7 @@ include_directories( $ENV{DK2NUDATA_INC} )
+@@ -8,14 +8,14 @@ include_directories( $ENV{DK2NUDATA_INC} )
  
  set( SIMB_LIBS
                 canvas::canvas
@@ -89,15 +89,14 @@ index 95b4d51..30411c0 100644
                 DK2NU_TREE  # additional data objects assoc w/ MCTruth
                 cetlib::cetlib
                 cetlib_except::cetlib_except
-@@ -30,7 +30,7 @@ set( SIMB_LIBS
- #               ${ROOT_MATHCORE}
- #               ${ROOT_THREAD}
+                ${ROOT_BASIC_LIB_LIST}
+                ROOT::EG )  # EG needed for TParticleDB
  
 -cet_make( LIBRARIES ${SIMB_LIBS}
 +cet_make( LIBRARIES ${SIMB_LIBS} ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
            NO_DICTIONARY )
  
- art_dictionary( DICTIONARY_LIBRARIES nusimdata_SimulationBase )
+ art_dictionary( DICTIONARY_LIBRARIES nusimdata::SimulationBase )
 diff --git a/ups/CMakeLists.txt b/ups/CMakeLists.txt
 deleted file mode 100644
 index fe33cc7..0000000
