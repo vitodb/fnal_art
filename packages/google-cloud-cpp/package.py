@@ -34,9 +34,16 @@ class GoogleCloudCpp(CMakePackage):
     # depends_on('benchmark')
     # depends_on('abseil')
 
+    variant('cxxstd',
+            default='11',
+            values=('11','14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
     def cmake_args(self):
         # FIXME: Add arguments other than
         # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
         # FIXME: If not needed delete this function
-        args = []
+        args = ['-DCMAKE_CXX_STANDARD={0}'.
+                format(self.spec.variants['cxxstd'].value)]
         return args
