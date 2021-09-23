@@ -54,3 +54,9 @@ class Cetbuildtools(CMakePackage):
         env.set("CETBUILDTOOLS_DIR", self.spec['cetmodules'].prefix)
         env.prepend_path('CMAKE_PREFIX_PATH', self.prefix )
 
+    @run_after('install')
+    def rename_README(self):
+        import os
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
+                       join_path(self.spec.prefix, "README_%s"%self.spec.name))

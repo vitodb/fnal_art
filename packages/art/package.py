@@ -140,9 +140,9 @@ class Art(CMakePackage):
         spack_env.set("ART_DIR",self.prefix)
         run_env.set("ART_DIR",self.prefix)
 
-    #@run_after('install')
-    #def rename_README(self):
-    #    import os
-    #    if os.path.exists(join_path(self.spec.prefix, "README")):
-    #        os.rename( join_path(self.spec.prefix, "README"),
-    #               join_path(self.spec.prefix, "README_%s"%self.spec.name))
+    @run_after('install')
+    def rename_README(self):
+        import os
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
+                   join_path(self.spec.prefix, "README_%s"%self.spec.name))
