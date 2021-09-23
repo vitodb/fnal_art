@@ -32,13 +32,15 @@ class GoogleCloudCpp(CMakePackage):
     depends_on('grpc')
     depends_on('nlohmann-json')
     # depends_on('benchmark')
-    # depends_on('abseil')
+    depends_on('abseil-cpp')
 
     variant('cxxstd',
             default='11',
             values=('11','14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('absl-make-unique.patch') 
 
     def cmake_args(self):
         # FIXME: Add arguments other than
