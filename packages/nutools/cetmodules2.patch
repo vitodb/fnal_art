@@ -59,24 +59,19 @@ index 0000000..18ff201
 +find_package( cetlib_except REQUIRED)
 +find_package( nusimdata REQUIRED )
 diff --git a/nutools/EventGeneratorBase/CRY/CMakeLists.txt b/nutools/EventGeneratorBase/CRY/CMakeLists.txt
-index 00dc51a..3788368 100644
+index 021ae89..c1d4a21 100644
 --- a/nutools/EventGeneratorBase/CRY/CMakeLists.txt
 +++ b/nutools/EventGeneratorBase/CRY/CMakeLists.txt
-@@ -1,9 +1,11 @@
+@@ -1,8 +1,7 @@
  
- art_make( LIB_LIBRARIES nusimdata_SimulationBase
+ art_make( LIB_LIBRARIES nusimdata::SimulationBase
 -                        CRY
 +                        ${CRY}
                          messagefacility::MF_MessageLogger
--                        ${MF_UTILITIES}
--                        fhiclcpp::fhiclcpp
-+                        messagefacility::headers
-+                        fhiclcpp::fhiclcpp fhiclcpp::types
-+                        cetlib
-+			cetlib_except
+-                        
+                         fhiclcpp::fhiclcpp
                          cetlib::cetlib
  			cetlib_except::cetlib_except
-                         ${ROOT_GEOM}
 diff --git a/tools/CMakeLists.txt b/tools/CMakeLists.txt
 index 8ae01eb..4f7cdfd 100644
 --- a/tools/CMakeLists.txt

@@ -68,10 +68,10 @@ index 0000000..dbfc3f5
 +find_package( Geant4 REQUIRED)
 +
 diff --git a/nurandom/RandomUtils/CMakeLists.txt b/nurandom/RandomUtils/CMakeLists.txt
-index 55ecfc0..a038e70 100644
+index 930e8ae..a038e70 100644
 --- a/nurandom/RandomUtils/CMakeLists.txt
 +++ b/nurandom/RandomUtils/CMakeLists.txt
-@@ -2,29 +2,29 @@ add_subdirectory(Providers)
+@@ -2,8 +2,8 @@ add_subdirectory(Providers)
  
  art_make(
    SERVICE_LIBRARIES
@@ -82,12 +82,11 @@ index 55ecfc0..a038e70 100644
      art::Framework_Principal
      art::Framework_Services_Registry
      art::Persistency_Provenance
-     art::Utilities
+@@ -11,20 +11,20 @@ art_make(
      art::Framework_Services_Optional_RandomNumberGenerator_service
      canvas::canvas
--    MF_MessageLogger
+     messagefacility::MF_MessageLogger
 -    fhiclcpp
-+    messagefacility::MF_MessageLogger
 +    fhiclcpp::fhiclcpp
      cetlib::cetlib
      cetlib_except::cetlib_except
@@ -97,9 +96,8 @@ index 55ecfc0..a038e70 100644
 +    art::Framework_Core
      art::Persistency_Provenance
      canvas::canvas
--    MF_MessageLogger
+     messagefacility::MF_MessageLogger
 -    fhiclcpp
-+    messagefacility::MF_MessageLogger
 +    fhiclcpp::fhiclcpp
      cetlib::cetlib
      cetlib_except::cetlib_except
@@ -133,26 +131,22 @@ index 4261b5a..bab2578 100644
     * `InvalidSeed` (`0`), it is interpreted as a request to ignore the parameter
     * and use the service to get the seed. This is made as a quick way to remove
 diff --git a/nurandom/RandomUtils/Providers/CMakeLists.txt b/nurandom/RandomUtils/Providers/CMakeLists.txt
-index 8fc0d89..03ca2b3 100644
+index dd7b61d..03ca2b3 100644
 --- a/nurandom/RandomUtils/Providers/CMakeLists.txt
 +++ b/nurandom/RandomUtils/Providers/CMakeLists.txt
-@@ -1,8 +1,8 @@
+@@ -1,6 +1,6 @@
  cet_make(
    LIBRARIES
 -    fhiclcpp
--    cetlib
--    cetlib_except
 +    fhiclcpp::fhiclcpp
-+    cetlib::cetlib
-+    cetlib_except::cetlib_except
+     cetlib::cetlib
+     cetlib_except::cetlib_except
  )
- 
- 
 diff --git a/test/RandomUtils/CMakeLists.txt b/test/RandomUtils/CMakeLists.txt
-index 6956eeb..97847b1 100644
+index 8cabd96..2e68c3a 100644
 --- a/test/RandomUtils/CMakeLists.txt
 +++ b/test/RandomUtils/CMakeLists.txt
-@@ -3,43 +3,45 @@ add_subdirectory(Providers)
+@@ -3,38 +3,35 @@ add_subdirectory(Providers)
  art_make(
    EXCLUDE GeneratedEventTimestampTestPlugin_plugin.cc
    LIB_LIBRARIES
@@ -164,14 +158,11 @@ index 6956eeb..97847b1 100644
 +    art::Utilities
 +    art::Framework_Services_System_FloatingPointControl_service
      messagefacility::MF_MessageLogger
--    ${MF_UTILITIES}
--    fhiclcpp::fhiclcpp
-+    messagefacility::headers
-+    fhiclcpp::fhiclcpp fhiclcpp::types
+-    
+     fhiclcpp::fhiclcpp
      cetlib::cetlib
      cetlib_except::cetlib_except
--    ${CLHEP}
-+    
+-    CLHEP
      NO_INSTALL
    MODULE_LIBRARIES
 -    nurandom_test_RandomUtils
@@ -184,15 +175,12 @@ index 6956eeb..97847b1 100644
 -    ${ART_FRAMEWORK_SERVICES_OPTIONAL_RANDOMNUMBERGENERATOR_SERVICE}
 +    art::Framework_Services_System_FloatingPointControl_service
      messagefacility::MF_MessageLogger
--    ${MF_UTILITIES}
--    fhiclcpp::fhiclcpp
-+    messagefacility::headers
-+    fhiclcpp::fhiclcpp fhiclcpp::types
+-    
+     fhiclcpp::fhiclcpp
      cetlib::cetlib
      cetlib_except::cetlib_except
--    ${CLHEP}
+     CLHEP
 +    CLHEP::Random
-+    
      NO_INSTALL
    SERVICE_LIBRARIES
 -    nurandom_RandomUtils_NuRandomService_service
@@ -202,24 +190,15 @@ index 6956eeb..97847b1 100644
 +    canvas
      art::Framework_Services_Registry
      messagefacility::MF_MessageLogger
--    ${MF_UTILITIES}
--    fhiclcpp::fhiclcpp
-+    messagefacility::headers
-+    fhiclcpp::fhiclcpp fhiclcpp::types
+-    
+     fhiclcpp::fhiclcpp
      cetlib::cetlib
      cetlib_except::cetlib_except
-     ROOT::Core
--    ${ROOT_MATHCORE}
-+    ROOT::MathCore
-+    CLHEP::Random
-     NO_INSTALL
-   USE_PRODUCT_NAME
- )
 diff --git a/test/RandomUtils/Providers/CMakeLists.txt b/test/RandomUtils/Providers/CMakeLists.txt
-index b480d51..2de5ed7 100644
+index 36f05dd..2d62696 100644
 --- a/test/RandomUtils/Providers/CMakeLists.txt
 +++ b/test/RandomUtils/Providers/CMakeLists.txt
-@@ -2,12 +2,12 @@
+@@ -2,11 +2,10 @@
  cet_test( SeedMaster_test
    NO_AUTO
    LIBRARIES
@@ -228,10 +207,7 @@ index b480d51..2de5ed7 100644
      art::Utilities
      canvas::canvas
      messagefacility::MF_MessageLogger
--    ${MF_UTILITIES}
--    fhiclcpp::fhiclcpp
-+    messagefacility::headers
-+    fhiclcpp::fhiclcpp fhiclcpp::types
+-    
+     fhiclcpp::fhiclcpp
      cetlib::cetlib
      cetlib_except::cetlib_except
- )

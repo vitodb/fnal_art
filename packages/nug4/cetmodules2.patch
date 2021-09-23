@@ -103,17 +103,20 @@ index 0000000..d022213
 +find_package( Geant4 REQUIRED)
 +
 diff --git a/nug4/G4Base/CMakeLists.txt b/nug4/G4Base/CMakeLists.txt
-index a587ad0..66449d1 100644
+index 7cb487c..4b538e3 100644
 --- a/nug4/G4Base/CMakeLists.txt
 +++ b/nug4/G4Base/CMakeLists.txt
-@@ -2,34 +2,34 @@
- art_make( LIB_LIBRARIES nusimdata_SimulationBase
-                         nug4_MagneticFieldServices_MagneticFieldServiceStandard_service
-                         nug4_MagneticField
+@@ -1,35 +1,35 @@
+ 
+ art_make( LIB_LIBRARIES nusimdata::SimulationBase
+-                        nug4_MagneticFieldServices_MagneticFieldServiceStandard_service
+-                        nug4_MagneticField
 -			                  canvas::canvas
 -                        ART_FRAMEWORK_SERVICES_REGISTRY
 -                        MF_MESSAGELOGGER
 -                        FHICLCPP
++                        nug4::MagneticFieldServices_MagneticFieldServiceStandard_service
++                        nug4::MagneticField
 +			canvas::canvas
 +                        art::Framework_Services_Registry
 +                        messagefacility::MF_MessageLogger
@@ -168,67 +171,56 @@ index a587ad0..66449d1 100644
  
  install_headers()
 diff --git a/nug4/MagneticField/CMakeLists.txt b/nug4/MagneticField/CMakeLists.txt
-index cdf4437..a0c6954 100644
+index 6fca3f3..6c11c1c 100644
 --- a/nug4/MagneticField/CMakeLists.txt
 +++ b/nug4/MagneticField/CMakeLists.txt
-@@ -2,17 +2,15 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
+@@ -2,17 +2,14 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
  
  art_make(NO_PLUGINS
            LIB_LIBRARIES
 -          G4GEOMETRY
            messagefacility::MF_MessageLogger
--          ${MF_UTILITIES}
-+          messagefacility::headers
+-          
            canvas::canvas
 -          fhiclcpp::fhiclcpp
 +          fhiclcpp::fhiclcpp fhiclcpp::types
            cetlib::cetlib
            cetlib_except::cetlib_except
--          ${CLHEP}
+-          CLHEP
 -          ${ROOT_BASIC_LIB_LIST}
--          ${ROOT_GEOM}
--          PUBLIC ${G4GEOMETRY}
 +          ${ROOT_LIBRARIES}
-+          ROOT::Geom
+           ROOT::Geom
+-          PUBLIC G4GEOMETRY
 +          PUBLIC Geant4::G4geometry
           )
           
  install_headers()
 diff --git a/nug4/MagneticFieldServices/CMakeLists.txt b/nug4/MagneticFieldServices/CMakeLists.txt
-index de3854e..c379ef3 100644
+index c624dfd..c379ef3 100644
 --- a/nug4/MagneticFieldServices/CMakeLists.txt
 +++ b/nug4/MagneticFieldServices/CMakeLists.txt
-@@ -1,14 +1,13 @@
+@@ -1,13 +1,12 @@
  include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
  
  simple_plugin( MagneticFieldServiceStandard "service"
 +            LIBRARIES
              messagefacility::MF_MessageLogger
--            ${MF_UTILITIES}
+-            
 +            messagefacility::headers
              cetlib_except::cetlib_except
              nug4_MagneticField
 -            G4GEOMETRY
--            ${CLHEP}
+-            CLHEP
 -            ${ROOT_BASIC_LIB_LIST}
--            ${ROOT_GEOM} )
 +            ${ROOT_LIBRARIES}
-+            ROOT::Geom )
+             ROOT::Geom )
  
  install_headers()
- install_fhicl()
 diff --git a/nug4/ParticleNavigation/CMakeLists.txt b/nug4/ParticleNavigation/CMakeLists.txt
-index e526764..0cc082e 100644
+index 8a90f1b..cf416a1 100644
 --- a/nug4/ParticleNavigation/CMakeLists.txt
 +++ b/nug4/ParticleNavigation/CMakeLists.txt
-@@ -4,18 +4,16 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
- 
- art_make( NO_PLUGINS
-           LIB_LIBRARIES nusimdata_SimulationBase
--                        art::Framework_Core
--			art::Framework_Principal
--			art::Framework_Services_Registry
- 			art::Persistency_Common
+@@ -11,11 +11,11 @@ art_make( NO_PLUGINS
  			art::Persistency_Provenance
  			art::Utilities
  			canvas::canvas
@@ -236,11 +228,10 @@ index e526764..0cc082e 100644
 +                        cetlib::cetlib
 +                        cetlib_except::cetlib_except
  			messagefacility::MF_MessageLogger
--			${MF_UTILITIES}
+-			
 -        		cetlib::cetlib
 -			cetlib_except::cetlib_except
 -			${ROOT_BASIC_LIB_LIST}
-+			messagefacility::headers
 +			${ROOT_LIBRARIES}
          )
  

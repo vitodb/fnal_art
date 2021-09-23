@@ -220,78 +220,59 @@ index 0000000..18ff201
 +find_package( cetlib REQUIRED)
 +find_package( cetlib_except REQUIRED)
 +find_package( nusimdata REQUIRED )
-diff --git a/nugen/EventGeneratorBase/GENIE/CMakeLists.txt b/nugen/EventGeneratorBase/GENIE/CMakeLists.txt
-index ab5366e..2ba3fe6 100644
---- a/nugen/EventGeneratorBase/GENIE/CMakeLists.txt
-+++ b/nugen/EventGeneratorBase/GENIE/CMakeLists.txt
-@@ -3,7 +3,7 @@ set( IFDH_AS_SERVICE_LIB_LIST
-            ${Boost_SYSTEM_LIBRARY}
-            IFDH_SERVICE )
- 
--art_make( LIB_LIBRARIES nusimdata_SimulationBase
-+art_make( LIB_LIBRARIES nusimdata::SimulationBase
-                         art::Framework_Principal
-                         art::Persistency_Provenance
-                         art::Utilities
 diff --git a/nugen/EventGeneratorBase/GiBUU/CMakeLists.txt b/nugen/EventGeneratorBase/GiBUU/CMakeLists.txt
-index b4ef081..6af7a73 100644
+index b6390c0..e5832ef 100644
 --- a/nugen/EventGeneratorBase/GiBUU/CMakeLists.txt
 +++ b/nugen/EventGeneratorBase/GiBUU/CMakeLists.txt
-@@ -1,6 +1,6 @@
+@@ -1,5 +1,5 @@
  
 -art_make( LIB_LIBRARIES nugen_EventGeneratorBase_GENIE
--                        nusimdata_SimulationBase
 +art_make( LIB_LIBRARIES nugen::EventGeneratorBase_GENIE
-+                        nusimdata::SimulationBase
+                         nusimdata::SimulationBase
                          art::Utilities
                          canvas::canvas
-                         messagefacility::MF_MessageLogger
 diff --git a/nugen/EventGeneratorBase/Modules/CMakeLists.txt b/nugen/EventGeneratorBase/Modules/CMakeLists.txt
-index e408ce9..d3ca775 100644
+index 01b505f..1c3484a 100644
 --- a/nugen/EventGeneratorBase/Modules/CMakeLists.txt
 +++ b/nugen/EventGeneratorBase/Modules/CMakeLists.txt
 @@ -1,6 +1,6 @@
  
--art_make( MODULE_LIBRARIES nusimdata_SimulationBase
+ art_make( MODULE_LIBRARIES nusimdata::SimulationBase
 -                        nugen_EventGeneratorBase_GENIE
-+art_make( MODULE_LIBRARIES nusimdata::SimulationBase
 +                        nugen::EventGeneratorBase_GENIE
                          art::Framework_Services_Optional_RandomNumberGenerator_service
                          art::Framework_Services_Registry
                          messagefacility::MF_MessageLogger
 diff --git a/nugen/EventGeneratorBase/test/CMakeLists.txt b/nugen/EventGeneratorBase/test/CMakeLists.txt
-index 5c9f58a..00b8baa 100644
+index dbf25e6..2816f56 100644
 --- a/nugen/EventGeneratorBase/test/CMakeLists.txt
 +++ b/nugen/EventGeneratorBase/test/CMakeLists.txt
 @@ -1,7 +1,7 @@
  
  art_make( EXCLUDE EventGeneratorTest_module.cc
--          MODULE_LIBRARIES nusimdata_SimulationBase
+           MODULE_LIBRARIES nusimdata::SimulationBase
 -                           nugen_EventGeneratorBase_GENIE
-+          MODULE_LIBRARIES nusimdata::SimulationBase
 +                           nugen::EventGeneratorBase_GENIE
                          art::Framework_Services_Optional_RandomNumberGenerator_service
                          art::Framework_Services_Registry
  # for MixGenieEvents_module
-@@ -12,7 +12,7 @@ art_make( EXCLUDE EventGeneratorTest_module.cc
+@@ -12,7 +12,6 @@ art_make( EXCLUDE EventGeneratorTest_module.cc
  #                        art_root_io_tfile_support ROOT::Core
  # end-of-list for MixGenieEvents_module
                          messagefacility::MF_MessageLogger
--                        ${MF_UTILITIES}
-+                        messagefacility::headers
+-                        
                          fhiclcpp::fhiclcpp
                          cetlib::cetlib
                          LOG4CPP
 diff --git a/nugen/NuReweight/art/CMakeLists.txt b/nugen/NuReweight/art/CMakeLists.txt
-index faea9f4..88ba4b1 100644
+index f36e686..2bd334c 100644
 --- a/nugen/NuReweight/art/CMakeLists.txt
 +++ b/nugen/NuReweight/art/CMakeLists.txt
-@@ -12,11 +12,11 @@ set( NURW_LIBS art::Framework_Services_Registry
+@@ -12,11 +12,10 @@ set( NURW_LIBS art::Framework_Services_Registry
                 art::Utilities
                 canvas::canvas
                 messagefacility::MF_MessageLogger
--               ${MF_UTILITIES}
-+               messagefacility::headers
+-               
                 fhiclcpp::fhiclcpp
                 cetlib::cetlib
                 cetlib_except::cetlib_except
@@ -300,22 +281,18 @@ index faea9f4..88ba4b1 100644
                 LOG4CPP
                 XML2
                 PYTHIA6
-@@ -32,13 +32,13 @@ set( NURW_LIBS art::Framework_Services_Registry
-            )
+@@ -33,11 +32,11 @@ set( NURW_LIBS art::Framework_Services_Registry
  
  art_make_library( SOURCE NuReweight.cxx
--                  LIBRARIES nusimdata_SimulationBase
+                   LIBRARIES nusimdata::SimulationBase
 -                            nugen_NuReweight
-+                  LIBRARIES nusimdata::SimulationBase
 +                            nugen::NuReweight
                              ${NURW_LIBS} )
  
 -simple_plugin( ReweightAna module nugen_NuReweight_art
 -                                  nugen_NuReweight
--                                  nusimdata_SimulationBase
 +simple_plugin( ReweightAna module nugen::NuReweight_art
 +                                  nugen::NuReweight
-+                                  nusimdata::SimulationBase
+                                   nusimdata::SimulationBase
                                   ${NURW_LIBS} )
  
- install_headers()

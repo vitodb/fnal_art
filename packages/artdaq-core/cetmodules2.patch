@@ -1,41 +1,21 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 7a113e4..c7e9b1c 100644
+index 536ca45..227002c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -33,17 +33,17 @@ cet_set_compiler_flags(DIAGS VIGILANT
- 
- # these are minimum required versions, not the actual product versions
- find_ups_boost(v1_53_0)
--find_ups_product (cetbuildtools)
--find_ups_product( canvas v1_00_00 )
--find_ups_product( cetlib v1_08_00 )
--find_ups_product( cetpkgsupport v1_08_03 )
--find_ups_product( clhep v2_2_0 )
--find_ups_product( fhiclcpp v3_04_00 )
--find_ups_product( messagefacility v1_14_01 )
--find_ups_product( sqlite v3_08_05_00 )
--find_ups_product( tbb )
-+#find_ups_product (cetbuildtools) ### MIGRATE-ACTION-REQUIRED: remove ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_ups_product( canvas v1_00_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_ups_product( cetlib v1_08_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_ups_product( cetpkgsupport v1_08_03 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_ups_product( clhep v2_2_0 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_ups_product( fhiclcpp v3_04_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_ups_product( messagefacility v1_14_01 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_ups_product( sqlite v3_08_05_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_ups_product( tbb ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+@@ -41,6 +41,7 @@ find_ups_product( fhiclcpp v3_04_00 )
+ find_ups_product( messagefacility v1_14_01 )
+ find_ups_product( sqlite v3_08_05_00 )
+ find_ups_product( tbb )
++
  find_ups_root( v5_34_20 )
--find_ups_product( TRACE v3_03_00 )
-+find_ups_product( TRACE v3_03_00 ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+ find_ups_product( TRACE v3_03_00 )
  
- 
- string(REGEX MATCHALL "[0-9][0-9]?[0-9]?" MESSAGEFACILITY_VERSION_LIST "$ENV{MESSAGEFACILITY_VERSION}")
-@@ -76,19 +76,19 @@ if(BTYPE_UC STREQUAL DEBUG)
+@@ -75,19 +76,19 @@ if(BTYPE_UC STREQUAL DEBUG)
  		if($ENV{USE_ASAN} GREATER 0)
  			message("!!! Address Sanitizer Activated!!!")
  			add_compile_options(-fsanitize=address -Wno-unused-command-line-argument)
 -			add_link_options(-lasan)
-+			add_link_options(-lasan) ### MIGRATE-ACTION-RECOMMENDED: use target_link_options()
++			add_link_options(-lasan) 
  		endif()
  	endif()
  	if(DEFINED ENV{USE_TSAN})
@@ -43,90 +23,122 @@ index 7a113e4..c7e9b1c 100644
  			message("!!! Thread Sanitizer Activated!!!")
  			add_compile_options(-fsanitize=thread -Wno-unused-command-line-argument)
 -			add_link_options(-ltsan)
-+			add_link_options(-ltsan) ### MIGRATE-ACTION-RECOMMENDED: use target_link_options()
++			add_link_options(-ltsan) 
  		endif()
  	endif()
  	if(DEFINED ENV{USE_GCOV})
  		add_compile_options(-fprofile-arcs -ftest-coverage --coverage)
 -		add_link_options(--coverage)
-+		add_link_options(--coverage) ### MIGRATE-ACTION-RECOMMENDED: use target_link_options()
++		add_link_options(--coverage) 
  	endif()
  endif()
  
-@@ -99,7 +99,7 @@ if(DEFINED ENV{USE_EXCEPTIONSTACKTRACE})
+@@ -98,7 +99,7 @@ if(DEFINED ENV{USE_EXCEPTIONSTACKTRACE})
  		add_definitions(-D EXCEPTIONSTACKTRACE)
  		set( EXCEPTIONSTACKTRACE_LIB  artdaq-core_Utilities_ExceptionStackTrace )
  		add_compile_options( -rdynamic -Wno-unused-command-line-argument )
 -		add_link_options( -rdynamic )
-+		add_link_options( -rdynamic ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_options()
++		add_link_options( -rdynamic ) 
  	endif()
  endif()
  
-@@ -117,7 +117,6 @@ add_subdirectory(test)
- add_subdirectory(artdaq-core)
- 
- # ups - table and config files
--add_subdirectory(ups)
- 
- # doc - Documentation
- if ( NOT DEFINED ENV{DISABLE_DOXYGEN} )
-@@ -125,4 +124,4 @@ add_subdirectory(doc)
- endif()
- 
- # packaging utility
--include(UseCPack)
-+cet_cmake_config()
 diff --git a/artdaq-core/Core/CMakeLists.txt b/artdaq-core/Core/CMakeLists.txt
-index 4c7ca0e..504f4ee 100644
+index 4c7ca0e..e2d553d 100644
 --- a/artdaq-core/Core/CMakeLists.txt
 +++ b/artdaq-core/Core/CMakeLists.txt
-@@ -7,7 +7,7 @@
+@@ -7,10 +7,10 @@
  # ----------------------------------------------------------------------
  # Build this project's library:
  
 -cet_make(
-+cet_make( ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
++cet_make( 
    LIBRARIES
-   artdaq-core_Data
-   artdaq-core_Utilities
+-  artdaq-core_Data
+-  artdaq-core_Utilities
++  artdaq_core::artdaq-core_Data
++  artdaq_core::artdaq-core_Utilities
+   pthread
+   Boost::thread
+   )
 diff --git a/artdaq-core/Data/CMakeLists.txt b/artdaq-core/Data/CMakeLists.txt
 old mode 100755
 new mode 100644
-index edd2893..33f83cd
+index edd2893..824aa13
 --- a/artdaq-core/Data/CMakeLists.txt
 +++ b/artdaq-core/Data/CMakeLists.txt
-@@ -1,4 +1,4 @@
+@@ -1,7 +1,7 @@
 -cet_make(
-+cet_make( ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
++cet_make( 
  NO_DICTIONARY
    LIBRARIES
-   artdaq-core_Utilities
+-  artdaq-core_Utilities
++  artdaq_core::artdaq-core_Utilities
+   EXCLUDE Artdaq_fragmentNameHelper.cc
+   )
+ 
+@@ -9,7 +9,7 @@ basic_plugin(Artdaq "fragmentNameHelper" artdaq-core_Data)
+ 
+ cet_remove_compiler_flags(-fsanitize=address -lasan)
+ cet_remove_compiler_flags(-fsanitize=thread -ltsan)
+-  art_dictionary(DICTIONARY_LIBRARIES artdaq-core_Data)
++  art_dictionary(DICTIONARY_LIBRARIES artdaq_core::artdaq-core_Data)
+ 
+ install_headers(SUBDIRS detail)
+ install_source(SUBDIRS detail)
 diff --git a/artdaq-core/Generators/CMakeLists.txt b/artdaq-core/Generators/CMakeLists.txt
-index afff33e..68332d8 100644
+index afff33e..d53b677 100644
 --- a/artdaq-core/Generators/CMakeLists.txt
 +++ b/artdaq-core/Generators/CMakeLists.txt
-@@ -1,5 +1,5 @@
+@@ -1,7 +1,7 @@
  
 -cet_make(
-+cet_make( ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
++cet_make( 
    LIBRARIES
-   artdaq-core_Data
+-  artdaq-core_Data
++  artdaq_core::artdaq-core_Data
    )
+ 
+ install_headers()
 diff --git a/artdaq-core/Utilities/CMakeLists.txt b/artdaq-core/Utilities/CMakeLists.txt
-index a527a61..5bea6d3 100644
+index a527a61..cd022aa 100644
 --- a/artdaq-core/Utilities/CMakeLists.txt
 +++ b/artdaq-core/Utilities/CMakeLists.txt
-@@ -1,5 +1,5 @@
+@@ -1,11 +1,11 @@
  
 -cet_make(
-+cet_make( ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
++cet_make( 
  	EXCLUDE GenFile_mfPlugin.cc ExceptionStackTrace.cc
    LIBRARIES
-   MF_MessageLogger
+-  MF_MessageLogger
+-  cetlib
+-  cetlib_except
+-  fhiclcpp
++  messagefacility::MF_MessageLogger
++  cetlib::cetlib
++  cetlib_except::cetlib_except
++  fhiclcpp::fhiclcpp
+ 	${EXCEPTIONSTACKTRACE_LIB}
+ 	Boost::filesystem
+ )
+@@ -19,10 +19,10 @@ cet_make_library(
+ )
+ 
+ basic_plugin( "GenFile" "mfPlugin"
+-  MF_MessageLogger
+-  cetlib
+-  cetlib_except
+-  fhiclcpp
++  messagefacility::MF_MessageLogger
++  cetlib::cetlib
++  cetlib_except::cetlib_except
++  fhiclcpp::fhiclcpp
+ )
+ 
+ install_headers()
 diff --git a/doc/CMakeLists.txt b/doc/CMakeLists.txt
 old mode 100755
 new mode 100644
-index 3aab601..7e4520a
+index c50cf77..915dcd6
 --- a/doc/CMakeLists.txt
 +++ b/doc/CMakeLists.txt
 @@ -3,7 +3,7 @@ include(FindLATEX)
@@ -138,368 +150,118 @@ index 3aab601..7e4520a
  	find_program(EPSTOPDF_FOUND epstopdf)
  
  	if(LATEX_FOUND AND EPSTOPDF_FOUND)
-diff --git a/ups/CMakeLists.txt b/ups/CMakeLists.txt
-deleted file mode 100644
-index fe33cc7..0000000
---- a/ups/CMakeLists.txt
-+++ /dev/null
-@@ -1,6 +0,0 @@
--
--# create package configuration and version files
--
--process_ups_files()
--
--cet_cmake_config()
-diff --git a/ups/product-config.cmake.in b/ups/product-config.cmake.in
-deleted file mode 100644
-index e65dd20..0000000
---- a/ups/product-config.cmake.in
-+++ /dev/null
-@@ -1,12 +0,0 @@
--
--set( @product@_VERSION @VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@ )
--set( @product@_UPS_VERSION v@VERSION_MAJOR@_@VERSION_MINOR@_@VERSION_PATCH@ )
--
--@PACKAGE_INIT@
--
--@CONFIG_FIND_UPS_COMMANDS@
--
--@CONFIG_FIND_LIBRARY_COMMANDS@
--
--check_required_components(@product@)
--
+diff --git a/test/Core/CMakeLists.txt b/test/Core/CMakeLists.txt
+index 563271e..c89c1b8 100644
+--- a/test/Core/CMakeLists.txt
++++ b/test/Core/CMakeLists.txt
+@@ -2,11 +2,11 @@
+ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+ 
+ cet_test(SharedMemoryManager_t USE_BOOST_UNIT
+-  LIBRARIES artdaq-core_Core
++  LIBRARIES artdaq_core::artdaq-core_Core
+   )
+ cet_test(SharedMemoryFragmentManager_t USE_BOOST_UNIT
+-  LIBRARIES artdaq-core_Core 
+-  artdaq-core_Data
++  LIBRARIES artdaq_core::artdaq-core_Core 
++  artdaq_core::artdaq-core_Data
+   )
+ 
+-  endif()
+\ No newline at end of file
++  endif()
+diff --git a/test/Data/CMakeLists.txt b/test/Data/CMakeLists.txt
+index bffd58e..a8ff6c1 100644
+--- a/test/Data/CMakeLists.txt
++++ b/test/Data/CMakeLists.txt
+@@ -1,20 +1,20 @@
+ 
+ cet_test(Fragment_t USE_BOOST_UNIT
+-  LIBRARIES artdaq-core_Data
++  LIBRARIES artdaq_core::artdaq-core_Data
+   )
+ 
+ cet_test(ContainerFragment_t USE_BOOST_UNIT
+-  LIBRARIES artdaq-core_Data
++  LIBRARIES artdaq_core::artdaq-core_Data
+   )
+ 
+ cet_test(RawEvent_t USE_BOOST_UNIT
+-  LIBRARIES artdaq-core_Data
++  LIBRARIES artdaq_core::artdaq-core_Data
+   )
+ 
+ cet_test(BuildInfo_t USE_BOOST_UNIT
+-  LIBRARIES artdaq-core_Data
++  LIBRARIES artdaq_core::artdaq-core_Data
+   )
+ 
+ cet_test(FragmentNameHelper_t USE_BOOST_UNIT
+-  LIBRARIES artdaq-core_Data
+-  )
+\ No newline at end of file
++  LIBRARIES artdaq_core::artdaq-core_Data
++  )
+diff --git a/test/Generators/CMakeLists.txt b/test/Generators/CMakeLists.txt
+index 059e1af..ee64902 100644
+--- a/test/Generators/CMakeLists.txt
++++ b/test/Generators/CMakeLists.txt
+@@ -1,4 +1,4 @@
+ 
+ cet_test(FragmentGenerator_t USE_BOOST_UNIT
+-  LIBRARIES artdaq-core_Generators artdaq-core_Data
++  LIBRARIES artdaq_core::artdaq-core_Generators artdaq_core::artdaq-core_Data
+   )
+diff --git a/test/Utilities/CMakeLists.txt b/test/Utilities/CMakeLists.txt
+index 73f8591..60fe360 100644
+--- a/test/Utilities/CMakeLists.txt
++++ b/test/Utilities/CMakeLists.txt
+@@ -1,30 +1,30 @@
+ cet_test(TimeUtils_t USE_BOOST_UNIT
+-	LIBRARIES artdaq-core_Utilities
++	LIBRARIES artdaq_core::artdaq-core_Utilities
+ )
+ 
+ cet_test(ExceptionHandler_t USE_BOOST_UNIT
+-	LIBRARIES artdaq-core_Utilities
+-	cetlib_except
+-	${CANVAS}
++	LIBRARIES artdaq_core::artdaq-core_Utilities
++	cetlib_except::cetlib_except
++	canvas::canvas
+ )
+ 
+ cet_test(SimpleLookupPolicy_t USE_BOOST_UNIT
+ 	DATAFILES fcl/LookupTarget.fcl
+-	LIBRARIES artdaq-core_Utilities
+-  MF_MessageLogger
++	LIBRARIES artdaq_core::artdaq-core_Utilities
++  messagefacility::MF_MessageLogger
+ )
+ 
+ cet_test(ExceptionStackTrace_t USE_BOOST_UNIT
+-	LIBRARIES artdaq-core_Utilities_ExceptionStackTrace
+-  MF_MessageLogger
++	LIBRARIES artdaq_core::artdaq-core_Utilities_ExceptionStackTrace
++  messagefacility::MF_MessageLogger
+ )
+ 
+ cet_test(configureMessageFacility_t USE_BOOST_UNIT
+-	LIBRARIES artdaq-core_Utilities
+-  MF_MessageLogger
++	LIBRARIES artdaq_core::artdaq-core_Utilities
++  messagefacility::MF_MessageLogger
+ )
+ 
+ cet_test(GenFile_t USE_BOOST_UNIT
+-	LIBRARIES artdaq-core_Utilities
+-  MF_MessageLogger
+-)
+\ No newline at end of file
++	LIBRARIES artdaq_core::artdaq-core_Utilities
++ messagefacility::MF_MessageLogger
++)
 diff --git a/ups/product_deps b/ups/product_deps
 old mode 100755
 new mode 100644
-diff --git a/ups/setup_for_development b/ups/setup_for_development
-index 92c3135..f1ddd2e 100644
---- a/ups/setup_for_development
-+++ b/ups/setup_for_development
-@@ -1,94 +1,239 @@
--# NO USER-SERVICEABLE PARTS BELOW.
-+########################################################################
-+# This script is shell-agnostic, which involves much acrobatics to avoid
-+# causing errors in one interpreter or another (*stares in csh*).
- #
--# There should be as little as possible here,
--# with most of the heavy lifting done by other small scripts
-+# There should be as little as possible here, with most of the heavy
-+# lifting done by other small scripts.
- #
- # When sourcing this file from a script, you may have to tell this
--# source file where it is via the fw_db shell (or env) variable.
--# I.e.:
-+# source file where it is via the fw_db shell (or env) variable, i.e.
- #    set fw_db=/some/path; source /some/path/this_file
- # or  fw_db=/some/path; . /some/path/this_file
-+#
-+# Generated by cetmodules 2.25.05 at Wed Sep 01 08:47:44 CDT
-+########################################################################
-+
-+########################################################################
-+# NO USER-SERVICEABLE PARTS BELOW.
-+########################################################################
- 
--test $?shell = 1 && set ss=csh || ss=sh
--#echo Shell type is $ss.
--
--# make some things similar. need to use set_ because sh builtin set would hide function set
--# Note: perhaps the trickiest thing in this file is the sh set_ function tries to return the same status
--#       as at the start of the function (which most likely is the result of a back-tick expression
--test "$ss" = csh && alias set_ set && alias vecho_ 'if ($?vv == 1) echo \!*' || eval 'vecho_() { test -n "${vv-}" && echo "$@"; return 0; }'
--test "$ss" =  sh && eval 'set_() { sts=$?;for xx in "$@";do var=`expr "$xx" : "\([^=]*\)"`;val=`expr "$xx" : "[^=]*=\(.*\)"`;eval "$var=\"$val\"";done;return $sts; }'
--test "$ss" =  sh && eval 'setenv() { export $1;eval "$1=\"\${2-}\""; }; source() { file=$1; shift; . $file "$@"; }; unsetenv_() { unset "$@"; }'
--test "$ss" =  sh && eval 'tnotnull() { eval "test -n \"\${$1-}\""; }'                             && eval 'nullout() { "$@" >/dev/null 2>&1; }'
--test "$ss" = csh && alias tnotnull "eval '"'test $?'"\!* -eq 1' && eval '"'test -n "$'"\!*"'"'"'" && alias nullout "\!* >& /dev/null" && alias unsetenv_ unsetenv
--test "$ss" = csh && alias return exit
--
--set_ msg1='ERROR: You MUST setup ups'
--test -z $UPS_DIR && ( echo ""; echo "$msg1"; echo "" ) && return
--
--set_ msg3='ERROR: You MUST specify either -o, -p, or -d'
--set_ msg4='Usage: setup_for_development <-d|-o|-p> <qualifier list>'
--test -z "$1" && ( echo ""; echo "$msg4"; echo "$msg3"; echo "" ) && return
--
--# make sure we know where this script lives
--# now if we were passed a path or if not, we can figure it out (maybe if we are interactive)
--#   bash, zsh, ksh and tcsh pass params to a source file, csh does not. but someone will be writing csh scripts
--set_ msg2='Please set shell or env. variable fw_db (to be the path to the framework source code). Fix this and other errors may go away.'
--tnotnull fw_db && set_ db=`sh -c "cd $fw_db >/dev/null 2>&1 && pwd"` && vecho_ 'setting db from fw_db variable' || set_ db=
--
--test -z "$db" && tnotnull BASH_SOURCE && set_ me=`dirname $BASH_SOURCE` && set_ db=`sh -c "cd $me >/dev/null 2>&1 && pwd"` && vecho_ 'setting db via BASH_SOURCE'
--
--# history is applicable only for interactive t/csh
--test -z "$db" -a "$ss" = csh && test $?history = 0 && set history=5  # make sure history 1 works
--test -z "$db" -a "$ss" = csh && set me=`history 1|sed 's/^[ 	0-9:]*//'` && test -n "$me" && set me=`dirname $me[2]` \
--    && set db=`sh -c "cd $me >/dev/null 2>&1 && pwd"` && vecho_ 'setting db via interactive history'
--#echo This script lives in $db
--
--test -z "$db" && echo "$msg2" || vecho_ "db=$db"
--test -n "$db" && setenv CETPKG_SOURCE `dirname $db`
--
--# make sure we know the current directory
--setenv CETPKG_BUILD `pwd`
--#echo Build directory is $CETPKG_BUILD
--
--echo The working build directory is $CETPKG_BUILD
--echo The source code directory is $CETPKG_SOURCE
--
--set_ msg5='ERROR: setup of required products has failed'
--
--echo ----------- check this block for errors -----------------------
--set_ setup_fail="false"
--set_ exit_now="false"
--set_ cetb=` grep -e '^[ \t]*cetbuildtools' $CETPKG_SOURCE/ups/product_deps | grep  only_for_build| awk '{ print $1 }' `
--set_ cetv=` grep -e '^[ \t]*cetbuildtools' $CETPKG_SOURCE/ups/product_deps | grep  only_for_build| awk '{ print $2 }' `
--#echo Found $cetb $cetv
--setup -B $cetb $cetv
--test "$?" = 0 || set_ setup_fail="true"
--# now get the rest of the products
--set_ cmd="$CETBUILDTOOLS_DIR/bin/set_dev_products $CETPKG_SOURCE $CETPKG_BUILD $*"
--#echo Ready to run $cmd
--source `$cmd`
--test "$?" = 0 || set_ setup_fail="true"
--#echo "$cmd returned $setup_fail"
--test "$setup_fail" = "true" && echo "$msg5"
--test "$setup_fail" = "true" && set_ exit_now="true"
--test -e "$CETPKG_BUILD/diag_report" && cat $CETPKG_BUILD/diag_report
--echo ----------------------------------------------------------------
--
--test "${exit_now}" = "true" && test "$ss" = csh && unalias tnotnull nullout set_ vecho_ return
--test "${exit_now}" = "true" && unset ss db me thisdir msg1 msg2 msg3 msg4 msg5 setup_fail set_ setenv unsetenv_ tnotnull nullout vecho_
--test "${exit_now}" = "true" && return 1
--
--# add lib to LD_LIBRARY_PATH
--source $CETBUILDTOOLS_DIR/bin/set_dev_lib
--# add bin to path
--source $CETBUILDTOOLS_DIR/bin/set_dev_bin
--# set FHICL_FILE_PATH
--source $CETBUILDTOOLS_DIR/bin/set_dev_fhicl
--
--# final sanity check and report
--source $CETBUILDTOOLS_DIR/bin/set_dev_check_report
--
--# cleanup before exiting
--test "$ss" = csh && unalias tnotnull nullout set_ vecho_ return
--unset ss db me thisdir msg1 msg2 msg3 msg4 msg5 setup_fail
--unset set_ setenv unsetenv_ tnotnull nullout vecho_
-+# Determine shell flavor.
-+true && test $?shell = 1 && set _cetpkg_shell_flavor=csh || _cetpkg_shell_flavor=sh
-+
-+####################################
-+# A common set of commands to use to hide as many shell flavor
-+# differences as possible.
-+
-+##################
-+# IMPORTANT NOTE:
-+#
-+# Following extensive tests in multiple shells, I have reached the
-+# conclusion that it is not actually possible for a function to mirror
-+# the semantics of an assignment with respect to the status code of ``
-+# and compound statements joined with "||" or "&&". To handle this, we
-+# write a large chunk of shell code to a temporary file in the current
-+# directory a.k.a. CETPKG_BUILD with shell variable assignments correct
-+# according to the shell flavor, and then source it. This also allows us
-+# to deal with the fact that some shells don't pass arguments to sourced
-+# scripts *stares harder in csh*.
-+#
-+# 2020-06-24 CHG.
-+##################
-+
-+# If we're C-flavored, set up the commands using alias.
-+test "$_cetpkg_shell_flavor" = csh && \
-+  set _cetpkg_nobuild="" && \
-+  set _cetpkg_shell_var_set=set\\1 && \
-+  alias vecho_ 'if ($?vv == 1) echo \>\> \!*' && \
-+  alias unsetenv_ unsetenv && \
-+  alias tnotnull "eval '"'test $?'"\!* -eq 1' && eval '"'test -n "$'"\!*"'"'"'" && \
-+  alias nullout "\!* >& /dev/null" && \
-+  alias __TOP_EOF__ '' && \
-+  alias return exit
-+
-+# For Bourne-flavored shells, use functions.
-+test "$_cetpkg_shell_flavor" = sh && \
-+  _cetpkg_nobuild="" && \
-+  _cetpkg_shell_var_set= && \
-+  eval 'vecho_() { test -n "${vv-}" && echo ">> $*"; return 0; }' && \
-+  eval 'setenv() { eval "$1=\"\${2-}\"; export $1"; }' && \
-+  eval 'unsetenv_() { unset "$@"; }' && \
-+  eval 'source() { . "$@"; }' && \
-+  eval 'tnotnull() { eval "test -n \"\${$1-}\""; }' && \
-+  eval 'nullout() { "$@" >/dev/null 2>&1; }'
-+####################################
-+
-+##################
-+# Check for UPS (uses alias for return in C-flavored shells).
-+test -z "$UPS_DIR" && \
-+  ( echo ""; echo "ERROR: you MUST set up UPS"; echo "" ) && \
-+  return 1 || true
-+##################
-+
-+####################################
-+# Need to find ourselves to set CETPKG_SOURCE.
-+
-+# Define empty variables for C-flavor shells to make things easier.
-+test "$_cetpkg_shell_flavor" = csh && \
-+  set _cetpkg_fw_db= _cetpkg_myself= _cetpkg_mydir=
-+
-+# If user has set fw_db, identify our top-level source directory now.
-+test "$_cetpkg_shell_flavor" = csh && tnotnull fw_db && \
-+  set _cetpkg_fw_db=`sh -c "cd $fw_db:q >/dev/null 2>&1 && /bin/pwd -P"` && \
-+  vecho_ "found ourselves through fw_db" || true
-+test "$_cetpkg_shell_flavor" = sh && tnotnull fw_db && \
-+  _cetpkg_fw_db=`sh -c "cd \"$fw_db\" >/dev/null 2>&1 && /bin/pwd -P"` && \
-+  vecho_ "found ourselves through fw_db" || true
-+
-+##################
-+# For Bash and zsh, identify ourselves now so we don't have to go
-+# through acrobatics later in the sourced script.
-+test "$_cetpkg_shell_flavor" = sh && tnotnull BASH_SOURCE && \
-+  _cetpkg_myself="$BASH_SOURCE" && test -n "$BASH_SOURCE" && \
-+  vecho_ "found ourselves through BASH_SOURCE" || true
-+test "$_cetpkg_shell_flavor" = sh -a -z "$_cetpkg_myself" && \
-+  tnotnull ZSH_VERSION && eval '_cetpkg_myself="${(%):-%x}"' && \
-+  test -n "$_cetpkg_myself" && \
-+  vecho_ "found ourselves through ZSH prompt logic" || true
-+test "$_cetpkg_shell_flavor" = sh && tnotnull _cetpkg_myself && \
-+  _cetpkg_mydir=`dirname "$_cetpkg_myself"` && \
-+  _cetpkg_fw_db=`sh -c "cd $_cetpkg_mydir >/dev/null 2>&1 && /bin/pwd -P"` || true
-+##################
-+
-+##################
-+# History is applicable only for interactive t/csh.
-+test -z "$_cetpkg_fw_db" -a "$_cetpkg_shell_flavor" = csh -a $?history = 0 && \
-+  set history=5  || true
-+test -z "$_cetpkg_fw_db" -a "$_cetpkg_shell_flavor" = csh && \
-+  set _cetpkg_mydir=`history 1|sed -Ee 's/^[[:space:][:digit:]:]*.*\bsource[[:space:]]+//'` && \
-+  test -n "$_cetpkg_mydir" && set _cetpkg_mydir=`dirname $_cetpkg_mydir[1]:q` && \
-+  set _cetpkg_fw_db=`sh -c "cd $_cetpkg_mydir:q >/dev/null 2>&1 && /bin/pwd -P"` && \
-+  vecho_ 'setting db via interactive history' || true
-+##################
-+
-+# Set CETPKG_SOURCE.
-+test -n "$_cetpkg_fw_db" && \
-+  vecho_ "_cetpkg_fw_db=$_cetpkg_fw_db" && \
-+  setenv CETPKG_SOURCE `dirname $_cetpkg_fw_db` || \
-+  printf "WARNING: please set shell or env. variable fw_db (to be the path to the\n\
-+         framework source code). Fix this and other errors may go away.\n"
-+####################################
-+
-+##################
-+# Set CETPKG_BUILD.
-+setenv CETPKG_BUILD `/bin/pwd -P`
-+##################
-+
-+########################################################################
-+# Write the rest of ourselves to a file and source it to handle status
-+# code semantics for variable assignments.
-+#
-+# Note that even here we have to play a trick or two due to the fact
-+# that we have to deal with the difference in the way sh- and csh-flavor
-+# shells handle a quoted delimiter word for a HERE document: the latter
-+# expect the delimiter to include the quoting; the former do not. This
-+# is the reason for the C-flavored __TOP_EOF__ alias, and the explicit
-+# return at the end of the sourced script.
-+#
-+########################################################################
-+
-+sed -Ee 's&\b__SET__([[:space:]]+)&'$_cetpkg_shell_var_set'&g' \
-+  -e 's&__SETUP_ARGS__&'"$*"'&g' \
-+  > ./setup_common.$_cetpkg_shell_flavor <<\__TOP_EOF__
-+########################################################################
-+
-+####################################
-+# Personality check: are we setup_deps or setup_for_development?
-+#
-+# If we're sourcing setup.in directly (e.g. for cetmodules itself) then
-+# we select "setup_for_development" behavior, otherwise _cetpkg_nobuild
-+# will be set appropriately by CMake's CONFIGURE() command for
-+# setup_for_development or setup_deps.
-+
-+test -z "$_cetpkg_nobuild" -o "$_cetpkg_nobuild" = "--nobuild" || \
-+  __SET__ _cetpkg_nobuild="" || true
-+####################################
-+
-+####################################
-+# Initial info.
-+
-+printf "\n";
-+test -z "$_cetpkg_nobuild" && \
-+  echo "The working build directory is $CETPKG_BUILD" || true
-+cat <<EOF
-+The source code directory is $CETPKG_SOURCE
-+
-+---------------------- check this block for errors ---------------------
-+EOF
-+
-+__SET__ _cetpkg_status=""
-+####################################
-+
-+####################################
-+# Attempt to find a suitable cetmodules to set up.
-+
-+__SET__ _cetpkg_cetmsetup=`sed -nE 's&^[[:space:]]*(cetmodules)[[:space:]]+([^[:space:]]+).*\bonly_for_build\b.*$&\1 \2&p' "$CETPKG_SOURCE/ups/product_deps"`
-+test -z "_cetpkg_cetmsetup" -a ! -x "$CETPKG_SOURCE/libexec/set_dev_products" && \
-+  __SET__ _cetpkg_status=1 && \
-+  echo "ERROR: unable to find suitable cetmodules >= 2.00.00" || true
-+test -n "$_cetpkg_status" -o -z "$_cetpkg_cetmsetup" || setup -B $_cetpkg_cetmsetup
-+test $? != 0 && __SET__ _cetpkg_status=1 && \
-+  echo "ERROR: setup of $_cetpkg_cetmsetup has failed" || true
-+test -z "$_cetpkg_status$_cetpkg_cetmsetup" && setenv PATH `dropit -sfe "$CETPKG_SOURCE/bin"` && __SET__ _cetpkg_cettop="$CETPKG_SOURCE" || true
-+test -z "$_cetpkg_status$_cetpkg_cettop" -a -n "$CETMODULES_DIR" && __SET__ _cetpkg_cettop="$CETMODULES_DIR"
-+####################################
-+
-+####################################
-+# Generate the setup script to set up dependencies.
-+
-+test -n "$_cetpkg_status" || \
-+  __SET__ _cetpkg_setup="`${_cetpkg_cettop}/libexec/set_dev_products $_cetpkg_nobuild __SETUP_ARGS__`"
-+test $? != 0 -o -z "$_cetpkg_setup" && __SET__ _cetpkg_status=1 && \
-+  echo "ERROR: generation of setup script has failed" || true
-+####################################
-+
-+####################################
-+# Source the setup script to set up dependencies.
-+
-+test -n "$_cetpkg_status" || source "$_cetpkg_setup"
-+test $? != 0 && __SET__ _cetpkg_status=1 && \
-+  echo "ERROR: setup of required products has failed" || true
-+__SET__ _cetpkg_setup_errlog="$CETPKG_BUILD/cetpkg_setup.err"
-+test -s "$_cetpkg_setup_errlog" && cat "$_cetpkg_setup_errlog" || \
-+  rm -f "$_cetpkg_setup_errlog"
-+####################################
-+
-+cat <<EOF
-+------------------------------------------------------------------------
-+
-+EOF
-+
-+# Final sanity check and report.
-+test -n "$_cetpkg_status" -o -n "$_cetpkg_nobuild" || \
-+  "$_cetpkg_cettop/libexec/verify_build_environment" "$CETPKG_BUILD"
-+test $? != 0 && __SET__ _cetpkg_status=1 && \
-+  echo "ERROR: unable to verify build environment" || true
-+
-+####################################
-+# Clean up before exiting.
-+
-+# Clean up C-flavor aliases and prepare to return^H^H^H^H^H^Hexit.
-+test "$_cetpkg_shell_flavor" = csh && \
-+  unalias vecho_ unsetenv_ tnotnull nullout __TOP_EOF__ return && \
-+  set return=exit || return=return
-+
-+# Finish cleanup and exit. Note the use of eval so we can unset
-+# everything including $return and $_cetpkg_status.
-+eval "unset vecho_ setenv unsetenv_ source tnotnull nullout "\
-+"_cetpkg_nobuild _cetpkg_shell_var_set "\
-+"_cetpkg_fw_db _cetpkg_myself _cetpkg_mydir _cetpkg_cetmsetup "\
-+"_cetpkg_cettop _cetpkg_setup _cetpkg_setup_errlog "\
-+"_cetpkg_shell_flavor return _cetpkg_status; \
-+$return $_cetpkg_status"
-+####################################
-+
-+########################################################################
-+\__TOP_EOF__
-+__TOP_EOF__
-+
-+source ./setup_common.$_cetpkg_shell_flavor

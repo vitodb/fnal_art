@@ -27,7 +27,7 @@ class ArtdaqCore(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
     url      = "https://cdcvs.fnal.gov/cvs/projects/artdaq-core"
-    version('develop', git = 'http://cdcvs.fnal.gov/projects/artdaq-core', branch="develop", git_full_repo=True)
+    version('develop', git = 'https://github.com/gartung/artdaq-core.git', branch="develop", git_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -57,7 +57,7 @@ class ArtdaqCore(CMakePackage):
     depends_on('tbb')
     depends_on('trace')
 
-    # patch('cetmodules2.patch')
+    patch('cetmodules2.patch')
 
     def patch(self):
         filter_file(r'add_subdirectory\(ups\)','if(WANT_UPS)\nadd_subdirectory(ups)\nendif()','CMakeLists.txt')
