@@ -54,10 +54,12 @@ class Icarusalg(CMakePackage):
     depends_on('larcoreobj', type=('build','run'))
     depends_on('lardataalg', type=('build','run'))
     depends_on('larcorealg', type=('build','run'))
+    depends_on('nusimdata', type=('build','run'))
     depends_on('canvas-root-io', type=('build','run'))
     depends_on('canvas', type=('build','run'))
     depends_on('cetlib-except', type=('build','run'))
     depends_on('cetlib', type=('build','run'))
+    depends_on('gallery', type=('build','run'))
     depends_on('messagefacility', type=('build','run'))
     depends_on('boost', type=('build','run'))
     depends_on('tbb', type=('build','run'))
@@ -84,10 +86,27 @@ class Icarusalg(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+
         # easier to set these than patch the CMakeLists.txts for now
-        spack_env.set('NUSIMDATA_INC',self.spec['nusimdata'].prefix.include)
+        # but there sure are a lot of them...
+        spack_env.set('BOOST_INC',self.spec['boost'].prefix.include)
+        spack_env.set('CANVAS_INC',self.spec['canvas'].prefix.include)
+        spack_env.set('CANVAS_ROOT_IO_INC',self.spec['canvas-root-io'].prefix.include)
+        spack_env.set('CETLIB_EXCEPT_INC',self.spec['cetlib-except'].prefix.include)
+        spack_env.set('CETLIB_INC',self.spec['cetlib'].prefix.include)
+        spack_env.set('CLHEP_INC',self.spec['clhep'].prefix.include)
+        spack_env.set('FHICLCPP_INC',self.spec['fhicl-cpp'].prefix.include)
+        spack_env.set('GALLERY_INC',self.spec['gallery'].prefix.include)
+        spack_env.set('ICARUSALG_INC', self.spec.prefix.include)
+        spack_env.set('HEP_CONCURRENCY_INC',self.spec['hep-concurrency'].prefix.include)
+        spack_env.set('LARCOREALG_INC',self.spec['larcorealg'].prefix.include)
         spack_env.set('LARCOREOBJ_INC',self.spec['larcoreobj'].prefix.include)
+        spack_env.set('LARDATAALG_INC',self.spec['lardataalg'].prefix.include)
         spack_env.set('LARDATAOBJ_INC',self.spec['lardataobj'].prefix.include)
+        spack_env.set('MESSAGEFACILITY_INC',self.spec['messagefacility'].prefix.include)
+        spack_env.set('NUSIMDATA_INC',self.spec['nusimdata'].prefix.include)
+        spack_env.set('ROOT_INC',self.spec['root'].prefix.include)
+
         spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',

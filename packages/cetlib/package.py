@@ -112,5 +112,6 @@ class Cetlib(CMakePackage):
     @run_after('install')
     def rename_README(self):
         import os
-        os.rename( join_path(self.spec.prefix, "README"),
-                   join_path(self.spec.prefix, "README_%s"%self.spec.name))
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
+                       join_path(self.spec.prefix, "README_%s"%self.spec.name))

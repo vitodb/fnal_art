@@ -53,6 +53,7 @@ class Larsim(CMakePackage):
     depends_on('larsoft-data')
     depends_on('larevt')
     depends_on('marley')
+    depends_on('cry')
     depends_on('genie')
     depends_on('ifdhc')
     depends_on('xerces-c')
@@ -120,6 +121,15 @@ class Larsim(CMakePackage):
         run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
+
+        # ups env vars used in build...
+        spack_env.set('LIBXML2_FQ_DIR', self.spec['libxml2'].prefix)
+        spack_env.set('GEANT4_FQ_DIR', self.spec['geant4'].prefix)
+        spack_env.set('XERCES_C_INC', self.spec['xerces-c'].prefix.include)
+        spack_env.set('GENIE_FQ_DIR', self.spec['genie'].prefix)
+        spack_env.set('GENIE_INC', self.spec['genie'].prefix.include)
+        spack_env.set('CRYHOME', self.spec['cry'].prefix)
+
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.

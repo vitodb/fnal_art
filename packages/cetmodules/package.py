@@ -67,4 +67,4 @@ class Cetmodules(CMakePackage):
         import os
         if os.path.exists(join_path(self.spec.prefix, "README")):
             os.rename( join_path(self.spec.prefix, "README"),
-                   join_path(self.spec.prefix, "README_%s"%self.spec.name))
+                       join_path(self.spec.prefix, "README_%s"%self.spec.name))

@@ -117,4 +117,5 @@ class Wirecell(Package):
         if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
             flags.append('-Wno-error=deprecated-declarations')
             flags.append('-Wno-error=class-memaccess')
+            flags.append('-Wno-error=unused-function')
         return (flags, None, None)

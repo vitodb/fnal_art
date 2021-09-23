@@ -66,8 +66,9 @@ from the ifdhc package."""
         run_env.prepend_path('PATH', self.prefix.bin)
 
 
-    #@run_after('install')
-    #def rename_README(self):
-    #    import os
-    #    os.rename( join_path(self.spec.prefix, "README"),
-    #               join_path(self.spec.prefix, "README_%s"%self.spec.name))
+    @run_after('install')
+    def rename_README(self):
+        import os
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
+                       join_path(self.spec.prefix, "README_%s"%self.spec.name))
