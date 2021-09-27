@@ -25,8 +25,7 @@ class Dk2nugenie(CMakePackage):
     url      = "https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
 
-
-    version('3.00.06',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v03_00_06")
+    version('1.10.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_10_00")
     version('01_07_02',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
     version('01.08.00.ub1',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00.ub1")
     version('01.08.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
@@ -45,6 +44,7 @@ class Dk2nugenie(CMakePackage):
     depends_on('log4cpp')
     depends_on('genie')
     depends_on('dk2nudata')
+    depends_on('tbb')
 
     parallel = False
 
@@ -61,7 +61,7 @@ class Dk2nugenie(CMakePackage):
         prefix=self.prefix
         args = ['-DCMAKE_INSTALL_PREFIX=%s'%prefix,
                 '-DGENIE_ONLY=ON',
-                '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['intel-tbb'].prefix.lib,
+                '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['tbb'].prefix.lib,
                 '-DGENIE_INC=%s/GENIE'%self.spec['genie'].prefix.include,
                 '-DGENIE=%s'%self.spec['genie'].prefix,
                 '-DGENIE_VERSION=%s'%self.spec['genie'].version,
@@ -70,5 +70,5 @@ class Dk2nugenie(CMakePackage):
         return args
 
     def build(self, spec, prefix):
-        with working_dir('%s/spack-build'%self.stage.path, create=True):
+        with working_dir(self.build_directory, create=True):
             make('VERBOSE=t', 'all')

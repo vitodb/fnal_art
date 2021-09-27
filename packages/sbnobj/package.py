@@ -47,6 +47,9 @@ class Sbnobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+
+    patch('cetmodules2.patch', when='@develop')
+
     # Build-only dependencies.
     depends_on('cmake@3.11:')
     depends_on('cetmodules', type='build')
@@ -59,20 +62,24 @@ class Sbnobj(CMakePackage):
     depends_on('boost', type=('build','run'))
     depends_on('canvas-root-io', type=('build','run'))
     depends_on('canvas', type=('build','run'))
+    depends_on('cetlib', type=('build','run'))
     depends_on('cetlib-except', type=('build','run'))
     depends_on('clhep', type=('build','run'))
     depends_on('cppgsl', type=('build','run'))
     depends_on('eigen', type=('build','run'))
+    depends_on('fhicl-cpp', type=('build','run'))
     depends_on('fftw', type=('build','run'))
     depends_on('hep-concurrency', type=('build','run'))
     depends_on('ifdh-art', type=('build','run'))
-    depends_on('intel-tbb', type=('build','run'))
+    depends_on('tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
-    depends_on('sbn_signal_processing', type=('build','run'))
+    #depends_on('sbn-signal-processing', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))
+    depends_on('larcorealg', type=('build','run'))
     depends_on('larcore', type=('build','run'))
     depends_on('lardataobj', type=('build','run'))
+    depends_on('lardataalg', type=('build','run'))
     depends_on('lardata', type=('build','run'))
     depends_on('larevt', type=('build','run'))
     depends_on('larpandora', type=('build','run'))
@@ -81,10 +88,13 @@ class Sbnobj(CMakePackage):
     depends_on('larsim', type=('build','run'))
     depends_on('libwda', type=('build','run'))
     depends_on('marley', type=('build','run'))
+    depends_on('messagefacility', type=('build','run'))
     depends_on('nug4', type=('build','run'))
-    # depends_on('nurandom', type=('build','run'))  ???
+    depends_on('nusimdata', type=('build','run'))
+    depends_on('dk2nudata', type=('build','run'))
     depends_on('nutools', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
+    depends_on('root', type=('build','run'))
     depends_on('range-v3', type=('build','run'))
     depends_on('sbndaq-artdaq-core', type=('build','run'))
     depends_on('sqlite', type=('build','run'))
@@ -107,6 +117,10 @@ class Sbnobj(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
+
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

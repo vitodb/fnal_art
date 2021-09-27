@@ -40,7 +40,7 @@ class SbndaqArtdaqCore(CMakePackage):
         return url.format(self.name, version.underscored)
 
 
-
+    patch('cetmodules2.patch')
 
     depends_on('messagefacility')
     depends_on('cetmodules', type='build')

@@ -30,7 +30,9 @@ class Messagefacility(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/messagefacility'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/messagefacility.v2.06.00.tbz2'
 
+    version('2.08.02', tag='v2_08_02', git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
@@ -121,5 +123,6 @@ class Messagefacility(CMakePackage):
     @run_after('install')
     def rename_README(self):
         import os
-        os.rename( join_path(self.spec.prefix, "README"),
-                   join_path(self.spec.prefix, "README_%s"%self.spec.name))
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
+                       join_path(self.spec.prefix, "README_%s"%self.spec.name))

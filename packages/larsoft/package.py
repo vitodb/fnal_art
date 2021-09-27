@@ -30,11 +30,14 @@ class Larsoft(CMakePackage):
     """Larsoft"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoft"
-    url      = "https://github.com/LArSoft/larsoft.git"
+    url      = "https://github.com/LArSoft/larsoft/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsoft.git', get_full_repo=True)
     version('09.24.01', tag='v09_24_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
     version('09.23.01.01', tag='v09_23_01_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
     version('09.22.01', tag='v09_22_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsoft.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larsoft.git', branch='feature/MVP1a')
     version('09.09.00', tag='v09_09_00', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)
     version('08.38.01', tag='v08_38_01', git='https://github.com/LArSoft/larsoft.git', get_full_repo=True)

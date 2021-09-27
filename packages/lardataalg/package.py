@@ -6,15 +6,6 @@
 from spack import *
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","lardataalg","08.13.02")
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -29,10 +20,13 @@ class Lardataalg(CMakePackage):
     """Lardataalg"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardataalg"
-    url      = "https://github.com/LArSoft/lardataalg.git"
+    url      = "https://github.com/LArSoft/lardataalg/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardataalg.git', get_full_repo=True)
     version('09.04.03.01', tag='v09_04_03_01', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
     version('09.04.03', tag='v09_04_03', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lardataalg.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/lardataalg.git', branch='feature/MVP1a')
     version('09.03.00', tag='v09_03_00', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
     version('08.13.01', tag='v08_13_01', git='https://github.com/LArSoft/lardataalg.git', get_full_repo=True)
@@ -49,9 +43,9 @@ class Lardataalg(CMakePackage):
             description='Use the specified C++ standard when building.')
 
 
-
     depends_on('lardataobj')
     depends_on('cetmodules', type='build')
+    depends_on('messagefacility')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -60,6 +54,9 @@ class Lardataalg(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix) 
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

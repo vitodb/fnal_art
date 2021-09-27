@@ -5,15 +5,7 @@
 
 from spack import *
 import os
-
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larsim","08.19.03")
 
 def sanitize_environments(*args):
     for env in args:
@@ -28,9 +20,13 @@ class Larsim(CMakePackage):
     """Larsim"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsim"
-    url      = "https://github.com/LArSoft/larsim.git"
+    url      = "https://github.com/LArSoft/larsim/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsim.git', get_full_repo=True)
+
     version('09.13.02.01', tag='v09_13_02_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
     version('09.13.01', tag='v09_13_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsim.git', get_full_repo=True)
 
     version('MVP1a', git='https://github.com/LArSoft/larsim.git', branch='feature/MVP1a')
     version('09.06.00', tag='v09_06_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
@@ -57,6 +53,7 @@ class Larsim(CMakePackage):
     depends_on('larsoft-data')
     depends_on('larevt')
     depends_on('marley')
+    depends_on('cry')
     depends_on('genie')
     depends_on('ifdhc')
     depends_on('xerces-c')
@@ -65,6 +62,7 @@ class Larsim(CMakePackage):
     depends_on('nug4')
     depends_on('nugen')
     depends_on('nurandom')
+    depends_on('sqlite')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
@@ -82,10 +80,18 @@ class Larsim(CMakePackage):
                 format(self.spec['larsoft-data'].prefix),
                 '-DLARSOFT_DATA_VERSION=v{0}'.
                 format(self.spec['larsoft-data'].version.underscored),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
         ]
         return args
 
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
+
     def setup_environment(self, spack_env, run_env):
+        spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
@@ -115,6 +121,15 @@ class Larsim(CMakePackage):
         run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
+
+        # ups env vars used in build...
+        spack_env.set('LIBXML2_FQ_DIR', self.spec['libxml2'].prefix)
+        spack_env.set('GEANT4_FQ_DIR', self.spec['geant4'].prefix)
+        spack_env.set('XERCES_C_INC', self.spec['xerces-c'].prefix.include)
+        spack_env.set('GENIE_FQ_DIR', self.spec['genie'].prefix)
+        spack_env.set('GENIE_INC', self.spec['genie'].prefix.include)
+        spack_env.set('CRYHOME', self.spec['cry'].prefix)
+
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.

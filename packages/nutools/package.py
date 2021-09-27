@@ -29,8 +29,11 @@ class Nutools(CMakePackage):
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nutools/wiki"
     url      = "https://cdcvs.fnal.gov/projects/nutools/"
+
+    version('develop', git="https://cdcvs.fnal.gov/projects/nutools", branch='develop', get_full_repo=True)
     version('3.09.02', tag='v3_09_02', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nutools', get_full_repo=True)
     version('MVP1a', git="https://cdcvs.fnal.gov/projects/nutools", branch='feature/MVP1a')
     version('3.04.02', tag='v3_04_02', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
     version('3.04.03', tag='v3_04_03', git="https://cdcvs.fnal.gov/projects/nutools", get_full_repo=True)
@@ -47,7 +50,7 @@ class Nutools(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
+    patch('cetmodules2.patch', when='@develop')
 
     depends_on('cetmodules', type='build')
     depends_on('art-root-io')
@@ -78,6 +81,7 @@ class Nutools(CMakePackage):
                 format(self.spec.variants['cxxstd'].value),
                 '-DCRYHOME={0}'.format(self.spec['cry'].prefix),
                 '-DGENIE_INC={0}'.format(self.spec['genie'].prefix),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
                ]
         return args
 

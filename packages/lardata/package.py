@@ -6,15 +6,6 @@
 from spack import *
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -29,9 +20,13 @@ class Lardata(CMakePackage):
     """Lardata"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/lardata"
-    url      = "https://github.com/LArSoft/lardata.git"
+    url      = "https://github.com/LArSoft/lardata/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardata.git', get_full_repo=True)
+
     version('09.02.03', tag='v09_02_03', git='https://github.com/LArSoft/lardata.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lardata.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/lardata.git', branch='feature/MVP1a')
     version('09.01.03', tag='v09_01_03', git='https://github.com/LArSoft/lardata.git', get_full_repo=True)
 
@@ -60,9 +55,16 @@ class Lardata(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)
+                format(self.spec.variants['cxxstd'].value),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
                ]
         return args
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
 
     def setup_environment(self, spack_env, run_env):
         # Binaries.

@@ -4,24 +4,19 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larpandoracontent","3.15.15")
 
 class Larpandoracontent(CMakePackage):
     """Larpandoracontent"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
-    url      = "https://github.com/LArSoft/larpandoracontent.git"
-    version('03.22.11.01', tag='v03_22_11_01', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+    url      = "https://github.com/LArSoft/larpandoracontent/archive/v01_02_03.tar.gz"
 
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larpandoracontent.git', get_full_repo=True)
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larpandoracontent.git', get_full_repo=True)
+    version('03.22.11.01', tag='v03_22_11_01', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
     version('3.22.09', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_22_09')
     version('3.22.01', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_22_01')
     version('3.14.05', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_14_05')
@@ -47,6 +42,8 @@ class Larpandoracontent(CMakePackage):
     depends_on('pandora')
     depends_on('py-torch')
 
+    def setup_build_environment(self, env):
+        env.set("CETBUILDTOOLS_VERSION","1")
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -56,5 +53,7 @@ class Larpandoracontent(CMakePackage):
                 '-DLAR_CONTENT_LIBRARY_NAME=LArPandoraContent',
                 '-DPandoraSDK_DIR={0}/cmakemodules'.format(self.spec['pandora'].prefix),
                 '-DPandoraMonitoring_DIR={0}/cmakemodules'.format(self.spec['pandora'].prefix),
+                '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))
                ]
         return args

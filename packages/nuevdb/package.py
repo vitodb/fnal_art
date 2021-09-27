@@ -34,6 +34,8 @@ class Nuevdb(CMakePackage):
     version('1.02.02', tag='v1_02_02', git="https://cdcvs.fnal.gov/projects/nuevdb", get_full_repo=True)
     version('1.02.03', tag='v1_02_03', git="https://cdcvs.fnal.gov/projects/nuevdb", get_full_repo=True)
     version('1.02.04', tag='v1_02_04', git="https://cdcvs.fnal.gov/projects/nuevdb", get_full_repo=True)
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nuevdb', get_full_repo=True)
+    version('develop', tag='develop', git='https://cdcvs.fnal.gov/projects/nuevdb', get_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -41,7 +43,7 @@ class Nuevdb(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
+    patch('cetmodules2.patch', when='@develop')
 
     depends_on('cetmodules', type='build')
     depends_on('art-root-io')
@@ -67,6 +69,7 @@ class Nuevdb(CMakePackage):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
                 '-DCRYHOME={0}'.format(self.spec['cry'].prefix),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
                ]
         return args
 

@@ -8,13 +8,6 @@ import os
 
 
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larrecodnn","08.28.00")
 
 def sanitize_environments(*args):
     for env in args:
@@ -29,9 +22,12 @@ class Larrecodnn(CMakePackage):
     """Larrecodnn"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larrecodnn"
-    url      = "https://github.com/LArSoft/larrecodnn.git"
+    url      = "https://github.com/LArSoft/larrecodnn/archive/v01_02_03.tar.gz"
 
 
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larrecodnn.git', get_full_repo=True)
+
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larrecodnn.git', get_full_repo=True)
     version('09.06.07', sha256='f0aca1bc7b53f07a377006c8f36e3682d29e29c2a1cedf478be40d263e03658f')
     version('9.06.06', sha256='b914e26f2537d1f26035a8c357f0ad09ba5c80d1c38fdaa62de9b72b559b0499')
     version('9.06.05', sha256='a99775d149afaf072a1b139795f9ba5075525ab85e42f52267bcced105257c2d')
@@ -67,6 +63,8 @@ class Larrecodnn(CMakePackage):
     depends_on('root')
     depends_on('py-tensorflow')
     depends_on('triton')
+    depends_on('protobuf')
+    depends_on('tbb')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -75,6 +73,10 @@ class Larrecodnn(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('TRITON_DIR', str(self.spec['triton'].prefix.lib))
+        spack_env.set('TENSORFLOW_DIR', str(self.spec['py-tensorflow'].prefix.lib))
+        spack_env.set('PROTOBUF_DIR', str(self.spec['protobuf'].prefix.lib))
+        spack_env.set('TENSORFLOW_INC', str(join_path(self.spec['py-tensorflow'].prefix.lib,'python%s/site-packages/tensorflow/include' % self.spec['python'].version.up_to(2))))
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
@@ -120,4 +122,12 @@ class Larrecodnn(CMakePackage):
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+            flags.append('-Wno-error=ignored-attributes')
+        return (flags, None, None)
+
 

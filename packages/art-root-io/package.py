@@ -35,9 +35,9 @@ class ArtRootIo(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/art_root_io'
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art_root_io.v1_02_01.tbz2'
 
-    version('MVP1a', branch='feature/Spack-MVP1a',
-            git=git_base, preferred=True)
-    version('develop', branch='develop', git=git_base)
+    version('MVP1a', branch='feature/Spack-MVP1a', git=git_base)
+    version('develop', branch='develop', git=git_base, preferred=True)
+    version('1.08.01', tag='v1_08_01', git=git_base, get_full_repo=True)
     version('1.02.01', tag='v1_02_01', git=git_base, get_full_repo=True)
     version('1.02.00', tag='v1_02_00', git=git_base, get_full_repo=True)
     version('1.03.00', tag='v1_03_00', git=git_base, get_full_repo=True)
@@ -73,13 +73,14 @@ class ArtRootIo(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art_root_io.v{1}.tbz2'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-Dart_MODULE_PLUGINS=FALSE']
         return args
 
     def setup_environment(self, spack_env, run_env):
@@ -90,6 +91,9 @@ class ArtRootIo(CMakePackage):
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Set LD_LIBRARY_PATH sp CheckClassVersion.py can find cppyy lib
+        spack_env.prepend_path('LD_LIBRARY_PATH',
+                                join_path(self.spec['root'].prefix.lib))
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):

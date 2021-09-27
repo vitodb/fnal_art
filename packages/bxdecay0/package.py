@@ -32,14 +32,18 @@ class Bxdecay0(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/bxdecay0'
-    git_base = 'https://github.com/SBNSoftware/bxdecay.git'
+    git_base = 'https://github.com/BxCppDev/bxdecay0.git'
+    url = 'https://github.com/BxCppDev/bxdecay0/archive/bxdecay0.1.0.5.tar.gz'
 
     version('develop', branch='develop', git=git_base)
-    version('1.0.7', tag='v1_0_7', git=git_base, get_full_repo=True)
-    version('1.0.6', tag='v1_0_6', git=git_base, get_full_repo=True)
-    version('1.0.5', tag='v1_0_5', git=git_base, get_full_repo=True)
+    version('1.0.10', tag='1.0.10', git=git_base, get_full_repo=True)
+    version('1.0.9', tag='1.0.9', git=git_base, get_full_repo=True)
+    version('1.0.8', tag='1.0.8', git=git_base, get_full_repo=True)
+    version('1.0.7', tag='1.0.7', git=git_base, get_full_repo=True)
+    version('1.0.6', tag='1.0.6', git=git_base, get_full_repo=True)
+    version('1.0.5', tag='1.0.5', git=git_base, get_full_repo=True)
 
-
+    patch('bxdecay0.patch', when='@1.0.7')
 
     variant('cxxstd',
             default='17',
@@ -50,13 +54,16 @@ class Bxdecay0(CMakePackage):
     # Build-only dependencies.
     depends_on('cmake@3.11:')
     depends_on('cetmodules', type='build')
+    depends_on('pkgconfig', type='build')
 
     # Build and link dependencies.
     depends_on('boost', type=('build','run'))
     depends_on('canvas-root-io', type=('build','run'))
     depends_on('clhep', type=('build','run'))
     depends_on('hep-concurrency', type=('build','run'))
+    depends_on('gsl', type=('build','run'))
     depends_on('geant4', type=('build','run'))
+
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -64,9 +71,8 @@ class Bxdecay0(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        #url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        url = 'https://github.com/SBNSoftware/{0}/archive/v{1}.tar.gz'
-        return url.format(self.name, version.underscored)
+        url = 'https://github.com/BxCppDev/{0}/archive/refs/tags/{1}.tar.gz'
+        return url.format(self.name, version)
 
     def cmake_args(self):
         # Set CMake args.

@@ -9,16 +9,6 @@ import sys
 import llnl.util.tty as tty
 
 
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larcore","8.10.02")
-
-
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -32,9 +22,13 @@ class Larcore(CMakePackage):
     """Larcore"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcore"
-    url      = "https://github.com/LArSoft/larcore.git"
+    url      = "https://github.com/LArSoft/larcore/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larcore.git', get_full_repo=True)
+    version('09.24.01.01', tag='v09_02_01_01', git='https://github.com/marcmengel/larcore.git', get_full_repo=True)
     version('09.02.01', tag='v09_02_01', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larcore.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larcore.git', branch='feature/MVP1a')
     version('09.00.01', tag='v09_00_01', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
     version('08.07.00', tag='v08_07_00', git='https://github.com/LArSoft/larcore.git', get_full_repo=True)
@@ -56,7 +50,7 @@ class Larcore(CMakePackage):
             description='Use the specified C++ standard when building.')
 
 
-
+    depends_on('messagefacility')
     depends_on('larcorealg')
     depends_on('art-root-io')
     depends_on('cetmodules', type='build')
@@ -118,3 +112,10 @@ class Larcore(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
+

@@ -1,0 +1,19 @@
+--- a/CMakeLists.txt	2021-06-04 10:56:31.333927467 -0500
++++ b/CMakeLists.txt	2021-06-04 10:55:36.293544367 -0500
+@@ -52,7 +52,15 @@
+ option(BXDECAY0_INSTALL_DBD_GA_DATA "Install BxDecay0 DBD gA process data" OFF)
+ 
+ # - Dependencies
+-find_package(GSL 2.4 REQUIRED)
++find_package(GSL 2.4)
++if(NOT GSL_FOUND)
++ include(FindPkgConfig)
++ pkg_check_modules(gslpkg REQUIRED gsl>2.4)
++ add_library(GSL ALIAS Pkgconfig::gslpkg)
++endif()
++if(NOT GSL_FOUND)
++  message(SEND_ERROR "could not find GSL with find_package nor with pkgconfig")
++endif()
+ 
+ # - Publish headers
+ configure_file(bxdecay0/version.h.in

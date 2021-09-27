@@ -7,13 +7,6 @@ from spack import *
 import os
 
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larg4","08.12.01")
 
 def sanitize_environments(*args):
     for env in args:
@@ -28,7 +21,9 @@ class Larg4(CMakePackage):
     """Larg4"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larg4"
-    url      = "https://github.com/LArSoft/larg4.git"
+    url      = "https://github.com/LArSoft/larg4/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larg4.git', get_full_repo=True)
     version('09.03.06.01', tag='v09_03_06_01', git='https://github.com/LArSoft/larg4.git', get_full_repo=True)
     version('09.03.05', tag='v09_03_05', git='https://github.com/LArSoft/larg4.git', get_full_repo=True)
 
@@ -49,12 +44,15 @@ class Larg4(CMakePackage):
 
 
 
+    depends_on('clhep')
     depends_on('artg4tk')
     depends_on('larevt')
     depends_on('art')
     depends_on('canvas-root-io')
     depends_on('art-root-io')
     depends_on('nug4')
+    depends_on('nurandom')
+    depends_on('boost')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
@@ -94,6 +92,12 @@ class Larg4(CMakePackage):
         # Cleaup.
         sanitize_environments(spack_env, run_env)
 
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+            flags.append('-Wno-error=class-memaccess')
+        return (flags, None, None)
+
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
@@ -106,3 +110,4 @@ class Larg4(CMakePackage):
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larg4.git', get_full_repo=True)

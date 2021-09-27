@@ -6,16 +6,6 @@
 from spack import *
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -33,8 +23,9 @@ class Nugen(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/nugen'
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nugen.v1_10_02.tbz2'
 
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nugen', get_full_repo=True)
     version('1.12.00', tag='v1_12_00', git=git_base, get_full_repo=True)
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('1.10.02', tag='v1_10_02', git=git_base, get_full_repo=True)
     version('1.10.01', tag='v1_10_01', git=git_base, get_full_repo=True)
     version('1.10.00', tag='v1_10_00', git=git_base, get_full_repo=True)
@@ -48,6 +39,8 @@ class Nugen(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
+
+    patch('cetmodules2.patch', when='@develop')
 
     # Build-only dependencies.
     depends_on('cmake@3.12:', type='build')
@@ -83,7 +76,7 @@ class Nugen(CMakePackage):
     depends_on('ifbeam')
     depends_on('nucondb')
     depends_on('libwda')
-
+    depends_on('log4cpp')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']

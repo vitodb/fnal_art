@@ -33,7 +33,9 @@ class Cetlib(CMakePackage):
 
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://cdcvs.fnal.gov/projects/cetlib'
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib.v3_13_01.tbz2'
 
+    version('3.13.02', tag='v3_13_02', git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
@@ -57,7 +59,7 @@ class Cetlib(CMakePackage):
     depends_on('cmake@3.11:', type='build')
     depends_on('cetmodules', type='build')
     depends_on('catch2@2.3.0:', type=('build', 'link'))
-    depends_on('intel-tbb', type=('build', 'link'))
+    depends_on('tbb', type=('build', 'link'))
 
     # Build / link dependencies.
     depends_on('boost')
@@ -79,7 +81,9 @@ class Cetlib(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+		'-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
+	]
         return args
 
     def setup_environment(self, spack_env, run_env):
@@ -110,5 +114,6 @@ class Cetlib(CMakePackage):
     @run_after('install')
     def rename_README(self):
         import os
-        os.rename( join_path(self.spec.prefix, "README"),
-                   join_path(self.spec.prefix, "README_%s"%self.spec.name))
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
+                       join_path(self.spec.prefix, "README_%s"%self.spec.name))

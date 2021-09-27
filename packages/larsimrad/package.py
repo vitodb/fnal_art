@@ -7,15 +7,6 @@ from spack import *
 import sys
 import os
 
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -32,6 +23,8 @@ class Larsimrad(CMakePackage):
     git_base = 'https://github.com/SBNSoftware/larsimrad.git'
     url      = "https://cdcvs.fnal.gov/projects/larsimrad"
 
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsimrad.git', get_full_repo=True)
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsimrad.git', get_full_repo=True)
     version('09.01.08', tag='v09_01_08', git=git_base, get_full_repo=True)
     version('09.01.08', tag='v09_01_08', git=git_base, get_full_repo=True)
     version('09.00.13', tag='v09_00_13', git=git_base, get_full_repo=True)
@@ -44,12 +37,14 @@ class Larsimrad(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    depends_on('cetmodules', type='build')
     depends_on('art-root-io')
     depends_on('larbatch')
     depends_on('py-pycurl')
-    depends_on('cetmodules', type='build')
     depends_on('bxdecay0')
-
+    depends_on('lardata')
+    depends_on('nugen')
+    depends_on('larsim')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

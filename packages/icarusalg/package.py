@@ -7,16 +7,6 @@ from spack import *
 import sys
 import os
 
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
-
 def sanitize_environments(*args):
     for env in args:
         for var in ('PATH', 'CET_PLUGIN_PATH',
@@ -35,7 +25,7 @@ class Icarusalg(CMakePackage):
     #git_base = 'https://cdcvs.fnal.gov/projects/icarusalg'
     git_base = 'https://github.com/SBNSoftware/icarusalg.git'
 
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git='https://github.com/gartung/icarusalg.git', get_full_repo=True)
     version('09.06.00', tag='v09_06_00', git=git_base, get_full_repo=True)
     version('09.07.00', tag='v09_07_00', git=git_base, get_full_repo=True)
     version('09.08.00', tag='v09_08_00', git=git_base, get_full_repo=True)
@@ -43,6 +33,7 @@ class Icarusalg(CMakePackage):
     version('09.09.01', tag='v09_09_01', git=git_base, get_full_repo=True)
     version('09.10.01', tag='v09_10_01', git=git_base, get_full_repo=True)
 
+    patch('mwm.patch', when='@09.28.01')
 
 
     variant('cxxstd',
@@ -56,8 +47,28 @@ class Icarusalg(CMakePackage):
     depends_on('cetmodules', type='build')
 
     # Build and link dependencies.
+    depends_on('boost', type=('build','run'))
+    depends_on('canvas-root-io', type=('build','run'))
+    depends_on('canvas', type=('build','run'))
+    depends_on('cetlib-except', type=('build','run'))
+    depends_on('cetlib', type=('build','run'))
+    depends_on('clhep', type=('build','run'))
+    depends_on('cppgsl', type=('build','run'))
+    depends_on('dk2nudata', type=('build','run'))
+    depends_on('fhicl-cpp', type=('build','run'))
+    depends_on('gallery', type=('build','run'))
     depends_on('gsl', type=('build','run'))
-    depends_on('larsoftobj', type=('build','run'))
+    depends_on('hep-concurrency', type=('build','run'))
+    depends_on('larcorealg', type=('build','run'))
+    depends_on('larcoreobj', type=('build','run'))
+    depends_on('lardataalg', type=('build','run'))
+    depends_on('lardataobj', type=('build','run'))
+    depends_on('messagefacility', type=('build','run'))
+    depends_on('nusimdata', type=('build','run'))
+    depends_on('nusimdata', type=('build','run'))
+    depends_on('range-v3', type=('build','run'))
+    depends_on('root', type=('build','run'))
+    depends_on('tbb', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -72,10 +83,34 @@ class Icarusalg(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-DCPPGSL_INC={0}'.
+                format(self.spec['cppgsl'].prefix.include)]
         return args
 
     def setup_environment(self, spack_env, run_env):
+
+        # easier to set these than patch the CMakeLists.txts for now
+        # but there sure are a lot of them...
+        spack_env.set('BOOST_INC',self.spec['boost'].prefix.include)
+        spack_env.set('CANVAS_INC',self.spec['canvas'].prefix.include)
+        spack_env.set('CANVAS_ROOT_IO_INC',self.spec['canvas-root-io'].prefix.include)
+        spack_env.set('CETLIB_EXCEPT_INC',self.spec['cetlib-except'].prefix.include)
+        spack_env.set('CETLIB_INC',self.spec['cetlib'].prefix.include)
+        spack_env.set('CLHEP_INC',self.spec['clhep'].prefix.include)
+        spack_env.set('FHICLCPP_INC',self.spec['fhicl-cpp'].prefix.include)
+        spack_env.set('GALLERY_INC',self.spec['gallery'].prefix.include)
+        spack_env.set('ICARUSALG_INC', self.spec.prefix.include)
+        spack_env.set('HEP_CONCURRENCY_INC',self.spec['hep-concurrency'].prefix.include)
+        spack_env.set('LARCOREALG_INC',self.spec['larcorealg'].prefix.include)
+        spack_env.set('LARCOREOBJ_INC',self.spec['larcoreobj'].prefix.include)
+        spack_env.set('LARDATAALG_INC',self.spec['lardataalg'].prefix.include)
+        spack_env.set('LARDATAOBJ_INC',self.spec['lardataobj'].prefix.include)
+        spack_env.set('MESSAGEFACILITY_INC',self.spec['messagefacility'].prefix.include)
+        spack_env.set('NUSIMDATA_INC',self.spec['nusimdata'].prefix.include)
+        spack_env.set('ROOT_INC',self.spec['root'].prefix.include)
+
+        spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

@@ -33,8 +33,9 @@ class Nurandom(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/nurandom'
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nurandom.v1_05_02.tbz2'
 
+    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nurandom', get_full_repo=True)
     version('1.05.02', tag='v1_05_02', git=git_base, get_full_repo=True)
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
     version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
     version('1.03.01', tag='v1_03_01', git=git_base, get_full_repo=True)
@@ -50,10 +51,14 @@ class Nurandom(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cetmodules', type='build')
+    depends_on('cetbuildtools', type='build')
     depends_on('art')
     depends_on('art-root-io')
     depends_on('cetlib')
     depends_on('cetlib-except')
+    depends_on('clhep')
+
+    patch('cetmodules2.patch', when='@develop')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -66,6 +71,8 @@ class Nurandom(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

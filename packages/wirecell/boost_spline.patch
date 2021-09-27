@@ -1,0 +1,24 @@
+--- spack-src/util/test/test_interpolate.cxx.orig	2021-09-08 14:47:44.584476843 -0500
++++ spack-src/util/test/test_interpolate.cxx	2021-09-08 15:11:47.536519335 -0500
+@@ -1,10 +1,10 @@
+ #include "WireCellUtil/Interpolate.h"
+-#include <boost/math/interpolators/cubic_b_spline.hpp>
++#include <boost/math/interpolators/cardinal_cubic_b_spline.hpp>
+ 
+ #include <iostream>
+ #include <iomanip>
+ 
+-// https://www.boost.org/doc/libs/1_65_0/libs/math/doc/html/math_toolkit/interpolate/cubic_b.html
++// https://www.boost.org/doc/libs/1_76_0/libs/math/doc/html/math_toolkit/interpolators/cardinal_cubic_b.html
+ 
+ using namespace WireCell;
+ 
+@@ -13,7 +13,7 @@
+     std::vector<double> f{0.01, -0.02, 0.3, 0.8, 1.9, -8.78, -22.6};
+     const double xstep = 0.01;
+     const double x0 = xstep;
+-    boost::math::cubic_b_spline<double> spline(f.begin(), f.end(), x0, xstep);
++    boost::math::interpolators::cardinal_cubic_b_spline<double> spline(f.begin(), f.end(), x0, xstep);
+ 
+     linterp<double> lin(f.begin(), f.end(), x0, xstep);
+ 

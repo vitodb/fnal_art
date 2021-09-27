@@ -39,7 +39,7 @@ global analysis of neutrino scattering data.
     depends_on('root+pythia6')
     depends_on('lhapdf')
     depends_on('pythia6+root')
-    depends_on('libxml2+python')
+    depends_on('libxml2')
     depends_on('log4cpp')
     depends_on('gsl')
 
@@ -152,3 +152,9 @@ global analysis of neutrino scattering data.
         run_env.append_path('ROOT_INCLUDE_PATH', '{0}/GENIE'.format(self.prefix.include))
         spack_env.append_path('LD_LIBRARY_PATH', self.prefix.lib)
 
+    @run_after('install')
+    def version_file(self):
+        f = open( join_path(self.spec.prefix, "VERSION"), "w")
+        f.write(str(self.version))
+        f.close()
+ 

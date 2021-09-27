@@ -33,9 +33,10 @@ class Dk2nudata(CMakePackage):
 
     depends_on('cmake', type='build')
     depends_on('root')
-    depends_on('intel-tbb')
+    depends_on('tbb')
     depends_on('libxml2')
     depends_on('log4cpp')
+    depends_on('tbb')
  
     parallel = False
 
@@ -45,11 +46,12 @@ class Dk2nudata(CMakePackage):
         prefix=self.spec.prefix
         args = [
                 '-DWITH_GENIE=OFF',
-                '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['intel-tbb'].prefix.lib]
+                '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['tbb'].prefix.lib]
         return args
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        spack_env.set('DK2NUDATA_LIB', self.prefix.lib)
 

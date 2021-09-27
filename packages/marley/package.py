@@ -19,9 +19,6 @@ class Marley(Package):
     version('1.1.1', sha256='214f8a40e59d47dd563be53640c5f197f5529bcb0ee65a9402cca450a611c0f8')
     version('1.2.0', sha256='8bb0a68924c8e5d7773904151e3134c6c59837723ecf4e1b586a6cb5b48b520d')
 
-
-
-
     variant('cxxstd',
             default='17',
             values=('98', '11', '14', '17'),
@@ -35,6 +32,7 @@ class Marley(Package):
     patch('marley-1.0.0.patch', when='@1.0.0')
     patch('marley-1.1.0.patch', when='@1.1.0')
     patch('marley-1.1.1.patch', when='@1.1.1')
+    patch('marley-1.2.0.patch', when='@1.2.0')
 
     def setup_environment(self, spack_env, run_env):
         spack_env.append_flags('CPPFLAGS', '-I../include')

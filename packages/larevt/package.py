@@ -5,15 +5,7 @@
 
 from spack import *
 import os
-
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larevt","08.10.03")
 
 
 def sanitize_environments(*args):
@@ -29,10 +21,13 @@ class Larevt(CMakePackage):
     """Larevt"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larevt"
-    url      = "https://github.com/LArSoft/larevt.git"
+    url      = "https://github.com/LArSoft/larevt/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larevt.git', get_full_repo=True)
     version('09.02.05.01', tag='v09_02_05_01', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
     version('09.02.04', tag='v09_02_04', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larevt.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larevt.git', branch='feature/MVP1a')
     version('09.00.08', tag='v09_00_08', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
     version('09.00.00', tag='v09_00_00', git='https://github.com/LArSoft/larevt.git', get_full_repo=True)
@@ -56,11 +51,13 @@ class Larevt(CMakePackage):
 
     depends_on('libwda')
     depends_on('lardata')
+    depends_on('sqlite')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)               ]
+                format(self.spec.variants['cxxstd'].value),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1']
         return args
 
     def setup_environment(self, spack_env, run_env):

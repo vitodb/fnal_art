@@ -6,15 +6,6 @@
 from spack import *
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larcoreobj","08.10.02")
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -29,10 +20,14 @@ class Larcoreobj(CMakePackage):
     """Larcoreobj"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larcoreobj"
-    url      = "https://github.com/LArSoft/larcoreobj.git"
+    url      = "https://github.com/LArSoft/larcoreobj/archive/v01_02_03.tar.gz"
+
+    version('mwm1', git='https://github.com/marcmengel/larcoreobj.git', branch='develop')
+    version('09.24.01.01', tag='v09_24_01_01', git='https://github.com/marcmengel/larcoreobj.git', get_full_repo=True)
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larcoreobj.git', get_full_repo=True)
     version('09.02.00', tag='v09_02_00', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
 
-    version('MVP1a', git='https://github.com/LArSoft/larcoreobj.git', branch='feature/MVP1a', preferred=True)
+    version('MVP1a', git='https://github.com/LArSoft/larcoreobj.git', branch='feature/MVP1a')
     version('09.00.00', tag='v09_00_00', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
     version('08.10.00', tag='v08_10_00', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
     version('08.10.01', tag='v08_10_01', git='https://github.com/LArSoft/larcoreobj.git', get_full_repo=True)
@@ -47,8 +42,6 @@ class Larcoreobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
-
     depends_on('canvas-root-io')
     depends_on('cetmodules', type='build')
 
@@ -59,6 +52,9 @@ class Larcoreobj(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix) 
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
@@ -88,6 +84,12 @@ class Larcoreobj(CMakePackage):
         run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
         # Cleaup.
         sanitize_environments(spack_env, run_env)
+
+    def flag_handler(self, name, flags):
+        if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
+            flags.append('-Wno-error=deprecated-declarations')
+        return (flags, None, None)
+
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
