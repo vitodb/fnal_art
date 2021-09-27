@@ -7,15 +7,15 @@
 from spack import *
 
 
-class Gm2midas2art(CMakePackage):
+class Gm2midastoart(CMakePackage):
     """FIXME: Put a proper description of your package here."""
 
-    homepage = "https://redmine.fnal.gov/projects/gm2midas2art"
-    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2midas2art.v9_60_00.tbz2" 
+    homepage = "https://redmine.fnal.gov/projects/gm2midastoart"
+    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2midastoart.v9_60_00.tbz2" 
     git_base = 'https://cdcvs.fnal.gov/projects/gm2midastoart'
     version('spack_branch', branch='feature/mengel_spack', git=git_base, get_full_repo=True)
     def url_for_version(self, version):
-        return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2midas2art.v%s.tbz2" % version.underscored
+        return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2midastoart.v%s.tbz2" % version.underscored
 
     version('9.60.00', sha256='1efd2e99333d99c8fcbaa6743e5e5b86aa0f6d93f7c2c7db823ff08980feedde')
 
