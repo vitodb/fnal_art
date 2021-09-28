@@ -7,15 +7,15 @@
 from spack import *
 
 
-class Gm2tracker(CMakePackage):
+class Gm2ringsim(CMakePackage):
     """Gm2 experiment tracking code"""
 
-    homepage = "https://redmine.fnal.gov/projects/gm2tracker"
-    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2tracker.v9_60_00.tbz2" 
-    git_base = 'https://cdcvs.fnal.gov/projects/gm2tracker'
+    homepage = "https://redmine.fnal.gov/projects/gm2ringsim"
+    url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2ringsim.v9_60_00.tbz2" 
+    git_base = 'https://cdcvs.fnal.gov/projects/gm2ringsim'
     version('spack_branch', branch='feature/mengel_spack', git=git_base, get_full_repo=True)
     def url_for_version(self, version):
-        return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2tracker.v%s.tbz2" % version.underscored
+        return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2ringsim.v%s.tbz2" % version.underscored
 
     version('9.60.00', sha256='1efd2e99333d99c8fcbaa6743e5e5b86aa0f6d93f7c2c7db823ff08980feedde')
 
@@ -27,10 +27,13 @@ class Gm2tracker(CMakePackage):
     depends_on('cetmodules', type=('build'))
     depends_on('artg4', type=('build','run'))
     depends_on('gm2geom', type=('build','run'))
-    depends_on('gm2dataproducts', type=('build','run'))
-    depends_on('gm2util', type=('build','run'))
-    depends_on('gsl', type=('build','run'))
+    depends_on('cadmesh', type=('build','run'))
+    depends_on('geant4', type=('build','run'))
+    depends_on('art', type=('build','run'))
+    depends_on('fhicl-cpp', type=('build','run'))
+    depends_on('messagefacility', type=('build','run'))
     depends_on('eigen', type=('build','run'))
+    depends_on('vecgeom', type=('build','run'))
 
     def patch(self):
         filter_file('^CMAKE_MINIMUM_REQUIRED.*',
