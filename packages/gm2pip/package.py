@@ -36,7 +36,7 @@ class Gm2pip(Package):
     depends_on("py-jupyter-full-width", type=("build","run")) # ? 
     depends_on("py-widgetslabextension", type=("build","run")) # ?
     depends_on("py-jltheme", type=("build","run")) # ?
-    depends_on("py-plotly-scientific_plots", type=("build","run")) # ?
+    depends_on("py-plotly-scientific-plots", type=("build","run")) # ?
     depends_on("py-rplotmaker", type=("build","run")) # ?
     depends_on("py-matplotlylib", type=("build","run")) # ?
     depends_on("py-julia", type=("build","run")) # ?

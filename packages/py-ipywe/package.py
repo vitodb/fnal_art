@@ -3,18 +3,20 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 from spack import *
 
-class PyJltheme(PythonPackage):
-    """FIXME: Put a proper description of your package here."""
 
-    # FIXME: Add a proper url for your package's homepage here.
-    homepage = "https://github.com/CGCFAD/jltheme"
-    pypi     = "jltheme/jltheme-0.1.2.tar.gz"
+class PyIpywe(PythonPackage):
+    """ipywidgets extensions for neutron scattering data analysis"""
 
-    version('0.1.2', sha256='75361cbd59c835d7d71b8c9c23dd9ddf4644bf67d7e2a42afa260de7c39aa028')
+    homepage = "https://github.com/neutrons/ipywe"
+    pypi     = "ipywe/ipywe-0.1.3a1.tar.gz"
 
-    depends_on('py-jupyter', type=('run'))
+    version('0.1.3a1', sha256='3fa853fc6ed12ac4bfcf7724641f7b32d4b1bc0815a27cf698559d83b45298ed')
+
+    depends_on('py-setuptools', type='build')
+    depends_on('py-ipywidgets', type=('build', 'run'))
 
     def build_args(self, spec, prefix):
         # FIXME: Add arguments other than --prefix

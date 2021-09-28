@@ -33,7 +33,7 @@ class Gm2templates(CMakePackage):
     depends_on('art-cpp-db-interfaces', type=('build','run'))
     depends_on('libwda', type=('build','run'))
     depends_on('eigen', type=('build','run'))
-    depends_on('csv-qe-api', type=('build','run'))
+    depends_on('art-cpp-db-interfaces', type=('build','run'))
 
     def patch(self):
         filter_file('^CMAKE_MINIMUM_REQUIRED.*',

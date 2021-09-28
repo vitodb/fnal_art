@@ -36,7 +36,7 @@ class Artg4(CMakePackage):
     depends_on('cetpkgsupport', type=('build','run'))
     depends_on('art', type=('build','run'))
     depends_on('geant4', type=('build','run'))
-    depends_on('xerces_c', type=('build','run'))
+    depends_on('xerces-c', type=('build','run'))
     depends_on('fhicl-cpp', type=('build','run'))
     depends_on('messagefacility', type=('build','run'))
 
