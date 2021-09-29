@@ -37,6 +37,8 @@ class Gm2tracker(CMakePackage):
         filter_file('^PROJECT.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
            .format(self.name, self.version), 
            'CMakeLists.txt')
+        filter_file(r'add_subdirectory\(ups\)', 'if(WANT_UPS)\n\&\nendif()',
+           'CMakeLists.txt')
 
     def cmake_args(self):
         # FIXME: Add arguments other than
