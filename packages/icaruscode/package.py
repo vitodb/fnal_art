@@ -32,10 +32,9 @@ class Icaruscode(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/icaruscode'
-    git_base = 'https://cdcvs.fnal.gov/projects/icaruscode'
     git_base = 'https://github.com/SBNSoftware/icaruscode.git'
 
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git='https://github.com/gartung/icaruscode.git', get_full_repo=True)
     version('08.43.00', tag='v08_43_00', git=git_base, get_full_repo=True)
     version('08.41.00', tag='v08_41_00', git=git_base, get_full_repo=True)
     version('08.40.00', tag='v08_40_00', git=git_base, get_full_repo=True)
@@ -65,16 +64,18 @@ class Icaruscode(CMakePackage):
     depends_on('boost', type=('build','run'))
     depends_on('canvas-root-io', type=('build','run'))
     depends_on('canvas', type=('build','run'))
+    depends_on('cetlib', type=('build','run'))
     depends_on('cetlib-except', type=('build','run'))
     depends_on('clhep', type=('build','run'))
     depends_on('cppgsl', type=('build','run'))
     depends_on('eigen', type=('build','run'))
     depends_on('fftw', type=('build','run'))
+    depends_on('fhicl-cpp', type=('build','run'))
     depends_on('hep-concurrency', type=('build','run'))
     depends_on('ifdh-art', type=('build','run'))
     depends_on('tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
-    #depends_on('icarus-signal-processing', type=('build','run'),when="@09.00:")
+    depends_on('icarus-signal-processing', type=('build','run'))
     depends_on('icarusutil', type=('build','run'))
     depends_on('larsoft', type=('build','run'))
     depends_on('larana', type=('build','run'))
@@ -83,6 +84,7 @@ class Icaruscode(CMakePackage):
     depends_on('lardataobj', type=('build','run'))
     depends_on('lardata', type=('build','run'))
     depends_on('larevt', type=('build','run'))
+    depends_on('pandora', type=('build','run'))
     depends_on('larpandora', type=('build','run'))
     depends_on('larpandoracontent', type=('build','run'))
     depends_on('larreco', type=('build','run'))
@@ -90,13 +92,17 @@ class Icaruscode(CMakePackage):
     depends_on('libwda', type=('build','run'))
     depends_on('marley', type=('build','run'))
     depends_on('nug4', type=('build','run'))
-    # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))
+    depends_on('nurandom', type=('build','run'))
+    depends_on('nusimdata', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
     depends_on('range-v3', type=('build','run'))
     depends_on('sbndaq-artdaq-core', type=('build','run'))
+    depends_on('sbnobj', type=('build','run'))
     depends_on('sqlite', type=('build','run'))
     depends_on('trace', type=('build','run'))
+    depends_on('protobuf', type=('build','run'))
+    depends_on('py-torch', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -111,10 +117,25 @@ class Icaruscode(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-Dicaruscode_FW_DIR=fw',
+                '-Dicaruscode_WP_DIR={0}'.
+                format(self.spec['wirecell'].prefix), 
+                '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2)),
+                '-DCPPGSL_INC={0}'.
+                format(self.spec['cppgsl'].prefix.include),
+                '-DTRACE_INC={0}'.
+                format(self.spec['trace'].prefix.include),
+                '-DLIBWDA_INC={0}'.
+                format(self.spec['libwda'].prefix.include),
+                ]
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

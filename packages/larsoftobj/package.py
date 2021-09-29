@@ -21,10 +21,13 @@ class Larsoftobj(CMakePackage):
     """Larsoftobj"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoftobj"
-    url      = "https://github.com/LArSoft/larsoftobj.git"
+    url      = "https://github.com/LArSoft/larsoftobj/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsoftobj.git', get_full_repo=True)
     version('09.05.03.01', tag='v09_05_03_01', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
     version('09.05.03', tag='v09_05_03', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsoftobj.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larsoftobj.git', branch='feature/MVP1a')
     version('1.48.00', tag='v1_48_00', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
     version('1.49.00', tag='v1_49_00', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
@@ -39,8 +42,6 @@ class Larsoftobj(CMakePackage):
             values=('14', '17'),
             multi=False,
             description='Use the specified C++ standard when building.')
-
-
 
     depends_on('gallery')
     depends_on('lardataobj')
@@ -74,4 +75,3 @@ class Larsoftobj(CMakePackage):
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
         sanitize_environments(spack_env, run_env)
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsoftobj.git', get_full_repo=True)

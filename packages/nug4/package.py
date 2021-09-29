@@ -24,7 +24,7 @@ class Nug4(CMakePackage):
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nug4.v1_07_00.tbz2'
 
     version('1.07.00', tag='v1_07_00', git=git_base, get_full_repo=True)
-    version('develop', branch='develop', git=git_base)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
     version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
     version('1.03.01', tag='v1_03_01', git=git_base, get_full_repo=True)
@@ -40,13 +40,17 @@ class Nug4(CMakePackage):
 
     # Build-only dependencies.
     depends_on('cetmodules', type='build')
+    depends_on('cetbuildtools', type='build')
     depends_on('art')
     depends_on('art-root-io')
+    depends_on('boost')
     depends_on('nusimdata')
     depends_on('cetlib')
     depends_on('cetlib-except')
     depends_on('geant4 cxxstd=17', when='cxxstd=17')
     depends_on('geant4 cxxstd=14', when='cxxstd=14')
+
+    patch('cetmodules2.patch', when='@develop')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
@@ -55,10 +59,13 @@ class Nug4(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1']
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
+        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

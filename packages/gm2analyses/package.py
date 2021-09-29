@@ -10,6 +10,8 @@ class Gm2analyses(CMakePackage):
 
     homepage = "https://redmine.fnal.gov/projects/gm2analyses"
     url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2analyses.v9_60_00.tbz2" 
+    git_base = 'https://cdcvs.fnal.gov/projects/gm2analyses'
+    version('spack_branch', branch='feature/mengel_spack', git=git_base, get_full_repo=True)
     def url_for_version(self, version):
         return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2analyses.v%s.tbz2" % version.underscored
 

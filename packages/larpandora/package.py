@@ -20,9 +20,13 @@ class Larpandora(CMakePackage):
     """Larpandora"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandora"
-    url      = "https://github.com/LArSoft/larpandora.git"
+    url      = "https://github.com/LArSoft/larpandora/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larpandora.git', get_full_repo=True)
+
     version('09.05.09', tag='v09_05_09', git='https://github.com/LArSoft/larpandora.git', get_full_repo=True)
 
+    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larpandora.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/LArSoft/larpandora.git', branch='feature/MVP1a')
     version('09.03.01', tag='v09_03_01', git='https://github.com/LArSoft/larpandora.git', get_full_repo=True)
     version('08.09.00', tag='v08_09_00', git='https://github.com/LArSoft/larpandora.git', get_full_repo=True)
@@ -42,15 +46,20 @@ class Larpandora(CMakePackage):
     depends_on('messagefacility')
     depends_on('canvas')
     depends_on('art-root-io')
+    depends_on('nug4')
+    depends_on('nusimdata')
     depends_on('larreco')
     depends_on('larpandoracontent')
+    depends_on('py-torch')
     depends_on('root')
     depends_on('postgresql')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)
+                format(self.spec.variants['cxxstd'].value),
+                '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))
                ]
         return args
 
@@ -104,4 +113,3 @@ class Larpandora(CMakePackage):
             flags.append('-Wno-error=class-memaccess')
         return (flags, None, None)
 
-    version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larpandora.git', get_full_repo=True)

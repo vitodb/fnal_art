@@ -44,6 +44,7 @@ class Dk2nugenie(CMakePackage):
     depends_on('log4cpp')
     depends_on('genie')
     depends_on('dk2nudata')
+    depends_on('tbb')
 
     parallel = False
 
@@ -60,7 +61,7 @@ class Dk2nugenie(CMakePackage):
         prefix=self.prefix
         args = ['-DCMAKE_INSTALL_PREFIX=%s'%prefix,
                 '-DGENIE_ONLY=ON',
-                '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['intel-tbb'].prefix.lib,
+                '-DTBB_LIBRARY=%s/libtbb.so'%self.spec['tbb'].prefix.lib,
                 '-DGENIE_INC=%s/GENIE'%self.spec['genie'].prefix.include,
                 '-DGENIE=%s'%self.spec['genie'].prefix,
                 '-DGENIE_VERSION=%s'%self.spec['genie'].version,

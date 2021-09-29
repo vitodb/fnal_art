@@ -21,7 +21,9 @@ class Larg4(CMakePackage):
     """Larg4"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larg4"
-    url      = "https://github.com/LArSoft/larg4.git"
+    url      = "https://github.com/LArSoft/larg4/archive/v01_02_03.tar.gz"
+
+    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larg4.git', get_full_repo=True)
     version('09.03.06.01', tag='v09_03_06_01', git='https://github.com/LArSoft/larg4.git', get_full_repo=True)
     version('09.03.05', tag='v09_03_05', git='https://github.com/LArSoft/larg4.git', get_full_repo=True)
 
@@ -50,6 +52,7 @@ class Larg4(CMakePackage):
     depends_on('art-root-io')
     depends_on('nug4')
     depends_on('nurandom')
+    depends_on('boost')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):

@@ -4,8 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from llnl.util import tty
 import sys
 import os
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -22,28 +24,33 @@ class Art(CMakePackage):
     """
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/art'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art.v3_0_2.tbz2'
-    version('3.09.01', tag='v3_09_01', git=git_base, get_full_repo=True)
+    git_base = 'https://github.com/art-framework-suite/art.git'
+    url = 'https://github.com/art-framework-suite/art/archive/refs/tags/v3_09_01.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/art/tags'
 
-    version('MVP1a', branch='feature/Spack-MVP1a',
-            git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
-    version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('v20_6-branch', branch='v2_06-branch', git=git_base, get_full_repo=True)
-    version('3.02.03', tag='v3_02_03', git=git_base, get_full_repo=True)
-    version('3.02.04', tag='v3_02_04', git=git_base, get_full_repo=True)
-    version('3.02.05', tag='v3_02_05', git=git_base, get_full_repo=True)
-    version('3.02.06', tag='v3_02_06', git=git_base, get_full_repo=True)
-    version('3.03.01', tag='v3_03_01', git=git_base, get_full_repo=True)
-    version('3.02.03', tag='v3_02_03', git=git_base, get_full_repo=True)
-    version('3.02.04', tag='v3_02_04', git=git_base, get_full_repo=True)
-    version('3.02.05', tag='v3_02_05', git=git_base, get_full_repo=True)
-    version('3.02.06', tag='v3_02_06', git=git_base, get_full_repo=True)
-    version('3.03.01', tag='v3_03_01', git=git_base, get_full_repo=True)
-    version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
-    version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
-    version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
+    version('3.09.03', sha256='f185fecd5593217185d2852d2ecf0a818326e7b4784180237461316b1c11f60d')
+    version('3.09.02', sha256='76ac3cd3de86c2b935ba6c32c3e4524d607b489e5ca2d3f10905010337144d6c')
+    version('3.09.01', sha256='f0039080405b27b798cbdef0948af725ab4efa27f0069f8cc27b4312d5ad6314')
+    version('MVP1a', branch='feature/Spack-MVP1a', git=git_base, preferred=True)
+    version('MVP', branch='feature/for_spack', git=git_base)
+    version('develop', branch='develop', git=git_base)
+
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        # FIXME: probably want to deal with pagination here (see
+        #        https://docs.github.com/en/rest/guides/traversing-with-pagination)
+        #        and possible error conditions like GitHub's rate
+        #        limiting.
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -81,14 +88,11 @@ class Art(CMakePackage):
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
 
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
-
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-Dart_MODULE_PLUGINS=FALSE']
         return args
 
     def setup_environment(self, spack_env, run_env):
@@ -136,9 +140,9 @@ class Art(CMakePackage):
         spack_env.set("ART_DIR",self.prefix)
         run_env.set("ART_DIR",self.prefix)
 
-    #@run_after('install')
-    #def rename_README(self):
-    #    import os
-    #    if os.path.exists(join_path(self.spec.prefix, "README")):
-    #        os.rename( join_path(self.spec.prefix, "README"),
-    #               join_path(self.spec.prefix, "README_%s"%self.spec.name))
+    @run_after('install')
+    def rename_README(self):
+        import os
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
+                       join_path(self.spec.prefix, "README_%s"%self.spec.name))

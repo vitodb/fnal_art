@@ -5,6 +5,7 @@
 
 from spack import *
 import os
+import glob
 
 # decorator to try a method twice...
 def tryagain(f):
@@ -70,9 +71,12 @@ class Triton(CMakePackage):
 
     @run_before('cmake')
     def patch_version(self):
-        filter_file('^project.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
+        filter_file( r'^project.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
            .format('client', self.version), 
            'build/client/CMakeLists.txt')
+        filter_file( r'data_files \+= \[\("bin", \["perf_analyzer", "perf_client"\]\)\]', 'data_files = data_files','src/clients/python/library/setup.py')
+        filter_file( r'.*\.\./\.\./\.\./(protobuf|grpc)/.*','','src/clients/c++/library/CMakeLists.txt')
+
 
     def flag_handler(self, name, flags):
         if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
@@ -126,38 +130,7 @@ class Triton(CMakePackage):
         env.prepend_path('CMAKE_PREFIX_PATH', self.stage.source_path +'/cmake/modules')
         pass
 
-
-    def install(self, spec, prefix):
-        with working_dir(self.build_directory + '/src/clients/c++'):
-            make('install')
-
     root_cmakelists_dir = 'build/client'
-
-    # trying doubled build...
-    build = tryagain(CMakePackage.build)
-  
-
-    #
-    # we want our cmake/modules directory in the CMAKE_PREFIX_PATH
-    # but its built in _std_args(), and we want all that plus ours...
-    #
-    @property
-    def std_cmake_args(self):
-        std_cmake_args = CMakePackage._std_args(self)
-        fixed = []
-        for arg in std_cmake_args:
-            if arg.startswith("-DCMAKE_PREFIX_PATH:STRING="):
-                fixed.append(arg + ";" + self.stage.source_path +'/cmake/modules')
-            else:
-                fixed.append(arg)
-        return fixed
-
-    #
-    # also push our cmake/modules on the environment CMAKE_PREFIX_PATH for  ExternalPackage calls...
-    #
-    def setup_build_environment(self, env):
-        env.prepend_path('CMAKE_PREFIX_PATH', self.stage.source_path +'/cmake/modules')
-        pass
 
     def flag_handler(self, name, flags):
         if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':
@@ -165,7 +138,18 @@ class Triton(CMakePackage):
             flags.append('-Wno-error=class-memaccess')
         return (flags, None, None)
 
+#    @tryagain
+#    def build(self, spec, prefix):
+#        with working_dir(self.build_directory):
+#            make('cshm','all')
+
     def install(self, spec, prefix):
         with working_dir(self.build_directory):
             make('install')
+
+    @run_before('install')
+    def install_model_headers(self):
+        mkdirp(self.prefix.include)
+        for f in glob.glob(join_path(self.build_directory, 'src/core/*.pb.h' )):
+             copy(f, join_path(self.prefix.include, os.path.basename(f)))
 

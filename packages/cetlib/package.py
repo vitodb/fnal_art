@@ -81,7 +81,9 @@ class Cetlib(CMakePackage):
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+		'-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
+	]
         return args
 
     def setup_environment(self, spack_env, run_env):
@@ -112,5 +114,6 @@ class Cetlib(CMakePackage):
     @run_after('install')
     def rename_README(self):
         import os
-        os.rename( join_path(self.spec.prefix, "README"),
-                   join_path(self.spec.prefix, "README_%s"%self.spec.name))
+        if os.path.exists(join_path(self.spec.prefix, "README")):
+            os.rename( join_path(self.spec.prefix, "README"),
+                       join_path(self.spec.prefix, "README_%s"%self.spec.name))
