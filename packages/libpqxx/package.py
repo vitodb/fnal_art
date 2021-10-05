@@ -24,8 +24,8 @@ class Libpqxx(CMakePackage):
 
     def cmake_args(self):
         args = [
-           'DPostgreSQL_TYPE_INCLUDE_DIR=%s' % self.spec['postgresql'].include,
-           'DPostgreSQL_INCLUDE_DIR=%s' %  self.spec['postgresql'].include,
-           'DPostgreSQL_LIBRAY_DIR=%s' %  self.spec['postgresql'].lib,
+           'DPostgreSQL_TYPE_INCLUDE_DIR=%s' % self.spec['postgresql'].prefix.include,
+           'DPostgreSQL_INCLUDE_DIR=%s' %  self.spec['postgresql'].prefix.include,
+           'DPostgreSQL_LIBRAY_DIR=%s' %  self.spec['postgresql'].prefix.lib,
         ]
         return args

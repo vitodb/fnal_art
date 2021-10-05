@@ -17,21 +17,21 @@ class IfdhArt(CMakePackage):
 from the ifdhc package."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
-    url      = "https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git"
+    url      = "https://github.com/art-framework-suite/ifdh-art/archive/refs/tags/v2_12_05.tar.gz"
 
-    version('2.12.04',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_12_02_01', get_full_repo=True)
-    version('2.12.02.01',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_12_02_01', get_full_repo=True)
-    version('2.11.05',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_11_05', get_full_repo=True)
+    version('2.12.04',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_12_02_01', get_full_repo=True)
+    version('2.12.02.01',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_12_02_01', get_full_repo=True)
+    version('2.11.05',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_11_05', get_full_repo=True)
 
     version('develop', git=url, branch='develop', get_full_repo=True)
 
-    version('MVP1a', git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', branch='feature/Spack-MVP1a')
-    version('2.10.07',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_07', get_full_repo=True)
-    version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02', get_full_repo=True)
-    version('2.10.01',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_01', get_full_repo=True)
-    version('2.10.00',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_00', get_full_repo=True)
-    version('2.10.02',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_02', get_full_repo=True)
-    version('2.10.04',  git='https://cdcvs.fnal.gov/projects/ifdh-art/ifdh_art.git', tag='v2_10_04', get_full_repo=True)
+    version('MVP1a', git='https://github.com/art-framework-suite/ifdh-art.git', branch='feature/Spack-MVP1a')
+    version('2.10.07',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_07', get_full_repo=True)
+    version('2.10.02',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_02', get_full_repo=True)
+    version('2.10.01',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_01', get_full_repo=True)
+    version('2.10.00',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_00', get_full_repo=True)
+    version('2.10.02',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_02', get_full_repo=True)
+    version('2.10.04',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_04', get_full_repo=True)
 
     patch('cetmodules2.patch', when='@develop')
 

@@ -37,6 +37,19 @@ class FhiclCpp(CMakePackage):
 
     #patch('fhicl-cpp-dev.patch', when='@develop')
 
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
+
     variant('cxxstd',
             default='17',
             values=('14', '17'),
