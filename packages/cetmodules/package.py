@@ -15,7 +15,8 @@ class Cetmodules(CMakePackage):
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/cetmodules'
     git_base = 'https://github.com/FNALssi/cetmodules.git'
-    url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.14.00.tar.gz'
+    #url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.14.00.tar.gz'
+    url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.29.04.tar.gz'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
 
@@ -54,12 +55,8 @@ class Cetmodules(CMakePackage):
         filter_file('exit \$status', 'exit 0', '%s/libexec/fix-man-dirs' % self.stage.source_path)
 
     def url_for_version(self, version):
-        if str(version)[0] in "01":
-            url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/v{0}.{1}.tbz2'
-            return url.format(self.name, version.underscored)
-        else:
-            url = 'https://github.com/FNALssi/{0}/archive/refs/tags/{1}.tar.gz'
-            return url.format(self.name, version)
+        url = 'https://github.com/FNALssi/{0}/archive/refs/tags/{1}.tar.gz'
+        return url.format(self.name, version)
 
 
     @run_after('install')

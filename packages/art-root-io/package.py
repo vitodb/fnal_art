@@ -73,7 +73,8 @@ class ArtRootIo(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art_root_io.v{1}.tbz2'
+        #url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art_root_io.v{1}.tbz2'
+        url = 'https://github.com/art-framework-suite/{0}/archive/refs/tags/v{0}.tar.gz'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):

@@ -12,6 +12,13 @@ class Cadmesh(CMakePackage):
     homepage = "https://github.com/christopherpoole/CADMesh/"
     url      = "https://github.com/christopherpoole/CADMesh/archive/refs/tags/v2.0.3.tar.gz"
 
+    depends_on("pkgconfig", type=("build"))
+    depends_on("geant4", type=("build", "run"))
+    depends_on("clhep", type=("build", "run"))
+    depends_on("xerces-c", type=("build", "run"))
+    depends_on("zlib", type=("build", "run"))
+    depends_on("expat", type=("build", "run"))
+
     # maintainers = ['marcmengel']
 
     version('2.0.3', sha256='fc0765fc984b32a7b7b6687bb84a57b3d1c0c1db8991a651b3443b4971e48c01')
@@ -22,14 +29,14 @@ class Cadmesh(CMakePackage):
     def url_for_version(self, version):
 
         url = "https://github.com/christopherpoole/CADMesh/archive/refs/tags/v{0}.tar.gz"
-        return url.format(self.name, version)
+        return url.format(version)
 
 
     variant('cxxstd',default='17')
 
     def cmake_args(self):
-        # FIXME: Add arguments other than
-        # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
-        # FIXME: If not needed delete this function
-        args = []
+        args = [
+        "-DWITH_SYS_TETGEN:BOOL=ON",
+        "-DWITH_SYS_ASSIMP:BOOL=ON",
+        ]
         return args

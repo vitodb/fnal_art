@@ -14,6 +14,7 @@ class Gm2db(CMakePackage):
     url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2db.v9_60_00.tbz2" 
     git_base = 'https://cdcvs.fnal.gov/projects/gm2db'
     version('spack_branch', branch='feature/mengel_spack', git=git_base, get_full_repo=True)
+
     def url_for_version(self, version):
         return "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/gm2db.v%s.tbz2" % version.underscored
 
@@ -26,20 +27,14 @@ class Gm2db(CMakePackage):
     depends_on('cetbuildtools', type=('build'))
     depends_on('cetmodules', type=('build'))
     depends_on('cetpkgsupport', type=('build','run'))
+    depends_on('art', type=('build','run'))
     depends_on('art-cpp-db-interfaces', type=('build','run'))
     depends_on('libwda', type=('build','run'))
 
-    def patch(self):
-        filter_file('^CMAKE_MINIMUM_REQUIRED.*',
-           'CMAKE_MINIMUM_REQUIRED( VERSION 3.14 )\nfind_package(cetmodules)',
-           'CMakeLists.txt')
-        filter_file('^PROJECT.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
-           .format(self.name, self.version), 
-           'CMakeLists.txt')
 
     def cmake_args(self):
         # FIXME: Add arguments other than
         # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
         # FIXME: If not needed delete this function
-        args = []
+        args = [ '-DCXX_STANDARD=%s'% self.spec.variants['cxxstd'].value, ]
         return args

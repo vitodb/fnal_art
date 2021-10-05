@@ -27,17 +27,9 @@ class Gm2geom(CMakePackage):
     depends_on('xerces-c', type=('build','run'))
     depends_on('art', type=('build','run'))
 
-    def patch(self):
-        filter_file('^CMAKE_MINIMUM_REQUIRED.*',
-           'CMAKE_MINIMUM_REQUIRED( VERSION 3.14 )\nfind_package(cetmodules)',
-           'CMakeLists.txt')
-        filter_file('^PROJECT.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
-           .format(self.name, self.version), 
-           'CMakeLists.txt')
-
     def cmake_args(self):
         # FIXME: Add arguments other than
         # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
         # FIXME: If not needed delete this function
-        args = []
+        args = [ '-DCXX_STANDARD=%s'% self.spec.variants['cxxstd'].value, ]
         return args

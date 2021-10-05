@@ -5,9 +5,29 @@
 
 
 from spack import *
+import glob
+import os
 
 
-class Gm2midas(CMakePackage):
+#
+# works with build_directory() below to let us run the
+# stage (build, install, etc.) in each subdirectory...
+#
+def subdir_decorator(f):
+    def repl(self, *args):
+        
+        save = self.build_directory
+        with working_dir(save):
+            subdirlist = glob.glob('*')
+            subdirlist.sort(reverse=True)
+            for d in subdirlist:
+                if os.path.exists(os.path.join(d,'Makefile')):
+                    self.build_subdir = d
+                    f(self, *args)
+    return repl
+            
+
+class Gm2midas(MakefilePackage):
     """Gm2 experiment tracking code"""
 
     homepage = "https://redmine.fnal.gov/projects/gm2midas"
@@ -22,17 +42,29 @@ class Gm2midas(CMakePackage):
     depends_on('root', type=('build','run'))
     depends_on('zlib', type=('build','run'))
     depends_on('openssl', type=('build','run'))
+    depends_on('libusb', type=('build','run'))
 
-    root_cmakelists_dir = 'midas'
+    @property
+    def build_directory(self):
+        if getattr(self,'build_subdir',None):
+            return os.path.join(self.stage.source_path, self.build_subdir)
+        else:
+            return self.stage.source_path
+
+    def setup_build_environment(self, env):
+        env.set('PREFIX', self.prefix)
+        env.set('ROMESYS', self.stage.source_path + '/rome')
+        env.set('LIBS', '-lusb -L{0}'.format(self.spec['libusb'].prefix.lib))
 
     def patch(self):
-        filter_file('^PROJECT.*','PROJECT({0} VERSION {1} LANGUAGES CXX C)' 
-           .format(self.name, self.version), 
-           'midas/CMakeLists.txt')
+        filter_file( 
+            '#include <typeinfo>', 
+            '#include <typeinfo>\nusing std::type_info;', 
+            'rome/include/ROMEUtilities.h')
 
-    def cmake_args(self):
-        # FIXME: Add arguments other than
-        # FIXME: CMAKE_INSTALL_PREFIX and CMAKE_BUILD_TYPE
-        # FIXME: If not needed delete this function
-        args = []
-        return args
+    build = subdir_decorator(MakefilePackage.build)
+    install = subdir_decorator(MakefilePackage.install)
+    check = subdir_decorator(MakefilePackage.check)
+    installcheck = subdir_decorator(MakefilePackage.installcheck)
+
+    

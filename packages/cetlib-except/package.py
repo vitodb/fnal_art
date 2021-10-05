@@ -62,7 +62,8 @@ class CetlibExcept(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib_except.v{0}.tbz2'
+        #url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib_except.v{0}.tbz2'
+        url = 'https://github.com/art-framework-suite/{0}/archive/refs/tags/v{0}.tar.gz'
         return url.format(version.underscored)
 
     def cmake_args(self):
