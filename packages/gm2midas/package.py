@@ -54,13 +54,20 @@ class Gm2midas(MakefilePackage):
     def setup_build_environment(self, env):
         env.set('PREFIX', self.prefix)
         env.set('ROMESYS', self.stage.source_path + '/rome')
-        env.set('LIBS', '-lusb -L{0}'.format(self.spec['libusb'].prefix.lib))
+        env.set('MSCB_LDFLAGS', '-lusb-1.0 -L{0}'.format(self.spec['libusb'].prefix.lib))
+        env.set('SYSBIN_DIR', self.prefix.bin)
+        env.set('SYSLIB_DIR', self.prefix.lib)
+        env.set('SYSINC_DIR', self.prefix.inc)
 
     def patch(self):
         filter_file( 
             '#include <typeinfo>', 
             '#include <typeinfo>\nusing std::type_info;', 
             'rome/include/ROMEUtilities.h')
+        filter_file( 
+            'LIBS  = -lusb-1.0',
+            'LIBS = ${MSCB_LDFLAGS}',
+            'mscb/Makefile')
 
     build = subdir_decorator(MakefilePackage.build)
     install = subdir_decorator(MakefilePackage.install)

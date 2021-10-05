@@ -75,7 +75,7 @@ class Critic(CMakePackage):
 
     def url_for_version(self, version):
         #url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        url = 'https://github.com/art-framework-suite/{0}/archive/refs/tags/v{0}.tar.gz'
+        url = 'https://github.com/art-framework-suite/{0}/archive/refs/tags/v{1}.tar.gz'
         return url.format(self.name, version.underscored)
 
     def cmake_args(self):
