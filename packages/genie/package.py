@@ -152,7 +152,7 @@ global analysis of neutrino scattering data.
                                  str(self.spec[d.name].prefix.include))
 
     def setup_dependent_build_environment(self, spack_env, dspec):
-        spack_env.set('GENIE',self.stage.source_path)
+        spack_env.set('GENIE',self.prefix)
         spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         spack_env.prepend_path('PATH', self.prefix.bin)
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
