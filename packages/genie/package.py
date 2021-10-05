@@ -51,7 +51,6 @@ global analysis of neutrino scattering data.
 
     patch('patch/genie-r21210.patch', when='@2_12_10')
     patch('patch/genie-r30006.patch', when='@3.00.06')
-    patch('patch/genie-missing-header.patch', when='@3.00.06')
 
     @property
     def build_targets(self):
