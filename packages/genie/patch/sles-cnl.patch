@@ -1,0 +1,40 @@
+diff --git a/src/make/Make.include b/src/make/Make.include
+index 3cc8686e7..a5acd181e 100644
+--- a/src/make/Make.include
++++ b/src/make/Make.include
+@@ -335,7 +335,7 @@ RANLIB       := ranlib
+ SOCMD         = $(LD)
+ OutPutOpt     = -o
+ SOMINF        =
+-EXTRALIBS     = 
++EXTRALIBS     =
+ endif
+ 
+ 
+@@ -425,7 +425,7 @@ RANLIB       := ranlib
+ SOCMD         = $(LD)
+ OutPutOpt     = -o
+ SOMINF        =
+-EXTRALIBS     = 
++EXTRALIBS     =
+ endif
+ 
+ #ifeq ($(strip $(ARCH)),macosx64) 
+@@ -481,7 +481,7 @@ RANLIB       := ranlib
+ SOCMD         = $(LD)
+ OutPutOpt     = -o
+ SOMINF        =
+-EXTRALIBS     = -lnsl
++EXTRALIBS     =
+ endif
+ 
+ # LINUX / 64-bit x86 / with gcc
+@@ -509,7 +509,7 @@ RANLIB       := ranlib
+ SOCMD         = $(LD)
+ OutPutOpt     = -o
+ SOMINF        =
+-EXTRALIBS     = -lnsl
++EXTRALIBS     =
+ endif
+ 
+ #-------------------------------------------------------------------
