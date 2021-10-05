@@ -15,13 +15,12 @@ class Dk2nudata(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/dk2nu"
     url      = "https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02"
 
-    version('01.10.00', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_10_00")
-    version('01.09.02', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_09_02")
-    version('01.09.01', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_09_01")
-    version('01.09.00', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_09_00")
-    version('01.08.00', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
-    version('01.07.02', svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_07_02")
-    version('01.08.00',  svn="https://cdcvs.fnal.gov/subversion/dk2nu/tags/v01_08_00")
+    version('01.10.00', revision='154', svn="https://cdcvs.fnal.gov/subversion/dk2nu/trunk")
+    version('01.09.02', revision='153', svn="https://cdcvs.fnal.gov/subversion/dk2nu/trunk")
+    version('01.09.01', revision='152', svn="https://cdcvs.fnal.gov/subversion/dk2nu/trunk")
+    version('01.09.00', revision='148', svn="https://cdcvs.fnal.gov/subversion/dk2nu/trunk")
+    version('01.08.00', revision='146', svn="https://cdcvs.fnal.gov/subversion/dk2nu/trunk")
+    version('01.07.02', revision='140', svn="https://cdcvs.fnal.gov/subversion/dk2nu/trunk")
 
     # Variant is still important even though it's not passed to compiler
     # flags (use of ROOT, etc.).
