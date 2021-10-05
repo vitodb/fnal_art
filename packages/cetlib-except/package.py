@@ -25,6 +25,8 @@ class CetlibExcept(CMakePackage):
     homepage = 'https://art.fnal.gov/'
     git_base = 'https://github.com/art-framework-suite/cetlib-except.git'
     url = 'https://github.com/art-framework-suite/cetlib-except/archive/refs/tags/v1_07_04.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/cetlib-except/tags'
+
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
