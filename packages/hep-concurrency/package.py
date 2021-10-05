@@ -4,14 +4,12 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-import sys
-from spack import *
-from spack.environment import *
-import os
 
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
+from spack import *
+from llnl.util import tty
+import sys
+import os
+import spack.util.spack_json as sjson
 
 
 def sanitize_environments(*args):
@@ -27,18 +25,34 @@ class HepConcurrency(CMakePackage):
     """A concurrency library for the art suite."""
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/hep_concurrency'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/hep-concurrency.v1_04_00.tbz2'
+    git_base = 'https://github.com/art-framework-suite/hep-concurrency.git'
+    url = 'https://github.com/art-framework-suite/hep-concurrency/archive/refs/tags/v1_07_04.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/hep-concurrency/tags'
 
-    version('1.07.00', sha256='4f6940ee139a7f1164b5c15c323bc5699713ad228faaf6e9e8cbb40c90607e9f')
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
+    version('MVP', branch='feature/for_spack',
+            git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
-    version('1.03.04', tag='v1_03_04', git=git_base, get_full_repo=True)
-    version('1.04.01', sha256='ab6610a6fac64e9c2cded6732751f880b35b0ea4cb0762914b769da5653d7518')
 
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
+
+    variant('cxxstd',
+            default='17',
+            values=('14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
 
     variant('cxxstd',
             default='17',
@@ -62,13 +76,6 @@ class HepConcurrency(CMakePackage):
         generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
-
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{package}.{v}{version}.tbz2'
-
-        return url.format(package='hep_concurrency',
-                          v='v' if type(version.version[0]) == int else '',
-                          version=version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

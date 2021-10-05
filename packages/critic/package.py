@@ -3,17 +3,12 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 from spack import *
+from llnl.util import tty
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
+import spack.util.spack_json as sjson
 
 
 def sanitize_environments(*args):
@@ -31,17 +26,28 @@ class Critic(CMakePackage):
     """
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/critic'
+    git_base = 'https://github.com/art-framework-suite/critic.git'
+    url = 'https://github.com/art-framework-suite/critic/archive/refs/tags/v3_09_01.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/critic/tags'
 
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
-    version('v2_01_01', tag='v2_01_01', git=git_base, get_full_repo=True)
-    version('v2_01_02', tag='v2_01_02', git=git_base, get_full_repo=True)
-    version('v2_01_03', tag='v2_01_03', git=git_base, get_full_repo=True)
-    version('v2_01_04', tag='v2_01_04', git=git_base, get_full_repo=True)
-    version('v2_02_00', tag='v2_02_00', git=git_base, get_full_repo=True)
+
+
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -72,10 +78,6 @@ class Critic(CMakePackage):
         generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
-
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         # Set CMake args.

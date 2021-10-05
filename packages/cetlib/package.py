@@ -3,21 +3,13 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 from spack import *
+from llnl.util import tty
 import sys
-from spack.environment import *
 import os
-import os.path
+import spack.util.spack_json as sjson
 
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    os.system("patch -p1 < %s/p1" % os.path.dirname(__file__))
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
 
 def sanitize_environments(*args):
     for env in args:
@@ -32,22 +24,32 @@ class Cetlib(CMakePackage):
     """A utility library for the art suite."""
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/cetlib'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib.v3_13_01.tbz2'
-
-    version('3.13.02', tag='v3_13_02', git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('3.13.01', tag='v3_13_01', git=git_base, get_full_repo=True)
-    version('3.04.00', tag='v3_04_00', git=git_base, get_full_repo=True)
-    version('3.05.00', tag='v3_05_00', git=git_base, get_full_repo=True)
-    version('3.05.01', tag='v3_05_01', git=git_base, get_full_repo=True)
-    version('3.07.02', tag='v3_07_02', git=git_base, get_full_repo=True)
-    version('3.08.00', tag='v3_08_00', git=git_base, get_full_repo=True)
    
     patch('cetlib-notests.patch', when='@develop')
+
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
+
+    variant('cxxstd',
+            default='17',
+            values=('14', '17'),
+            multi=False,
+            description='Use the specified C++ standard when building.')
+
 
     variant('cxxstd',
             default='17',
@@ -74,10 +76,6 @@ class Cetlib(CMakePackage):
         generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
-
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

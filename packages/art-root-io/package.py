@@ -4,18 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
-
-
+from llnl.util import tty
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","art_root_io","8.10.02")
+import os
+import spack.util.spack_json as sjson
 
 
 def sanitize_environments(*args):
@@ -32,16 +24,25 @@ class ArtRootIo(CMakePackage):
     """
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/art_root_io'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art_root_io.v1_02_01.tbz2'
+    git_base = 'https://github.com/art-framework-suite/art-root-io.git'
+    url = 'https://github.com/art-framework-suite/art-root-io/archive/refs/tags/v3_09_01.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/art-root-io/tags'
 
-    version('MVP1a', branch='feature/Spack-MVP1a', git=git_base)
     version('develop', branch='develop', git=git_base, preferred=True)
-    version('1.08.01', tag='v1_08_01', git=git_base, get_full_repo=True)
-    version('1.02.01', tag='v1_02_01', git=git_base, get_full_repo=True)
-    version('1.02.00', tag='v1_02_00', git=git_base, get_full_repo=True)
-    version('1.03.00', tag='v1_03_00', git=git_base, get_full_repo=True)
-    version('1.05.02', tag='v1_05_02', git=git_base, get_full_repo=True)
+    version('MVP1a', branch='feature/Spack-MVP1a', git=git_base)
+
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -71,10 +72,6 @@ class ArtRootIo(CMakePackage):
         generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
-
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/art_root_io.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         # Set CMake args.

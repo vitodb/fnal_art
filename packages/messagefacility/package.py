@@ -3,17 +3,12 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+
 from spack import *
+from llnl.util import tty
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
+import spack.util.spack_json as sjson
 
 
 def sanitize_environments(*args):
@@ -29,27 +24,28 @@ class Messagefacility(CMakePackage):
     """A configurable message logging facility for the art suite."""
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/messagefacility'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/messagefacility.v2.06.00.tbz2'
+    git_base = 'https://github.com/art-framework-suite/messagefacility.git'
+    url = 'https://github.com/art-framework-suite/messagefacility/archive/refs/tags/v3_09_01.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/messagefacility/tags'
 
-    version('2.08.02', tag='v2_08_02', git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('v2_06-branch', branch='v2_06-branch', git=git_base, get_full_repo=True)
-    version('2.08.00', tag='v2_08_00', git=git_base, get_full_repo=True)
-    version('2.06.01', tag='v2_06_01', git=git_base, get_full_repo=True)
-    version('2.03.00', tag='v2_03_00', git=git_base, get_full_repo=True)
-    version('2.03.01', tag='v2_03_01', git=git_base, get_full_repo=True)
-    version('2.04.03', tag='v2_04_03', git=git_base, get_full_repo=True)
-    version('2.05.00', tag='v2_05_00', git=git_base, get_full_repo=True)
-    version('2.06.00', tag='v2_06_00', git=git_base, get_full_repo=True)
-    version('2.06.01', tag='v2_06_01', git=git_base, get_full_repo=True)
-    version('2.06.02', tag='v2_06_02', git=git_base, get_full_repo=True)
-    version('2.07.00', tag='v2_07_00', git=git_base, get_full_repo=True)
-    version('2.07.01', tag='v2_07_01', git=git_base, get_full_repo=True)
-    version('2.07.02', tag='v2_07_02', git=git_base, get_full_repo=True)
+
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -79,10 +75,6 @@ class Messagefacility(CMakePackage):
         generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
-
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         # Set CMake args.

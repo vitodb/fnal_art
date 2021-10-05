@@ -4,16 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
+from llnl.util import tty
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","fhicl-cpp","4.11.00")
+import os
+import spack.util.spack_json as sjson
 
 
 def sanitize_environments(*args):
@@ -31,19 +25,15 @@ class FhiclCpp(CMakePackage):
     """
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/fhicl-cpp'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/fhicl-cpp.v4.11.01.tbz2'
+    git_base = 'https://github.com/art-framework-suite/fhicl-cpp.git'
+    url = 'https://github.com/art-framework-suite/fhicl-cpp/archive/refs/tags/v3_09_01.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/fhicl-cpp/tags'
 
-    version('4.15.01', sha256='633b629210713f543a32118361270d363b8399e2a81da16083bf5aa6ab1c930d')
+
     version('MVP1a', branch='feature/Spack-MVP1a', git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('4.14.00', tag='v4_14_00', git=git_base, get_full_repo=True)
-    version('4.09.02', tag='v4_09_02', git=git_base, get_full_repo=True)
-    version('4.09.03', tag='v4_09_03', git=git_base, get_full_repo=True)
-    version('4.10.00', tag='v4_10_00', git=git_base, get_full_repo=True)
-    version('4.11.00', tag='v4_11_00', git=git_base, get_full_repo=True)
-    version('4.11.01', sha256='820b747209dfc5747fab71cf95d1833b4bbd406eb9220097e33c2af686c9be8f')
+
 
     #patch('fhicl-cpp-dev.patch', when='@develop')
 
@@ -71,10 +61,6 @@ class FhiclCpp(CMakePackage):
         generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
-
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

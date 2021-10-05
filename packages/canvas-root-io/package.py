@@ -4,9 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
+from llnl.util import tty
 import sys
-
+import os
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -17,35 +18,31 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    print("patcher: got argument: %s" % repr(x))
-    cetmodules_20_migrator(".","canvas-root-io","1.05.01")
-
-
 class CanvasRootIo(CMakePackage):
     """A Root I/O library for the art suite."""
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/canvas_root_io'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/canvas-root-io.v1_05_00.tbz2'
+    git_base = 'https://github.com/art-framework-suite/canvas-root-io.git'
+    url = 'https://github.com/art-framework-suite/canvas-root-io/archive/refs/tags/v3_09_01.tar.gz'
+    list_url = 'https://api.github.com/repos/art-framework-suite/canvas-root-io/tags'
 
-    version('1.09.04', tag="v1_09_04", git=git_base, get_full_repo=True)
-    version('1.09.02', tag="v1_09_02", git=git_base, get_full_repo=True)
-    version('1.07.02', tag="v1_07_02", git=git_base, get_full_repo=True)
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base)
     version('develop', branch='develop', git=git_base)
-    version('1.05.00', tag="v1_05_00", git=git_base, get_full_repo=True)
-    version('1.04.01', tag="v1_04_01", git=git_base, get_full_repo=True)
-    version('1.05.01', tag="v1_05_01", git=git_base, get_full_repo=True)
-    version('1.05.02', tag="v1_05_02", git=git_base, get_full_repo=True)
+
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -91,12 +88,6 @@ class CanvasRootIo(CMakePackage):
                 except:
                     ninja(*self.build_targets)
 
-
-        
-
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         # Set CMake args.

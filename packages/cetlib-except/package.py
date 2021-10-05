@@ -4,16 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from llnl.util import tty
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
+import spack.util.spack_json as sjson
 
 
 def sanitize_environments(*args):
@@ -29,21 +23,25 @@ class CetlibExcept(CMakePackage):
     """Exception libraries for the art suite."""
 
     homepage = 'https://art.fnal.gov/'
-    git_base = 'https://cdcvs.fnal.gov/projects/cetlib_except'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib_except.v1_04_00.tbz2'
-    version('1.07.02', tag='v1_07_02', git=git_base, get_full_repo=True)
-    version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
-
-    version('1.07.00', tag='v1_07_00', git=git_base, get_full_repo=True)
+    git_base = 'https://github.com/art-framework-suite/cetlib-except.git'
+    url = 'https://github.com/art-framework-suite/cetlib-except/archive/refs/tags/v1_07_04.tar.gz'
     version('MVP1a', branch='feature/Spack-MVP1a',
             git=git_base, preferred=True)
     version('MVP', branch='feature/for_spack', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-    #version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
-    version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
-    version('1.14.01', tag='v1_14_01', git=git_base, get_full_repo=True)
 
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
 
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -60,10 +58,6 @@ class CetlibExcept(CMakePackage):
         generator = os.environ['SPACKDEV_GENERATOR']
         if generator.endswith('Ninja'):
             depends_on('ninja', type='build')
-
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/cetlib_except.v{0}.tbz2'
-        return url.format(version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
