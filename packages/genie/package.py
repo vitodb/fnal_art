@@ -51,6 +51,7 @@ global analysis of neutrino scattering data.
 
     patch('patch/genie-r21210.patch', when='@2_12_10')
     patch('patch/genie-r30006.patch', when='@3.00.06')
+    patch('patch/genie-missing-header.patch', when='@3.00.06')
 
     @property
     def build_targets(self):
@@ -90,6 +91,10 @@ global analysis of neutrino scattering data.
     @run_before('configure')
     def add_to_configure_env(self):
         inspect.getmodule(self).configure.add_default_env('GENIE',self.stage.source_path)
+        inspect.getmodule(self).configure.add_default_env('GENIE_REWEIGHT',
+                                                     '{0}/Reweight'.
+                                                     format(self.stage.source_path))
+        inspect.getmodule(self).configure.add_default_env('LD_LIBRARY_PATH', '{0}/lib'.format(self.stage.source_path))
 
     @run_before('build')
     def add_to_make_env(self):
@@ -127,30 +132,38 @@ global analysis of neutrino scattering data.
         #filesystem.mkdirp(src_make_dir)
         filesystem.install_tree(os.path.join(self.stage.source_path, 'src', 'make'), src_make_dir)
 
-    def setup_environment(self, spack_env, run_env):
-        run_env.set('GENIE', self.prefix)
+    def setup_build_environment(self, spack_env):
+        spack_env.set('ROOT_INCLUDE_PATH', os.path.join(self.stage.source_path, 'src'))
         spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
-        run_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
+
+    def setup_run_environment(self, spack_env, run_env):
+        run_env.set('GENIE', self.prefix)
+        run_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.set('GENIE',self.prefix)
+    def setup_dependent_build_environment(self, spack_env, dspec):
+        spack_env.set('GENIE',self.stage.source_path)
         spack_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
-        run_env.set('GENIE', self.prefix)
-        run_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         spack_env.append_path('ROOT_INCLUDE_PATH', '{0}/GENIE'.format(self.prefix.include))
+        spack_env.append_path('LD_LIBRARY_PATH', self.prefix.lib)
+
+    def setup_dependent_run_environment(self, run_env, dspec):
+        run_env.set('GENIE', self.prefix)
+        run_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
+        run_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         run_env.append_path('ROOT_INCLUDE_PATH', '{0}/GENIE'.format(self.prefix.include))
-        spack_env.append_path('LD_LIBRARY_PATH', self.prefix.lib)
 
     @run_after('install')
     def version_file(self):
