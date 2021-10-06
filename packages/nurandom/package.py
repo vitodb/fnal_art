@@ -4,18 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from llnl.util import tty
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
-
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -30,19 +22,25 @@ class Nurandom(CMakePackage):
     """Random number generator interfaces to art."""
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/nurandom'
-    git_base = 'https://cdcvs.fnal.gov/projects/nurandom'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nurandom.v1_05_02.tbz2'
+    git_base = 'https://github.com/NuSoftHEP/nurandom.git'
+    url = 'https://github.com/NuSoftHEP/nurandom/archive/refs/tags/v1_07_06.tar.gz'
+    list_url = 'https://api.github.com/repos/NuSoftHEP/nurandom/tags'
 
-    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nurandom', get_full_repo=True)
-    version('1.05.02', tag='v1_05_02', git=git_base, get_full_repo=True)
+    version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
-    version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
-    version('1.03.01', tag='v1_03_01', git=git_base, get_full_repo=True)
-    version('1.03.00', tag='v1_03_00', git=git_base, get_full_repo=True)
 
+    def url_for_version(self, version):
+        url = 'https://github.com/NuSoftHEP/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
 
-
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
     variant('cxxstd',
             default='17',
             values=('14', '17'),
@@ -60,10 +58,6 @@ class Nurandom(CMakePackage):
 
     patch('cetmodules2.patch', when='@develop')
 
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
-
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -71,8 +65,6 @@ class Nurandom(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
-        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
-        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

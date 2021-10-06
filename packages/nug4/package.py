@@ -4,8 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from llnl.util import tty
 import sys
 import os
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -20,17 +22,25 @@ class Nug4(CMakePackage):
     """Generator interfaces to art for GENIE and GiBUU."""
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/nug4'
-    git_base = 'https://cdcvs.fnal.gov/projects/nug4'
-    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nug4.v1_07_00.tbz2'
+    git_base = 'https://github.com/NuSoftHEP/nug4.git'
+    url = 'https://github.com/NuSoftHEP/nug4/archive/refs/tags/v1_10_00.tar.gz'
+    list_url = 'https://api.github.com/repos/NuSoftHEP/nug4/tags'
 
-    version('1.07.00', tag='v1_07_00', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('1.04.01', tag='v1_04_01', git=git_base, get_full_repo=True)
-    version('1.04.00', tag='v1_04_00', git=git_base, get_full_repo=True)
-    version('1.03.01', tag='v1_03_01', git=git_base, get_full_repo=True)
-    version('1.03.00', tag='v1_03_00', git=git_base, get_full_repo=True)
-    version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nug4', get_full_repo=True)
+    version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
 
+    def url_for_version(self, version):
+        url = 'https://github.com/NuSoftHEP/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -52,10 +62,6 @@ class Nug4(CMakePackage):
 
     patch('cetmodules2.patch', when='@develop')
 
-    def url_for_version(self, version):
-        url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format(self.name, version.underscored)
-
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -63,7 +69,7 @@ class Nug4(CMakePackage):
                 '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1']
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
         spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
         # Binaries.
@@ -72,34 +78,54 @@ class Nug4(CMakePackage):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB',
+                               os.path.join(self.build_directory, 'perllib'))
+        # Cleaup.
+        sanitize_environments(spack_env)
+
+    def setup_run_environment(self, run_env):
+        # Binaries.
+        run_env.prepend_path('PATH',
+                               os.path.join(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
-        spack_env.prepend_path('PERL5LIB',
-                               os.path.join(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleaup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+    def setup_dependent_build_environment(self, spack_env, dependent_spec):
         # Binaries.
-        spack_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('PATH', self.prefix.bin)
         # Ensure we can find plugin libraries.
-        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
-        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
-        spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(spack_env)
+
+    def setup_dependent_run_environment(self, run_env, dependent_spec):
+        # Binaries.
+        run_env.prepend_path('PATH', self.prefix.bin)
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # Cleanup.
+        sanitize_environments(run_env)

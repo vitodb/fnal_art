@@ -4,17 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
-
-
+from llnl.util import tty
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","nusimdata","1.21.01")
+import os
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -29,23 +22,27 @@ class Nusimdata(CMakePackage):
     """Nusimdata"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nusimdata"
-    url      = "https://cdcvs.fnal.gov/projects/nusimdata"
+    git_base = "https://github.com/NuSoftHEP/nudimdata.git"
+    url      = "https://github.com/NuSoftHEP/nusimdata/archive/refs/tags/v1_24_05.tar.gz"
+    list_url = "https://api.github.com/repos/NuSoftHEP/nusimdata/tags"
 
-    version('1.22.03', tag='v1_22_03', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
-
-    version('develop', git='https://cdcvs.fnal.gov/projects/nusimdata', branch='develop', get_full_repo=True)
-    version('MVP1a', git='https://cdcvs.fnal.gov/projects/nusimdata', branch='feature/MVP1a', preferred=True)
-    version('1.19.01', tag='v1_19_01', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
-    version('1.19.02', tag='v1_19_02', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
-    version('1.20.00', tag='v1_20_00', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
-    version('1.20.01', tag='v1_20_01', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
-    version('1.21.00', tag='v1_21_00', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
-    version('1.21.01', tag='v1_21_01', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
-    version('1.21.02', tag='v1_21_02', git='https://cdcvs.fnal.gov/projects/nusimdata', get_full_repo=True)
-
-    patch('nusimdata.patch',when='@1.22.03') 
+    version('develop', git=git_base, branch='develop', get_full_repo=True)
+    version('MVP1a', git=git_base, branch='feature/MVP1a', preferred=True)
 
     patch('cetmodules2.patch', when='@develop')
+
+    def url_for_version(self, version):
+        url = 'https://github.com/NuSoftHEP/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -65,11 +62,7 @@ class Nusimdata(CMakePackage):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value)               ]
         return args
-
     def setup_environment(self, spack_env, run_env):
-        # Set LD_LIBRARY_PATH so CheckClassVersion.py can find cppyy lib
-        spack_env.prepend_path('LD_LIBRARY_PATH',
-                                join_path(self.spec['root'].prefix.lib))
         spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
         spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
         # Binaries.
@@ -94,15 +87,21 @@ class Nusimdata(CMakePackage):
         # Cleaup.
         sanitize_environments(spack_env, run_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.append_path('ROOT_INCLUDE_PATH', self.prefix.include)
+    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+        # Binaries.
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('PATH', self.prefix.bin)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
+        # Ensure Root can find headers for autoparsing.
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # Cleanup.
+        sanitize_environments(spack_env, run_env)
 
     # install_fhicl() is callled but there are no fcl files to install
     # however nusimdataConfig.cmake does a set and check on nusimdata_fcl_dir
