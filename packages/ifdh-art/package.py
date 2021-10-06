@@ -4,34 +4,44 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
+from llnl.util import tty
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
+import os
+import spack.util.spack_json as sjson
 
-
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
 
 class IfdhArt(CMakePackage):
     """The ifdh_art package provides ART service access to the libraries 
 from the ifdhc package."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifdh-art/wiki"
+    git_base = 'https://github.com/art-framework-suite/ifdh-art.git'
     url      = "https://github.com/art-framework-suite/ifdh-art/archive/refs/tags/v2_12_05.tar.gz"
+    list_url = 'https://api.github.com/repos/art-framework-suite/ifdh-art/tags'
 
-    version('2.12.04',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_12_02_01', get_full_repo=True)
-    version('2.12.02.01',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_12_02_01', get_full_repo=True)
-    version('2.11.05',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_11_05', get_full_repo=True)
-
-    version('develop', git=url, branch='develop', get_full_repo=True)
-
+    version('develop', git=git_base, branch='develop', get_full_rep=True)
     version('MVP1a', git='https://github.com/art-framework-suite/ifdh-art.git', branch='feature/Spack-MVP1a')
-    version('2.10.07',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_07', get_full_repo=True)
-    version('2.10.02',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_02', get_full_repo=True)
-    version('2.10.01',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_01', get_full_repo=True)
-    version('2.10.00',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_00', get_full_repo=True)
-    version('2.10.02',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_02', get_full_repo=True)
-    version('2.10.04',  git='https://github.com/art-framework-suite/ifdh-art.git', tag='v2_10_04', get_full_repo=True)
+
+    def url_for_version(self, version):
+        url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
+
 
     patch('cetmodules2.patch', when='@develop')
 
