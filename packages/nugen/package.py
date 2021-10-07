@@ -140,13 +140,13 @@ class Nugen(CMakePackage):
 
     def setup_dependent_build_environment(self, spack_env, dependent_spec):
         # Binaries.
-        run_env.prepend_path('PATH', self.prefix.bin)
+        spack_env.prepend_path('PATH', self.prefix.bin)
         # Ensure we can find plugin libraries.
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
-        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
         sanitize_environments(spack_env)
 
