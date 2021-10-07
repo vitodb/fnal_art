@@ -80,17 +80,20 @@ class FhiclCpp(CMakePackage):
                 format(self.spec.variants['cxxstd'].value)]
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         # Path for tests.
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(spack_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+    def setup_dependent_build_environment(self, spack_env, dependent_spec):
         # Binaries.
         spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+
+    def setup_dependent_run_environment(self, run_env, dependent_spec):
+        # Binaries.
+        run_env.prepend_path('PATH', self.prefix.bin)
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
 
     @run_after('install')

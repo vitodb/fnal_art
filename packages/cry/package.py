@@ -55,17 +55,20 @@ and detector simulation codes. """
             setup.filter('^cd ".*', 'cd "%s"' % prefix)
             install_tree(self.stage.source_path, prefix)
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
+    def setup_dependent_build_environment(self, spack_env, dspec):
         spack_env.set('CRYHOME',self.prefix)
         spack_env.set('CRY_LIB',self.prefix.lib)
         spack_env.set('CRYDATAPATH', self.prefix.data)
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.src)
+
+    def setup_dependent_run_environment(self, run_env, dspec):
         run_env.set('CRYHOME',self.prefix)
         run_env.set('CRY_LIB',self.prefix.lib)
         run_env.set('CRYDATAPATH', self.prefix.data)
         # Ensure we can find plugin libraries.
-        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.src)
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.src)
 
     @run_after('install')

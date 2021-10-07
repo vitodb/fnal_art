@@ -76,18 +76,23 @@ class Ifdhc(MakefilePackage):
         tty.warn('installing ifdh.cfg: {0}'.format(cmd))
         os.system(cmd)
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         spack_env.set('PYTHON_INCLUDE', self.spec['python'].prefix.include)
         spack_env.set('PYTHON_LIB', self.spec['python'].prefix.lib)
-        run_env.prepend_path('PATH', self.prefix.bin)
-        run_env.set('IFDHC_DIR', self.spec.prefix)
         spack_env.set('IFDHC_DIR', self.spec.prefix)
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.prepend_path('PATH', self.prefix.bin)
+    def setup_run_environment(self, run_env):
+        run_env.prepend_path('PATH', self.spec.prefix.bin)
+        run_env.set('IFDHC_DIR', self.spec.prefix)
+
+    def setup_dependent_build_environment(self, spack_env, dspec):
+        spack_env.prepend_path('PATH', self.spec.prefix.bin)
+        # Non-standard, therefore we have to do it ourselves.
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.spec.prefix.inc)
+        spack_env.set('IFDHC_DIR', self.spec.prefix)
+
+    def setup_dependent_environment(self, run_env, dspec):
         run_env.prepend_path('PATH', self.prefix.bin)
         # Non-standard, therefore we have to do it ourselves.
-        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.inc)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.inc)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.spec.prefix.inc)
         run_env.set('IFDHC_DIR', self.spec.prefix)
-        spack_env.set('IFDHC_DIR', self.spec.prefix)

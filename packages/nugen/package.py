@@ -96,6 +96,7 @@ class Nugen(CMakePackage):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
+                'IGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1',
                 '-DGENIE_INC={0}'.
                 format(self.spec['genie'].prefix.include)]
         return args

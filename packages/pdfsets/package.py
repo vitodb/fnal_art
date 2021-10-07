@@ -48,13 +48,18 @@ class Pdfsets(Package):
              url='https://www.hepforge.org/downloads/lhapdf/pdfsets/5.9.1/GRVPI1.LHgrid',
              expand=False, sha256='68c7f07fb1929ef2c0e68e5229d8ce57232446b483bdcd44db2b14204785cd9a')
 
-    def setup_environment(self, spack_env, run_env):
-        run_env.set('LHAPATH','{0}/PDFsets'.format(self.spec['pdfsets'].prefix))
-
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
+    
+    def setup_build_environment(self, spack_env):
         spack_env.set('LHAPATH','{0}/PDFsets'.format(self.prefix))
-        run_env.set('LHAPATH','{0}/PDFsets'.format(self.spec['pdfsets'].prefix))
 
+    def setup_run_environment(self, run_env):
+        run_env.set('LHAPATH','{0}/PDFsets'.format(self.prefix))
+
+    def setup_dependent_build_environment(self, spack_env, dspec):
+        spack_env.set('LHAPATH','{0}/PDFsets'.format(self.spec.prefix))
+
+    def setup_dependent_run_environment(self, run_env, dspec):
+        run_env.set('LHAPATH','{0}/PDFsets'.format(self.spec.prefix))
 
     def install(self, spec, prefix):
         mkdirp('{0}/PDFsets'.format(prefix))

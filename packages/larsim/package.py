@@ -4,8 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
+from llnl.util import tty
 import sys
+import os
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -15,32 +17,32 @@ def sanitize_environments(*args):
             env.prune_duplicate_paths(var)
             env.deprioritize_system_paths(var)
 
-
 class Larsim(CMakePackage):
     """Larsim"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsim"
+    git_base = 'https://github.com/LArSoft/larsim.git'
     url      = "https://github.com/LArSoft/larsim/archive/v01_02_03.tar.gz"
+    list_url = 'https://github.com/LArSoft/larsim.git'
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsim.git', get_full_repo=True)
-
-    version('09.13.02.01', tag='v09_13_02_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('09.13.01', tag='v09_13_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsim.git', get_full_repo=True)
+    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
 
-    version('MVP1a', git='https://github.com/LArSoft/larsim.git', branch='feature/MVP1a')
-    version('09.06.00', tag='v09_06_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.17.01', tag='v08_17_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.17.01', tag='v08_17_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.18.00', tag='v08_18_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.18.01', tag='v08_18_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.19.00', tag='v08_19_00', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.19.01', tag='v08_19_01', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.19.02', tag='v08_19_02', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.19.03', tag='v08_19_03', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.19.04', tag='v08_19_04', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.22.03', tag='v08_22_03', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
-    version('08.22.05', tag='v08_22_05', git='https://github.com/LArSoft/larsim.git', get_full_repo=True)
+
+    def url_for_version(self, version):
+        url = 'https://github.com/LArSoft/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
+
 
     variant('cxxstd',
             default='17',
@@ -90,7 +92,7 @@ class Larsim(CMakePackage):
             flags.append('-Wno-error=class-memaccess')
         return (flags, None, None)
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',
@@ -98,29 +100,22 @@ class Larsim(CMakePackage):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
-            run_env.prepend_path('ROOT_INCLUDE_PATH',
-                                 str(self.spec[d.name].prefix.include))
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB',
                                os.path.join(self.build_directory, 'perllib'))
-        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Set path to find fhicl files
         spack_env.prepend_path('FHICL_INCLUDE_PATH',
                                os.path.join(self.build_directory, 'job'))
-        run_env.prepend_path('FHICL_INCLUDE_PATH', os.path.join(self.prefix, 'job'))
         # Set path to find gdml files
         spack_env.prepend_path('FW_SEARCH_PATH',
                                os.path.join(self.build_directory, 'job'))
-        run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
         # Cleaup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(spack_env)
 
         # ups env vars used in build...
         spack_env.set('LIBXML2_FQ_DIR', self.spec['libxml2'].prefix)
@@ -130,16 +125,36 @@ class Larsim(CMakePackage):
         spack_env.set('GENIE_INC', self.spec['genie'].prefix.include)
         spack_env.set('CRYHOME', self.spec['cry'].prefix)
 
+    def setup_run_environment(self, run_env):
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
+            run_env.prepend_path('ROOT_INCLUDE_PATH',
+                                 str(self.spec[d.name].prefix.include))
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # Set path to find fhicl files
+        run_env.prepend_path('FHICL_INCLUDE_PATH', os.path.join(self.prefix, 'job'))
+        # Set path to find gdml files
+        run_env.prepend_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'job'))
+        # Cleaup.
+        sanitize_environments(run_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
+    def setup_dependent_build_environment(self, spack_env, dspec):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         spack_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
-        run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+
+    def setup_dependent_run_environment(self, run_env, dspec):
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))

@@ -89,7 +89,7 @@ class Cetlib(CMakePackage):
 	]
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         # Binaries.
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # For plugin tests (not needed for installed package).
@@ -98,21 +98,30 @@ class Cetlib(CMakePackage):
         # Perl modules.
         spack_env.prepend_path('PERL5LIB',
                                os.path.join(self.build_directory, 'perllib'))
-        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
-        run_env.set('CETLIB_DIR', self.prefix)
         spack_env.set('CETLIB_DIR', self.prefix)
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(spack_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
-        # Binaries.
-        spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
+    def setup_run_environment(self, run_env):
         # Perl modules.
-        spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         run_env.set('CETLIB_DIR', self.prefix)
+        # Cleanup.
+        sanitize_environments(run_env)
+
+    def setup_dependent_build_environment(self, spack_env, dependent_spec):
+        # Binaries.
+        spack_env.prepend_path('PATH', self.prefix.bin)
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         spack_env.set('CETLIB_DIR', self.prefix)
+
+    def setup_dependent_run_unvironment(self, run_env, dependent_spec):
+        # Binaries.
+        run_env.prepend_path('PATH', self.prefix.bin)
+        # Perl modules.
+        run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        run_env.set('CETLIB_DIR', self.prefix)
 
     @run_after('install')
     def rename_README(self):

@@ -80,11 +80,11 @@ class Canvas(CMakePackage):
                 format(self.spec.variants['cxxstd'].value)]
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         # Binaries.
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(spack_env)
 
     @run_after('install')
     def rename_README(self):

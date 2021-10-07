@@ -97,14 +97,13 @@ class CanvasRootIo(CMakePackage):
                 format(os.path.join(self.build_directory, 'include')) ]
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
 
         # Set LD_LIBRARY_PATH sp CheckClassVersion.py can find cppyy lib
         spack_env.prepend_path('LD_LIBRARY_PATH',
@@ -114,24 +113,40 @@ class CanvasRootIo(CMakePackage):
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
+        # Cleanup.
+        sanitize_environments(spack_env)
+        spack_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
+
+    def setup_run_environment(self, run_env):
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
-        spack_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
+        sanitize_environments(run_env)
         run_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
 
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+    def setup_dependent_build_environment(self, spack_env, dependent_spec):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Cleanup.
+        sanitize_environments(spack_env)
+        spack_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
+
+    def setup_dependent_run_environment(self, run_env, dependent_spec):
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
-        spack_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
+        sanitize_environments(run_env)
         run_env.set("CANVAS_ROOT_IO_DIR", self.prefix)
 
     @run_after('install')

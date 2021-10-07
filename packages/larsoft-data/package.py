@@ -7,13 +7,6 @@ from spack import *
 import os
 
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","larsoft-data","1.02.01")
 
 class LarsoftData(Package):
     """LarsoftData"""
@@ -41,9 +34,11 @@ class LarsoftData(Package):
             path = os.path.join(self.prefix, path_fragment)
             env.prepend_path('FW_SEARCH_PATH', path)
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_run_environment(self, run_env):
         self._add_paths_to_environment(run_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dep_spec):
+    def setup_dependent_build_environment(self, spack_env, dep_spec):
         self._add_paths_to_environment(spack_env)
+
+    def setup_dependent_run_environment(self, run_env, dep_spec):
         self._add_paths_to_environment(run_env)

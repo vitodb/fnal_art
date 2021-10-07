@@ -4,9 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
+from llnl.util import tty
 import sys
-
+import os
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -16,26 +17,31 @@ def sanitize_environments(*args):
             env.prune_duplicate_paths(var)
             env.deprioritize_system_paths(var)
 
-
 class Larsoftobj(CMakePackage):
     """Larsoftobj"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsoftobj"
+    git_base = 'https://github.com/LArSoft/larsoftobj.git'
     url      = "https://github.com/LArSoft/larsoftobj/archive/v01_02_03.tar.gz"
+    list_url = "https://api.github.com/repos/LArSoft/larsoftobj/tags"
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsoftobj.git', get_full_repo=True)
-    version('09.05.03.01', tag='v09_05_03_01', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
-    version('09.05.03', tag='v09_05_03', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
-
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsoftobj.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/LArSoft/larsoftobj.git', branch='feature/MVP1a')
-    version('1.48.00', tag='v1_48_00', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
-    version('1.49.00', tag='v1_49_00', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
-    version('1.50.00', tag='v1_50_00', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
-    version('08.26.02', tag='v08_26_02', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
-    version('08.26.03', tag='v08_26_03', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
-    version('08.27.06', tag='v08_27_06', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
-    version('09.03.00', tag='v09_03_00', git='https://github.com/LArSoft/larsoftobj.git', get_full_repo=True)
+    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
+
+
+    def url_for_version(self, version):
+        url = 'https://github.com/LArSoft/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     variant('cxxstd',
             default='17',
@@ -62,16 +68,20 @@ class Larsoftobj(CMakePackage):
         f.write("larsoftobj is just a bunde with dependencies")
         f.close()
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
+    def setup_dependent_build_environment(self, spack_env, dspec):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         spack_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
-        run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         spack_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
+        sanitize_environments(spack_env)
+
+    def setup_dependent_run_environment(self, run_env, dspec):
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('PATH', self.prefix.bin)
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)

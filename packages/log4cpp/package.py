@@ -28,13 +28,15 @@ reasonable."""
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         cxxstd = self.spec.variants['cxxstd'].value
         cxxstdflag = '' if cxxstd == 'default' else \
                      getattr(self.compiler, 'cxx{0}_flag'.format(cxxstd))
         spack_env.append_flags('CXXFLAGS', cxxstdflag)
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
-        spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
+    def setup_dependent_build_environment(self, spack_env, dspec):
+        spack_env.prepend_path('PATH', self.spec.prefix.bin)
+
+    def setup_dependent_run_environment(self, run_env, dspec):
+        run_env.prepend_path('PATH', self.spec.prefix.bin)
 
