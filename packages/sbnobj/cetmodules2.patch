@@ -1,23 +1,21 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 334bd98..d9a6d5f 100644
+index 92e3db4..5f12dd9 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -11,21 +11,22 @@
+@@ -11,10 +11,11 @@
  #  make install
  #  make package (builds distribution tarfile)
  # ======================================================================
 +cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
-+cmake_policy(VERSION 3.18)
  
  
--cmake_minimum_required (VERSION 3.12...3.18 FATAL_ERROR)
+-cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
  
--project(sbnobj LANGUAGES CXX)
-+find_package(cetmodules 2.25.05 REQUIRED)
-+project(sbnobj VERSION 09.11.19 LANGUAGES CXX)
++find_package(cetmodules 2.29.02 REQUIRED)
+ project(sbnobj VERSION 09.12.02 LANGUAGES CXX)
  
  message(STATUS
-   "\n-- ============================================================================="
+@@ -22,10 +23,9 @@ message(STATUS
    "\n-- === *** Start of configuration of ${PROJECT_NAME} ***"
    "\n-- ===")
  
@@ -30,7 +28,7 @@ index 334bd98..d9a6d5f 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -37,24 +38,26 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -37,25 +37,26 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
    EXTRA_CXX_FLAGS -Wno-unused-local-typedefs
  )
  
@@ -44,6 +42,7 @@ index 334bd98..d9a6d5f 100644
 -find_ups_product( larcorealg )
 -find_ups_product( lardataalg )
 -find_ups_product( nusimdata )
+-find_ups_product(clhep)
 -find_ups_boost( )
 -find_ups_root()
 +find_package( messagefacility )
@@ -67,7 +66,7 @@ index 334bd98..d9a6d5f 100644
  
  # ADD SOURCE CODE SUBDIRECTORIES HERE
  add_subdirectory(sbnobj)
-@@ -64,10 +67,8 @@ add_subdirectory(test)
+@@ -65,10 +66,8 @@ add_subdirectory(test)
  
  # ups - table and config files
  # must be AFTER all other subdirectories
@@ -78,7 +77,7 @@ index 334bd98..d9a6d5f 100644
  
  
  message(STATUS
-@@ -76,3 +77,4 @@ message(STATUS
+@@ -77,3 +76,4 @@ message(STATUS
    "\n-- ============================================================================="
    "\n-- "
    )
@@ -121,12 +120,12 @@ index fc4b0f3..2454a3c 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt b/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
-index d81f1da..857ae5a 100644
+index d81f1da..9c8e559 100644
 --- a/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
 +++ b/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
 @@ -1,11 +1,15 @@
 -cet_make( 
-+cet_find_library( DK2NU_TREE NAMES dk2nuTree PATHS ENV DK2NUDATA_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMME
++cet_find_library( DK2NU_TREE NAMES dk2nuTree PATHS ENV DK2NUDATA_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMME ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
 +include_directories( $ENV{DK2NUDATA_INC} ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
 +
 +cet_make(  ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
@@ -184,12 +183,12 @@ index eb5077f..6032f15 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/SBNEventWeight/CMakeLists.txt b/sbnobj/Common/SBNEventWeight/CMakeLists.txt
-index 555921e..f60d788 100644
+index 555921e..fe555cc 100644
 --- a/sbnobj/Common/SBNEventWeight/CMakeLists.txt
 +++ b/sbnobj/Common/SBNEventWeight/CMakeLists.txt
 @@ -1,15 +1,20 @@
 -cet_make( 
-+cet_find_library( DK2NU_TREE NAMES dk2nuTree PATHS ENV DK2NUDATA_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMME
++cet_find_library( DK2NU_TREE NAMES dk2nuTree PATHS ENV DK2NUDATA_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMME ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
 +include_directories( $ENV{DK2NUDATA_INC} ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
 +
 +cet_make(  ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
@@ -290,11 +289,12 @@ index 3de9938..7652999 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/SBND/Commissioning/CMakeLists.txt b/sbnobj/SBND/Commissioning/CMakeLists.txt
-index d83ec1f..24d4ea0 100644
+index d83ec1f..d67e27a 100644
 --- a/sbnobj/SBND/Commissioning/CMakeLists.txt
 +++ b/sbnobj/SBND/Commissioning/CMakeLists.txt
 @@ -1,10 +1,10 @@
- cet_make( 
+-cet_make( 
++cet_make(  ### MIGRATE-ACTION-RECOMMENDED: use cet_make_library(), build_dictionary(), basic_plugin() with explicit source lists
    LIBRARIES
 -    cetlib_except
 +    cetlib_except::cetlib_except
@@ -341,7 +341,7 @@ index 7599d2e..0000000
 -check_required_components(@product@)
 -
 diff --git a/ups/product_deps b/ups/product_deps
-index 5d068b6..66d9795 100644
+index 7b2fff6..f959208 100644
 --- a/ups/product_deps
 +++ b/ups/product_deps
 @@ -1,50 +1,331 @@
@@ -355,12 +355,12 @@ index 5d068b6..66d9795 100644
 +# This file is parsed as a consequence of sourcing the
 +# setup_for_development or setup_deps shell-agnostic scripts.
 +#
-+# Generated by cetmodules 2.25.05 at Mon Sep 13 15:46:11 CDT
++# Generated by cetmodules 2.29.02 at Fri Oct 08 01:46:25 GMT
 +########################################################################
  
 -# The *parent* line must the first non-commented line and defines this product and version
 -# The version should be of the form vxx_yy_zz (e.g. v01_02_03)
--parent sbnobj v09_11_19
+-parent sbnobj
 -defaultqual e20
 +####################################
 +# Basic information.
@@ -545,8 +545,8 @@ index 5d068b6..66d9795 100644
 +####################################
  
 -product          version
--lardataobj       v09_01_06
--cetbuildtools    v7_17_01  -  only_for_build
+-lardataobj       v09_03_01
+-cetbuildtools    v8_17_03  -  only_for_build
 +####################################
 +# Product table.
 +#
@@ -618,8 +618,8 @@ index 5d068b6..66d9795 100644
 +#
 +####################################
 +product		version		qual	flags		<table_format=2>
-+lardataobj	v09_01_06	-
-+cetmodules	v2_25_05	-	only_for_build
++lardataobj	v09_03_01	-
++cetmodules	v2_29_02	-	only_for_build
  end_product_list
 +####################################
  
@@ -804,7 +804,7 @@ index 72c2e32..0000000
 -unset ss db me thisdir msg1 msg2 msg3 msg4 msg5 setup_fail
 -unset set_ setenv unsetenv_ tnotnull nullout vecho_
 diff --git a/ups/setup_for_development b/ups/setup_for_development
-index 8c5bedf..4c6c447 100644
+index 8c5bedf..0b1e329 100644
 --- a/ups/setup_for_development
 +++ b/ups/setup_for_development
 @@ -1,96 +1,239 @@
@@ -825,7 +825,7 @@ index 8c5bedf..4c6c447 100644
  #    set fw_db=/some/path; source /some/path/this_file
  # or  fw_db=/some/path; . /some/path/this_file
 +#
-+# Generated by cetmodules 2.25.05 at Mon Sep 13 15:46:11 CDT
++# Generated by cetmodules 2.29.02 at Fri Oct 08 01:46:25 GMT
 +########################################################################
 +
 +########################################################################

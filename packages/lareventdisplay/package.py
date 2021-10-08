@@ -84,7 +84,7 @@ class Lareventdisplay(CMakePackage):
         spack_env.prepend_path('FW_SEARCH_PATH',
                                os.path.join(self.build_directory, 'job'))
         # Cleaup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(spack_env)
 
     def setup_run_environment(self, run_env):
         # Ensure we can find plugin libraries.
