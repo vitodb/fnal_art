@@ -58,6 +58,7 @@ class Larsimrad(CMakePackage):
     depends_on('lardata')
     depends_on('nugen')
     depends_on('larsim')
+    depends_on('nusimdata')
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
