@@ -91,7 +91,7 @@ class Ifdhc(MakefilePackage):
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.spec.prefix.inc)
         spack_env.set('IFDHC_DIR', self.spec.prefix)
 
-    def setup_dependent_environment(self, run_env, dspec):
+    def setup_dependent_run_environment(self, run_env, dspec):
         run_env.prepend_path('PATH', self.prefix.bin)
         # Non-standard, therefore we have to do it ourselves.
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.spec.prefix.inc)
