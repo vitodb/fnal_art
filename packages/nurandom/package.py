@@ -27,7 +27,8 @@ class Nurandom(CMakePackage):
     list_url = 'https://api.github.com/repos/NuSoftHEP/nurandom/tags'
 
     version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
-    version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('develop', commit='0b30dabe86c6cf0d30e87f3fc3c143ecfd042b76',
+             git=git_base, get_full_repo=True)
 
     def url_for_version(self, version):
         url = 'https://github.com/NuSoftHEP/{0}/archive/v{1}.tar.gz'

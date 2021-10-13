@@ -26,7 +26,8 @@ class SbndaqArtdaqCore(CMakePackage):
     url = 'https://github.com/SBNSoftware/sbndaq-artdaq-core/archive/v1_2_3.tar.gz'
     git_base = 'https://github.com/SBNSoftware/sbndaq-artdaq-core.git'
 
-    version('develop', git=git_base, branch="develop")
+    version('develop', git=git_base,
+             commit='e80441a707b42befe641002440421b4d2ea572d4', get_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -40,7 +41,7 @@ class SbndaqArtdaqCore(CMakePackage):
         return url.format(self.name, version.underscored)
 
 
-    patch('cetmodules2.patch')
+    patch('cetmodules2.patch', when='@develop')
 
     depends_on('messagefacility')
     depends_on('cetmodules', type='build')

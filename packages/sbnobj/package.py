@@ -35,7 +35,8 @@ class Sbnobj(CMakePackage):
     git_base = 'https://cdcvs.fnal.gov/projects/sbnobj'
     git_base = 'https://github.com/SBNSoftware/sbnobj.git'
 
-    version('develop', branch='develop', git=git_base)
+    version('develop', commit='821c5e24aa509b4e1ba0eda064d3ce5f3fbce1a2',
+             git=git_base, get_full_repo=True))
     version('09.09.00', tag='v09_09_00', git=git_base, get_full_repo=True)
     version('09.09.01', tag='v09_09_01', git=git_base, get_full_repo=True)
 

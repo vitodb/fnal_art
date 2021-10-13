@@ -26,7 +26,7 @@ from the ifdhc package."""
     url      = "https://github.com/art-framework-suite/ifdh-art/archive/refs/tags/v2_12_05.tar.gz"
     list_url = 'https://api.github.com/repos/art-framework-suite/ifdh-art/tags'
 
-    version('develop', git=git_base, branch='develop', get_full_rep=True)
+    version('develop', git=git_base, commit='fbddccf791ef86c7a2c96242031f79833a5cc9d0', get_full_rep=True)
     version('MVP1a', git='https://github.com/art-framework-suite/ifdh-art.git', branch='feature/Spack-MVP1a')
 
     def url_for_version(self, version):

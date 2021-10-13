@@ -26,8 +26,9 @@ class Nusimdata(CMakePackage):
     url      = "https://github.com/NuSoftHEP/nusimdata/archive/refs/tags/v1_24_05.tar.gz"
     list_url = "https://api.github.com/repos/NuSoftHEP/nusimdata/tags"
 
-    version('develop', git=git_base, branch='develop', get_full_repo=True)
     version('MVP1a', git=git_base, branch='feature/MVP1a', preferred=True)
+    version('develop', git=git_base,
+             commit='e684c9db5c0394dd8eb850af32c94800acfbccf5', get_full_repo=True)
 
     patch('cetmodules2.patch', when='@develop')
 

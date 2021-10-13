@@ -25,7 +25,7 @@ class Icarusalg(CMakePackage):
     #git_base = 'https://cdcvs.fnal.gov/projects/icarusalg'
     git_base = 'https://github.com/SBNSoftware/icarusalg.git'
 
-    version('develop', branch='develop', git='https://github.com/gartung/icarusalg.git', get_full_repo=True)
+    version('develop', commit='357823a14d1f655f620bb288f6dc373b5685664f', git=git_base, get_full_repo=True)
     version('09.06.00', tag='v09_06_00', git=git_base, get_full_repo=True)
     version('09.07.00', tag='v09_07_00', git=git_base, get_full_repo=True)
     version('09.08.00', tag='v09_08_00', git=git_base, get_full_repo=True)
@@ -34,7 +34,7 @@ class Icarusalg(CMakePackage):
     version('09.10.01', tag='v09_10_01', git=git_base, get_full_repo=True)
 
     patch('mwm.patch', when='@09.28.01')
-
+    patch('cetmodules2.patch', when='@develop')
 
     variant('cxxstd',
             default='17',

@@ -15,7 +15,7 @@ class Artg4tk(CMakePackage):
     url      = "https://cdcvs.fnal.gov/projects/artg4tk"
 
 
-    version('develop', branch='develop', git=url, extention='tar.bz2', get_full_repo=True)
+    version('develop', commit='c06a0ed7a0a543cba5c23fc588f7dd6dcb6609e2', git=url, extention='tar.bz2', get_full_repo=True)
     version('mwm1', branch='mwm1', git=url, extention='tar.bz2', get_full_repo=True)
 
     version('MVP1a', git = url, branch = 'feature/Spack-MVP1a',
