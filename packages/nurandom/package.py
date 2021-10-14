@@ -27,7 +27,7 @@ class Nurandom(CMakePackage):
     list_url = 'https://api.github.com/repos/NuSoftHEP/nurandom/tags'
 
     version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
-    version('develop', commit='0b30dabe86c6cf0d30e87f3fc3c143ecfd042b76',
+    version('develop', commit='feb2c214ffec9dd2e9a1b3c7e02f2315f3ec9666',
              git=git_base, get_full_repo=True)
 
     def url_for_version(self, version):
@@ -72,7 +72,7 @@ class Nurandom(CMakePackage):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):

@@ -90,7 +90,7 @@ class Bxdecay0(CMakePackage):
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB',
                                os.path.join(self.build_directory, 'perllib'))

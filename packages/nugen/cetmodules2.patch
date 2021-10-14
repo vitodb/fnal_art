@@ -1,10 +1,13 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4619f28..09c4b25 100644
+index 4619f28..29be5db 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -17,8 +17,7 @@ cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
+@@ -15,10 +15,9 @@
  
- project(nugen LANGUAGES CXX)
+ cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
+ 
+-project(nugen LANGUAGES CXX)
++project(nugen VERSION 1.14.04 LANGUAGES CXX)
  
 -# cetbuildtools contains our cmake modules
 -find_package(cetbuildtools REQUIRED)
@@ -244,6 +247,27 @@ index 4619f28..09c4b25 100644
  
  # packaging utility
  include(UseCPack)
+diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
+new file mode 100644
+index 0000000..a8f13e7
+--- /dev/null
++++ b/cmakeConfig/CMakeLists.txt
+@@ -0,0 +1,2 @@
++# create package configuration and version files
++cet_cmake_config(CONFIG_FRAGMENTS nugen-fragment.cmake.in)
+diff --git a/cmakeConfig/nugen-fragment.cmake.in b/cmakeConfig/nugen-fragment.cmake.in
+new file mode 100644
+index 0000000..d1b0951
+--- /dev/null
++++ b/cmakeConfig/nugen-fragment.cmake.in
+@@ -0,0 +1,7 @@
++find_package( ROOT REQUIRED COMPONENTS MathCore Geom GeomPainter GX11 EG EGPythia6 Gui)
++find_package( art REQUIRED)
++find_package( art_root_io REQUIRED)
++find_package( cetlib REQUIRED)
++find_package( cetlib_except REQUIRED)
++find_package( nusimdata REQUIRED )
++
 diff --git a/nugen/EventGeneratorBase/GiBUU/CMakeLists.txt b/nugen/EventGeneratorBase/GiBUU/CMakeLists.txt
 index b6390c0..e5832ef 100644
 --- a/nugen/EventGeneratorBase/GiBUU/CMakeLists.txt

@@ -26,7 +26,7 @@ class Nug4(CMakePackage):
     url = 'https://github.com/NuSoftHEP/nug4/archive/refs/tags/v1_10_00.tar.gz'
     list_url = 'https://api.github.com/repos/NuSoftHEP/nug4/tags'
 
-    version('develop', commit='fdefff830b8f1428056827fcf4da37b5dfb7b29b',
+    version('develop', commit='7fe7b040da2bba9ea7d0ec6726c408bc5013d863',
              git=git_base, get_full_repo=True)
     version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
 

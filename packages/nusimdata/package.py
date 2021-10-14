@@ -22,13 +22,13 @@ class Nusimdata(CMakePackage):
     """Nusimdata"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/nusimdata"
-    git_base = "https://github.com/NuSoftHEP/nudimdata.git"
+    git_base = "https://github.com/NuSoftHEP/nusimdata.git"
     url      = "https://github.com/NuSoftHEP/nusimdata/archive/refs/tags/v1_24_05.tar.gz"
     list_url = "https://api.github.com/repos/NuSoftHEP/nusimdata/tags"
 
     version('MVP1a', git=git_base, branch='feature/MVP1a', preferred=True)
     version('develop', git=git_base,
-             commit='e684c9db5c0394dd8eb850af32c94800acfbccf5', get_full_repo=True)
+             commit='f10a9c1463544d050eb8f606bb7e8330b8f7be12', get_full_repo=True)
 
     patch('cetmodules2.patch', when='@develop')
 
@@ -67,6 +67,7 @@ class Nusimdata(CMakePackage):
     def setup_build_environment(self, spack_env):
         spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
         spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

@@ -93,7 +93,7 @@ class Messagefacility(CMakePackage):
         spack_env.prepend_path('PERL5LIB',
                                os.path.join(self.build_directory, 'perllib'))
         # Cleaup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(spack_env)
 
     def setup_run_environment(self, run_env):
         # Ensure we can find plugin libraries.

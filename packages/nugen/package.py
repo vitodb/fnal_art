@@ -27,7 +27,7 @@ class Nugen(CMakePackage):
     list_url = 'https://api.github.com/repos/NuSoftHEP/nugen/tags'
 
     version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nugen', get_full_repo=True)
-    version('develop', commit='96bcc667e148d67688d73e62174b3bb082d8b0ec',
+    version('develop', commit='dca7eaa2257476033b074e71b78b2f6b23b647be',
              git=git_base, get_full_repo=True)
 
 

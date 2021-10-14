@@ -27,7 +27,7 @@ class Nuevdb(CMakePackage):
     list_url = "https://api.github.com/repos/NuSoftHEP/nuevdb/tags"
     
     version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
-    version('develop', commit='7dbb75388c4d824c6cb7d31a5a9cbc0dce7b958f', git=git_base, get_full_repo=True)
+    version('develop', commit='92a38ae511d6b4859ba6c79e399eb9c14643b134', git=git_base, get_full_repo=True)
 
 
     def url_for_version(self, version):
