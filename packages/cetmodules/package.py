@@ -15,19 +15,23 @@ class Cetmodules(CMakePackage):
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/cetmodules'
     git_base = 'https://github.com/FNALssi/cetmodules.git'
-    #url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.14.00.tar.gz'
     url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.29.04.tar.gz'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
 
-    #version('2.25.01', sha256='cb58c8a759589e08dcd11e6a9bf6341a130d18e2cbe53abc359a7514aacba5b2')
-
+    version('2.29.07', sha256='372a0f2c46df49c9d86633dbc11bf69213d9749945f160a1f8b50a7badf81e99')
+    version('2.29.06', sha256='8eefc5f18b2c094c4d784c0c025cde88c09a9b3bf2cca5e28b256a079ad20fa3')
+    version('2.29.05', sha256='35e70edd7126b66c22982fd442df61d0d7439c72760642ac920c6e76a87c8767')
+    version('2.29.04', sha256='3042ae45814f9c196d085abed8e6f0dbc1d2c0e8c61c1e457de1b9711b32b715')
+    version('2.29.03', sha256='e40485a6cc7170a51669656901a956896d237f778f26f7f3e62671d092c7bfd5')
+    version('2.29.02', sha256='519a7c685122c0cab8b699773785f15b3e05292fb566db950478b6506bfbb065')
+    version('2.29.00', sha256='74af89f2540b1e116207dc278ab77df19cfac959dfbf64055ba975563979d1c1')
+    version('2.28.03', sha256='ae1a451862eab9fdc992e5c918b626c26a431af90f25b66cbc535492c96529a0')
+    version('2.28.02', sha256='8abcdd4ea6b4c3a3325cd2c080e00adccb402531ed336351db2b592ef830b442')
+    version('2.28.01', sha256='8afafa7d995c29d694775afeecb5c2ffb513d3e266cba8ca01ec0eae82173de2')
     version('2.16.02', sha256='43082380b23b3367303368b6ec698d7a3624b19a8a99842752bd13bcb474625e')
-
     version('2.14.00', sha256='360b719133d644d47f092f42895f3037891cfb30adf6897472f62f037a3129f1')
-
     version('2.09.00', sha256='8c4d9a5f3d39a7dff5e9136576dab1bcf50a410c6cc028e5b47a2546c57e3860')
-
     version('1.04.00', sha256='4ba077e7146e19a805476f2fcf2a537a2cd24dbd602f5f5c348431b5018379da')
     version('1.03.00', sha256='40b0f8fa88f9522d14cae87a4242a494aa724b13505b6b740a0007153cc85e18')
     version('1.02.04', sha256='4e5063748aa8821b34a2a3ae150927afcd890beade83ad98e03f93e5d93d8ee7')
@@ -40,7 +44,6 @@ class Cetmodules(CMakePackage):
     version('1.01.01', sha256='0b7e28d4c29c9941a6960609e8ab4aa33f90736ef1dc81fc7b1b520e99ee0ae7')
     version('1.01.00', sha256='80bf9a77852751f90b1446e5d5966bea9b73d5b35e024195b35c851dc93a5443')
     version('1.00.00', sha256='67438bb1ee9acdaadb6e245ff670463c4603c3283c69b3c9d1a04d6ee9a3fd16')
-    version('0.07.00', md5='60fb6f9ff26605ea4c0648fa43d0a516')
 
     depends_on('cmake@3.11:', type='build', when='@:1.01.99')
     depends_on('cmake@3.12:', type='build', when='@1.02.00:')
