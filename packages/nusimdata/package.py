@@ -26,7 +26,7 @@ class Nusimdata(CMakePackage):
     url      = "https://github.com/NuSoftHEP/nusimdata/archive/refs/tags/v1_24_05.tar.gz"
     list_url = "https://api.github.com/repos/NuSoftHEP/nusimdata/tags"
 
-    version('MVP1a', git=git_base, branch='feature/MVP1a', preferred=True)
+    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
     version('develop', git=git_base,
              commit='f10a9c1463544d050eb8f606bb7e8330b8f7be12', get_full_repo=True)
 

@@ -27,10 +27,19 @@ class Canvas(CMakePackage):
     url = 'https://github.com/art-framework-suite/canvas/archive/refs/tags/v3_09_01.tar.gz'
     list_url = 'https://api.github.com/repos/art-framework-suite/canvas/tags'
 
-    version('MVP1a', branch='feature/Spack-MVP1a',
-            git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base,get_full_repo=True)
+    version('3.12.05', sha256='e0a0506528ab1f4db4b76bd3b68f0ea1ea97a627a68930abbfa1b2bfea069ee9')
+    version('3.12.04', sha256='bcbb9680000a0f1eec4ec3983b49d8a89f6820d4abdee2ffcb7bd769a0799974')
+    version('3.12.03', sha256='cd96833170c8dafa695eb8cd2ef7aea3dc93efa2d200f2b3b6c1886048ad0ddd')
+    version('3.12.02', sha256='714c2b960577062323a4738ab1c3bee5b525c3775d0fa831e27b522c7eda06b1')
+    version('3.12.01', sha256='bc76a1e4bb306e4ce251195786797bb4b9bc61c3f5115217bcb11c58e1e810dd')
+    version('3.12.00', sha256='0789ddd2d4289aa3c86cf6942aaa95dbf730d1d1d99295d43a6d5acd8cde098f')
+    version('3.11.00', sha256='b44241a79043d36ed1b24c20088fd797c3d2dbd84997a1af73077eafd7d55536')
+    version('3.10.02', sha256='64d3ea1ed78ff3ee60b87c805770c3ef9deedb9b448516a5a38e43aaa3add309')
+    version('3.10.01', sha256='ccb3359bd36aede933d6c1d80c9bd2b7c258c11e07794aea09b99826a2c6f0ac')
+    version('3.10.00', sha256='ddf1d073c71d9ac3578727e3542a86a68266841c95b1c9db9b8725d500fc2d78')
+    version('MVP1a', branch='archive/feature/Spack-MVP1a', git=git_base, get_full_repo=True)
+    version('MVP', branch='archive/feature/for_spack', git=git_base, get_full_repo=True)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
 
     def url_for_version(self, version):
         url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'

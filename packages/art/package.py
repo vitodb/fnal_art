@@ -28,12 +28,19 @@ class Art(CMakePackage):
     url = 'https://github.com/art-framework-suite/art/archive/refs/tags/v3_09_01.tar.gz'
     list_url = 'https://api.github.com/repos/art-framework-suite/art/tags'
 
+    version('3.09.04', sha256='01a3f88f0c4b179dcfe8492ea356832df23bf974d35faa1c1d6f220789768e4f')
     version('3.09.03', sha256='f185fecd5593217185d2852d2ecf0a818326e7b4784180237461316b1c11f60d')
     version('3.09.02', sha256='76ac3cd3de86c2b935ba6c32c3e4524d607b489e5ca2d3f10905010337144d6c')
     version('3.09.01', sha256='f0039080405b27b798cbdef0948af725ab4efa27f0069f8cc27b4312d5ad6314')
-    version('MVP1a', branch='feature/Spack-MVP1a', git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base)
+    version('3.09.00', sha256='d2a49e529da4f744df0fc3f9be9e44a908dbedd08fcdcd4e2e9ba2e08521c1b2')
+    version('3.08.00', sha256='17b8263112e961c75090a2acc3cf8703e53f1bd77d6caa4c7bc86404cc39a0b3')
+    version('3.07.00', sha256='aae5017ca5d6f9d20dd761274ed386644ae960382954186c136d943ea1c416eb')
+    version('3.06.04', sha256='028a76b0183ba8992a64f21350bb43d297b69ee33bf0e3450d44e73af6561cc2')
+    version('3.06.03', sha256='8033476686ff30a6676b3629b5874c230ba8e33dcb1e7b0413afbf300218673e')
+    version('3.06.02', sha256='00ec4dcb8bbf3eb3375ea1e3a692f6e9aee8ae96b864c89dc0efb1af9d570540')
+    version('MVP1a', branch='archive/feature/Spack-MVP1a', git=git_base, get_full_repo=True)
+    version('MVP', branch='archive/feature/for_spack', git=git_base, get_full_repo=True)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
 
     def url_for_version(self, version):
         url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'

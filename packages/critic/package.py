@@ -30,11 +30,19 @@ class Critic(CMakePackage):
     url = 'https://github.com/art-framework-suite/critic/archive/refs/tags/v3_09_01.tar.gz'
     list_url = 'https://api.github.com/repos/art-framework-suite/critic/tags'
 
-    version('MVP1a', branch='feature/Spack-MVP1a',
-            git=git_base, preferred=True)
-    version('MVP', branch='feature/for_spack', git=git_base)
-    version('develop', branch='develop', git=git_base)
-
+    version('2.08.04', sha256='74582f77a8ab39e6a814b900d53248ab3227c45861cb019ac45c92116a0b8b33')
+    version('2.08.03', sha256='858fd4d099a628663d0a61b3bfaf2db5937bd6019403769699e8c313b6563dcc')
+    version('2.08.02', sha256='aea48582e1927610c2c34df5a4f9491eb390ab72d64dd50a7c16d4542d774eed')
+    version('2.08.01', sha256='a8a95b007451f297373cbb0e2dc97e86eed36026c264aee6b69d7b6347e1ba5d')
+    version('2.08.00', sha256='435e06d16b887016df52899262326ed355bf5213cff4b4e8a6ce9d32bfafeb74')
+    version('2.07.00', sha256='431baa00cfcc5e7de36f0dae04231bb90fa4f4127a9a78dd9b585d4e2bdbc431')
+    version('2.06.00', sha256='fb55b0cf31dd2bb7be24511cc4946fa4aa6bcf117d83ec3dc2cae724e5f26933')
+    version('2.05.03', sha256='15ac1f8e905dbebccb6818ca680bdc71eacdbb39899f62f5e535a3ae4fff3e26')
+    version('2.05.02', sha256='94025a9707043d81448209893a3d191b614163f71052f35126fb5ef3dc1fd9e9')
+    version('2.05.01', sha256='3a92d50e0df7d285e1f6f64447623e56373433a0e6d610675d494cd9ca6be0fc')
+    version('MVP1a', branch='archive/feature/Spack-MVP1a', git=git_base, get_full_repo=True)
+    version('MVP', branch='archive/feature/for_spack', git=git_base, get_full_repo=True)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
 
     def url_for_version(self, version):
         url = 'https://github.com/art-framework-suite/{0}/archive/v{1}.tar.gz'
@@ -86,6 +94,7 @@ class Critic(CMakePackage):
         return args
 
     def setup_build_environment(self, spack_env):
+        spack_env.prepend_path('LD_LIBRARY_PATH', str(self.spec['root'].prefix.lib))
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
