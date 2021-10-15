@@ -25,9 +25,18 @@ class Larana(CMakePackage):
     url      = "https://github.com/LArSoft/larana/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larana/tags"
 
+    version('09.30.00.rc1', sha256='c1491472053583ccb6c9db945596b014b254ec939003da5409e14b9f0ae3855a')
+    version('09.03.03',     sha256='21a81310d5f92f953cc51a7155aa524574336c7ef4a297027e63cb34e4cf74c2')
+    version('09.03.02',     sha256='b4a88aa04797dc74a05340d8706f543fb842e44542527fcef719b50ffa32ac7c')
+    version('09.03.01',     sha256='c6efb390d2af631b7efd0ddc3d709744642bad02cd8c7107fcc519d047e1a941')
+    version('09.03.00',     sha256='8394314e855c62735b9317eef219b7b452dcecba4d3cee24857c4764244b9b30')
+    version('09.02.17',     sha256='af487034b6e9106b863fbad341d47e36defac3e6ad3c2e84d97cee021407650a')
+    version('09.02.16',     sha256='517ee39ebdb1d55137799eb8cef5de783ad51b7c838f5271e3d5f29a0bc44105')
+    version('09.02.15',     sha256='95653ea8022539bf367da7938f9e9d284ce2791f80a31ba578bfdf5b5c74a75d')
+    version('09.02.14',     sha256='0aafe08d52d360d648e1d63905384103cfb3d167b632f3b469ad355312209f47')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larana.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larana.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a')
+    version('MVP1a', git='https://github.com/gartung/larana.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

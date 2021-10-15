@@ -26,6 +26,15 @@ class Larrecodnn(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/larrecodnn/tags"
 
 
+    version('09.30.00.rc1', sha256='c69b810f4a7027268d60f52e73da67f797491a8a0d20b80db5c9cdfe615a2e4f')
+    version('09.09.03',     sha256='c86c64e78c64fa2081f1299d0f09d3bcccafb944e34ec9c894f5e3568a8ef683')
+    version('09.09.02',     sha256='2de30ff1fbb6d3f67a366ff3a98a875c537d762442d64e6cef142f1d5a35e002')
+    version('09.09.01',     sha256='13aa9fc1725c64005ba303c30ca49d3f371c96060208db665b31e890d050ebfe')
+    version('09.09.00',     sha256='5df11800bf93d5a48855df6b9037a7ee7aefd3e19728b58b4bb040200cca7664')
+    version('09.08.07',     sha256='58e0d5d3fa8945e262e974246fecfdf77f9b98644da7f5ebf600c9099c21e491')
+    version('09.08.06',     sha256='5f71b2025b235eb0c5887c097714851fd4108eb129f037e32c80622220c425de')
+    version('09.08.05',     sha256='52330db26ddfd361776fc6a3b3350c3c9bffbf1f95bc180f66b666d7176997b1')
+    version('09.08.04',     sha256='d167889d60dd197ff1d725f6a3806409954eb43bf881203e7a9eccc58f45032a')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larrecodnn.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larrecodnn.git', get_full_repo=True)
 

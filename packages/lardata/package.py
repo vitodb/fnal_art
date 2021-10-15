@@ -26,9 +26,18 @@ class Lardata(CMakePackage):
     url      = "https://github.com/LArSoft/lardata/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/lardata/tags"
 
+    version('09.30.00.rc1', sha256='62068b739d636374f56250d944283bda7dbb532d5f4a02dd38e9b105ce51c90c')
+    version('09.03.02',     sha256='7e48e6caaaf6a49cf9e2b575b0fb253db7ecba9034f9c9b940758df99f25eda6')
+    version('09.03.01',     sha256='fb2e4779b6b70816d7c78545694e47d45aaa0eebe50d187df6fe56479d539513')
+    version('09.03.00',     sha256='a5edd13b0e7ec921fd343c8ce0655551511174f76c2716ff28c41448ed35c82d')
+    version('09.02.10',     sha256='618ddb47626f539bb19ea2b1f5ce2e4a49ab99e2570c7303348f47fa401ee021')
+    version('09.02.09',     sha256='fb86a4b49a7c3528930ebc8d8032fe2c902d152a56834b3a11a08c9edad4705c')
+    version('09.02.08.01',  sha256='ef3984d58e3a33b5de291c831ba545b0d5fec664c907bb0047dce4a4aaf3952e')
+    version('09.02.08',     sha256='cf22bba23224770b989a880f17414bcb1f2c00128f2bc6bccf6e4838e187b9c9')
+    version('09.02.07',     sha256='5f42749bf958f1d30201ea9a2a078fb6a77977cfc023c4eb0302da81a6a3daf9')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardata.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lardata.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
+    version('MVP1a', git='https://github.com/gartung/lardata.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

@@ -27,9 +27,18 @@ class Larwirecell(CMakePackage):
     url      = "https://github.com/LArSoft/larwirecell/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larwirecell/tags"
 
+    version('09.30.00.rc1', sha256='2d2fdffbda8cb5a16f35b68bc422b6fbebe70af6ac601762f257e4fef0cbf30d')
+    version('09.04.02',     sha256='9d53b89017a2f26f804ecffcc8fbe16f26301d2d7d2d3190d464968ff8a56297')
+    version('09.04.01',     sha256='d3786882f1715403b8635c9e506254fc59d7b9629df00af135411cfb4dc56236')
+    version('09.04.00',     sha256='e2cd7a63b8db90ac16308bf0fe018945a06993394898316ab25cf62968649746')
+    version('09.03.01',     sha256='d4aa46289fefe0e9c96bfda9d228ebd009b3718d6231a0a745495ba86dbfa1bb')
+    version('09.03.00',     sha256='2a0c6bd82d16c17a15bc976edd7972a94125c3c25d018b5c24e63b9b8e079bd0')
+    version('09.02.13.01',  sha256='0db9cfba036367c1ac1648f865f2ce75535a2d5cbeca5341aa7d81c96077ca4f')
+    version('09.02.13',     sha256='3bb40ffaedaceb9ebaff9ff90c71aed022455564fccc1156cb51df15a1890fa9')
+    version('09.02.12',     sha256='8c0ebd57bf5d99b74c67d4e4ae22369a52319ed54087c3292a8e419b1d93c873')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larwirecell.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larwirecell.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
+    version('MVP1a', git='https://github.com/gartung/larwirecell.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

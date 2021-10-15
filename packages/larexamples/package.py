@@ -26,9 +26,18 @@ class Larexamples(CMakePackage):
     url      = "https://github.com/LArSoft/larexamples/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larexamples/tags"
 
+    version('09.30.00.rc1', sha256='81b42e8c9886e4199b230a5570922025e6a231c2db8f05fb50e98a03f6862767')
+    version('09.02.03',     sha256='dc34d8563a7baee2698edb3573063818b5852ce7b0092d201587e12eea7eb8e8')
+    version('09.02.02',     sha256='063a962e804fa3d72235ebecb8708d2859ec4f0b41f68b3785354cd2a483e044')
+    version('09.02.01',     sha256='12ac083b4ba5f13b37bae0038a6e06c8a562a17a24c131d11ba74de579d8b658')
+    version('09.02.00',     sha256='798a3c74fc510d5a9777f47bffebcbdb9cb76aa62f2ec19b39e7194e6acc2aef')
+    version('09.01.20',     sha256='1ea2eaae8189605f387d7822d016f4d19a3c123fc8ab60073a99d9927ee1104e')
+    version('09.01.19',     sha256='3e22003f17f9101beb9ea7df375c14b31b4aadd3e7e0e5e304dbf9f231773d2a')
+    version('09.01.18',     sha256='609d23c317863c2167b33cb32fe28d9255c08608a04452fc9611c58ca72e692a')
+    version('09.01.17',     sha256='43edeed8b818581b4ed0ca0f2fb58bea07ed7bc5561aa58f252485e63c8eae9b')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larexamples.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larexamples.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
+    version('MVP1a', git='https://github.com/gartung/larexamples.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

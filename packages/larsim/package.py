@@ -23,11 +23,20 @@ class Larsim(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsim"
     git_base = 'https://github.com/LArSoft/larsim.git'
     url      = "https://github.com/LArSoft/larsim/archive/v01_02_03.tar.gz"
-    list_url = 'https://github.com/LArSoft/larsim.git'
+    list_url = 'https://api.github.com/repos/LArSoft/larsim/tags'
 
+    version('09.30.00.rc1', sha256='8371ab32c43b702337d7022fee255eb2a86164a7ee8edc91781f4b0494890142')
+    version('09.17.00',     sha256='a82180a4d6ff1a37543cc55206c8f619c322e8552e9b5370cbed28e28b0e6d89')
+    version('09.16.01',     sha256='7aa9adf76f98a2ffafeb3d3ab096304e4ccf25bd8f029c6d723a653e43b74923')
+    version('09.16.00',     sha256='36bd983c175334efa0c9453019ef3821087a59b178f198c419dba15432fa034a')
+    version('09.15.00',     sha256='3b4b403f75ccf56b9b0c257d8a9082a139b0e2ddec161c12c92951fbe16a9c73')
+    version('09.14.09',     sha256='3f32a13a96379e440c3497b598cd493cca597e6fa295aeff22b0a2d3fff29413')
+    version('09.14.08',     sha256='0dd3735cc5f8b0d4b30bb239e93efe8f8bc5995a53ae1b1b14532c31af6fafeb')
+    version('09.14.07',     sha256='a0a235caf17b5d9d2b3959ed967a5cdb2cc1851d3d696976a656c2f48834cadc')
+    version('09.14.06',     sha256='5d729da4515d0315d123724b411c4e81e191ea88ed37692b5a037b7b7d94fbfb')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsim.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsim.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
+    version('MVP1a', git='https://github.com/gartung/larsim.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

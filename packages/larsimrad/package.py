@@ -26,6 +26,15 @@ class Larsimrad(CMakePackage):
     url      = "https://github.com/gartung/larsimrad/archive/refs/tags/v09_01_17.tar.gz"
     list_url = "https://api.github.com/repos/marcmengel/larsimrad/tags"
 
+    version('09.01.09.01', sha256='5881b66ed27237560bbc8f4a422e6c9146fcb717fa84aaea07cc17f7fbf1a0b5')
+    version('09.01.09',    sha256='15bd7dbae42c7e7d2600202057433903c05b77b6fe046a618b1645a2ff6a7920')
+    version('09.01.08',    sha256='d23cb4fcff66deb82776d186298fd7201580e4a49eb7106a4c66096aeccc153b')
+    version('09.01.07',    sha256='1278f313ff6a9dc640cbe1b73984d178925e93ab1f55ce3826f2f5da216c60ae')
+    version('09.01.06',    sha256='d16504046706bc30927bc7281c1e2c5c5b4760bc476fc86c5e932c5a7bf20285')
+    version('09.01.05',    sha256='b6ac122533958d6412ebf200e14c2ff6d76a02859fb0f2751aa6da45832deefb')
+    version('09.01.04',    sha256='5367e74c6d76fb4149083fc54238d12a0c0632b532499b004e6840619e575a0f')
+    version('09.01.03',    sha256='7536f5e4f49c2ec3b82bfe2cb89a76a707cce00f9e09e82ca6bcc6d7157e7516')
+    version('09.01.02',    sha256='7c47e4483f24b2c857b8597f93516da62bd20c3150f941892c69dda2a3e4ef1e')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsimrad.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsimrad.git', get_full_repo=True)
 

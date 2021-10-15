@@ -26,10 +26,18 @@ class Larcoreobj(CMakePackage):
     url      = "https://github.com/LArSoft/larcoreobj/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larcoreobj/tags"
 
-    version('mwm1', git='https://github.com/marcmengel/larcoreobj.git', branch='develop')
+    version('09.30.00.rc1', sha256='01c6095d4123270b5c72cb49edb87d276d6d4955bcbc45b2af209058a2556e44')
+    version('09.30.00.rc0', sha256='136e7bcaf395103a437dea51d3fa60201ea0c95c919df271e7e82f698cd2e134')
+    version('09.11.00.rc0', sha256='a472f20d85ebcb73125f857fd51669da28f298b9ddf538da0f7a476a7995b920')
+    version('09.03.00',     sha256='00142588189c3371b7103a90247dfaf9e8cc5057311d48aeb3eef8d1e8b5f883')
+    version('09.02.01.04',  sha256='348ad515af2972f8d1120bb737419faa6a1dfdbde7c2f0360ef3209a2e1dc076')
+    version('09.02.01.03',  sha256='4105948a6f66ae4f67c17dca26c45625070c55afc2e944df9fac0d65f96361b8')
+    version('09.02.01.02',  sha256='79f5d03a06653b36ece1d742297eee11ecb4f228e4e7e92dffbe58a4906cdad7')
+    version('09.02.01.01',  sha256='69ac99252ff2c522510c60ebe27ad644a9634e03d9b9ecdd25f5b78361be579f')
+    version('MVP1a', git='https://github.com/gartung/larcoreobj.git', branch='feature/MVP1a', get_full_repo=True)
+    version('mwm1', git='https://github.com/marcmengel/larcoreobj.git', branch='develop', get_full_repo=True)
     version('09.24.01.01', tag='v09_24_01_01', git='https://github.com/marcmengel/larcoreobj.git', get_full_repo=True)
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larcoreobj.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a')
 
 
     def url_for_version(self, version):

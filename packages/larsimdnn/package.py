@@ -28,7 +28,6 @@ class Larsimdnn(CMakePackage):
 
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsimdnn.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsimdnn.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

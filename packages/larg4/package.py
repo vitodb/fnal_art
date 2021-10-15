@@ -26,8 +26,17 @@ class Larg4(CMakePackage):
     url      = "https://github.com/LArSoft/larg4/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larg4/tags"
 
+    version('09.30.00.rc1', sha256='d16f63e88177ea7f1c48b4e6fc306ffbb0d6880ac23f411036d78e985eafc8d9')
+    version('09.05.03',     sha256='cbda8de6caf2bb49947b9d6a224ebcb43752054178adf973bbadbe10c16021f6')
+    version('09.05.02',     sha256='e3aa24be58ef507cd89951c8d426214b3f18c4ad5238621302d49ed66127eb53')
+    version('09.05.01',     sha256='dad253c845f50409661122d338c87d80141d82f0267d1b7a84d58ec484e74124')
+    version('09.05.00',     sha256='7266d68c62d0980e3d1219d7dd4c9a335f46c178f7b65c1859d8d295741aa673')
+    version('09.04.00',     sha256='47775a943ce76d5152f222e01e39f202bcbe0e7d4f23dafac989e32a114a1c42')
+    version('09.03.15',     sha256='d67038d53ae1a899ea36986c0b4095b5ec986580ecac151672c74403ddde3f48')
+    version('09.03.14',     sha256='c6b6e06ea6affd2c49b8501bc90e6ae765bc47ef948f34334e401dca752ecc0d')
+    version('09.03.13',     sha256='c9f6fe589cae2cbcac9204c4a7f8f6a9f3605f66556d4e8412a50066249f709e')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larg4.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
+    version('MVP1a', git='https://github.com/gartung/larg4.git', branch='feature/MVP1a', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larg4.git', get_full_repo=True)
 
 

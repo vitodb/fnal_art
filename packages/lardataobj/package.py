@@ -28,9 +28,18 @@ class Lardataobj(CMakePackage):
     url      = "https://github.com/LArSoft/lardataobj/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/lardataobj/tags"
 
+    version('09.30.00.rc1', sha256='3423f7f8d4d27785d4f027e5b5a3d135adfe57f2794f57dd24bb76e4803f2f55')
+    version('09.30.00.rc0', sha256='dd765bf9bd5c756563c7c0582a26b1147a582ccdadd55a0933601ea7c125bbd3')
+    version('09.11.00.rc0', sha256='62ede62f4cb7ea2821a1427598ed41b44d028011eab5e0b07ec83c2b23e73d37')
+    version('09.03.02',     sha256='54ef53dcc8f5e323017dd9d192901286152e3af018b82e462229d8def9f992ae')
+    version('09.03.01',     sha256='bd77759644eff165ff56f8d19df295e3b0bda8c1b10d93b185622a1bd0c14c72')
+    version('09.03.00',     sha256='53b99ae39eb68655a635db35402cf48630960a6c567db18c5632d8357937fa89')
+    version('09.02.00',     sha256='218a75c66ccdf91a15bfe976e18d98c4c5b7d4bb887928a7081fccf1daf6c0ff')
+    version('09.01.06.01',  sha256='57258d46daa00a9444a4392ed3b2e1b8035e2012340f0ad3666dbd40bb5292d0')
+    version('09.01.06',     sha256='d20baf87b41f1a6925345866702b86c45242b02a198e26f0d528afa10db2de0f')
     version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardataobj.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lardataobj.git', get_full_repo=True)
-    version('MVP1a', git=git_base, branch='feature/MVP1a',get_full_repo=True)
+    version('MVP1a', git='https://github.com/gartung/lardataobj.git', branch='feature/MVP1a',get_full_repo=True)
 
     variant('cxxstd',
             default='17',
