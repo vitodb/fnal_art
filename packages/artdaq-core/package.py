@@ -26,9 +26,18 @@ class ArtdaqCore(CMakePackage):
  format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url      = "https://cdcvs.fnal.gov/cvs/projects/artdaq-core"
-    version('develop', git = 'https://github.com/gartung/artdaq-core.git',
-            commit="46ce70268203ac4eceb2940adbc687bd7ea707ad", git_full_repo=True)
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/artdaq-core.v3_08_00.tbz2'
+    git_base = "https://cdcvs.fnal.gov/projects/artdaq-core"
+
+
+    version('3.07.00', tag='v3_07_00', git=git_base, git_full_repo=True)
+    version('3.07.01', tag='v3_07_01', git=git_base, git_full_repo=True)
+    version('3.07.02', tag='v3_07_02', git=git_base, git_full_repo=True)
+    version('3.07.03', tag='v3_07_03', git=git_base, git_full_repo=True)
+    version('3.07.03', tag='v3_07_04', git=git_base, git_full_repo=True)
+    version('3.07.05', tag='v3_07_05', git=git_base, git_full_repo=True)
+    version('3.08.00', tag='v3_08_00', git=git_base, git_full_repo=True)
+    version('develop', branch='develop', git=git_base, git_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -36,11 +45,9 @@ class ArtdaqCore(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
-
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        return url.format( version.underscored)
+        return url.format(self.name, version.underscored)
 
 
     depends_on('art')
@@ -58,7 +65,7 @@ class ArtdaqCore(CMakePackage):
     depends_on('tbb')
     depends_on('trace')
 
-    patch('cetmodules2.patch', when='@develop')
+    patch('cetmodules2-3.08.00.patch', when='@3.08.00')
 
     def patch(self):
         filter_file(r'add_subdirectory\(ups\)','if(WANT_UPS)\nadd_subdirectory(ups)\nendif()','CMakeLists.txt')

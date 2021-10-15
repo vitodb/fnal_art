@@ -12,28 +12,27 @@ class Artg4tk(CMakePackage):
     """Artg4tk """
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artg4tk/wiki"
-    url      = "https://cdcvs.fnal.gov/projects/artg4tk"
+    url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/artg4tk.v10_02_01.tbz2'
+    git_base = "https://cdcvs.fnal.gov/projects/artg4tk"
 
-
-    version('develop', commit='c06a0ed7a0a543cba5c23fc588f7dd6dcb6609e2', git=url, extention='tar.bz2', get_full_repo=True)
-    version('mwm1', branch='mwm1', git=url, extention='tar.bz2', get_full_repo=True)
-
-    version('MVP1a', git = url, branch = 'feature/Spack-MVP1a',
-            extention='tar.bz2')
-    version('10.02.01', tag='v10_02_01', git=url, extention='tar.bz2', get_full_repo=True)
-    version('10.02.01.01', tag='v10_02_01_01', git=url, get_full_repo=True) 
-    version('09.04.04', tag='v09_04_04', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.05.00', tag='v09_05_00', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.05.01', tag='v09_05_01', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.05.02', tag='v09_05_02', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.06.00', tag='v09_06_00', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.04.04', tag='v09_04_04', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.05.00', tag='v09_05_00', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.05.01', tag='v09_05_01', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.05.02', tag='v09_05_02', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.06.00', tag='v09_06_00', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.07.00', tag='v09_07_00', git=url, extention='tar.bz2', get_full_repo=True)
-    version('09.07.01', tag='v09_07_01', git=url, extention='tar.bz2', get_full_repo=True)
+    version('c06a0ed7a0a543cba5c23fc588f7dd6dcb6609e2', commit='c06a0ed7a0a543cba5c23fc588f7dd6dcb6609e2', git=git_base, get_full_repo=True)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('mwm1', branch='mwm1', git=git_base, get_full_repo=True)
+    version('MVP1a', branch = 'feature/Spack-MVP1a', git=git_base, get_full_repo=True)
+    version('10.02.01', tag='v10_02_01', git=git_base, get_full_repo=True)
+    version('10.02.01.01', tag='v10_02_01_01', git=git_base, get_full_repo=True) 
+    version('09.04.04', tag='v09_04_04', git=git_base, get_full_repo=True)
+    version('09.05.00', tag='v09_05_00', git=git_base, get_full_repo=True)
+    version('09.05.01', tag='v09_05_01', git=git_base, get_full_repo=True)
+    version('09.05.02', tag='v09_05_02', git=git_base, get_full_repo=True)
+    version('09.06.00', tag='v09_06_00', git=git_base, get_full_repo=True)
+    version('09.04.04', tag='v09_04_04', git=git_base, get_full_repo=True)
+    version('09.05.00', tag='v09_05_00', git=git_base, get_full_repo=True)
+    version('09.05.01', tag='v09_05_01', git=git_base, get_full_repo=True)
+    version('09.05.02', tag='v09_05_02', git=git_base, get_full_repo=True)
+    version('09.06.00', tag='v09_06_00', git=git_base, get_full_repo=True)
+    version('09.07.00', tag='v09_07_00', git=git_base, get_full_repo=True)
+    version('09.07.01', tag='v09_07_01', git=git_base, get_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -41,7 +40,7 @@ class Artg4tk(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-    patch('cetmodules2.patch', when='@develop')
+    patch('cetmodules2-c06a0ed7a0a543cba5c23fc588f7dd6dcb6609e2.patch', when='@c06a0ed7a0a543cba5c23fc588f7dd6dcb6609e2')
     #patch('mwm.patch')
     depends_on('cetmodules', type='build')
     depends_on('cetbuildtools', type='build')

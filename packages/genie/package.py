@@ -142,7 +142,7 @@ global analysis of neutrino scattering data.
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
 
-    def setup_run_environment(self, spack_env, run_env):
+    def setup_run_environment(self, run_env):
         run_env.set('GENIE', self.prefix)
         run_env.set('GENIE_VERSION','v{0}'.format(self.version.underscored))
         # Ensure Root can find headers for autoparsing.

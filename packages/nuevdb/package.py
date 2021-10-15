@@ -125,4 +125,4 @@ class Nuevdb(CMakePackage):
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         run_env.append_path('FHICL_FILE_PATH','{0}/job'.format(self.prefix))
         run_env.append_path('FW_SEARCH_PATH','{0}/gdml'.format(self.prefix))
-        sanitize_environments(spack_env)
+        sanitize_environments(run_env)
