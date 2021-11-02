@@ -35,7 +35,7 @@ class Larevt(CMakePackage):
     version('09.02.10.01',  sha256='ff987151307ea375bffbc3f18a69b05fdf168b26b0272c0777ed13e0a67f52a2')
     version('09.02.10',     sha256='5afa7063640f2722d22cb9140f2b335043d5bb6d5ecf6e1fd3559b9d2c206b57')
     version('09.02.09',     sha256='5f71d0182038e9cc096977047abf411819b0c47d5f4110fb66a2856d47ee7489')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', commit='a663d356c1aa3445a5d3531266936cc836776d43', git='https://github.com/gartung/larevt.git', get_full_repo=True)
+    version('09.30.00.rc', branch='v09_30_00_rc_br', commit='61bbc1cc0b45d7e3175ac36847f84083a93156d7', git='https://github.com/gartung/larevt.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larevt.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/gartung/larevt.git', branch='feature/MVP1a', get_full_repo=True)
 
