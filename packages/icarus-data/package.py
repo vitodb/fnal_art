@@ -8,10 +8,15 @@ class IcarusData(Package):
 
     homepage = "https://icarus.fnal.gov/"
 
-    version('09.28.01', sha256='42cc1b8d4a17ad7d1f1bd3e1a1446dfee953ec7109e11cf28f180ea69ca321ec',
-            url="https://scisoft.fnal.gov/scisoft/packages/icarus_data/v09_26_00/icarus_data-09.26.00-noarch.tar.bz2")
+    version('09.28.01', sha256='e1c69a66d554ab6b6244656eac6b89fa0eb3cd372e12188a4d6df33846023053',
+            url="https://scisoft.fnal.gov/scisoft/packages/icarus_data/v09_28_01/icarus_data-09.28.01-noarch.tar.bz2")
     version('09.26.00', sha256 = '42cc1b8d4a17ad7d1f1bd3e1a1446dfee953ec7109e11cf28f180ea69ca321ec',
             url="https://scisoft.fnal.gov/scisoft/packages/icarus_data/v09_26_00/icarus_data-09.26.00-noarch.tar.bz2")
+
+    def url_for_version(self, version):
+        url='https://scisoft.fnal.gov/scisoft/packages/icarus_data/v{0}/icarus_data-{1}-noarch.tar.bz2'
+        return url.format(version.underscored, version.dotted)
+
 
     def install(self, spec, prefix):
         src = glob.glob("%s/v*[0-9]" % self.stage.source_path)[0]
