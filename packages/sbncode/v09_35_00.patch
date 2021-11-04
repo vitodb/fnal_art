@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index a4ccd41..4ab2c58 100644
+index 3a890cc..5b0595e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -11,18 +11,15 @@
@@ -12,7 +12,7 @@ index a4ccd41..4ab2c58 100644
 -cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
  
 +find_package(cetmodules 2.29.07 REQUIRED)
- project(sbncode VERSION 09.33.00 LANGUAGES CXX)
+ project(sbncode VERSION 09.35.00 LANGUAGES CXX)
  
  message(STATUS "\n\n  ==========================   ${PROJECT_NAME}   ==========================")
  
@@ -23,7 +23,7 @@ index a4ccd41..4ab2c58 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -38,40 +35,42 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -38,45 +35,42 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
    ALLOW_DEPRECATIONS
    EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-undefined-var-template
  )
@@ -55,14 +55,19 @@ index a4ccd41..4ab2c58 100644
 -find_ups_product(larpandora)
 -find_ups_product(larsoft v09_00_00)
 -find_ups_product(artdaq_core v3_06_01)
+-find_ups_product(ifbeam)
+-find_ups_product(ifbeam_art)
+-find_ups_product(libwda) 
 -find_ups_product(sbnobj v09_10_00)
 -find_ups_product(sbndata v01_00)
 -find_ups_product(ifdhc)
 -find_ups_product(ifdh_art)
 -find_ups_product(log4cpp)
+-find_ups_boost()
 -find_ups_root()
 -#find_ups_product(sbndcode v06_67_00)
 -#find_ups_product(uboonecode v06_67_00)
+-find_ups_product( sbndaq_artdaq_core )
 +find_package(art) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
 +find_package(messagefacility) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
 +find_package(art_root_io) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
@@ -98,7 +103,7 @@ index a4ccd41..4ab2c58 100644
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -79,8 +78,7 @@ include(ArtMake)
+@@ -84,8 +78,7 @@ include(ArtMake)
  include(BuildPlugins)
  
  add_subdirectory(sbncode)
@@ -292,14 +297,12 @@ index 747d8fc..d68f26c 100644
  
  cet_script(diff_cafs)
 diff --git a/sbncode/CMakeLists.txt b/sbncode/CMakeLists.txt
-index 64944ac..62aa96e 100644
+index 0a05185..5266f29 100644
 --- a/sbncode/CMakeLists.txt
 +++ b/sbncode/CMakeLists.txt
-@@ -1,7 +1,7 @@
--cet_find_library( BOOST_SERIALIZATION NAMES boost_serialization PATHS ENV BOOST_LIB NO_DEFAULT_PATH )
--cet_find_library( BOOST_DATE_TIME     NAMES boost_date_time     PATHS ENV BOOST_LIB NO_DEFAULT_PATH )
-+cet_find_library( BOOST_SERIALIZATION NAMES boost_serialization PATHS ENV BOOST_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+cet_find_library( BOOST_DATE_TIME     NAMES boost_date_time     PATHS ENV BOOST_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
+@@ -3,7 +3,7 @@ cet_find_library( BOOST_DATE_TIME     NAMES boost_date_time     PATHS ENV BOOST_
+ cet_find_library( IFBEAM NAMES ifbeam PATHS ENV IFBEAM_LIB NO_DEFAULT_PATH )
+ cet_find_library( WDA NAMES wda PATHS ENV LIBWDA_LIB NO_DEFAULT_PATH )
  
 -find_ups_product(sbnanaobj)
 +find_package(sbnanaobj) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
@@ -1818,10 +1821,10 @@ index a090c6e..9ab5078 100644
    caf_RecoUtils
  )
 diff --git a/sbncode/SBNEventWeight/App/CMakeLists.txt b/sbncode/SBNEventWeight/App/CMakeLists.txt
-index 81c2667..a531870 100644
+index 6d1d2fa..649e565 100644
 --- a/sbncode/SBNEventWeight/App/CMakeLists.txt
 +++ b/sbncode/SBNEventWeight/App/CMakeLists.txt
-@@ -1,20 +1,21 @@
+@@ -1,21 +1,22 @@
 -art_make(
 -  LIBRARY_NAME sbncode_SBNEventWeight
 +art_make( ### MIGRATE-ACTION-RECOMMENDED: use art_make_library(), art_dictionary(), simple_plugin() with explicit source lists
@@ -1830,22 +1833,24 @@ index 81c2667..a531870 100644
 -    sbnobj_Common_SBNEventWeight
 -    sbncode_SBNEventWeight_Base
 -    sbncode_SBNEventWeight_Calculators_CrossSection
--    #sbncode_SBNEventWeight_Calculators_BNBFlux
+-    sbncode_SBNEventWeight_Calculators_BNBFlux
 -    #sbncode_SBNEventWeight_Calculators_Geant4
 +    nusimdata::SimulationBase
 +    sbnobj::Common_SBNEventWeight
 +    sbncode::SBNEventWeight_Base
 +    sbncode::SBNEventWeight_Calculators_CrossSection
-+    #sbncode::SBNEventWeight_Calculators_BNBFlux
++    sbncode::SBNEventWeight_Calculators_BNBFlux
 +    #sbncode::SBNEventWeight_Calculators_Geant4
    MODULE_LIBRARIES
 -    sbnobj_Common_SBNEventWeight
 -    sbncode_SBNEventWeight_Base
 -    sbncode_SBNEventWeight_Calculators_CrossSection
+-    sbncode_SBNEventWeight_Calculators_BNBFlux
 -    nusimdata_SimulationBase
 +    sbnobj::Common_SBNEventWeight
 +    sbncode::SBNEventWeight_Base
 +    sbncode::SBNEventWeight_Calculators_CrossSection
++    sbncode::SBNEventWeight_Calculators_BNBFlux
 +    nusimdata::SimulationBase
      ${MF_MESSAGELOGGER}
 -    ${ROOT_GEOM}
@@ -2627,7 +2632,7 @@ index 66c0848..837bdc3 100644
  
  add_subdirectory(config)
 diff --git a/ups/product_deps b/ups/product_deps
-index 381155d..2ad50a7 100644
+index 10dcef1..9107a20 100644
 --- a/ups/product_deps
 +++ b/ups/product_deps
 @@ -1,69 +1,345 @@
@@ -2643,13 +2648,30 @@ index 381155d..2ad50a7 100644
 +#
 +# Generated by cetmodules 2.29.07 at Wed Nov 03 18:34:25 CDT
 +########################################################################
- 
--# The *parent* line must the first non-commented line and defines this product and version
--# The version should be of the form vxx_yy_zz (e.g. v01_02_03)
--parent sbncode
--defaultqual e20
++
 +####################################
 +# Basic information.
+ 
+-# The *parent* line must the first non-commented line and defines this product
+-parent sbncode
+-defaultqual e20
++##################
++# parent
++##################
++#
++# The parent line - if present - must be the first non-comment line in
++# the file, defining the product's name and version. Any information not
++# specified will be taken from the CMake project(<project-name> VERSION
++# <dot-version>) call in the CMakeLists.txt in the parent directory to
++# the one containing this file.
++#
++# Recommended:
++#
++#>  parent <product-name>
++#
++# Deprecated (will produce a warning):
++#
++#>  parent <product-name> <product-ups-version> [<chain>]...
  
 -# These optional lines define the installed directories where headers,
 -# libraries, and executables will be found.
@@ -2676,24 +2698,6 @@ index 381155d..2ad50a7 100644
 -fcldir  product_dir fcl
 -fwdir   product_dir scripts
 +##################
-+# parent
-+##################
-+#
-+# The parent line - if present - must be the first non-comment line in
-+# the file, defining the product's name and version. Any information not
-+# specified will be taken from the CMake project(<project-name> VERSION
-+# <dot-version>) call in the CMakeLists.txt in the parent directory to
-+# the one containing this file.
-+#
-+# Recommended:
-+#
-+#>  parent <product-name>
-+#
-+# Deprecated (will produce a warning):
-+#
-+#>  parent <product-name> <product-ups-version> [<chain>]...
-+
-+##################
 +# chain[s]
 +##################
 +#
@@ -2704,6 +2708,7 @@ index 381155d..2ad50a7 100644
 +#>  chains <chain>...
  
 -# With "product  version" table below, we now define dependencies
+-# The version should be of the form vxx_yy_zz (e.g. v01_02_03)
 -# Add the dependent product and version
 +##################
 +# defaultqual
@@ -2718,11 +2723,6 @@ index 381155d..2ad50a7 100644
 +#>  defaultqual <qualifiers>
  
 -product             version
--larsoft             v09_33_00
--sbnobj              v09_12_04
--sbnanaobj           v09_17_02
--sbndaq_artdaq_core  v1_00_00of0
--genie_xsec          v3_00_04a
 +##################
 +# noarch
 +##################
@@ -2732,11 +2732,7 @@ index 381155d..2ad50a7 100644
 +# fully-qualified (fq) subdirectory in the installed package.
 +#
 +#>  noarch
- 
--# list products required ONLY for the build
--# any products here must NOT have qualifiers
--cetbuildtools v8_18_05 - only_for_build
--end_product_list
++
 +##################
 +# no_fq_dir
 +##################
@@ -2750,9 +2746,7 @@ index 381155d..2ad50a7 100644
 +# UPS area.
 +#
 +#>  no_fq_dir
- 
--# We now define allowed qualifiers and the corresponding qualifiers for the dependencies.
--# Make the table by adding columns before "notes".
++
 +##################
 +# define_pythonpath
 +##################
@@ -2765,12 +2759,7 @@ index 381155d..2ad50a7 100644
 +parent		sbncode
 +defaultqual	e20
 +####################################
- 
--qualifier     larsoft     sbnobj     sbnanaobj  sbndaq_artdaq_core genie_xsec			notes
--e20:debug     e20:debug   e20:debug  e20:debug  e20:debug:s112     G1810a0211a:k250:e1000	-nq-	
--e20:prof      e20:prof    e20:prof   e20:prof   e20:prof:s112      G1810a0211a:k250:e1000   	-nq-	
--c7:debug      c7:debug    c7:debug   c7:debug   c7:debug:s112      G1810a0211a:k250:e1000	-nq-	
--c7:prof       c7:prof     c7:prof    c7:prof    c7:prof:s112       G1810a0211a:k250:e1000   	-nq-	
++
 +####################################
 +# Directory specifications.
 +#
@@ -2933,15 +2922,29 @@ index 381155d..2ad50a7 100644
 +#
 +####################################
 +product			version		qual	flags		<table_format=2>
-+genie_xsec		v3_00_04a	-
-+larsoft			v09_33_00	-
-+sbnanaobj		v09_17_02	-
-+sbndaq_artdaq_core	v1_00_00of0	-
-+sbnobj			v09_12_04	-
++genie_xsec          v3_00_04a
+ larsoft             v09_35_00
+-sbnobj              v09_12_05
+ sbnanaobj           v09_17_04
+ sbndaq_artdaq_core  v1_00_00of0
+-genie_xsec          v3_00_04a
+-
+-# list products required ONLY for the build
+-# any products here must NOT have qualifiers
+-cetbuildtools v8_18_05 - only_for_build
++sbnobj              v09_12_05
 +cetmodules		v2_29_07	-	only_for_build
-+end_product_list
+ end_product_list
 +####################################
-+
+ 
+-# We now define allowed qualifiers and the corresponding qualifiers for the dependencies.
+-# Make the table by adding columns before "notes".
+-
+-qualifier     larsoft     sbnobj     sbnanaobj  sbndaq_artdaq_core genie_xsec			notes
+-e20:debug     e20:debug   e20:debug  e20:debug  e20:debug:s112     G1810a0211a:k250:e1000	-nq-	
+-e20:prof      e20:prof    e20:prof   e20:prof   e20:prof:s112      G1810a0211a:k250:e1000   	-nq-	
+-c7:debug      c7:debug    c7:debug   c7:debug   c7:debug:s112      G1810a0211a:k250:e1000	-nq-	
+-c7:prof       c7:prof     c7:prof    c7:prof    c7:prof:s112       G1810a0211a:k250:e1000   	-nq-	
 +####################################
 +# Qualifier table.
 +#

@@ -23,14 +23,17 @@ class Sbncode(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/sbncode'
+    url = 'https://github.com/SBNSoftware/sbncode/archive/refs/tags/v09_35_01.tar.gz'
     git_base = 'https://github.com/SBNSoftware/sbncode.git'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('09.35.00', tag='v09_35_00', git=git_base, get_full_repo=True)
     version('09.33.00', tag='v09_33_00', git=git_base, get_full_repo=True)
     version('09.10.00', tag='v09_10_00', git=git_base, get_full_repo=True)
     version('09.10.01', tag='v09_10_01', git=git_base, get_full_repo=True)
 
-    patch('v09_33_00.patch', when='09.33.00')
+    patch('v09_35_00.patch', when='@09.35.00')
+    patch('v09_33_00.patch', when='@09.33.00')
 
     variant('cxxstd',
             default='17',
@@ -89,6 +92,7 @@ class Sbncode(CMakePackage):
     depends_on('sqlite', type=('build','run'))
     depends_on('trace', type=('build','run'))
     depends_on('dk2nudata', type=('build','run'))
+    depends_on('dk2nugenie', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -109,6 +113,7 @@ class Sbncode(CMakePackage):
         return args
 
     def setup_environment(self, spack_env, run_env):
+        spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))

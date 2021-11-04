@@ -29,8 +29,8 @@ class Sbnanaobj(CMakePackage):
     homepage = "https://www.example.com"
     url      = "https://github.com/SBNSoftware/sbnanaobj/archive/refs/tags/v09_17_04.tar.gz"
 
-    version('09_17_04', sha256='06f4534f5b5022162fae07581a53d16ca3a7b3bd27e42738c8ce33558ca0b348')
-
+    version('09.17.04', sha256='06f4534f5b5022162fae07581a53d16ca3a7b3bd27e42738c8ce33558ca0b348')
+    version('09.17.02', sha256='985796b3b49a2d3fc93984b65169593c1483e29df78c98ac6c215eae88b59b7e')
 
     variant('cxxstd',
             default='17',
@@ -39,9 +39,15 @@ class Sbnanaobj(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('v09_17_04.patch', when='@09_17_04')
+    patch('v09_17_02.patch', when='@09_17_02')
 
     depends_on('root')
     depends_on('cetmodules', type='build')
+
+    def url_for_version(self, version):
+        #url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
+        url = 'https://github.com/SBNSoftware/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

@@ -74,3 +74,10 @@ class Dk2nugenie(CMakePackage):
     def build(self, spec, prefix):
         with working_dir(self.build_directory, create=True):
             make('VERBOSE=t', 'all')
+
+    def setup_dependent_build_environment(self, spack_env, dspec):
+        # Ensure we can find plugin libraries.
+        spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        spack_env.set('DK2NUGENIE_LIB', self.prefix.lib)
+        spack_env.set('DK2NUGENIE_INC', self.prefix.include)
+
