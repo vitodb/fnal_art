@@ -7,15 +7,6 @@ from spack import *
 import os
 import sys
 
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
-
 
 def sanitize_environments(*args):
     for env in args:
@@ -32,14 +23,14 @@ class Sbncode(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/sbncode'
-    git_base = 'https://cdcvs.fnal.gov/projects/sbncode'
     git_base = 'https://github.com/SBNSoftware/sbncode.git'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('09.33.00', tag='v09_33_00', git=git_base, get_full_repo=True)
     version('09.10.00', tag='v09_10_00', git=git_base, get_full_repo=True)
     version('09.10.01', tag='v09_10_01', git=git_base, get_full_repo=True)
 
-
+    patch('v09_33_00.patch', when='09.33.00')
 
     variant('cxxstd',
             default='17',
@@ -50,6 +41,7 @@ class Sbncode(CMakePackage):
     # Build-only dependencies.
     depends_on('cmake@3.11:')
     depends_on('cetmodules', type='build')
+    depends_on('cetbuildtools', type='build')
 
     # Build and link dependencies.
     depends_on('artdaq-core', type=('build','run'))
@@ -68,27 +60,34 @@ class Sbncode(CMakePackage):
     depends_on('ifdh-art', type=('build','run'))
     depends_on('tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
-    depends_on('sbn_signal_processing', type=('build','run'))
+    depends_on('xerces-c', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))
     depends_on('larcore', type=('build','run'))
     depends_on('lardataobj', type=('build','run'))
     depends_on('lardata', type=('build','run'))
     depends_on('larevt', type=('build','run'))
+    depends_on('pandora', type=('build','run'))
     depends_on('larpandora', type=('build','run'))
     depends_on('larpandoracontent', type=('build','run'))
+    depends_on('py-torch', type=('build','run'))
     depends_on('larreco', type=('build','run'))
     depends_on('larsim', type=('build','run'))
     depends_on('libwda', type=('build','run'))
     depends_on('marley', type=('build','run'))
     depends_on('nug4', type=('build','run'))
+    depends_on('genie', type=('build','run'))
+    depends_on('ifdhc', type=('build','run'))
+    depends_on('libxml2', type=('build','run'))
     # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
     depends_on('range-v3', type=('build','run'))
+    depends_on('sbnobj', type=('build','run'))
     depends_on('sbndaq-artdaq-core', type=('build','run'))
     depends_on('sqlite', type=('build','run'))
     depends_on('trace', type=('build','run'))
+    depends_on('dk2nudata', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -103,7 +102,9 @@ class Sbncode(CMakePackage):
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
-                format(self.spec.variants['cxxstd'].value)]
+                format(self.spec.variants['cxxstd'].value),
+                '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))]
         return args
 
     def setup_environment(self, spack_env, run_env):
