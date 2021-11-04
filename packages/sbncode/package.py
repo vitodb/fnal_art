@@ -84,6 +84,7 @@ class Sbncode(CMakePackage):
     depends_on('postgresql', type=('build','run'))
     depends_on('range-v3', type=('build','run'))
     depends_on('sbnobj', type=('build','run'))
+    depends_on('sbnanaobj', type=('build','run'))
     depends_on('sbndaq-artdaq-core', type=('build','run'))
     depends_on('sqlite', type=('build','run'))
     depends_on('trace', type=('build','run'))
