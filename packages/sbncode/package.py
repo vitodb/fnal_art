@@ -81,6 +81,7 @@ class Sbncode(CMakePackage):
     depends_on('nug4', type=('build','run'))
     depends_on('genie', type=('build','run'))
     depends_on('ifdhc', type=('build','run'))
+    depends_on('ifbeam', type=('build','run'))
     depends_on('libxml2', type=('build','run'))
     # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))

@@ -6,14 +6,6 @@
 from spack import *
 import sys
 import os
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
 
 
 class SbndaqArtdaqCore(CMakePackage):
@@ -23,11 +15,12 @@ class SbndaqArtdaqCore(CMakePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/sbndaq/wiki"
     url      = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/sbndaq-artdaq-core.v1_2_3.tbz2"
 
-    url = 'https://github.com/SBNSoftware/sbndaq-artdaq-core/archive/v1_2_3.tar.gz'
+    url = 'https://github.com/SBNSoftware/sbndaq-artdaq-core/archive/v1_00_00of0.tar.gz'
     git_base = 'https://github.com/SBNSoftware/sbndaq-artdaq-core.git'
 
     version('develop', git=git_base,
              commit='e80441a707b42befe641002440421b4d2ea572d4', get_full_repo=True)
+    version('v1_00_00of0', git=git_base, tag='v1_00_00of0', get_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -42,6 +35,8 @@ class SbndaqArtdaqCore(CMakePackage):
 
 
     patch('cetmodules2.patch', when='@develop')
+    patch('v1_00_00of0.patch', when='@v1_00_00of0')
+
 
     depends_on('messagefacility')
     depends_on('cetmodules', type='build')
