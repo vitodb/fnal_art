@@ -62,6 +62,7 @@ class Sbncode(CMakePackage):
     depends_on('hep-concurrency', type=('build','run'))
     depends_on('ifdh-art', type=('build','run'))
     depends_on('tbb', type=('build','run'))
+    depends_on('gsl', type=('build','run'))
     depends_on('geant4', type=('build','run'))
     depends_on('xerces-c', type=('build','run'))
     depends_on('larana', type=('build','run'))
@@ -86,6 +87,7 @@ class Sbncode(CMakePackage):
     # depends_on('nurandom', type=('build','run'))  ???
     depends_on('nutools', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
+    depends_on('log4cpp', type=('build','run'))
     depends_on('range-v3', type=('build','run'))
     depends_on('sbnobj', type=('build','run'))
     depends_on('sbnanaobj', type=('build','run'))

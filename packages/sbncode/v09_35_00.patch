@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 3a890cc..159b42f 100644
+index 3a890cc..c2b0d87 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -11,18 +11,15 @@
@@ -23,7 +23,7 @@ index 3a890cc..159b42f 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -38,45 +35,44 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -38,45 +35,46 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
    ALLOW_DEPRECATIONS
    EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-undefined-var-template
  )
@@ -95,17 +95,19 @@ index 3a890cc..159b42f 100644
 +find_package(sbndata) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
 +find_package(ifdhc) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
 +find_package(ifdh_art) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(ROOT)
++find_package( trace )
++
++find_package(CLHEP COMPONENTS ALL)
++find_package(ROOT REQUIRED)
 +find_package(Geant4)
 +find_package(Boost COMPONENTS system)
-+find_package( trace )
 +find_library( GSL NAMES gsl )
 +find_library( LOG4CPP NAMES log4cpp )
 +find_library( XML2 NAMES xml2 )
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -84,8 +80,7 @@ include(ArtMake)
+@@ -84,8 +82,7 @@ include(ArtMake)
  include(BuildPlugins)
  
  add_subdirectory(sbncode)
@@ -116,10 +118,10 @@ index 3a890cc..159b42f 100644
 -include(UseCPack)
 +cet_cmake_config()
 diff --git a/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt b/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
-index 99ec10d..2da482b 100644
+index 99ec10d..64eea8b 100644
 --- a/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
 +++ b/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
-@@ -1,10 +1,11 @@
+@@ -1,12 +1,14 @@
 -find_ups_product(ifbeam)
 -find_ups_product(ifbeam_art)
 +find_package(ifbeam)
@@ -128,39 +130,49 @@ index 99ec10d..2da482b 100644
 -include_directories( $ENV{IFBEAM_FQ_DIR}/include )
 -include_directories( $ENV{LIBWDA_FQ_DIR}/include )
 -include_directories( $ENV{IFDHC_FQ_DIR}/inc )
+-include_directories( $ENV{IFDH_ART_INC} )
+-cet_find_library( IFBEAMSERVICE        NAMES IFBeam_service    PATHS ENV IFDH_ART_LIB NO_DEFAULT_PATH )
+-cet_find_library( IFBEAM               NAMES ifbeam            PATHS ENV IFBEAM_LIB   NO_DEFAULT_PATH )
 +include_directories( $ENV{IFBEAM_DIR}/include )
 +include_directories( $ENV{LIBWDA_DIR}/include )
++link_directories( $ENV{LIBWDA_DIR}/lib )
 +include_directories( $ENV{IFDHC_DIR}/inc )
- include_directories( $ENV{IFDH_ART_INC} )
++link_directories( $ENV{IFDHC_DIR}/lib )
++include_directories( $ENV{IFDH_ART_DIR}/include )
 +include_directories( $ENV{TRACE_INC} )
- cet_find_library( IFBEAMSERVICE        NAMES IFBeam_service    PATHS ENV IFDH_ART_LIB NO_DEFAULT_PATH )
- cet_find_library( IFBEAM               NAMES ifbeam            PATHS ENV IFBEAM_LIB   NO_DEFAULT_PATH )
++find_library( IFBEAM               NAMES ifbeam            PATHS $ENV{IFBEAM_DIR} )
  
-@@ -21,19 +22,18 @@ simple_plugin(BNBRetriever module
+ link_libraries( ${LIB_NAME} -L$ENV{BOOST_LIB} -lboost_system ${ROOTLIB} )
+ 
+@@ -21,28 +23,27 @@ simple_plugin(BNBRetriever module
  	${ART_FRAMEWORK_SERVICES_REGISTRY}
  	${ART_ROOT_IO_TFILESERVICE_SERVICE}                ${ART_FRAMEWORK_SERVICES}
  	${ART_FRAMEWORK_PRINCIPAL}
 -	art_Persistency_Common
 -	art_Utilities canvas
 +	art::Persistency_Common
-+	art::Utilities canvas
++	art::Utilities canvas::canvas
  	${MF_MESSAGELOGGER}
  	${MF_UTILITIES}
  	${FHICLCPP}
 -	cetlib cetlib_except
 +	cetlib::cetlib cetlib_except::cetlib_except
  	${ROOT_EVE_LIB_LIST}
- 	${ROOT_X3d}
+-	${ROOT_X3d}
++	ROOT::X3d
  	${ROOT_BASIC_LIB_LIST}
          ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
          ${Boost_SYSTEM_LIBRARY}
 -	MF_MessageLogger
 -       	sbnobj_Common_POTAccounting
+-	#${IFBEAMSERVICE}
+-	#${IFBEAM}
+-	ifbeam
+-	ifdh_art::IFBeam_service
 +	messagefacility::MF_MessageLogger
- 	#${IFBEAMSERVICE}
- 	#${IFBEAM}
- 	ifbeam
-@@ -42,7 +42,9 @@ simple_plugin(BNBRetriever module
++	${IFBEAM}
++        ifdh_art::IFBeam_service
+ 	sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common
    	sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays
  	sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_ICARUS	
          artdaq_core::artdaq-core_Utilities
@@ -172,7 +184,7 @@ index 99ec10d..2da482b 100644
  
  install_headers()
 diff --git a/sbncode/BeamSpillInfoRetriever/EXTRetriever/CMakeLists.txt b/sbncode/BeamSpillInfoRetriever/EXTRetriever/CMakeLists.txt
-index 4a3ceaf..cfdfb4a 100644
+index 4a3ceaf..12a9289 100644
 --- a/sbncode/BeamSpillInfoRetriever/EXTRetriever/CMakeLists.txt
 +++ b/sbncode/BeamSpillInfoRetriever/EXTRetriever/CMakeLists.txt
 @@ -1,24 +1,27 @@
@@ -184,7 +196,7 @@ index 4a3ceaf..cfdfb4a 100644
 +include_directories( $ENV{IFBEAM_DIR}/include )
 +include_directories( $ENV{LIBWDA_DIR}/include )
 +include_directories( $ENV{IFDHC_DIR}/inc )
-+include_directories( $ENV{IFDH_INC} )
++include_directories( $ENV{IFDH_ART_DIR}/include )
 +include_directories( $ENV{TRACE_INC} )
  
  simple_plugin(EXTRetriever module
@@ -213,10 +225,10 @@ index 4a3ceaf..cfdfb4a 100644
  
  install_headers()
 diff --git a/sbncode/CAFMaker/CMakeLists.txt b/sbncode/CAFMaker/CMakeLists.txt
-index f33e6a6..2857356 100644
+index f33e6a6..6241a44 100644
 --- a/sbncode/CAFMaker/CMakeLists.txt
 +++ b/sbncode/CAFMaker/CMakeLists.txt
-@@ -1,83 +1,84 @@
+@@ -1,83 +1,81 @@
  # for classes_def.xml
 -include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} )
 +include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
@@ -287,26 +299,25 @@ index f33e6a6..2857356 100644
 -cet_find_library( IFDH NAMES ifdh PATHS ENV IFDHC_LIB NO_DEFAULT_PATH )
 -##include_directories( $ENV{IFDHC_FQ_DIR}/inc )
 -##include_directories( $ENV{IFDH_ART_FQ_DIR}/inc )
-+cet_find_library( IFDH NAMES ifdh PATHS ENV IFDHC_LIB NO_DEFAULT_PATH ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+include_directories( $ENV{IFDHC_DIR}/inc ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
-+##include_directories( $ENV{IFDH_ART_FQ_DIR}/inc ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
- 
+-
 -cet_find_library( IFDH_SERVICE NAMES IFDH_service PATHS ENV IFDH_ART_LIB )
-+cet_find_library( IFDH_SERVICE NAMES IFDH_service PATHS ENV IFDH_ART_LIB ) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
++include_directories( $ENV{IFDHC_DIR}/inc ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
++link_directories( $ENV{IFDHC_DIR}/lib )
  
  simple_plugin ( CAFMaker module
 -               sbncode_CAFMaker
 -               sbnanaobj_StandardRecord
-+               sbncode::CAFMaker
-+               sbnanaobj::StandardRecord
-+               larcorealg::Geometry
-                IFDH_SERVICE
+-               IFDH_SERVICE
 -               ${ART_FRAMEWORK_CORE}
 -               ${ART_FRAMEWORK_PRINCIPAL}
 -               ${ART_FRAMEWORK_SERVICES_REGISTRY}
 -               ${ART_FRAMEWORK_SERVICES_BASIC}
 -               ${ART_FRAMEWORK_SERVICES_OPTIONAL}
 -               art_Utilities canvas
++               sbncode::CAFMaker
++               sbnanaobj::StandardRecord
++               larcorealg::Geometry
++               ifdh_art::IFDH_service
 +               art::Framework_Core
 +               art::Framework_Principal
 +               art::Framework_Services_Registry
@@ -409,10 +420,10 @@ index 0a05185..5266f29 100644
  add_subdirectory(SBNEventWeight)
  add_subdirectory(NuMuSelection)
 diff --git a/sbncode/Calibration/CMakeLists.txt b/sbncode/Calibration/CMakeLists.txt
-index 827749a..9dac5a7 100644
+index 827749a..c59ba5a 100644
 --- a/sbncode/Calibration/CMakeLists.txt
 +++ b/sbncode/Calibration/CMakeLists.txt
-@@ -1,88 +1,95 @@
+@@ -1,88 +1,96 @@
 -link_directories(
 +link_directories( ### MIGRATE-ACTION-RECOMMENDED: use target_link_libraries() with target semantics
   $ENV{ROOTSYS}/lib
@@ -532,14 +543,16 @@ index 827749a..9dac5a7 100644
 +        larevt::SpaceCharge
  )
  
++link_directories( $ENV{IFDHC_DIR}/lib )
  simple_plugin ( DataSelect module
-                 IFDH_SERVICE
+-                IFDH_SERVICE
 -               ${ART_FRAMEWORK_CORE}
 -               ${ART_FRAMEWORK_PRINCIPAL}
 -               ${ART_FRAMEWORK_SERVICES_REGISTRY}
 -               ${ART_FRAMEWORK_SERVICES_BASIC}
 -               ${ART_FRAMEWORK_SERVICES_OPTIONAL}
 -               art_Utilities canvas
++               ifdh_art::IFDH_service
 +               art::Framework_Core
 +               art::Framework_Principal
 +               art::Framework_Services_Registry
@@ -666,17 +679,16 @@ index 6d63008..e896bdc 100644
  
  
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
-index 3f1d1f6..b29e891 100644
+index 3f1d1f6..0b5c92b 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
-@@ -1,150 +1,150 @@
+@@ -1,150 +1,149 @@
 -link_directories( $ENV{ROOTSYS}/lib )
  
 -art_make_library( LIBRARY_NAME sbncode_EventGenerator_MeVPrtl_Constants
 +find_library( IFDH NAMES ifdh PATHS $ENV{IFDHC_DIR}/lib) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
 +include_directories( $ENV{IFDHC_DIR}/inc ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
 +
-+find_library( IFDH_SERVICE NAMES IFDH_service PATHS $ENV{IFDHC_DIR}/lib) ### MIGRATE-ACTION-RECOMMENDED: use of ENV ... may be UPS-dependent ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
 +find_library( DK2NUTREE NAMES dk2nuTree PATHS $ENV{DK2NUDATA_LIB})
 +find_library( DK2NUGENIE NAMES dk2nuGenie PATHS $ENV{DK2NUGENIE_LIB})
 +
@@ -746,7 +758,7 @@ index 3f1d1f6..b29e891 100644
 -                            ${ART_FRAMEWORK_PRINCIPAL}
 -                            art_Persistency_Common
 -                            art_Utilities canvas
-+                            ${IFDH_SERVICE}
++                            ifdh_art::IFDH_service
 +                            art::Framework_Core
 +                            art::Framework_Services_Registry
 +                            art_root_io::TFileService_service 
@@ -1923,46 +1935,37 @@ index a090c6e..9ab5078 100644
    caf_RecoUtils
  )
 diff --git a/sbncode/SBNEventWeight/App/CMakeLists.txt b/sbncode/SBNEventWeight/App/CMakeLists.txt
-index 6d1d2fa..649e565 100644
+index 6d1d2fa..b7ee9ef 100644
 --- a/sbncode/SBNEventWeight/App/CMakeLists.txt
 +++ b/sbncode/SBNEventWeight/App/CMakeLists.txt
-@@ -1,21 +1,22 @@
+@@ -1,22 +1,8 @@
 -art_make(
 -  LIBRARY_NAME sbncode_SBNEventWeight
-+art_make( ### MIGRATE-ACTION-RECOMMENDED: use art_make_library(), art_dictionary(), simple_plugin() with explicit source lists
-+  LIBRARY_NAME sbncode::SBNEventWeight
-   LIB_LIBRARIES
+-  LIB_LIBRARIES
 -    sbnobj_Common_SBNEventWeight
 -    sbncode_SBNEventWeight_Base
 -    sbncode_SBNEventWeight_Calculators_CrossSection
 -    sbncode_SBNEventWeight_Calculators_BNBFlux
 -    #sbncode_SBNEventWeight_Calculators_Geant4
-+    nusimdata::SimulationBase
-+    sbnobj::Common_SBNEventWeight
-+    sbncode::SBNEventWeight_Base
-+    sbncode::SBNEventWeight_Calculators_CrossSection
-+    sbncode::SBNEventWeight_Calculators_BNBFlux
-+    #sbncode::SBNEventWeight_Calculators_Geant4
-   MODULE_LIBRARIES
+-  MODULE_LIBRARIES
 -    sbnobj_Common_SBNEventWeight
 -    sbncode_SBNEventWeight_Base
 -    sbncode_SBNEventWeight_Calculators_CrossSection
 -    sbncode_SBNEventWeight_Calculators_BNBFlux
 -    nusimdata_SimulationBase
-+    sbnobj::Common_SBNEventWeight
-+    sbncode::SBNEventWeight_Base
-+    sbncode::SBNEventWeight_Calculators_CrossSection
-+    sbncode::SBNEventWeight_Calculators_BNBFlux
-+    nusimdata::SimulationBase
-     ${MF_MESSAGELOGGER}
+-    ${MF_MESSAGELOGGER}
 -    ${ROOT_GEOM}
-+    ROOT::Geom
-     ${LXML2}
+-    ${LXML2}
 -    GSL
-+    ${GSL}
- )
+-)
++simple_plugin(SBNEventWeight module
++  sbnobj::Common_SBNEventWeight sbncode::SBNEventWeight_Base
++  sbncode::SBNEventWeight_Calculators_CrossSection
++  sbncode::SBNEventWeight_Calculators_BNBFlux nusimdata::SimulationBase
++  ROOT::Geom)
  
  install_headers()
+ install_fhicl()
 diff --git a/sbncode/SBNEventWeight/Base/CMakeLists.txt b/sbncode/SBNEventWeight/Base/CMakeLists.txt
 index c9d79d2..eece2cd 100644
 --- a/sbncode/SBNEventWeight/Base/CMakeLists.txt
@@ -2023,7 +2026,7 @@ index 56f20ab..9e1c93a 100644
  
  install_headers()
 diff --git a/sbncode/SBNEventWeight/Calculators/CrossSections/CMakeLists.txt b/sbncode/SBNEventWeight/Calculators/CrossSections/CMakeLists.txt
-index 2e1d1f6..08795de 100644
+index 2e1d1f6..303f5ef 100644
 --- a/sbncode/SBNEventWeight/Calculators/CrossSections/CMakeLists.txt
 +++ b/sbncode/SBNEventWeight/Calculators/CrossSections/CMakeLists.txt
 @@ -1,18 +1,18 @@
@@ -2031,9 +2034,8 @@ index 2e1d1f6..08795de 100644
 +include_directories($ENV{GENIE}/include/GENIE) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
  
 -art_make(
--  LIBRARY_NAME sbncode_SBNEventWeight_Calculators_CrossSection
 +art_make( ### MIGRATE-ACTION-RECOMMENDED: use art_make_library(), art_dictionary(), simple_plugin() with explicit source lists
-+  LIBRARY_NAME sbncode::SBNEventWeight_Calculators_CrossSection
+   LIBRARY_NAME sbncode_SBNEventWeight_Calculators_CrossSection
    LIB_LIBRARIES
 -    sbncode_SBNEventWeight_Base
 -    nugen_EventGeneratorBase_GENIE
@@ -2057,10 +2059,10 @@ index 2e1d1f6..08795de 100644
  
  install_headers()
 diff --git a/sbncode/TPCReco/CMakeLists.txt b/sbncode/TPCReco/CMakeLists.txt
-index 9c2b25c..c3b848f 100644
+index 9c2b25c..8083eff 100644
 --- a/sbncode/TPCReco/CMakeLists.txt
 +++ b/sbncode/TPCReco/CMakeLists.txt
-@@ -3,56 +3,55 @@ add_subdirectory(TrackSplit)
+@@ -3,56 +3,58 @@ add_subdirectory(TrackSplit)
  add_subdirectory(VertexStub)
  add_subdirectory(CalorimetryAnalysis)
  
@@ -2124,14 +2126,18 @@ index 9c2b25c..c3b848f 100644
 -	sbncode_TPCReco_VertexStub
 +	sbncode::TPCReco_VertexStub
  )
++
++link_directories( $ENV{IFDHC_DIR}/lib )
++
  simple_plugin ( EventSelect module
-                 IFDH_SERVICE
+-                IFDH_SERVICE
 -               ${ART_FRAMEWORK_CORE}
 -               ${ART_FRAMEWORK_PRINCIPAL}
 -               ${ART_FRAMEWORK_SERVICES_REGISTRY}
 -               ${ART_FRAMEWORK_SERVICES_BASIC}
 -               ${ART_FRAMEWORK_SERVICES_OPTIONAL}
 -               art_Utilities canvas
++               ifdh_art::IFDH_service
 +               art::Framework_Core
 +               art::Framework_Principal
 +               art::Framework_Services_Registry

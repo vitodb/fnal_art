@@ -52,3 +52,6 @@ fast and/or slow logging - dynamically (you choose)."""
         if os.path.exists(join_path(self.spec.prefix, "README")):
             os.rename( join_path(self.spec.prefix, "README"),
                        join_path(self.spec.prefix, "README_%s"%self.spec.name))
+
+    def setup_dependent_build_environment(self, spack_env, dspec):
+        spack_env.set('TRACE_INC', self.spec.prefix.include)
