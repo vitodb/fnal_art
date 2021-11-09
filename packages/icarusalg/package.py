@@ -26,6 +26,7 @@ class Icarusalg(CMakePackage):
     git_base = 'https://github.com/SBNSoftware/icarusalg.git'
 
     version('develop', commit='357823a14d1f655f620bb288f6dc373b5685664f', git=git_base, get_full_repo=True)
+    version('09.34.00', tag='v09_34_00', git=git_base, get_full_repo=True)
     version('09.06.00', tag='v09_06_00', git=git_base, get_full_repo=True)
     version('09.07.00', tag='v09_07_00', git=git_base, get_full_repo=True)
     version('09.08.00', tag='v09_08_00', git=git_base, get_full_repo=True)
@@ -35,6 +36,7 @@ class Icarusalg(CMakePackage):
 
     patch('mwm.patch', when='@09.28.01')
     patch('cetmodules2.patch', when='@develop')
+    patch('v09_34_00.patch', when='@09.34.00')
 
     variant('cxxstd',
             default='17',

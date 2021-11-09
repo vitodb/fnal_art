@@ -26,6 +26,8 @@ class Nutools(CMakePackage):
     url      = "https://github.com/NuSoftHEP/nutools/archive/refs/tags/v3_11_05.tar.gz"
     list_url = "https://api.github.com/repos/NuSoftHEP/nutools/tags"
 
+    version('3.12.00', sha256='6c2e70f6550c0e26c8457ec9876dd18d3f943ad00f1a1db65a3d0ab7f7449aa6')
+    version('3.11.05', sha256='c58c254de91c94739a23c6de454640fe096561358205ea8ed86afc28171e3e5e')
     version('develop', git=git_base, commit='53595b9a9a03bd53e3264ef761e2c5c627288459', get_full_repo=True)
     version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
     version('MVP1a', git=git_base, branch='feature/MVP1a')
@@ -50,6 +52,7 @@ class Nutools(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('cetmodules2.patch', when='@develop')
+    patch('v3_11_05.patch', when='@3.11.05')
 
     depends_on('cetmodules', type='build')
     depends_on('art-root-io')

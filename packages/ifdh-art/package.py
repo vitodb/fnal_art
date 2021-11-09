@@ -26,6 +26,9 @@ from the ifdhc package."""
     url      = "https://github.com/art-framework-suite/ifdh-art/archive/refs/tags/v2_12_05.tar.gz"
     list_url = 'https://api.github.com/repos/art-framework-suite/ifdh-art/tags'
 
+    version('2.13.00', sha256='d9b59c4181051d6b86ee346c562faaac7d4c5c0eeef37f159e2b1757859d4516')
+    version('2.12.05', sha256='f783e6e06d6d26f58b44c68d76d6b404bfe80a57918f4d7490090495f3ef35d1')
+    version('2.12.04', sha256='10999a6cbf1f55f51dcba91c9631a2dc06d04ffc6230bfe3b3421f84ccb207b1')
     version('develop', git=git_base, commit='fbddccf791ef86c7a2c96242031f79833a5cc9d0', get_full_rep=True)
     version('MVP1a', git='https://github.com/art-framework-suite/ifdh-art.git', branch='feature/Spack-MVP1a')
 
@@ -44,6 +47,7 @@ from the ifdhc package."""
 
 
     patch('cetmodules2.patch', when='@develop')
+    patch('v2_12_05.patch', when='@2.12.05')
 
     variant('cxxstd',
             default='17',
@@ -57,17 +61,12 @@ from the ifdhc package."""
     depends_on('nucondb')
     depends_on('libwda')
     depends_on('cetmodules', type='build')
-    depends_on('cetbuildtools', type='build')
 
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value)               ]
         return args
-
-    def setup_build_environment(self, spack_env):
-        spack_env.set('CETBUILDTOOLS_VERSION', self.spec['cetmodules'].version)
-        spack_env.set('CETBUILDTOOLS_DIR', self.spec['cetmodules'].prefix)
 
     def setup_dependent_environment(self, spack_env, run_env, dspec):
         # Ensure we can find plugin libraries.

@@ -26,6 +26,8 @@ class Nugen(CMakePackage):
     url = 'https://github.com/NuSoftHEP/nugen/archive/refs/tags/v1_14_05.tar.gz'
     list_url = 'https://api.github.com/repos/NuSoftHEP/nugen/tags'
 
+    version('1.15.00', sha256='098c9128b4d938e5a781c0b3535f7bc5f09e33c3b8280f2bc9927634fcdfc2c7')
+    version('1.14.05', sha256='e2cb16b5855e54a442cdfba42a40ca87e4d17d8156cbb2678205e0e5565a7b6c')
     version('mwm1', tag='mwm1', git='https://cdcvs.fnal.gov/projects/nugen', get_full_repo=True)
     version('develop', commit='dca7eaa2257476033b074e71b78b2f6b23b647be',
              git=git_base, get_full_repo=True)
@@ -51,6 +53,7 @@ class Nugen(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('cetmodules2.patch', when='@develop')
+    patch('v1_14_05.patch', when='@0.14.05')
 
     # Build-only dependencies.
     depends_on('cmake@3.12:', type='build')

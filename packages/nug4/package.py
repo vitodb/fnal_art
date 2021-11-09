@@ -26,6 +26,8 @@ class Nug4(CMakePackage):
     url = 'https://github.com/NuSoftHEP/nug4/archive/refs/tags/v1_10_00.tar.gz'
     list_url = 'https://api.github.com/repos/NuSoftHEP/nug4/tags'
 
+    version('1.12.00', sha256='392e5c8bee1cad0dd997b134de1e7c1ab9e580e7dd87600927a4c4f595afa081')
+    version('1.11.00', sha256='e612e229100a1cc3e25b390460da208c5e18f858627f441b7959dbb957e2bcf9')
     version('develop', commit='7fe7b040da2bba9ea7d0ec6726c408bc5013d863',
              git=git_base, get_full_repo=True)
     version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
@@ -60,8 +62,10 @@ class Nug4(CMakePackage):
     depends_on('cetlib-except')
     depends_on('geant4 cxxstd=17', when='cxxstd=17')
     depends_on('geant4 cxxstd=14', when='cxxstd=14')
+    depends_on('pythia8')
 
     patch('cetmodules2.patch', when='@develop')
+    patch('v1_11_00.patch', when='@1.11.00')
 
     def cmake_args(self):
         # Set CMake args.
