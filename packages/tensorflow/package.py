@@ -45,7 +45,7 @@ class Tensorflow(Package):
         install_script.add_default_env('TENSORFLOW_FQ_DIR','{0}'.format(prefix))
         install_script()
 
-    def setup_environment( self, spack_env, run_env ):
+    def setup_build_environment( self, spack_env ):
        spec=self.spec
        spack_env.set('TENSORFLOW_FQ_DIR','{0}'.format(self.prefix))
        spack_env.set('PROTOBUF_FQ_DIR','{0}'.format(spec['protobuf'].prefix))

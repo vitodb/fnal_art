@@ -38,7 +38,6 @@ class Larcoreobj(CMakePackage):
     version('MVP1a', git='https://github.com/gartung/larcoreobj.git', branch='feature/MVP1a', get_full_repo=True)
     version('mwm1', git='https://github.com/marcmengel/larcoreobj.git', branch='develop', get_full_repo=True)
     version('09.24.01.01', tag='v09_24_01_01', git='https://github.com/marcmengel/larcoreobj.git', get_full_repo=True)
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larcoreobj.git', get_full_repo=True)
 
 
     def url_for_version(self, version):

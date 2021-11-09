@@ -56,6 +56,8 @@ class Pandora(CMakePackage):
             rightp='{0}/cmakemodules'.format(self.prefix)
             filter_file(wrongp, rightp, f, backup=False) 
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
+    def setup_dependent_build_environment(self, spack_env, dspec):
         spack_env.prepend_path('CMAKE_PREFIX_PATH', '{0}/cmakemodules'.format(self.prefix))
+
+    def setup_dependent_run_environment(self, run_env, dspec):
         run_env.prepend_path('CMAKE_PREFIX_PATH', '{0}/cmakemodules'.format(self.prefix))

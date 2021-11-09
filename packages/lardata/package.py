@@ -27,6 +27,7 @@ class Lardata(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/lardata/tags"
 
     version('09.30.00.rc1', sha256='62068b739d636374f56250d944283bda7dbb532d5f4a02dd38e9b105ce51c90c')
+    version('09.04.00',     sha256='a2495f4427245d6901138439750cf746a7a4bdc3633fbcb9e7c5cdffdb1e4af6')
     version('09.03.02',     sha256='7e48e6caaaf6a49cf9e2b575b0fb253db7ecba9034f9c9b940758df99f25eda6')
     version('09.03.01',     sha256='fb2e4779b6b70816d7c78545694e47d45aaa0eebe50d187df6fe56479d539513')
     version('09.03.00',     sha256='a5edd13b0e7ec921fd343c8ce0655551511174f76c2716ff28c41448ed35c82d')
@@ -59,13 +60,14 @@ class Lardata(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
+    patch('v09_04_00.patch', when='@09.04.00')
 
     depends_on('nutools')
     depends_on('larcore')
     depends_on('lardataobj')
     depends_on('lardataalg')
     depends_on('range-v3')
+    depends_on('fftw')
     depends_on('cetmodules', type='build')
 
     def cmake_args(self):

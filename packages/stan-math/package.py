@@ -49,6 +49,6 @@ class StanMath(Package):
         os.system("rm -rf lib")
         install_tree(self.stage.source_path, prefix)
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         pass
 

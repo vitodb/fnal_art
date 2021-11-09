@@ -50,7 +50,8 @@ class Larcore(CMakePackage):
                                   self.list_url,
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') ]))
-    #patch('v09_03_01.patch', when='@09.03.01')
+
+    patch('v09_03_01.patch', when='@09.03.01')
 
     variant('cxxstd',
             default='17',

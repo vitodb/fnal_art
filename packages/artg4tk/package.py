@@ -15,6 +15,9 @@ class Artg4tk(CMakePackage):
     url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/artg4tk.v10_02_01.tbz2'
     git_base = "https://cdcvs.fnal.gov/projects/artg4tk"
 
+
+    #version('10.04.00', sha256='44a1e12425ff2ebe90f7482ad2b10cbde873477815f81707677eb2ad14d3cef4')
+    version('10.04.00', tag='v10_04_00', git=git_base, get_full_repo=True)
     version('c06a0ed7a0a543cba5c23fc588f7dd6dcb6609e2', commit='c06a0ed7a0a543cba5c23fc588f7dd6dcb6609e2', git=git_base, get_full_repo=True)
     version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('mwm1', branch='mwm1', git=git_base, get_full_repo=True)

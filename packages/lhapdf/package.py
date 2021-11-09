@@ -13,6 +13,7 @@ class Lhapdf(AutotoolsPackage):
     homepage = "https://www.hepforge.org/lhapdf"
     url      = "https://lhapdf.hepforge.org/downloads/?f=lhapdf-5.9.1.tar.gz"
 
+    version('6.3.0', sha256='ed4d8772b7e6be26d1a7682a13c87338d67821847aa1640d78d67d2cef8b9b5d')
     version('6.2.3', sha256='d6e63addc56c57b6286dc43ffc56d901516f4779a93a0f1547e14b32cfd82dd1')
 
     def url_for_version(self, version):
@@ -70,7 +71,7 @@ class Lhapdf(AutotoolsPackage):
         for f in glob.glob('*.py'):
             os.remove(f)
         
-    def setup_environment(self, spack_env, run_env):
+    def setup_run_environment(self, run_env):
         cxxstd_flag\
             = '' if self.spec.variants['cxxstd'].value == 'default' else \
             'cxx{0}_flag'.format(self.spec.variants['cxxstd'].value)

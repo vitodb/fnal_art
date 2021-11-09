@@ -338,10 +338,10 @@ index 726c20a..574505b 100644
  
  
 diff --git a/test/Utilities/CMakeLists.txt b/test/Utilities/CMakeLists.txt
-index 17291ec..2ed4610 100644
+index 17291ec..5517504 100644
 --- a/test/Utilities/CMakeLists.txt
 +++ b/test/Utilities/CMakeLists.txt
-@@ -1,19 +1,23 @@
+@@ -1,28 +1,35 @@
 -cet_test(rounding_test USE_BOOST_UNIT)
 -cet_test(ChangeMonitor_test USE_BOOST_UNIT)
 +include_directories(${CPPGSL_INC})
@@ -374,7 +374,9 @@ index 17291ec..2ed4610 100644
  
  cet_test(BinningSpecs_test
    LIBRARIES
-@@ -22,7 +26,9 @@ cet_test(BinningSpecs_test
+     icarusalg_Utilities
++    cetlib::cetlib
+   USE_BOOST_UNIT
    )
  cet_test(NonRandomCounter_test
    LIBRARIES

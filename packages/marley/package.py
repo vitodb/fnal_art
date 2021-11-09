@@ -34,7 +34,7 @@ class Marley(Package):
     patch('marley-1.1.1.patch', when='@1.1.1')
     patch('marley-1.2.0.patch', when='@1.2.0')
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_run_environment(self, spack_env):
         spack_env.append_flags('CPPFLAGS', '-I../include')
         cxxstd_flag\
             ='cxx{0}_flag'.format(self.spec.variants['cxxstd'].value)

@@ -4,17 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from llnl.util import tty
 import sys
 import os
-
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","artg4tk","9.07.01")
+import spack.util.spack_json as sjson
 
 
 def sanitize_environments(*args):
@@ -32,16 +25,13 @@ class IcarusSignalProcessing(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/icarus_signal_processing'
-    #git_base = 'https://cdcvs.fnal.gov/projects/icarus_signal_processing'
+    url = 'https://github.com/SBNSoftware/icarus_signal_processing/archive/refs/tags/v09_32_01.tar.gz'
     git_base = 'https://github.com/SBNSoftware/icarus_signal_processing.git'
+    list_url = 'https://api.github/repos/SBNSoftware/icarus_signal_processing/tags'
 
+    version('09.32.01', sha256='220043d6cee8fd84b37f1cfc0a24e6a8b4b5febbc1cb50a4f56e891eb53d8241')
     version('develop', commit='9f80e32ac3c7c90ad910486205efd5648703751b',
             git=git_base, get_full_repo=True)
-    version('08.44.00', tag='v08_44_00', git=git_base, get_full_repo=True)
-    version('08.47.00', tag='v08_47_00', git=git_base, get_full_repo=True)
-    version('08.50.00', tag='v08_50_00', git=git_base, get_full_repo=True)
-
-
 
     variant('cxxstd',
             default='17',
@@ -59,6 +49,7 @@ class IcarusSignalProcessing(CMakePackage):
     depends_on('root', type=('build','run'))
 
     patch('cetmodules2.patch', when='@develop')
+    patch('v09_32_01.patch', when='@09.32.01')
     
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
@@ -66,9 +57,17 @@ class IcarusSignalProcessing(CMakePackage):
             depends_on('ninja', type='build')
 
     def url_for_version(self, version):
-        #url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'
-        url = 'https://github.com/SBNSoftware/{0}/archive/v{1}.tar.gz'
-        return url.format(self.name, version.underscored)
+        url = 'https://github.com/SBNSoftware/icarus_signal_processing/archive/v{0}.tar.gz'
+        return url.format(version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
 
     def cmake_args(self):
         # Set CMake args.
@@ -76,41 +75,61 @@ class IcarusSignalProcessing(CMakePackage):
                 format(self.spec.variants['cxxstd'].value)]
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         # Binaries.
         spack_env.prepend_path('PATH',
                                os.path.join(self.build_directory, 'bin'))
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB',
+                               os.path.join(self.build_directory, 'perllib'))
+        # Cleaup.
+        sanitize_environments(spack_env)
+
+    def setup_run_environment(self, run_env):
+        # Binaries.
+        run_env.prepend_path('PATH',
+                               os.path.join(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
-        spack_env.prepend_path('PERL5LIB',
-                               os.path.join(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleaup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+    def setup_dependent_build_environment(self, spack_env, dependent_spec):
         # Binaries.
         spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # Cleanup.
+        sanitize_environments(spack_env)
+
+    def setup_dependent_run_environment(self, run_env, dependent_spec):
+        # Binaries.
+        run_env.prepend_path('PATH', self.prefix.bin)
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)

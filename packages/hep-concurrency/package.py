@@ -91,8 +91,8 @@ class HepConcurrency(CMakePackage):
         args.append('-DCMAKE_PROJECT_VERSION={0}'.format(self.spec.version))
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         # PATH for tests.
         spack_env.prepend_path('PATH', os.path.join(self.build_directory, 'bin'))
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(spack_env)

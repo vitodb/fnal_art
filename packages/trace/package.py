@@ -34,6 +34,7 @@ fast and/or slow logging - dynamically (you choose)."""
     patch("trace-3.16.00.patch", when="@3.16.00")
     patch("trace-3.15.07.patch", when="@3.15.07")
 
+    version('3.17.01', sha256='396c56edceba545db4ab2a40080b56236a816ab39ce06fd057ca2794dc276e66')
 
     def url_for_version(self, version):
         url = 'https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2'

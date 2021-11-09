@@ -7,13 +7,6 @@ from spack import *
 
 import os
 import sys
-libdir="%s/var/spack/repos/fnal_art/lib" % os.environ["SPACK_ROOT"]
-if not libdir in sys.path:
-    sys.path.append(libdir)
-
-
-def patcher(x):
-    cetmodules_20_migrator(".","wirecell","0.13.1")
 
 def sanitize_environments(*args):
     for env in args:
@@ -32,6 +25,7 @@ class Wirecell(Package):
     homepage = "https://wirecell.github.io"
     url = "https://github.com/WireCell/wire-cell-toolkit/archive/refs/tags/0.13.0.tar.gz"
 
+    version('0.17.0', sha256='f2807adb83c8c6960ccefe8002bd015d646a96ad181d2092848d2461b3b81eea')
     version('0.16.0', sha256='af04affc1642c6ea534c479f0e1701e74b43674c2ebc025a117849ac0aba9cee')
     version('0.14.0', sha256='f7d792ef3c73744b395a6880018a4ba3349f2c5ba2f96399ad1a4d17be8f6092')
     version('0.13.1', sha256='d9ce092f9ebae91607213b62bf015ac6ac08c33ce97b6fbd67494d42c1f75bdb')
@@ -91,7 +85,7 @@ class Wirecell(Package):
         python("wcb", "install")
         return
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         cxxstd = self.spec.variants['cxxstd'].value
         cxxstdflag = '' if cxxstd == 'default' else \
                      getattr(self.compiler, 'cxx{0}_flag'.format(cxxstd))
@@ -101,17 +95,28 @@ class Wirecell(Package):
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
+        # Cleanup.
+        sanitize_environments(spack_env)
+
+    def setup_run_environment(self, run_env):
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+    def setup_dependent_build_environment(self, spack_env, dependent_spec):
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Cleanup.
+        sanitize_environments(spack_env)
+
+    def setup_dependent_run_environment(self, run_env, dependent_spec):
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments( run_env)
 
     def flag_handler(self, name, flags):
         if name == 'cxxflags' and  self.spec.compiler.name == 'gcc':

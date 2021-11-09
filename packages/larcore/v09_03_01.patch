@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 4e6d979..67e8fda 100644
+index 4e6d979..532ece3 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -10,10 +10,8 @@ cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
@@ -49,7 +49,6 @@ index 4e6d979..67e8fda 100644
 +# mengel -- tests are currently blowing chunks due to new
 +#           art suite leaving out to move on..
 +# add_subdirectory(test)
-+add_subdirectory(cmakeConfig)
  # ups - table and config files
 -add_subdirectory(ups)
 +#add_subdirectory(ups)
@@ -57,42 +56,25 @@ index 4e6d979..67e8fda 100644
  # packaging utility
 -include(UseCPack)
 +#include(UseCPack)
-diff --git a/cmakeConfig/CMakeLists.txt b/cmakeConfig/CMakeLists.txt
-new file mode 100644
-index 0000000..bc62804
---- /dev/null
-+++ b/cmakeConfig/CMakeLists.txt
-@@ -0,0 +1,4 @@
-+
-+# create package configuration and version files
-+
-+cet_cmake_config(CONFIG_FRAGMENTS larcore-fragment.cmake.in)
-diff --git a/cmakeConfig/larcore-fragment.cmake.in b/cmakeConfig/larcore-fragment.cmake.in
-new file mode 100644
-index 0000000..05d87eb
---- /dev/null
-+++ b/cmakeConfig/larcore-fragment.cmake.in
-@@ -0,0 +1,5 @@
-+find_package( ROOT REQUIRED COMPONENTS Core Geom GenVector)
-+find_package(Boost REQUIRED COMPONENTS date_time filesystem graph program_options
-+  regex system unit_test_framework)
-+find_package( larcorealg REQUIRED)
-+find_package( art REQUIRED)
++cet_cmake_config()
 diff --git a/larcore/CoreUtils/CMakeLists.txt b/larcore/CoreUtils/CMakeLists.txt
-index eec96b5..2ee79f7 100644
+index eec96b5..c4419cb 100644
 --- a/larcore/CoreUtils/CMakeLists.txt
 +++ b/larcore/CoreUtils/CMakeLists.txt
-@@ -1,2 +1 @@
+@@ -1,2 +1,3 @@
++cet_make_library(INTERFACE NO_SOURCE HEADERS_TARGET)
++
  install_headers()
 -install_source()
 diff --git a/larcore/Geometry/CMakeLists.txt b/larcore/Geometry/CMakeLists.txt
-index 2cb4027..aa6c08c 100644
+index 2cb4027..a602192 100644
 --- a/larcore/Geometry/CMakeLists.txt
 +++ b/larcore/Geometry/CMakeLists.txt
-@@ -1,13 +1,13 @@
+@@ -1,18 +1,67 @@
 -art_make(SERVICE_LIBRARIES larcorealg_Geometry
 -                           larcoreobj_SummaryData
-+art_make(SERVICE_LIBRARIES larcorealg::Geometry
++cet_build_plugin(AuxDetGeometry art::service LIBRARIES
++                           larcorealg::Geometry
 +                           larcoreobj::SummaryData
                             art::Framework_Services_Registry
                             art::Framework_Principal
@@ -103,11 +85,65 @@ index 2cb4027..aa6c08c 100644
                             ROOT::Core
 -         MODULE_LIBRARIES larcorealg_Geometry
 -                          larcoreobj_SimpleTypesAndConstants
-+         MODULE_LIBRARIES larcorealg::Geometry
++)
++
++cet_build_plugin(DumpChannelMap art::module LIBRARIES
++                          larcorealg::Geometry
 +                          larcoreobj::SimpleTypesAndConstants
                            art::Framework_Services_Registry
                            messagefacility::MF_MessageLogger
                            ROOT::Core
+                           ROOT::Geom
+-                          ROOT::GenVector)
++                          ROOT::GenVector
++)
++
++cet_build_plugin(DumpGeometry art::module LIBRARIES
++                          larcorealg::Geometry
++                          larcoreobj::SimpleTypesAndConstants
++                          art::Framework_Services_Registry
++                          messagefacility::MF_MessageLogger
++                          ROOT::Core
++                          ROOT::Geom
++                          ROOT::GenVector
++)
++
++cet_build_plugin(GeometryConfigurationWriter art::service LIBRARIES
++                           larcorealg::Geometry
++                           larcoreobj::SummaryData
++                           art::Framework_Services_Registry
++                           art::Framework_Principal
++                           art::Framework_Core
++                           art::Persistency_Provenance
++                           messagefacility::MF_MessageLogger
++                           ROOT::Core
++)
++
++cet_build_plugin(Geometry art::service LIBRARIES
++                           larcorealg::Geometry
++                           larcoreobj::SummaryData
++                           art::Framework_Services_Registry
++                           art::Framework_Principal
++                           art::Framework_Core
++                           art::Persistency_Provenance
++                           messagefacility::MF_MessageLogger
++                           ROOT::Core
++)
++
++cet_build_plugin(StandardGeometryHelper art::service LIBRARIES
++                           larcorealg::Geometry
++                           larcoreobj::SummaryData
++                           art::Framework_Services_Registry
++                           art::Framework_Principal
++                           art::Framework_Core
++                           art::Persistency_Provenance
++                           messagefacility::MF_MessageLogger
++                           ROOT::Core
++)
++
+ 
+ install_headers()
+ install_fhicl()
 diff --git a/larcore/Geometry/gdml/CMakeLists.txt b/larcore/Geometry/gdml/CMakeLists.txt
 index f324016..005d886 100644
 --- a/larcore/Geometry/gdml/CMakeLists.txt
@@ -153,10 +189,10 @@ index 7ac679d..b08bd5e 100644
    USE_BOOST_UNIT
    )
 diff --git a/test/Geometry/CMakeLists.txt b/test/Geometry/CMakeLists.txt
-index e2288ac..4f3e314 100644
+index e2288ac..6f226e7 100644
 --- a/test/Geometry/CMakeLists.txt
 +++ b/test/Geometry/CMakeLists.txt
-@@ -4,23 +4,21 @@ add_subdirectory(VersionCheck)
+@@ -4,21 +4,19 @@ add_subdirectory(VersionCheck)
  
  # test modules
  simple_plugin ( GeometryIteratorLoopTest "module"
@@ -181,12 +217,9 @@ index e2288ac..4f3e314 100644
 +                    larcore::Geometry_Geometry_service
                      messagefacility::MF_MessageLogger
 -                    
-+                    cetlib::cetlib cetlib_except::cetlib_except
                      fhiclcpp::fhiclcpp
--                    cetlib::cetlib cetlib_except
+                     cetlib::cetlib cetlib_except
                )
- 
- # ------------------------------------------------------------------------------
 diff --git a/test/Geometry/VersionCheck/CMakeLists.txt b/test/Geometry/VersionCheck/CMakeLists.txt
 index b217c36..5b4b3f8 100644
 --- a/test/Geometry/VersionCheck/CMakeLists.txt

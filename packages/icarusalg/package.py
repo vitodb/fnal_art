@@ -4,8 +4,10 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
+from llnl.util import tty
 import sys
 import os
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:
@@ -16,17 +18,23 @@ def sanitize_environments(*args):
             env.deprioritize_system_paths(var)
 
 
+
 class Icarusalg(CMakePackage):
     """SignalProcessing for icarus
     framework for particle physics experiments.
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/icarusalg'
-    #git_base = 'https://cdcvs.fnal.gov/projects/icarusalg'
     git_base = 'https://github.com/SBNSoftware/icarusalg.git'
+    url      = 'https://github.com/SBNSoftware/icarusalg/archive/refs/tags/v09_34_00.tar.gz'
+    list_url = 'https://api.github.com/repos/SBNSoftware/icarusalg/tags'
 
     version('develop', commit='357823a14d1f655f620bb288f6dc373b5685664f', git=git_base, get_full_repo=True)
-    version('09.34.00', tag='v09_34_00', git=git_base, get_full_repo=True)
+    version('09.34.00', sha256='b55ab020b0a3239e0492183d7eb55501102693ee8123ca5ccef0d40a4f11b1d9')
+    version('09.33.00', sha256='b61f8a2eb23405d151b69b3ee2d7d76f30ed35da9ff12426e680994cf7a3461a')
+    version('09.32.01', sha256='2e5a7d1f41bfea02721a2f3d75ba5aae97587325fde143c4d0f608b1b929aafc')
+    version('09.28.01', sha256='b97e6dc10c609604850ee2a5fcf1802c7288462a8c1081cc222157656952cadb')
+    version('09.28.00', sha256='ad67ed3fd1b3bfee5a8c02fee64da6548fcdfa7021bcd9025f9f32fefd7ac9c2')
     version('09.06.00', tag='v09_06_00', git=git_base, get_full_repo=True)
     version('09.07.00', tag='v09_07_00', git=git_base, get_full_repo=True)
     version('09.08.00', tag='v09_08_00', git=git_base, get_full_repo=True)
@@ -82,15 +90,24 @@ class Icarusalg(CMakePackage):
         url = 'https://github.com/SBNSoftware/{0}/archive/v{1}.tar.gz'
         return url.format(self.name, version.underscored)
 
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
+
     def cmake_args(self):
-        # Set CMake args.
+        # Set CMake args        args = ['-DCMAKE_CXX_STANDARD={0}'.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
                 '-DCPPGSL_INC={0}'.
                 format(self.spec['cppgsl'].prefix.include)]
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
 
         # easier to set these than patch the CMakeLists.txts for now
         # but there sure are a lot of them...
@@ -119,34 +136,50 @@ class Icarusalg(CMakePackage):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB',
+                               os.path.join(self.build_directory, 'perllib'))
+        # Cleaup.
+        sanitize_environments(spack_env)
+
+    def setup_run_environment(self, run_env):
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
-        spack_env.prepend_path('PERL5LIB',
-                               os.path.join(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleaup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+    def setup_dependent_build_environment(self, spack_env, dependent_spec):
         # Binaries.
         spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # Cleanup.
+        sanitize_environments(spack_env)
+
+    def setup_dependent_run_environment(self, run_env, dependent_spec):
+        # Binaries.
+        run_env.prepend_path('PATH', self.prefix.bin)
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)

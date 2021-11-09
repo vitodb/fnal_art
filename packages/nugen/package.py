@@ -53,7 +53,7 @@ class Nugen(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('cetmodules2.patch', when='@develop')
-    patch('v1_14_05.patch', when='@0.14.05')
+    patch('v1_14_05.patch', when='@1.14.05')
 
     # Build-only dependencies.
     depends_on('cmake@3.12:', type='build')

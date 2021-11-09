@@ -28,6 +28,7 @@ class Bxdecay0(CMakePackage):
     url = 'https://github.com/BxCppDev/bxdecay0/archive/bxdecay0.1.0.5.tar.gz'
     list_url = "https://api.github.com/repos/BxCppDev/bxdecay0/tags"
 
+    version('1.0.9', sha256='82c2373f10b41709030b8769a39ad8174beeaa04da524aaf2deba2493eef582d')
     version('develop', branch='develop', git=git_base)
 
 

@@ -29,13 +29,13 @@ class Lardataalg(CMakePackage):
     version('09.30.00.rc1', sha256='2e2df94da944b1b6bf769e683bae718955ed24b42b15618d7b60254e5ad3a385')
     version('09.30.00.rc0', sha256='42f9c9009b64a3374d1586e5bfb0cfe159da7ef693ac689d6a41519aae069627')
     version('09.11.00.rc0', sha256='df723ec1db490fc37398a3e34ef800b191ef185e23b66f93a09adaadbe636179')
+    version('09.07.00',     sha256='6dd6974a7f8898e8ba4f7319b9609bd14ec5ebd52b0b7e10ba63ff7fe4d7fb7a')
     version('09.06.02',     sha256='4f2a53a37952af45e1d9e89739aa084364850853c969924b6a5d21f50dcdc1ce')
     version('09.06.01',     sha256='eac9afd40a35e7c1866c3d26796c47ac8c839854d82dec7bbfedfb5153b941aa')
     version('09.06.00',     sha256='c59fd141f1e2ca8a7a1b3ad714940f3e240d47960f3265fdf8092f59084d2caf')
     version('09.05.01',     sha256='0510e0214de3ade148623da06e0b1019caee10715bac1b8596ece3a836b67909')
     version('09.05.00',     sha256='130403d30bd58bc4c4063f11746cd9f52cee141ef38017e0cacbe9bbc9ea3eee')
     version('09.04.07.01',  sha256='4e472a604aa4d7700841b0c7ebea095fda9dfebff75429efaedbd8840c96ca8c')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lardataalg.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lardataalg.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/gartung/lardataalg.git', branch='feature/MVP1a',  get_full_repo=True)
 
@@ -52,6 +52,8 @@ class Lardataalg(CMakePackage):
                                   self.list_url,
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') ]))
+
+    patch('v09_07_00.patch', when='@09.07.00')
 
     variant('cxxstd',
             default='17',

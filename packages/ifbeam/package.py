@@ -56,10 +56,14 @@ class Ifbeam(MakefilePackage):
     def install_targets(self):
         return ('DESTDIR={0}/'.format(self.prefix), 'install')
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         spack_env.set("IFBEAM_DIR",self.prefix)
+
+    def setup_run_unvironment(self, run_env):
         run_env.set("IFBEAM_DIR",self.prefix)
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
+    def setup_dependent_build_environment(self, spack_env, dspec):
         spack_env.set("IFBEAM_DIR",self.prefix)
+
+    def setup_dependent_run_environment(self, run_env, dspec):
         run_env.set("IFBEAM_DIR",self.prefix)

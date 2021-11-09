@@ -8,6 +8,8 @@ class IcarusData(Package):
 
     homepage = "https://icarus.fnal.gov/"
 
+    version('09.35.00', sha256='b7ac7cb3e1ccc64edd3be91392933b0d5c928701cdfd620a7fd453015b0c5312',
+            url="https://scisoft.fnal.gov/scisoft/packages/icarus_data/v09_35_00/icarus_data-09.35.00-noarch.tar.bz2")
     version('09.28.01', sha256='e1c69a66d554ab6b6244656eac6b89fa0eb3cd372e12188a4d6df33846023053',
             url="https://scisoft.fnal.gov/scisoft/packages/icarus_data/v09_28_01/icarus_data-09.28.01-noarch.tar.bz2")
     version('09.26.00', sha256 = '42cc1b8d4a17ad7d1f1bd3e1a1446dfee953ec7109e11cf28f180ea69ca321ec',

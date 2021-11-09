@@ -22,7 +22,7 @@ class Stan(Package):
     def install(self, spec, prefix):
         install_tree(self.stage.source_path+'/src/stan', prefix.include)
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_run_environment(self, run_env):
         #run_env.prepend_path('PYTHONPATH', self.prefix.bin)
         #run_env.prepend_path('PYTHONPATH', self.prefix + '/python')
         pass

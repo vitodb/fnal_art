@@ -41,7 +41,7 @@ class Jsonnet(Package):
         install("include/libjsonnet.h", prefix.include)
         install("include/libjsonnet++.h", prefix.include)
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         for cflag in ('-O3', '-DNDEBUG', '-g', '-fno-omit-frame-pointer'):
             spack_env.append_flags('CFLAGS_LOCAL', cflag)
         cxxstd = self.spec.variants['cxxstd'].value

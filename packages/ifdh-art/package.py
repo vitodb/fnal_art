@@ -68,13 +68,15 @@ from the ifdhc package."""
                 format(self.spec.variants['cxxstd'].value)               ]
         return args
 
-    def setup_dependent_environment(self, spack_env, run_env, dspec):
+    def setup_dependent_build_environment(self, spack_env, dspec):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
 
+    def setup_dependent_run_environment(self, run_env, dspec):
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        run_env.prepend_path('PATH', self.prefix.bin)
 
     @run_after('install')
     def rename_README(self):

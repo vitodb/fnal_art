@@ -4,30 +4,45 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
+from llnl.util import tty
 import sys
+import os
+import spack.util.spack_json as sjson
+
+def sanitize_environments(*args):
+    for env in args:
+        for var in ('PATH', 'CET_PLUGIN_PATH',
+                    'LD_LIBRARY_PATH', 'DYLD_LIBRARY_PATH', 'LIBRARY_PATH',
+                    'CMAKE_PREFIX_PATH', 'ROOT_INCLUDE_PATH'):
+            env.prune_duplicate_paths(var)
+            env.deprioritize_system_paths(var)
 
 class Larpandoracontent(CMakePackage):
     """Larpandoracontent"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larpandoracontent/wiki"
-    url      = "https://github.com/LArSoft/larpandoracontent/archive/v01_02_03.tar.gz"
+    url      = "https://github.com/LArSoft/larpandoracontent/archive/refs/tags/v03_26_01.tar.gz"
+    list_url = "https://api.github.com/repos/LArSoft/larpandoracontent/tags"
 
 
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larpandoracontent.git', get_full_repo=True)
+    version('03.26.01', sha256='fdd00d2b3954fe2388ed5e754ffe2f82bea6f627bf037e6d6b799555b0afef96')
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larpandoracontent.git', get_full_repo=True)
     version('03.22.11.01', tag='v03_22_11_01', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
-    version('3.22.09', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_22_09')
-    version('3.22.01', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_22_01')
-    version('3.14.05', git='https://github.com/LArSoft/larpandoracontent.git', branch='v03_14_05')
-    version('03.15.09', tag='v03_15_09', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
-    version('03.15.10', tag='v03_15_10', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
-    version('03.15.11', tag='v03_15_11', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
-    version('03.15.12', tag='v03_15_12', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
-    version('03.15.13', tag='v03_15_13', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
-    version('03.15.14', tag='v03_15_14', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
-    version('03.15.15', tag='v03_15_15', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
-    version('03.15.16', tag='v03_15_16', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
+
+    def url_for_version(self, version):
+        url = 'https://github.com/LArSoft/{0}/archive/v{1}.tar.gz'
+        return url.format(self.name, version.underscored)
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
+
+    patch('v03.26.01.patch', when='@03.26.01')
 
     variant('cxxstd',
             default='17',
@@ -41,9 +56,6 @@ class Larpandoracontent(CMakePackage):
     depends_on('eigen')
     depends_on('pandora')
     depends_on('py-torch')
-
-    def setup_build_environment(self, env):
-        env.set("CETBUILDTOOLS_VERSION","1")
 
     def cmake_args(self):
         args = ['-DCMAKE_CXX_STANDARD={0}'.

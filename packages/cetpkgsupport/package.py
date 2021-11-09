@@ -17,6 +17,7 @@ class Cetpkgsupport(CMakePackage):
 
     version('develop', branch='develop', git=homepage)
     version('v1_14_01', sha256='c834b6b439f05cee811989f1877c8862b4962bd8ddf61e7e4e80616396bdee34')
+    version('1.14.01', sha256='c834b6b439f05cee811989f1877c8862b4962bd8ddf61e7e4e80616396bdee34')
 
     depends_on('cmake')
 

@@ -23,8 +23,9 @@ class Sbncode(CMakePackage):
     """
 
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/sbncode'
-    url = 'https://github.com/SBNSoftware/sbncode/archive/refs/tags/v09_35_01.tar.gz'
+    url      = 'https://github.com/SBNSoftware/sbncode/archive/refs/tags/v09_35_01.tar.gz'
     git_base = 'https://github.com/SBNSoftware/sbncode.git'
+    list_url = 'https://api.github.com/repos/SBNSoftware/sbncode/tags'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
     version('09.35.00', tag='v09_35_00', git=git_base, get_full_repo=True)
@@ -33,7 +34,6 @@ class Sbncode(CMakePackage):
     version('09.10.01', tag='v09_10_01', git=git_base, get_full_repo=True)
 
     patch('v09_35_00.patch', when='@09.35.00')
-    patch('v09_33_00.patch', when='@09.33.00')
 
     variant('cxxstd',
             default='17',
@@ -107,6 +107,16 @@ class Sbncode(CMakePackage):
         url = 'https://github.com/SBNSoftware/{0}/archive/v{1}.tar.gz'
         return url.format(self.name, version.underscored)
 
+
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name'][1:]) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if d['name'].startswith('v') ]))
+
     def cmake_args(self):
         # Set CMake args.
         args = ['-DCMAKE_CXX_STANDARD={0}'.
@@ -115,7 +125,7 @@ class Sbncode(CMakePackage):
                  .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))]
         return args
 
-    def setup_environment(self, spack_env, run_env):
+    def setup_build_environment(self, spack_env):
         spack_env.prepend_path('LD_LIBRARY_PATH', self.spec['root'].prefix.lib)
         # Binaries.
         spack_env.prepend_path('PATH',
@@ -123,34 +133,54 @@ class Sbncode(CMakePackage):
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH',
                                os.path.join(self.build_directory, 'lib'))
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         for d in self.spec.traverse(root=False, cover='nodes', order='post',
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
+        # Perl modules.
+        spack_env.prepend_path('PERL5LIB',
+                               os.path.join(self.build_directory, 'perllib'))
+        # Cleaup.
+        sanitize_environments(spack_env)
+
+    def setup_run_environment(self, run_env):
+        # Binaries.
+        run_env.prepend_path('PATH',
+                               os.path.join(self.build_directory, 'bin'))
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        for d in self.spec.traverse(root=False, cover='nodes', order='post',
+                                    deptype=('link'), direction='children'):
             run_env.prepend_path('ROOT_INCLUDE_PATH',
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
-        spack_env.prepend_path('PERL5LIB',
-                               os.path.join(self.build_directory, 'perllib'))
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleaup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments(run_env)
 
-    def setup_dependent_environment(self, spack_env, run_env, dependent_spec):
+    def setup_dependent_build_environment(self, spack_env, dependent_spec):
         # Binaries.
         spack_env.prepend_path('PATH', self.prefix.bin)
-        run_env.prepend_path('PATH', self.prefix.bin)
         # Ensure we can find plugin libraries.
         spack_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
-        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
         # Ensure Root can find headers for autoparsing.
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
-        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # Cleanup.
+        sanitize_environments(spack_env)
+ 
+   def setup_dependent_run_environment(self, run_env, dependent_spec):
+        # Binaries.
+        run_env.prepend_path('PATH', self.prefix.bin)
+        # Ensure we can find plugin libraries.
+        run_env.prepend_path('CET_PLUGIN_PATH', self.prefix.lib)
+        # Ensure Root can find headers for autoparsing.
+        run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
+        # Perl modules.
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
-        sanitize_environments(spack_env, run_env)
+        sanitize_environments( run_env)
