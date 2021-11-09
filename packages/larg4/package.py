@@ -27,6 +27,7 @@ class Larg4(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/larg4/tags"
 
     version('09.30.00.rc1', sha256='d16f63e88177ea7f1c48b4e6fc306ffbb0d6880ac23f411036d78e985eafc8d9')
+    version('09.06.00',     sha256='26213c7cafa20ee890af3abdf607df7bc0adf40b94e19bebfaed71366d1cb442')
     version('09.05.03',     sha256='cbda8de6caf2bb49947b9d6a224ebcb43752054178adf973bbadbe10c16021f6')
     version('09.05.02',     sha256='e3aa24be58ef507cd89951c8d426214b3f18c4ad5238621302d49ed66127eb53')
     version('09.05.01',     sha256='dad253c845f50409661122d338c87d80141d82f0267d1b7a84d58ec484e74124')
@@ -52,6 +53,8 @@ class Larg4(CMakePackage):
                                   self.list_url,
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') ]))
+
+    patch('v09_06_00.patch', when='@09.06.00')
 
     variant('cxxstd',
             default='17',

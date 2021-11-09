@@ -27,6 +27,7 @@ class Lareventdisplay(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/lareventdisplay/tags"
 
     version('09.30.00.rc1', sha256='c479c376a2f0be7f4584c8a3d4919ad89f1b9e39a4f11a215f616cc729363d5e')
+    version('09.02.05',     sha256='cf8aa4e78162cea4621b858d0603d244e2efe3a030a0fac0977fcb4fad8afdad')
     version('09.02.03',     sha256='8269156d71f25b46c419c1b82f9527957b9a23419865db02bd6f478eabc2ec3d')
     version('09.02.02',     sha256='38f5c75fc7b83899cf8b7c7026ed0a339d8d640f9a2a4bf6618c5b1e3a928c72')
     version('09.02.01',     sha256='5ec026f061a37e3040a83f1d9442c5eb54a75eb677e1199a2e114df8c9339760')

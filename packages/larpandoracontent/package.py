@@ -42,7 +42,7 @@ class Larpandoracontent(CMakePackage):
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') ]))
 
-    patch('v03.26.01.patch', when='@03.26.01')
+    patch('v03_26_01.patch', when='@03.26.01')
 
     variant('cxxstd',
             default='17',

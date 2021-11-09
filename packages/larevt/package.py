@@ -27,6 +27,7 @@ class Larevt(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/larevt/tags"
 
     version('09.30.00.rc1', sha256='0bb9897c953a9bb69e2c1bd5be4c8c7586d577b0fb572e6cc1cdc5c0e337637f')
+    version('09.03.03',     sha256='7ce85f65911034c354517800dd041e7a00afe7b1838168911fea5809199f5dc1')
     version('09.03.02',     sha256='9c6980a93b3f2ca0bc432d885ee8eb7cd2c8c7c1a47e1e503c8fdf7891493a3c')
     version('09.03.01',     sha256='5d0c3cc34eaa49e18c0c0359ac22d481bdad1d50df5787a778928d1de38fb098')
     version('09.03.00',     sha256='17c0dcb65f76f24f442c4cc887746a20e07c3b118ff7d95cb5271b1f0d8e12e2')
@@ -35,7 +36,6 @@ class Larevt(CMakePackage):
     version('09.02.10.01',  sha256='ff987151307ea375bffbc3f18a69b05fdf168b26b0272c0777ed13e0a67f52a2')
     version('09.02.10',     sha256='5afa7063640f2722d22cb9140f2b335043d5bb6d5ecf6e1fd3559b9d2c206b57')
     version('09.02.09',     sha256='5f71d0182038e9cc096977047abf411819b0c47d5f4110fb66a2856d47ee7489')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', commit='61bbc1cc0b45d7e3175ac36847f84083a93156d7', git='https://github.com/gartung/larevt.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larevt.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/gartung/larevt.git', branch='feature/MVP1a', get_full_repo=True)
 
@@ -52,6 +52,8 @@ class Larevt(CMakePackage):
                                   self.list_url,
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') ]))
+
+    patch('v09_03_03.patch', when='@09.03.03')
 
     variant('cxxstd',
             default='17',

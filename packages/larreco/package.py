@@ -27,6 +27,7 @@ class Larreco(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/larreco/tags"
 
     version('09.30.00.rc1', sha256='3c3c52247075dd8f9c002517168159d7ac2c7319ca246d729a677a91d39149d8')
+    version('09.07.05',     sha256='991a058854c730d1bcbd7056652669f5c24d37faaa879e85e0befd5f65ff7aa3')
     version('09.07.03',     sha256='03921a26a025361ecda0015c0cb54eb003cf34847fef46beb15a4b60e5e971d6')
     version('09.07.02',     sha256='26f215907727ff0e8567b39fcac65169b5f06948397d775009a39c0c30ed3469')
     version('09.07.01',     sha256='527e23aaaad0e556a744d64abe11350746f9f5d86d6b5761cc1cbaac81bcb1b9')

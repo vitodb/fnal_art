@@ -27,6 +27,7 @@ class Larexamples(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/larexamples/tags"
 
     version('09.30.00.rc1', sha256='81b42e8c9886e4199b230a5570922025e6a231c2db8f05fb50e98a03f6862767')
+    version('09.02.05',     sha256='4b2bfdb5c9e1354c12f4581185c3214f37b178de14e4f630f924a6aa9dabcfde')
     version('09.02.03',     sha256='dc34d8563a7baee2698edb3573063818b5852ce7b0092d201587e12eea7eb8e8')
     version('09.02.02',     sha256='063a962e804fa3d72235ebecb8708d2859ec4f0b41f68b3785354cd2a483e044')
     version('09.02.01',     sha256='12ac083b4ba5f13b37bae0038a6e06c8a562a17a24c131d11ba74de579d8b658')

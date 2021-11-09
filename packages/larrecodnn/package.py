@@ -27,6 +27,7 @@ class Larrecodnn(CMakePackage):
 
 
     version('09.30.00.rc1', sha256='c69b810f4a7027268d60f52e73da67f797491a8a0d20b80db5c9cdfe615a2e4f')
+    version('09.09.06',     sha256='776c70ee0368c6d02d61382a5663494ac365eb8a595671a5efaff172aeb369da')
     version('09.09.03',     sha256='c86c64e78c64fa2081f1299d0f09d3bcccafb944e34ec9c894f5e3568a8ef683')
     version('09.09.02',     sha256='2de30ff1fbb6d3f67a366ff3a98a875c537d762442d64e6cef142f1d5a35e002')
     version('09.09.01',     sha256='13aa9fc1725c64005ba303c30ca49d3f371c96060208db665b31e890d050ebfe')

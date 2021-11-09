@@ -173,7 +173,7 @@ class Sbncode(CMakePackage):
         # Cleanup.
         sanitize_environments(spack_env)
  
-   def setup_dependent_run_environment(self, run_env, dependent_spec):
+    def setup_dependent_run_environment(self, run_env, dependent_spec):
         # Binaries.
         run_env.prepend_path('PATH', self.prefix.bin)
         # Ensure we can find plugin libraries.
@@ -183,4 +183,4 @@ class Sbncode(CMakePackage):
         # Perl modules.
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
         # Cleanup.
-        sanitize_environments( run_env)
+        sanitize_environments(run_env)

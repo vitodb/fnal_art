@@ -28,6 +28,7 @@ class Larwirecell(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/larwirecell/tags"
 
     version('09.30.00.rc1', sha256='2d2fdffbda8cb5a16f35b68bc422b6fbebe70af6ac601762f257e4fef0cbf30d')
+    version('09.04.03',     sha256='84c7be7e6cf70f57fc53da3fcae7712cac3c748bb21be1ca9a21e9dc976b3021')
     version('09.04.02',     sha256='9d53b89017a2f26f804ecffcc8fbe16f26301d2d7d2d3190d464968ff8a56297')
     version('09.04.01',     sha256='d3786882f1715403b8635c9e506254fc59d7b9629df00af135411cfb4dc56236')
     version('09.04.00',     sha256='e2cd7a63b8db90ac16308bf0fe018945a06993394898316ab25cf62968649746')
@@ -60,7 +61,7 @@ class Larwirecell(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
+    patch('v09_04_03.patch', when='@09.04.03')
 
     depends_on('larevt')
     depends_on('wirecell')
