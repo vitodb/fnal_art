@@ -1,7 +1,13 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 3a890cc..c2b0d87 100644
+index 3a890cc..702d4a4 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-# ======================================================================
++#======================================================================
+ #  larsoft main build file
+ #
+ #  cd .../path/to/build/directory
 @@ -11,18 +11,15 @@
  #  make install
  #  make package (builds distribution tarfile)
@@ -23,7 +29,7 @@ index 3a890cc..c2b0d87 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -38,45 +35,46 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -38,45 +35,49 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
    ALLOW_DEPRECATIONS
    EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-undefined-var-template
  )
@@ -68,34 +74,37 @@ index 3a890cc..c2b0d87 100644
 -#find_ups_product(sbndcode v06_67_00)
 -#find_ups_product(uboonecode v06_67_00)
 -find_ups_product( sbndaq_artdaq_core )
-+find_package(art) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(messagefacility) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(art_root_io) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(nusimdata) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(nug4) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(nugen) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(nurandom) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(nutools) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(genie) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(lardataobj) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(larcoreobj) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(larcorealg) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(lardataalg) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(larcore) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(lardata) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(larevt) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(larsim) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(larreco) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(larpandora) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(larpandoracontent) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(artdaq_core ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(sbnobj ) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
++find_package(art) 
++find_package(messagefacility) 
++find_package(art_root_io) 
++find_package(nusimdata) 
++find_package(nug4) 
++find_package(nugen) 
++find_package(nurandom) 
++find_package(nutools) 
++find_package(GENIE) 
++find_package(lardataobj) 
++find_package(larcoreobj) 
++find_package(larcorealg) 
++find_package(lardataalg) 
++find_package(larcore) 
++find_package(lardata) 
++find_package(larevt) 
++find_package(larsim) 
++find_package(larreco) 
++find_package(larpandora) 
++find_package(larpandoracontent) 
++find_package(artdaq_core ) 
++find_package(sbnobj ) 
 +find_package(sbnanaobj )
 +find_package(sbndaq_artdaq_core )
-+find_package(sbndata) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(ifdhc) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
-+find_package(ifdh_art) ### MIGRATE-ACTION-RECOMMENDED: use cet_find_package() with target semantics for linking
++find_package(sbndata) 
++find_package(ifdhc) 
++find_package(ifdh_art) 
++find_package(ifbeam)
++find_package(ifbeam_art)
 +find_package( trace )
++find_package( libwda )
 +
 +find_package(CLHEP COMPONENTS ALL)
 +find_package(ROOT REQUIRED)
@@ -107,7 +116,7 @@ index 3a890cc..c2b0d87 100644
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -84,8 +82,7 @@ include(ArtMake)
+@@ -84,8 +85,7 @@ include(ArtMake)
  include(BuildPlugins)
  
  add_subdirectory(sbncode)
@@ -117,8 +126,21 @@ index 3a890cc..c2b0d87 100644
  # packaging utility
 -include(UseCPack)
 +cet_cmake_config()
+diff --git a/sbncode/BeamSpillInfoRetriever/BNBRetriever/BNBRetriever_module.cc b/sbncode/BeamSpillInfoRetriever/BNBRetriever/BNBRetriever_module.cc
+index 9e954f1..23aee48 100644
+--- a/sbncode/BeamSpillInfoRetriever/BNBRetriever/BNBRetriever_module.cc
++++ b/sbncode/BeamSpillInfoRetriever/BNBRetriever/BNBRetriever_module.cc
+@@ -24,7 +24,7 @@
+ 
+ #include "sbnobj/Common/POTAccounting/BNBSpillInfo.h"
+ 
+-#include "IFBeam_service.h"
++#include "ifdh_art/IFBeamService/IFBeam_service.h"
+ #include "ifbeam_c.h"
+ #include "MWRData.h"
+ 
 diff --git a/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt b/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
-index 99ec10d..64eea8b 100644
+index 99ec10d..d34c2bc 100644
 --- a/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
 +++ b/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
 @@ -1,12 +1,14 @@
@@ -170,7 +192,7 @@ index 99ec10d..64eea8b 100644
 -	ifbeam
 -	ifdh_art::IFBeam_service
 +	messagefacility::MF_MessageLogger
-+	${IFBEAM}
++	ifbeam::ifbeam
 +        ifdh_art::IFBeam_service
  	sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common
    	sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays
@@ -224,11 +246,24 @@ index 4a3ceaf..12a9289 100644
  )
  
  install_headers()
+diff --git a/sbncode/CAFMaker/CAFMaker_module.cc b/sbncode/CAFMaker/CAFMaker_module.cc
+index fd8e3c3..dbb6533 100644
+--- a/sbncode/CAFMaker/CAFMaker_module.cc
++++ b/sbncode/CAFMaker/CAFMaker_module.cc
+@@ -37,7 +37,7 @@
+ #include <libgen.h>
+ #endif
+ 
+-#include <IFDH_service.h>
++#include "ifdh_art/IFDHService/IFDH_service.h"
+ 
+ // ROOT includes
+ #include "TFile.h"
 diff --git a/sbncode/CAFMaker/CMakeLists.txt b/sbncode/CAFMaker/CMakeLists.txt
-index f33e6a6..6241a44 100644
+index f33e6a6..2261fda 100644
 --- a/sbncode/CAFMaker/CMakeLists.txt
 +++ b/sbncode/CAFMaker/CMakeLists.txt
-@@ -1,83 +1,81 @@
+@@ -1,83 +1,83 @@
  # for classes_def.xml
 -include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} )
 +include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
@@ -250,6 +285,7 @@ index f33e6a6..6241a44 100644
 -                  ${ART_FRAMEWORK_PRINCIPAL}
 -                  art_Persistency_Common
 -                  art_Utilities canvas
++                  ifdh_art::IFDH_service
 +                  sbnanaobj::StandardRecord
 +                  art::Framework_Core
 +                  art::Framework_Services_Registry
@@ -263,8 +299,10 @@ index f33e6a6..6241a44 100644
 -                  cetlib cetlib_except
 +                  cetlib::cetlib cetlib_except::cetlib_except
                    ${ROOT_EVE_LIB_LIST}
-                   ${ROOT_X3d}
-                   ${ROOT_BASIC_LIB_LIST}
+-                  ${ROOT_X3d}
+-                  ${ROOT_BASIC_LIB_LIST}
++                  ROOT::X3d
++                  ROOT::EG
                    caf_RecoUtils
 -                  lardataobj_AnalysisBase
 -                  lardataobj_RecoBase
@@ -299,12 +337,12 @@ index f33e6a6..6241a44 100644
 -cet_find_library( IFDH NAMES ifdh PATHS ENV IFDHC_LIB NO_DEFAULT_PATH )
 -##include_directories( $ENV{IFDHC_FQ_DIR}/inc )
 -##include_directories( $ENV{IFDH_ART_FQ_DIR}/inc )
--
--cet_find_library( IFDH_SERVICE NAMES IFDH_service PATHS ENV IFDH_ART_LIB )
 +include_directories( $ENV{IFDHC_DIR}/inc ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
 +link_directories( $ENV{IFDHC_DIR}/lib )
  
- simple_plugin ( CAFMaker module
+-cet_find_library( IFDH_SERVICE NAMES IFDH_service PATHS ENV IFDH_ART_LIB )
+-
+-simple_plugin ( CAFMaker module
 -               sbncode_CAFMaker
 -               sbnanaobj_StandardRecord
 -               IFDH_SERVICE
@@ -314,6 +352,8 @@ index f33e6a6..6241a44 100644
 -               ${ART_FRAMEWORK_SERVICES_BASIC}
 -               ${ART_FRAMEWORK_SERVICES_OPTIONAL}
 -               art_Utilities canvas
++cet_build_plugin ( CAFMaker art::module
++               LIBRARIES
 +               sbncode::CAFMaker
 +               sbnanaobj::StandardRecord
 +               larcorealg::Geometry
@@ -326,11 +366,12 @@ index f33e6a6..6241a44 100644
                 ${MF_UTILITIES}
                 ${FHICLCPP}
 -               cetlib cetlib_except
-+               cetlib::cetlib cetlib_except::cetlib_except
-                ${ROOT_BASIC_LIB_LIST}
+-               ${ROOT_BASIC_LIB_LIST}
 -               art_root_io_RootDB
 -               hep_concurrency
 -               nurandom_RandomUtils_NuRandomService_service
++               cetlib::cetlib cetlib_except::cetlib_except
++               ROOT::Core ROOT::Tree
 +               art_root_io::RootDB
 +               hep_concurrency::hep_concurrency
 +                  lardataobj::RecoBase
@@ -679,7 +720,7 @@ index 6d63008..e896bdc 100644
  
  
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
-index 3f1d1f6..0b5c92b 100644
+index 3f1d1f6..11364dc 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
 @@ -1,150 +1,149 @@
@@ -784,7 +825,7 @@ index 3f1d1f6..0b5c92b 100644
 +                            ROOT::X3d
 +                            ROOT::Core
 +			CLHEP::CLHEP
-+			${IFDH}
++			ifdh::ifdh
 +			${DK2NUTREE}
 +			nurandom::RandomUtils_NuRandomService_service
 +			nusimdata::SimulationBase
@@ -1134,11 +1175,24 @@ index 97bab07..b4d18d6 100644
  )
  
  install_headers()
+diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/NuMiKaonGen_tool.cc b/sbncode/EventGenerator/MeVPrtl/Tools/NuMiKaonGen_tool.cc
+index 1ba2882..4d9633b 100644
+--- a/sbncode/EventGenerator/MeVPrtl/Tools/NuMiKaonGen_tool.cc
++++ b/sbncode/EventGenerator/MeVPrtl/Tools/NuMiKaonGen_tool.cc
+@@ -13,7 +13,7 @@
+ #include "fhiclcpp/ParameterSet.h"
+ #include "messagefacility/MessageLogger/MessageLogger.h"
+ #include "CLHEP/Random/RandFlat.h"
+-#include "IFDH_service.h"
++#include "ifdh_art/IFDHService/IFDH_service.h"
+ 
+ #include "nusimdata/SimulationBase/MCFlux.h"
+ 
 diff --git a/sbncode/EventGenerator/MultiPart/CMakeLists.txt b/sbncode/EventGenerator/MultiPart/CMakeLists.txt
-index a15df99..9523a81 100644
+index a15df99..dd7226a 100644
 --- a/sbncode/EventGenerator/MultiPart/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MultiPart/CMakeLists.txt
-@@ -1,33 +1,33 @@
+@@ -1,40 +1,40 @@
  # Add the subfolder containing the deconvolution tools
 -art_make( 
 -          MODULE_LIBRARIES larcorealg_Geometry
@@ -1201,6 +1255,14 @@ index a15df99..9523a81 100644
              ${MF_MESSAGELOGGER}
              ${MF_UTILITIES}
              ${FHICLCPP}
+             ${CETLIB}
+             ${ROOT_FFTW}
+             ${ROOT_BASIC_LIB_LIST}
+-	    ${ROOT_EG}
++	    ROOT::EG
+         )
+ 
+ install_headers()
 diff --git a/sbncode/FlashMatch/CMakeLists.txt b/sbncode/FlashMatch/CMakeLists.txt
 index ddb1522..f1d4127 100644
 --- a/sbncode/FlashMatch/CMakeLists.txt
@@ -1271,10 +1333,10 @@ index ddb1522..f1d4127 100644
    ${FHICLCPP}
    ${ROOT_GEOM}
 diff --git a/sbncode/FluxReader/CMakeLists.txt b/sbncode/FluxReader/CMakeLists.txt
-index 7e11652..db52d96 100644
+index 7e11652..02e6297 100644
 --- a/sbncode/FluxReader/CMakeLists.txt
 +++ b/sbncode/FluxReader/CMakeLists.txt
-@@ -1,39 +1,44 @@
+@@ -1,94 +1,103 @@
  cet_enable_asserts()
 -include_directories ( $ENV{GENIE_INC}/GENIE )
 -include_directories ( $ENV{DK2NUDATA_INC} )
@@ -1320,11 +1382,12 @@ index 7e11652..db52d96 100644
 -                nusimdata_SimulationBase
 -                larcore_Geometry_Geometry_service
 -                larcorealg_Geometry
+-                ${ROOT_GEOM}
 +                nusimdata::SimulationBase
 +                larcore::Geometry_Geometry_service
 +               lardata::Utilities
 +                larcorealg::Geometry
-                 ${ROOT_GEOM}
++                ROOT::Geom
                  ${ROOT_BASIC_LIB_LIST}
  )
  
@@ -1338,7 +1401,18 @@ index 7e11652..db52d96 100644
                    # GENIE STUFF #####################################
                    xml2
                    LOG4CPP
-@@ -46,49 +51,53 @@ art_make_library( LIBRARY_NAME sbncode_FluxReader_FluxInterface
+-                  GFwEG
+-                  GFwAlg
+-                  GFwMsg
+-                  GFwGHEP
+-                  GTlFlx
+-                  dk2nuTree
++                  GENIE::GFwEG
++                  GENIE::GFwAlg
++                  GENIE::GFwMsg
++                  GENIE::GFwGHEP
++                  GENIE::GTlFlx
++                  dk2nu::Tree
                    #${DK2NUDATA}
                    ${DK2NUGENIE}
                    ####################################################
@@ -1349,8 +1423,9 @@ index 7e11652..db52d96 100644
                    ${FHICLCPP}
                    ${MF_MESSAGELOGGER}
 -                  ${CLHEP}
+-                  ${ROOT_BASIC_LIB_LIST}
 +                  CLHEP::CLHEP
-                   ${ROOT_BASIC_LIB_LIST}
++                  ROOT::Core ROOT::Tree
                    ${Boost_SYSTEM_LIBRARY}
  )
  
@@ -1388,8 +1463,9 @@ index 7e11652..db52d96 100644
                          ${MF_UTILITIES}
                          ${FHICLCPP}
                          ${Boost_SYSTEM_LIBRARY}
-                         ${ROOT_BASIC_LIB_LIST}
+-                        ${ROOT_BASIC_LIB_LIST}
 -                        cetlib cetlib_except
++                        ROOT::Core ROOT::Tree
 +                        cetlib::cetlib cetlib_except::cetlib_except
 +               nutools::EventGeneratorBase_CRY
 +               lardata::Utilities
@@ -1422,8 +1498,17 @@ index 7e11652..db52d96 100644
                          # GENIE STUFF #####################################
                          xml2
                          LOG4CPP
+@@ -107,7 +116,7 @@ art_make( EXCLUDE FluxReader_source.cc ${INTERFACEFILES} FluxGeoFilter_module.cc
+                         ${MF_UTILITIES}
+                         ${FHICLCPP}
+                         ${Boost_SYSTEM_LIBRARY}
+-                        ${ROOT_BASIC_LIB_LIST}
++                        ROOT::Core ROOT::Tree
+ )
+ 
+ install_headers()
 diff --git a/sbncode/LArRecoProducer/CMakeLists.txt b/sbncode/LArRecoProducer/CMakeLists.txt
-index a8b1c01..4f61f06 100644
+index a8b1c01..2e3ca7b 100644
 --- a/sbncode/LArRecoProducer/CMakeLists.txt
 +++ b/sbncode/LArRecoProducer/CMakeLists.txt
 @@ -1,30 +1,30 @@
@@ -1453,11 +1538,14 @@ index a8b1c01..4f61f06 100644
 -	cetlib cetlib_except
 +	cetlib::cetlib cetlib_except::cetlib_except
  	${ROOT_EVE_LIB_LIST}
- 	${ROOT_X3d}
- 	${ROOT_BASIC_LIB_LIST}
+-	${ROOT_X3d}
+-	${ROOT_BASIC_LIB_LIST}
 -	MF_MessageLogger
+-
++	ROOT::X3d
++	ROOT::Core
 +	messagefacility::MF_MessageLogger
- 
++        ROOT::EG
  	sbn_LArReco	    
 -	sbnobj_Common_CRT
 -	sbnobj_Common_Reco
@@ -1995,10 +2083,10 @@ index c9d79d2..eece2cd 100644
  
  install_headers()
 diff --git a/sbncode/SBNEventWeight/Calculators/BNBFlux/CMakeLists.txt b/sbncode/SBNEventWeight/Calculators/BNBFlux/CMakeLists.txt
-index 56f20ab..9e1c93a 100644
+index 56f20ab..66ae865 100644
 --- a/sbncode/SBNEventWeight/Calculators/BNBFlux/CMakeLists.txt
 +++ b/sbncode/SBNEventWeight/Calculators/BNBFlux/CMakeLists.txt
-@@ -1,19 +1,19 @@
+@@ -1,19 +1,20 @@
 -include_directories($ENV{GENIE_INC}/GENIE)
 +include_directories($ENV{GENIE}/include/GENIE)
  
@@ -2010,18 +2098,24 @@ index 56f20ab..9e1c93a 100644
 -    nugen_NuReweight_art
 -    nugen_NuReweight
 -    nurandom_RandomUtils_NuRandomService_service
+-    ${ART_FRAMEWORK_PRINCIPAL}
+-    ${ART_PERSISTENCY_PROVENANCE}
+-    ${ART_FRAMEWORK_SERVICES_REGISTRY}
+-    ${FHICLCPP}
+-    ${CETLIB}
+-    nusimdata_SimulationBase
 +    sbncode::SBNEventWeight_Base
 +    nugen::EventGeneratorBase_GENIE
 +    nugen::NuReweight_art
 +    nugen::NuReweight
 +    nurandom::RandomUtils_NuRandomService_service
-     ${ART_FRAMEWORK_PRINCIPAL}
-     ${ART_PERSISTENCY_PROVENANCE}
-     ${ART_FRAMEWORK_SERVICES_REGISTRY}
-     ${FHICLCPP}
-     ${CETLIB}
--    nusimdata_SimulationBase
++    art::Framework_Principal
++    art::Persistency_Provenance
++    art::Framework_Services_Registry
++    fhiclcpp::fhiclcpp
++    cetlib::cetlib
 +    nusimdata::SimulationBase
++    ROOT::Hist
  )
  
  install_headers()
@@ -2155,7 +2249,7 @@ index 9c2b25c..8083eff 100644
  )
  
 diff --git a/sbncode/TPCReco/CalorimetryAnalysis/CMakeLists.txt b/sbncode/TPCReco/CalorimetryAnalysis/CMakeLists.txt
-index cae53c3..067f0b6 100644
+index cae53c3..3d184e7 100644
 --- a/sbncode/TPCReco/CalorimetryAnalysis/CMakeLists.txt
 +++ b/sbncode/TPCReco/CalorimetryAnalysis/CMakeLists.txt
 @@ -1,33 +1,35 @@
@@ -2176,13 +2270,16 @@ index cae53c3..067f0b6 100644
                              ${MF_UTILITIES}
                              ${FHICLCPP}
 -                            cetlib cetlib_except
-+                            cetlib::cetlib cetlib_except::cetlib_except
-                             ${ROOT_EVE_LIB_LIST}
-                             ${ROOT_X3d}
-                             ${ROOT_BASIC_LIB_LIST}
+-                            ${ROOT_EVE_LIB_LIST}
+-                            ${ROOT_X3d}
+-                            ${ROOT_BASIC_LIB_LIST}
 -	art_root_io_tfile_support
 -	art_root_io
 -	art_root_io_dict
++                            cetlib::cetlib cetlib_except::cetlib_except
++                            ROOT::EG
++                            ROOT::X3d
++                            ROOT::Core
 +	art_root_io::tfile_support
 +	art_root_io::art_root_io
 +	art_root_io::dict

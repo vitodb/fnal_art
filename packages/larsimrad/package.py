@@ -26,7 +26,7 @@ class Larsimrad(CMakePackage):
     url      = "https://github.com/gartung/larsimrad/archive/refs/tags/v09_01_17.tar.gz"
     list_url = "https://api.github.com/repos/marcmengel/larsimrad/tags"
 
-    version('09.03.04', sha256='74c8041fbef672eeb95941b5c785c087f1af3e834947a6ec63208302e850b712')
+    version('09.03.04',    sha256='74c8041fbef672eeb95941b5c785c087f1af3e834947a6ec63208302e850b712')
     version('09.01.09.01', sha256='5881b66ed27237560bbc8f4a422e6c9146fcb717fa84aaea07cc17f7fbf1a0b5')
     version('09.01.09',    sha256='15bd7dbae42c7e7d2600202057433903c05b77b6fe046a618b1645a2ff6a7920')
     version('09.01.08',    sha256='d23cb4fcff66deb82776d186298fd7201580e4a49eb7106a4c66096aeccc153b')
@@ -53,6 +53,8 @@ class Larsimrad(CMakePackage):
                                   self.list_url,
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') ]))
+
+    patch('v09_03_04.patch', when='@09.03.04')
 
     variant('cxxstd',
             default='17',

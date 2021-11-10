@@ -35,7 +35,6 @@ class Larreco(CMakePackage):
     version('09.06.17',     sha256='018feacc42ba65116e3a5cf97fca91d35588b86b369b499e3b1074c46c728063')
     version('09.06.16',     sha256='d616e607cca3949fe92fdb10d2552b43177b56e4281ed0b365e26f051c9a34bb')
     version('09.06.15',     sha256='0008866cf4b342f5002abd736773aee3c314b1077b0f035a7c564e0e069a102d')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larreco.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larreco.git', get_full_repo=True)
     version('MVP1a', git='https://github.com/gartung/larreco.git', branch='feature/MVP1a', get_full_repo=True)
 
@@ -52,6 +51,8 @@ class Larreco(CMakePackage):
                                   self.list_url,
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') ]))
+
+    patch('v09_07_05.patch', when='@09.07.05')
 
     variant('cxxstd',
             default='17',

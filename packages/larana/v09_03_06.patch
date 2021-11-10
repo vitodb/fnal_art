@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 06fb8e7..6a02dac 100644
+index 06fb8e7..655985d 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -10,10 +10,11 @@ cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
@@ -49,6 +49,7 @@ index 06fb8e7..6a02dac 100644
 +find_package( nutools )
 +find_package( nug4 )
 +find_package( nurandom )
++find_package( nusimdata )
 +find_package( art )
 +find_package( art_root_io )
 +find_package( Eigen3 )
@@ -74,8 +75,8 @@ index 06fb8e7..6a02dac 100644
  
  # packaging utility
 -include(UseCPack)
+-
 +#include(UseCPack)
- 
 +cet_cmake_config()
 diff --git a/larana/CosmicRemoval/CMakeLists.txt b/larana/CosmicRemoval/CMakeLists.txt
 index 0c0a17b..2c77aff 100644

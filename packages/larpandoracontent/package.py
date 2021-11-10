@@ -69,3 +69,7 @@ class Larpandoracontent(CMakePackage):
                  .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))
                ]
         return args
+
+    def setup_build_environment(self, env):
+        env.set("CETBUILDTOOLS_VERSION","cetmodules")
+

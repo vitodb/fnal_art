@@ -60,6 +60,7 @@ class Larsoft(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('v09_35_00.patch', when='@09.35.00')
 
     depends_on('cetmodules', type='build')
     depends_on('ifdh-art')

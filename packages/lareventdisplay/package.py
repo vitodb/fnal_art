@@ -60,7 +60,7 @@ class Lareventdisplay(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
-
+    patch('v09_02_05.patch', when='@09.02.05')
 
     depends_on('larreco')
     depends_on('nuevdb')

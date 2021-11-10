@@ -60,6 +60,7 @@ class Larpandora(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('v09_09_05.patch', when='@09.09.05')
 
     depends_on('messagefacility')
     depends_on('canvas')
@@ -77,7 +78,8 @@ class Larpandora(CMakePackage):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
                 '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
-                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2)),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1'
                ]
         return args
 

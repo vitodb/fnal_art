@@ -28,10 +28,7 @@ class Sbncode(CMakePackage):
     list_url = 'https://api.github.com/repos/SBNSoftware/sbncode/tags'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('09.35.00', tag='v09_35_00', git=git_base, get_full_repo=True)
-    version('09.33.00', tag='v09_33_00', git=git_base, get_full_repo=True)
-    version('09.10.00', tag='v09_10_00', git=git_base, get_full_repo=True)
-    version('09.10.01', tag='v09_10_01', git=git_base, get_full_repo=True)
+    version('09.35.00', sha256='6dc753dcc24e9583a261a70da99a1275835b70091c816dbbb0ddee60ad698686')
 
     patch('v09_35_00.patch', when='@09.35.00')
 
@@ -84,7 +81,7 @@ class Sbncode(CMakePackage):
     depends_on('ifdhc', type=('build','run'))
     depends_on('ifbeam', type=('build','run'))
     depends_on('libxml2', type=('build','run'))
-    # depends_on('nurandom', type=('build','run'))  ???
+    depends_on('nucondb', type=('build','run'))
     depends_on('nutools', type=('build','run'))
     depends_on('postgresql', type=('build','run'))
     depends_on('log4cpp', type=('build','run'))
@@ -122,7 +119,8 @@ class Sbncode(CMakePackage):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value),
                 '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
-                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2))]
+                 .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2)),
+                '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1' ]
         return args
 
     def setup_build_environment(self, spack_env):
@@ -138,6 +136,7 @@ class Sbncode(CMakePackage):
                                     deptype=('link'), direction='children'):
             spack_env.prepend_path('ROOT_INCLUDE_PATH',
                                    str(self.spec[d.name].prefix.include))
+        spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB',
                                os.path.join(self.build_directory, 'perllib'))

@@ -59,6 +59,7 @@ class Larrecodnn(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('v09_09_06.patch', when='@09.09.06')
 
     depends_on('cetmodules', type='build')
     depends_on('larcoreobj')

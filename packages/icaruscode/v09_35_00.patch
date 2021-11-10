@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 5b06808..37b8c1c 100644
+index 5b06808..fc44cd5 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -11,10 +11,12 @@
@@ -16,7 +16,7 @@ index 5b06808..37b8c1c 100644
  project(icaruscode VERSION 09.35.00 LANGUAGES CXX)
  
  message(STATUS
-@@ -22,70 +24,75 @@ message(STATUS
+@@ -22,70 +24,78 @@ message(STATUS
    "\n-- === *** Start of configuration of ${PROJECT_NAME} ***"
    "\n-- ===")
  
@@ -95,6 +95,8 @@ index 5b06808..37b8c1c 100644
 +find_package(libwda)
 +find_package(PostgreSQL)
 +find_package(Eigen3)
++find_package(ifbeam)
++find_package(ifdhc)
 +find_package(ifdh_art)
 +find_package(guideline_sl)
 +find_package(range-v3)
@@ -136,6 +138,7 @@ index 5b06808..37b8c1c 100644
 +find_package(SQLite3)
 +find_package(artdaq_core)
 +find_package(sbndaq_artdaq_core)
++find_package(sbndaq-artdaq-core)
 +find_package(PostgreSQL)
 +
 +cet_find_library(PQ NAMES pq )
@@ -148,7 +151,7 @@ index 5b06808..37b8c1c 100644
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -104,10 +111,8 @@ add_subdirectory(test)
+@@ -104,10 +114,8 @@ add_subdirectory(test)
  add_subdirectory(fcl)
  
  # ups - table and config files
@@ -159,7 +162,7 @@ index 5b06808..37b8c1c 100644
  
  message(STATUS
    "\n-- ==="
-@@ -117,3 +122,4 @@ message(STATUS
+@@ -117,3 +125,4 @@ message(STATUS
    "\n-- "
    )
  
@@ -318,7 +321,7 @@ index e366278..2fc79a7 100644
  install_fhicl()
  install_source()
 diff --git a/icaruscode/Analysis/tools/CMakeLists.txt b/icaruscode/Analysis/tools/CMakeLists.txt
-index 705f2cf..35cd668 100644
+index 705f2cf..57824ad 100644
 --- a/icaruscode/Analysis/tools/CMakeLists.txt
 +++ b/icaruscode/Analysis/tools/CMakeLists.txt
 @@ -2,40 +2,39 @@ cet_enable_asserts()
@@ -389,7 +392,7 @@ index 705f2cf..35cd668 100644
 +		Boost::filesystem
 +		Boost::system
 +		CLHEP::Random
-+		${ROOT_MINUIT}
++		ROOT::Minuit ROOT::Tree
 +		)
  
  install_headers()
@@ -522,10 +525,10 @@ index dffd9bf..8ab1312 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/CRT/CMakeLists.txt b/icaruscode/CRT/CMakeLists.txt
-index 470b5f2..188bcc7 100644
+index 470b5f2..2ba984a 100644
 --- a/icaruscode/CRT/CMakeLists.txt
 +++ b/icaruscode/CRT/CMakeLists.txt
-@@ -1,303 +1,302 @@
+@@ -1,303 +1,303 @@
 -include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 -include_directories( $ENV{NURANDOM_INC} )
 -include_directories( $ENV{IFDHX_FQ_DIR}/inc )
@@ -852,7 +855,7 @@ index 470b5f2..188bcc7 100644
 +	art_root_io::TFileService_service
 +	messagefacility::MF_MessageLogger
 +	messagefacility::headers
-+	
++        ROOT::Core	
 +	ROOT::Geom
 +	ROOT::XMLIO
 +	ROOT::Gdml
@@ -888,7 +891,7 @@ index 470b5f2..188bcc7 100644
 +	art_root_io::TFileService_service
 +	messagefacility::MF_MessageLogger
 +	messagefacility::headers
-+	
++	ROOT::Core
 +	ROOT::Geom
 +	ROOT::XMLIO
 +	ROOT::Gdml
@@ -1054,6 +1057,7 @@ index 470b5f2..188bcc7 100644
 +	messagefacility::MF_MessageLogger
 +	messagefacility::headers
 +	cetlib::cetlib cetlib_except::cetlib_except
++        ROOT::Tree
 +	ROOT::Core
 +	ROOT::Geom
 +	ROOT::XMLIO
@@ -1099,264 +1103,11 @@ index 470b5f2..188bcc7 100644
  
  install_headers()
  install_fhicl()
-diff --git a/icaruscode/CRT/CRTDecoder/BernCRTTranslator.cc b/icaruscode/CRT/CRTDecoder/BernCRTTranslator.cc
-new file mode 100644
-index 0000000..c33f092
---- /dev/null
-+++ b/icaruscode/CRT/CRTDecoder/BernCRTTranslator.cc
-@@ -0,0 +1,247 @@
-+#include "canvas/Utilities/Exception.h"
-+
-+#include "sbndaq-artdaq-core/Overlays/Common/BernCRTZMQFragment.hh"
-+#include "sbndaq-artdaq-core/Overlays/Common/BernCRTFragment.hh"
-+#include "sbndaq-artdaq-core/Overlays/Common/BernCRTFragmentV2.hh"
-+
-+#include "artdaq-core/Data/Fragment.hh"
-+#include "artdaq-core/Data/ContainerFragment.hh"
-+#include "sbndaq-artdaq-core/Overlays/FragmentType.hh"
-+
-+#include <iostream>
-+#include <bitset>
-+
-+#include "BernCRTTranslator.hh"
-+
-+icarus::crt::BernCRTTranslator icarus::crt::BernCRTTranslator::analyze_BernCRTZMQFragment(artdaq::Fragment & frag) {
-+  icarus::crt::BernCRTTranslator out;
-+
-+  const sbndaq::BernCRTZMQFragment bern_fragment(frag);
-+
-+  out.timestamp        = frag.timestamp();
-+  out.sequence_id      = frag.sequenceID();
-+
-+  //event data
-+  const sbndaq::BernCRTZMQEvent* bevt = bern_fragment.eventdata();
-+//  TLOG(TLVL_INFO)<<*bevt;
-+
-+  out.mac5     = bevt->MAC5();
-+  out.flags    = bevt->flags;
-+  out.lostcpu  = bevt->lostcpu;
-+  out.lostfpga = bevt->lostfpga;
-+  out.ts0      = bevt->Time_TS0();
-+  out.ts1      = bevt->Time_TS1();
-+  out.coinc    = bevt->coinc;
-+
-+  for(int ch=0; ch<32; ch++) out.adc[ch] = bevt->ADC(ch);
-+
-+  //metadata
-+  const sbndaq::BernCRTZMQFragmentMetadata* md = bern_fragment.metadata();
-+//  TLOG(TLVL_INFO)<<*md;
-+
-+  out.run_start_time            = md->run_start_time();
-+  out.this_poll_start           = md->this_poll_start();
-+  out.this_poll_end             = md->this_poll_end();
-+  out.last_poll_start           = md->last_poll_start();
-+  out.last_poll_end             = md->last_poll_end();
-+  out.system_clock_deviation    = md->system_clock_deviation();
-+  out.hits_in_poll              = md->feb_events_per_poll();
-+  out.feb_hit_number            = md->feb_event_number();
-+  out.lost_hits                 = md->omitted_events();
-+  out.last_accepted_timestamp   = md->last_accepted_timestamp();
-+  
-+  out.hits_in_fragment          = 1;
-+
-+  return out;
-+}
-+
-+icarus::crt::BernCRTTranslator icarus::crt::BernCRTTranslator::analyze_BernCRTFragment(artdaq::Fragment & frag) {
-+  icarus::crt::BernCRTTranslator out;
-+
-+  const sbndaq::BernCRTFragment bern_fragment(frag);
-+
-+  out.timestamp        = frag.timestamp();
-+  out.sequence_id      = frag.sequenceID();
-+
-+  //event data
-+  const sbndaq::BernCRTEvent* bevt = bern_fragment.eventdata();
-+//  TLOG(TLVL_INFO)<<*bevt;
-+
-+  out.mac5     = bevt->MAC5();
-+  out.flags    = bevt->flags;
-+  out.lostcpu  = bevt->lostcpu;
-+  out.lostfpga = bevt->lostfpga;
-+  out.ts0      = bevt->Time_TS0();
-+  out.ts1      = bevt->Time_TS1();
-+  out.coinc    = bevt->coinc;
-+
-+  for(int ch=0; ch<32; ch++) out.adc[ch] = bevt->ADC(ch);
-+
-+  //metadata
-+  const sbndaq::BernCRTFragmentMetadata* md = bern_fragment.metadata();
-+//  TLOG(TLVL_INFO)<<*md;
-+
-+  out.run_start_time            = md->run_start_time();
-+  out.this_poll_start           = md->this_poll_start();
-+  out.this_poll_end             = md->this_poll_end();
-+  out.last_poll_start           = md->last_poll_start();
-+  out.last_poll_end             = md->last_poll_end();
-+  out.system_clock_deviation    = md->system_clock_deviation();
-+  out.hits_in_poll              = md->feb_events_per_poll();
-+  out.feb_hit_number            = md->feb_event_number();
-+  out.lost_hits                 = md->omitted_events();
-+  out.last_accepted_timestamp   = md->last_accepted_timestamp();
-+
-+  out.hits_in_fragment          = 1;
-+
-+  return out;
-+}
-+
-+std::vector<icarus::crt::BernCRTTranslator> icarus::crt::BernCRTTranslator::analyze_BernCRTFragmentV2(artdaq::Fragment & frag) {
-+  
-+  const sbndaq::BernCRTFragmentV2 bern_fragment(frag);
-+  const sbndaq::BernCRTFragmentMetadataV2* md = bern_fragment.metadata();
-+//  TLOG(TLVL_INFO)<<*bern_fragment;
-+
-+  const unsigned int nhits      = md->hits_in_fragment();
-+  std::vector<icarus::crt::BernCRTTranslator> OUT;
-+  OUT.reserve(nhits);
-+
-+  for(unsigned int iHit = 0; iHit < nhits; iHit++) {
-+    icarus::crt::BernCRTTranslator out;
-+
-+    const sbndaq::BernCRTHitV2* bevt = bern_fragment.eventdata(iHit);
-+
-+    out.flags                     = bevt->flags;
-+    out.lostcpu                   = bevt->lostcpu;
-+    out.lostfpga                  = bevt->lostfpga;
-+    out.ts0                       = bevt->ts0;
-+    out.ts1                       = bevt->ts1;
-+    out.coinc                     = bevt->coinc;
-+    out.feb_hit_number            = bevt->feb_hit_number;
-+    out.timestamp                 = bevt->timestamp;
-+    out.last_accepted_timestamp   = bevt->last_accepted_timestamp;
-+    out.lost_hits                 = bevt->lost_hits;
-+
-+    for(int ch=0; ch<32; ch++) out.adc[ch] = bevt->adc[ch];
-+
-+    out.sequence_id               = frag.sequenceID();
-+
-+    //metadata
-+    out.mac5                      = md->MAC5();
-+    out.run_start_time            = md->run_start_time();
-+    out.this_poll_start           = md->this_poll_start();
-+    out.this_poll_end             = md->this_poll_end();
-+    out.last_poll_start           = md->last_poll_start();
-+    out.last_poll_end             = md->last_poll_end();
-+    out.system_clock_deviation    = md->system_clock_deviation();
-+    out.hits_in_poll              = md->hits_in_poll();
-+ 
-+    out.hits_in_fragment          = nhits;
-+
-+    OUT.push_back(out);
-+  }
-+  return OUT;
-+} 
-+
-+std::vector<icarus::crt::BernCRTTranslator> icarus::crt::BernCRTTranslator::getCRTData(art::Event const & evt) {
-+  std::vector<icarus::crt::BernCRTTranslator> out;
-+
-+  //std::vector<art::Handle<artdaq::Fragments>> fragmentHandles;
-+  //evt.getManyByType(fragmentHandles);
-+  auto fragmentHandles = evt.getMany<artdaq::Fragments>();
-+  for (auto handle : fragmentHandles) {
-+    if (!handle.isValid() || handle->size() == 0)
-+      continue;
-+    
-+    if (handle->front().type() == artdaq::Fragment::ContainerFragmentType) {
-+      //Container fragment
-+      for (auto cont : *handle) {
-+        artdaq::ContainerFragment contf(cont);
-+        switch(contf.fragment_type()) {
-+          case sbndaq::detail::FragmentType::BERNCRTZMQ:
-+            out.reserve(out.size() + contf.block_count());
-+            for (size_t ii = 0; ii < contf.block_count(); ++ii) {
-+              out.push_back(analyze_BernCRTZMQFragment(*contf[ii].get()));
-+            }
-+            break;
-+          case sbndaq::detail::FragmentType::BERNCRT:
-+            out.reserve(out.size() + contf.block_count());
-+            for (size_t ii = 0; ii < contf.block_count(); ++ii) {
-+              out.push_back(analyze_BernCRTFragment(*contf[ii].get()));
-+            }
-+            break;
-+          case sbndaq::detail::FragmentType::BERNCRTV2:
-+            for (size_t ii = 0; ii < contf.block_count(); ++ii) {
-+              std::vector<icarus::crt::BernCRTTranslator> v = analyze_BernCRTFragmentV2(*contf[ii].get());
-+              out.insert( out.end(), v.begin(), v.end() );
-+            }
-+            break; 
-+        }
-+      }
-+    }
-+    else {
-+      //normal fragment
-+      switch(handle->front().type()) {
-+        case sbndaq::detail::FragmentType::BERNCRTZMQ:
-+          out.reserve(out.size() + handle->size());
-+          for (auto frag : *handle) {
-+            out.push_back(analyze_BernCRTZMQFragment(frag));
-+          }
-+          break;
-+        case sbndaq::detail::FragmentType::BERNCRT:
-+          out.reserve(out.size() + handle->size());
-+          for (auto frag : *handle) {
-+            out.push_back(analyze_BernCRTFragment(frag));
-+          }
-+          break;
-+        case sbndaq::detail::FragmentType::BERNCRTV2:
-+          out.reserve(out.size() + handle->size());
-+          for (auto frag : *handle) {
-+            std::vector<icarus::crt::BernCRTTranslator> v = analyze_BernCRTFragmentV2(frag);
-+            out.insert( out.end(), v.begin(), v.end() );
-+          }
-+          break; 
-+      }
-+    }
-+  } 
-+
-+  return out;
-+}
-+
-+std::ostream & icarus::crt::operator << (std::ostream & os, icarus::crt::BernCRTTranslator const& t){
-+  os <<"\n\tMAC5:              0x" << std::hex << (int)t.mac5 << std::dec << " (" << (int)t.mac5 << ")"
-+     << "\n\tRun start time:    " << sbndaq::BernCRTFragment::print_timestamp(t.run_start_time)
-+     << "\n\tThis poll start:   " << sbndaq::BernCRTFragment::print_timestamp(t.this_poll_start)
-+     << "\n\tThis poll finish:  " << sbndaq::BernCRTFragment::print_timestamp(t.this_poll_end)
-+     << "\n\tLast poll start:   " << sbndaq::BernCRTFragment::print_timestamp(t.last_poll_start)
-+     << "\n\tLast poll finish:  " << sbndaq::BernCRTFragment::print_timestamp(t.last_poll_end)
-+     << "\n\tClock deviation:   " << t.system_clock_deviation<<" ns"
-+     << "\n\tFEB hits/poll:     " << t.hits_in_poll
-+     << "\n\tFEB hits/fragment: " << t.hits_in_fragment
-+     << "\n\tFlags:             " << std::bitset<8>(t.flags)
-+     <<(t.IsOverflow_TS0() ?" [T0 overflow]" :"")
-+     <<(t.IsOverflow_TS1() ?" [T1 overflow]" :"")
-+     <<(t.IsReference_TS0()?" [T0 reference]":"")
-+     <<(t.IsReference_TS1()?" [T1 reference]":"")
-+     << "\n\tLostCPU:           " << t.lostcpu
-+     << "\n\tLostFPGA:          " << t.lostfpga
-+     << "\n\tTime1 (TS0):       " << sbndaq::BernCRTFragment::print_timestamp(t.ts0)
-+     << "\n\tTime2 (TS1):       " << sbndaq::BernCRTFragment::print_timestamp(t.ts1);
-+
-+  os << "\n\t[#ch]: ADC  ";
-+  for(size_t i_c=0; i_c<32; ++i_c) {
-+    if(!(i_c % 8)) os<<"\n\t";
-+    os << " ["<<std::setw(2)<<i_c<<"]: " <<std::setw(4)<< t.adc[i_c];
-+  }
-+
-+  os << "\n\tCoincidence:       " << std::bitset<32>(t.coinc)
-+     << "\n\tTimestamp:         " << sbndaq::BernCRTFragment::print_timestamp(t.timestamp)
-+     << "\n\tFEB hit number:    " << t.feb_hit_number
-+     << "\n\tLost hits:         " << t.lost_hits
-+     << "\n\tLast timestamp:    " << sbndaq::BernCRTFragment::print_timestamp(t.last_accepted_timestamp)
-+     << "\n";
-+
-+  return os;
-+}
-+
 diff --git a/icaruscode/CRT/CRTDecoder/CMakeLists.txt b/icaruscode/CRT/CRTDecoder/CMakeLists.txt
-index c1c1042..d7db4b5 100644
+index c1c1042..344b181 100644
 --- a/icaruscode/CRT/CRTDecoder/CMakeLists.txt
 +++ b/icaruscode/CRT/CRTDecoder/CMakeLists.txt
-@@ -1,106 +1,105 @@
+@@ -1,127 +1,129 @@
 +include_directories(${TRACE_INC})
 +
  art_make(
@@ -1376,12 +1127,13 @@ index c1c1042..d7db4b5 100644
 - LIBRARY_NAME sbndaq-artdaq_ArtModules_Common
 - LIB_LIBRARIES sbndaq-artdaq-core_Overlays
 -               sbndaq-artdaq-core_Overlays_Common
+-
 +	NO_PLUGINS
 +	BASENAME_ONLY
 +	LIBRARY_NAME sbndaq-artdaq_ArtModules_Common
-+	LIB_LIBRARIES sbndaq-artdaq-core::Overlays
-+		sbndaq-artdaq-core::Overlays_Common
- 
++	LIB_LIBRARIES sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays
++		sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common
++                canvas::canvas
  )
  
  art_make_library(
@@ -1544,6 +1296,119 @@ index c1c1042..d7db4b5 100644
  )
  
  install_headers()
+ install_source()
+ 
+-simple_plugin( BernCRTAna "module"
+-  art_Framework_Services_Registry
+-  art_root_io_tfile_support
+-  art_root_io_TFileService_service
+-  ${ROOT_BASIC_LIB_LIST}
++cet_build_plugin( BernCRTAna art::module
++  LIBRARIES
++  art::Framework_Services_Registry
++  art_root_io::tfile_support
++  art_root_io::TFileService_service
++  ROOT::Core ROOT::Tree
++  canvas::canvas
+         ${ARTDAQ-CORE_UTILITIES}
+   sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common 
+   artdaq_core::artdaq-core_Data
+ )
+ 
+ simple_plugin( CrtNoiseMonTool "module"
+-  art_Framework_Services_Registry
+-  art_root_io_tfile_support
+-  art_root_io_TFileService_service
+-  #art_Framework_Services_Optional
+-  #art_Framework_Services_Optional_TFileService_service
++  art::Framework_Services_Registry
++  art_root_io::tfile_support
++  art_root_io::TFileService_service
++  #art::Framework_Services_Optional
++  #art::Framework_Services_Optional_TFileService_service
++  ROOT::Core ROOT::Tree ROOT::Hist
+   ${ROOT_BASIC_LIB_LIST}
+         ${ARTDAQ-CORE_UTILITIES}
+   sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common 
+@@ -129,11 +131,12 @@ simple_plugin( CrtNoiseMonTool "module"
+ )
+ 
+ simple_plugin( CrtCalAnalysis "module"
+-  art_Framework_Services_Registry
+-  art_root_io_tfile_support
+-  art_root_io_TFileService_service
+-  #art_Framework_Services_Optional
+-  #art_Framework_Services_Optional_TFileService_service
++  art::Framework_Services_Registry
++  art_root_io::tfile_support
++  art_root_io::TFileService_service
++  #art::Framework_Services_Optional
++  #art::Framework_Services_Optional_TFileService_service
++  ROOT::Core ROOT::Tree ROOT::Hist
+   ${ROOT_BASIC_LIB_LIST}
+         ${ARTDAQ-CORE_UTILITIES}
+   sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common 
+@@ -142,11 +145,12 @@ simple_plugin( CrtCalAnalysis "module"
+ )
+ 
+ simple_plugin( AnaProducer "module"
+-  art_Framework_Services_Registry
+-  art_root_io_tfile_support
+-  art_root_io_TFileService_service
+-  #art_Framework_Services_Optional
+-  #art_Framework_Services_Optional_TFileService_service
++  art::Framework_Services_Registry
++  art_root_io::tfile_support
++  art_root_io::TFileService_service
++  #art::Framework_Services_Optional
++  #art::Framework_Services_Optional_TFileService_service
++  ROOT::Core ROOT::Tree ROOT::Hist
+   ${ROOT_BASIC_LIB_LIST}
+         ${ARTDAQ-CORE_UTILITIES}
+   sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common 
+@@ -158,26 +162,32 @@ simple_plugin( AnaProducer "module"
+ )
+ 
+ simple_plugin( CRTEventProducer "module"
+-  art_Framework_Services_Registry
+-  art_root_io_tfile_support
+-  art_root_io_TFileService_service
+-  #art_Framework_Services_Optional
+-  #art_Framework_Services_Optional_TFileService_service
++  art::Framework_Services_Registry
++  art_root_io::tfile_support
++  art_root_io::TFileService_service
++  #art::Framework_Services_Optional
++  #art::Framework_Services_Optional_TFileService_service
+   #${ROOT_BASIC_LIB_LIST}
+   CRT_PREPROCESS_TREE
+   #CRT_CAL_TREE
+-  sbnobj_Common_CRT
++  sbnobj::Common_CRT
++  lardata::headers
++  larcore::headers
++  larcorealg::headers
++  larcoreobj::headers
++  lardataalg::headers
+ )
+ 
+ simple_plugin( DecoderICARUSCRT "module"
+-  art_Framework_Services_Registry
+-  art_root_io_tfile_support
+-  art_root_io_TFileService_service
++  art::Framework_Services_Registry
++  art_root_io::tfile_support
++  art_root_io::TFileService_service
++  ROOT::Core ROOT::Tree ROOT::Hist
+   ${ROOT_BASIC_LIB_LIST}
+   ${ARTDAQ-CORE_UTILITIES}
+   sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common
+   artdaq_core::artdaq-core_Data
+-  sbnobj_Common_CRT
++  sbnobj::Common_CRT
+ )
+ 
+ install_fhicl()
 diff --git a/icaruscode/CRT/CRTUtils/CMakeLists.txt b/icaruscode/CRT/CRTUtils/CMakeLists.txt
 index 07e742f..b605150 100644
 --- a/icaruscode/CRT/CRTUtils/CMakeLists.txt
@@ -1637,7 +1502,7 @@ index 07e742f..b605150 100644
  install_source()
 +
 diff --git a/icaruscode/Decode/CMakeLists.txt b/icaruscode/Decode/CMakeLists.txt
-index 4e6fb23..7f14c3b 100644
+index 4e6fb23..c34e823 100644
 --- a/icaruscode/Decode/CMakeLists.txt
 +++ b/icaruscode/Decode/CMakeLists.txt
 @@ -1,83 +1,86 @@
@@ -1692,7 +1557,7 @@ index 4e6fb23..7f14c3b 100644
 +	icarus_signal_processing::icarus_signal_processing
 +	icarus_signal_processing::Detection
 +	icarus_signal_processing::Filters
-+	sbndaq-artdaq-core::Overlays_ICARUS
++	sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_ICARUS
 +	artdaq_core::artdaq-core_Utilities
 +	larcorealg::Geometry
 +	larcore::Geometry_Geometry_service
@@ -1738,8 +1603,8 @@ index 4e6fb23..7f14c3b 100644
 +	icaruscode::Decode_DecoderTools_Dumpers
 +	icaruscode::Decode_DataProducts # should become sbnobj::Common_Trigger
 +	icaruscode::Decode_DecoderTools
-+	sbndaq-artdaq-core::Overlays_Common
-+	sbndaq-artdaq-core::Overlays
++	sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_Common
++	sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays
 +	lardataobj::RawData
 +	larcore::Geometry_Geometry_service
 +	artdaq_core::artdaq-core_Data
@@ -1796,7 +1661,7 @@ index 4e6fb23..7f14c3b 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/Decode/ChannelMapping/CMakeLists.txt b/icaruscode/Decode/ChannelMapping/CMakeLists.txt
-index 291670e..ab2056f 100644
+index 291670e..9c8ffc6 100644
 --- a/icaruscode/Decode/ChannelMapping/CMakeLists.txt
 +++ b/icaruscode/Decode/ChannelMapping/CMakeLists.txt
 @@ -1,63 +1,69 @@
@@ -1867,7 +1732,7 @@ index 291670e..ab2056f 100644
 +		lardata::Utilities
 +		lardata::ArtDataHelper
 +                larcorealg::CoreUtils
-+		wda
++		wda::wda
 +		art::Framework_Core
 +		art::Framework_Principal
 +		art::Framework_Services_Registry
@@ -1886,7 +1751,7 @@ index 291670e..ab2056f 100644
 +                larcorealg::CoreUtils
 +		lardata::Utilities
 +		lardata::ArtDataHelper
-+		wda
++		wda::wda
 +		art::Framework_Core
 +		art::Framework_Principal
 +		art::Framework_Services_Registry
@@ -1942,7 +1807,7 @@ index ab30dea..1afc573 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/Decode/DecoderTools/CMakeLists.txt b/icaruscode/Decode/DecoderTools/CMakeLists.txt
-index 5014ec6..46176cc 100644
+index 5014ec6..6e96f3d 100644
 --- a/icaruscode/Decode/DecoderTools/CMakeLists.txt
 +++ b/icaruscode/Decode/DecoderTools/CMakeLists.txt
 @@ -1,52 +1,56 @@
@@ -2011,7 +1876,7 @@ index 5014ec6..46176cc 100644
 +		ROOT::Core
 +		art::Framework_Services_Registry
 +	TOOL_LIBRARIES
-+		sbndaq-artdaq-core::Overlays_ICARUS
++		sbndaq_artdaq_core::sbndaq-artdaq-core_Overlays_ICARUS
 +		artdaq_core::artdaq-core_Utilities
 +		icarus_signal_processing::icarus_signal_processing
 +		icarus_signal_processing::Detection
@@ -5155,6 +5020,22 @@ index 3a93ab4..1128ecf 100644
 +		${ROOT_MINUIT2}
 +	)
  
+ 
+ install_headers()
+diff --git a/icaruscode/TPC/Tracking/cluster3D/CMakeLists.txt b/icaruscode/TPC/Tracking/cluster3D/CMakeLists.txt
+index 4dc748b..bb21323 100644
+--- a/icaruscode/TPC/Tracking/cluster3D/CMakeLists.txt
++++ b/icaruscode/TPC/Tracking/cluster3D/CMakeLists.txt
+@@ -25,7 +25,10 @@ art_make(LIB_LIBRARIES
+            fhiclcpp::fhiclcpp
+            cetlib::cetlib
+            cetlib_except::cetlib_except
+-          TOOL_LIBRARIES larreco_RecoAlg_Cluster3DAlgs
++          TOOL_LIBRARIES larreco::RecoAlg_Cluster3DAlgs
++           art_root_io::tfile_support
++           larevt::headers
++           Eigen3::Eigen
+         )
  
  install_headers()
 diff --git a/icaruscode/TPC/Utilities/CMakeLists.txt b/icaruscode/TPC/Utilities/CMakeLists.txt
