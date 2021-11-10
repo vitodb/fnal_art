@@ -21,7 +21,7 @@ class Larrecodnn(CMakePackage):
     """Larrecodnn"""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larrecodnn"
-    git_base = 'https://github.com/gartung/larrecodnn.git'
+    git_base = 'https://github.com/LArSoft/larrecodnn.git'
     url      = "https://github.com/LArSoft/larrecodnn/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larrecodnn/tags"
 
@@ -36,7 +36,6 @@ class Larrecodnn(CMakePackage):
     version('09.08.06',     sha256='5f71b2025b235eb0c5887c097714851fd4108eb129f037e32c80622220c425de')
     version('09.08.05',     sha256='52330db26ddfd361776fc6a3b3350c3c9bffbf1f95bc180f66b666d7176997b1')
     version('09.08.04',     sha256='d167889d60dd197ff1d725f6a3806409954eb43bf881203e7a9eccc58f45032a')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larrecodnn.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larrecodnn.git', get_full_repo=True)
 
 

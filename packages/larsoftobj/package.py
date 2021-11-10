@@ -35,9 +35,7 @@ class Larsoftobj(CMakePackage):
     version('09.09.00',     sha256='cb95eef62900dbd079358f551f55fc4618cbd07ccf7597a64c17997eed0bd778')
     version('09.08.00',     sha256='754244c71ef8fa11b4253bdccb5b759d595cff6b3cbec5950fd7991722978e6e')
     version('09.07.01.01',  sha256='bced9f49dce8df06040eb2e308e09cf3fdd19f76ef36116c8f83b0265572ac2a')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsoftobj.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsoftobj.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larsoftobj.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

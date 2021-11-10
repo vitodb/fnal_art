@@ -22,9 +22,9 @@ class Larsimrad(CMakePackage):
     """larsimrad """
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/larsimrad"
-    git_base = 'https://github.com/SBNSoftware/larsimrad.git'
-    url      = "https://github.com/gartung/larsimrad/archive/refs/tags/v09_01_17.tar.gz"
-    list_url = "https://api.github.com/repos/marcmengel/larsimrad/tags"
+    git_base = 'https://github.com/LArSoft/larsimrad.git'
+    url      = "https://github.com/LArSoft/larsimrad/archive/refs/tags/v09_01_17.tar.gz"
+    list_url = "https://api.github.com/repos/LArSoft/larsimrad/tags"
 
     version('09.03.04',    sha256='74c8041fbef672eeb95941b5c785c087f1af3e834947a6ec63208302e850b712')
     version('09.01.09.01', sha256='5881b66ed27237560bbc8f4a422e6c9146fcb717fa84aaea07cc17f7fbf1a0b5')
@@ -36,7 +36,6 @@ class Larsimrad(CMakePackage):
     version('09.01.04',    sha256='5367e74c6d76fb4149083fc54238d12a0c0632b532499b004e6840619e575a0f')
     version('09.01.03',    sha256='7536f5e4f49c2ec3b82bfe2cb89a76a707cce00f9e09e82ca6bcc6d7157e7516')
     version('09.01.02',    sha256='7c47e4483f24b2c857b8597f93516da62bd20c3150f941892c69dda2a3e4ef1e')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsimrad.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsimrad.git', get_full_repo=True)
 
 

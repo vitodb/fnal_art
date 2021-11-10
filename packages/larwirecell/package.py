@@ -37,9 +37,7 @@ class Larwirecell(CMakePackage):
     version('09.02.13.01',  sha256='0db9cfba036367c1ac1648f865f2ce75535a2d5cbeca5341aa7d81c96077ca4f')
     version('09.02.13',     sha256='3bb40ffaedaceb9ebaff9ff90c71aed022455564fccc1156cb51df15a1890fa9')
     version('09.02.12',     sha256='8c0ebd57bf5d99b74c67d4e4ae22369a52319ed54087c3292a8e419b1d93c873')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larwirecell.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larwirecell.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larwirecell.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

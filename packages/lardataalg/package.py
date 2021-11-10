@@ -37,7 +37,6 @@ class Lardataalg(CMakePackage):
     version('09.05.00',     sha256='130403d30bd58bc4c4063f11746cd9f52cee141ef38017e0cacbe9bbc9ea3eee')
     version('09.04.07.01',  sha256='4e472a604aa4d7700841b0c7ebea095fda9dfebff75429efaedbd8840c96ca8c')
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lardataalg.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/lardataalg.git', branch='feature/MVP1a',  get_full_repo=True)
 
 
     def url_for_version(self, version):

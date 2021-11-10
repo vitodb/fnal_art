@@ -36,9 +36,7 @@ class Larexamples(CMakePackage):
     version('09.01.19',     sha256='3e22003f17f9101beb9ea7df375c14b31b4aadd3e7e0e5e304dbf9f231773d2a')
     version('09.01.18',     sha256='609d23c317863c2167b33cb32fe28d9255c08608a04452fc9611c58ca72e692a')
     version('09.01.17',     sha256='43edeed8b818581b4ed0ca0f2fb58bea07ed7bc5561aa58f252485e63c8eae9b')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larexamples.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larexamples.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larexamples.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

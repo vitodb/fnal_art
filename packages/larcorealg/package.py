@@ -36,7 +36,6 @@ class Larcorealg(CMakePackage):
     version('09.01.02.03',  sha256='843673c9a9be9520d35c9d640ed390dd6fe6ef34761d04aa6517443550c5c1db')
     version('09.01.02.02',  sha256='f880856eddf4d629af4c4a3009a1ad832d29933beba9f7c093b9a51cd4134c0c')
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larcorealg.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larcorealg.git', branch='feature/MVP1a', get_full_repo=True)
     
 
     def url_for_version(self, version):

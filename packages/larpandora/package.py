@@ -36,9 +36,7 @@ class Larpandora(CMakePackage):
     version('09.07.06',     sha256='5995bfefa845c71945024062c89f2643627f1810fb74a97db44d7815b44c3c5b')
     version('09.07.05',     sha256='c9de839586a7c504dcd099a5aa936cf1958346d3cf20c3fedee8b5fa54037fa0')
     version('09.07.04',     sha256='afac457dfc09f2d4c4c68781bed1a87e2f4f168658bd79b2a207bb3ae805edef')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larpandora.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larpandora.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larpandora.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

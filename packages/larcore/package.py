@@ -35,7 +35,6 @@ class Larcore(CMakePackage):
     version('09.02.02.03',  sha256='30ecf738c12380a9629024b84af3cd9110749f0ddd37ae3cd0834c31b42f0e18')
     version('09.02.02.02',  sha256='5fa4a0040139f7e06a1219919a876dd4cc56970b01c6d8e8cd32b1119b899f93')
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larcore.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larcore.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

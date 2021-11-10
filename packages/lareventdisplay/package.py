@@ -36,9 +36,7 @@ class Lareventdisplay(CMakePackage):
     version('09.01.20',     sha256='b6b8cc0299ae92f2ef7483a52437748b277c3b507a729183e299ef2932a9b5d6')
     version('09.01.19',     sha256='1e75ec62ea1c657a724b09a002369d87d8be45cffe5367767240980418ddd4fe')
     version('09.01.18',     sha256='a790330b9f05320d69f619bd6bb8251f69f9d21c811647e57f3754d16c1dea3b')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/lareventdisplay.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lareventdisplay.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/lareventdisplay.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

@@ -35,7 +35,6 @@ class Larcoreobj(CMakePackage):
     version('09.02.01.03',  sha256='4105948a6f66ae4f67c17dca26c45625070c55afc2e944df9fac0d65f96361b8')
     version('09.02.01.02',  sha256='79f5d03a06653b36ece1d742297eee11ecb4f228e4e7e92dffbe58a4906cdad7')
     version('09.02.01.01',  sha256='69ac99252ff2c522510c60ebe27ad644a9634e03d9b9ecdd25f5b78361be579f')
-    version('MVP1a', git='https://github.com/gartung/larcoreobj.git', branch='feature/MVP1a', get_full_repo=True)
     version('mwm1', git='https://github.com/marcmengel/larcoreobj.git', branch='develop', get_full_repo=True)
     version('09.24.01.01', tag='v09_24_01_01', git='https://github.com/marcmengel/larcoreobj.git', get_full_repo=True)
 

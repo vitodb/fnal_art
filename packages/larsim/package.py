@@ -35,9 +35,7 @@ class Larsim(CMakePackage):
     version('09.14.08',     sha256='0dd3735cc5f8b0d4b30bb239e93efe8f8bc5995a53ae1b1b14532c31af6fafeb')
     version('09.14.07',     sha256='a0a235caf17b5d9d2b3959ed967a5cdb2cc1851d3d696976a656c2f48834cadc')
     version('09.14.06',     sha256='5d729da4515d0315d123724b411c4e81e191ea88ed37692b5a037b7b7d94fbfb')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larsim.git', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larsim.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larsim.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

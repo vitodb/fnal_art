@@ -36,8 +36,6 @@ class Larg4(CMakePackage):
     version('09.03.15',     sha256='d67038d53ae1a899ea36986c0b4095b5ec986580ecac151672c74403ddde3f48')
     version('09.03.14',     sha256='c6b6e06ea6affd2c49b8501bc90e6ae765bc47ef948f34334e401dca752ecc0d')
     version('09.03.13',     sha256='c9f6fe589cae2cbcac9204c4a7f8f6a9f3605f66556d4e8412a50066249f709e')
-    version('09.30.00.rc', branch='v09_30_00_rc_br', git='https://github.com/gartung/larg4.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larg4.git', branch='feature/MVP1a', get_full_repo=True)
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larg4.git', get_full_repo=True)
 
 

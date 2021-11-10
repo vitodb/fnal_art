@@ -37,7 +37,6 @@ class Larevt(CMakePackage):
     version('09.02.10',     sha256='5afa7063640f2722d22cb9140f2b335043d5bb6d5ecf6e1fd3559b9d2c206b57')
     version('09.02.09',     sha256='5f71d0182038e9cc096977047abf411819b0c47d5f4110fb66a2856d47ee7489')
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larevt.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larevt.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

@@ -36,7 +36,6 @@ class Larreco(CMakePackage):
     version('09.06.16',     sha256='d616e607cca3949fe92fdb10d2552b43177b56e4281ed0b365e26f051c9a34bb')
     version('09.06.15',     sha256='0008866cf4b342f5002abd736773aee3c314b1077b0f035a7c564e0e069a102d')
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larreco.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/larreco.git', branch='feature/MVP1a', get_full_repo=True)
 
 
     def url_for_version(self, version):

@@ -39,7 +39,6 @@ class Lardataobj(CMakePackage):
     version('09.01.06.01',  sha256='57258d46daa00a9444a4392ed3b2e1b8035e2012340f0ad3666dbd40bb5292d0')
     version('09.01.06',     sha256='d20baf87b41f1a6925345866702b86c45242b02a198e26f0d528afa10db2de0f')
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/lardataobj.git', get_full_repo=True)
-    version('MVP1a', git='https://github.com/gartung/lardataobj.git', branch='feature/MVP1a',get_full_repo=True)
 
     variant('cxxstd',
             default='17',
