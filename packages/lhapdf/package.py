@@ -71,7 +71,7 @@ class Lhapdf(AutotoolsPackage):
         for f in glob.glob('*.py'):
             os.remove(f)
         
-    def setup_run_environment(self, run_env):
+    def setup_build_environment(self, spack_env):
         cxxstd_flag\
             = '' if self.spec.variants['cxxstd'].value == 'default' else \
             'cxx{0}_flag'.format(self.spec.variants['cxxstd'].value)
