@@ -75,6 +75,9 @@ class Cetmodules(CMakePackage):
                                   accept_content_type='application/json')[2])
                           if re.match(r'^[0-9]',d['name']) ]))
 
+    def setup_run_environment(self, run_env):
+        run_env.prepend_path('CMAKE_PREFIX_PATH', '{0}/Modules'.format(self.prefix))
+
     @run_after('install')
     def rename_README(self):
         import os
