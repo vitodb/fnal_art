@@ -4,8 +4,11 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 from spack import *
-import os
+from llnl.util import tty
 import sys
+import os
+import re
+import spack.util.spack_json as sjson
 
 
 class Cetmodules(CMakePackage):
@@ -16,9 +19,11 @@ class Cetmodules(CMakePackage):
     homepage = 'https://cdcvs.fnal.gov/redmine/projects/cetmodules'
     git_base = 'https://github.com/FNALssi/cetmodules.git'
     url = 'https://github.com/FNALssi/cetmodules/archive/refs/tags/2.29.04.tar.gz'
+    list_url = 'https://api.github.com/repos/FNALssi/cetmodules/tags'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-
+    version('2.29.09', sha256='cd31bbd303cec9d8e1207c2da11b9eef96a78fe8d14258b367f1e3a1898b6e0f')
+    version('2.29.08', sha256='7a59d8c5c91ee59f2b56dd73dcef9f3957e47ebd247e0a9baf5da8ddcd124218')
     version('2.29.07', sha256='372a0f2c46df49c9d86633dbc11bf69213d9749945f160a1f8b50a7badf81e99')
     version('2.29.06', sha256='8eefc5f18b2c094c4d784c0c025cde88c09a9b3bf2cca5e28b256a079ad20fa3')
     version('2.29.05', sha256='35e70edd7126b66c22982fd442df61d0d7439c72760642ac920c6e76a87c8767')
@@ -61,6 +66,14 @@ class Cetmodules(CMakePackage):
         url = 'https://github.com/FNALssi/{0}/archive/refs/tags/{1}.tar.gz'
         return url.format(self.name, version)
 
+    def fetch_remote_versions(self, concurrency=None):
+        return dict(map(lambda v: (v.dotted, self.url_for_version(v)),
+                        [ Version(d['name']) for d in
+                          sjson.load(
+                              spack.util.web.read_from_url(
+                                  self.list_url,
+                                  accept_content_type='application/json')[2])
+                          if re.match(r'^[0-9]',d['name']) ]))
 
     @run_after('install')
     def rename_README(self):
