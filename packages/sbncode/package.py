@@ -77,6 +77,7 @@ class Sbncode(CMakePackage):
     depends_on('libwda', type=('build','run'))
     depends_on('marley', type=('build','run'))
     depends_on('nug4', type=('build','run'))
+    depends_on('nugen', type=('build','run'))
     depends_on('genie', type=('build','run'))
     depends_on('ifdhc', type=('build','run'))
     depends_on('ifbeam', type=('build','run'))

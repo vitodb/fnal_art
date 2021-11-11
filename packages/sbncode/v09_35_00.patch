@@ -140,10 +140,10 @@ index 9e954f1..23aee48 100644
  #include "MWRData.h"
  
 diff --git a/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt b/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
-index 99ec10d..d34c2bc 100644
+index 99ec10d..5e392b0 100644
 --- a/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
 +++ b/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
-@@ -1,12 +1,14 @@
+@@ -1,16 +1,18 @@
 -find_ups_product(ifbeam)
 -find_ups_product(ifbeam_art)
 +find_package(ifbeam)
@@ -166,6 +166,11 @@ index 99ec10d..d34c2bc 100644
  
  link_libraries( ${LIB_NAME} -L$ENV{BOOST_LIB} -lboost_system ${ROOTLIB} )
  
+-art_make_library(
++cet_make_library(LIBRARIES Boost::system
+ 	LIBRARY_NAME sbn_BNBSpillInfoRetriever_MWRData
+ 	SOURCE MWRData.cpp
+ )
 @@ -21,28 +23,27 @@ simple_plugin(BNBRetriever module
  	${ART_FRAMEWORK_SERVICES_REGISTRY}
  	${ART_ROOT_IO_TFILESERVICE_SERVICE}                ${ART_FRAMEWORK_SERVICES}
@@ -184,13 +189,14 @@ index 99ec10d..d34c2bc 100644
 +	ROOT::X3d
  	${ROOT_BASIC_LIB_LIST}
          ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY} ${Boost_SERIALIZATION_LIBRARY}
-         ${Boost_SYSTEM_LIBRARY}
+-        ${Boost_SYSTEM_LIBRARY}
 -	MF_MessageLogger
 -       	sbnobj_Common_POTAccounting
 -	#${IFBEAMSERVICE}
 -	#${IFBEAM}
 -	ifbeam
 -	ifdh_art::IFBeam_service
++        Boost::system
 +	messagefacility::MF_MessageLogger
 +	ifbeam::ifbeam
 +        ifdh_art::IFBeam_service
