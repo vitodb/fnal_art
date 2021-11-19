@@ -875,6 +875,7 @@ index 3f1d1f6..11364dc 100644
 +			${DK2NUGENIE}
 +			${DK2NUTREE}
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                       sbnobj::Common_EventGen_MeVPrtl
  )
  
  simple_plugin( MixedWeightRayTraceBox tool
