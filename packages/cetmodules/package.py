@@ -22,6 +22,12 @@ class Cetmodules(CMakePackage):
     list_url = 'https://api.github.com/repos/FNALssi/cetmodules/tags'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
+    version('2.29.13', sha256='2b494cf58da9b39aa643258bbdfd3b0d93dfd822870300275b7d3c0c95401b86')
+    version('2.29.12', sha256='f3002bcd6c99ce0175c9aef85e14269ec9770d907753f2a96cfa6b5c821b6b2a')
+    version('2.29.11', sha256='bf465542d976efb258a8ae17b14de9af7dfc2ecbfd944141bb53009df84ee6fc')
+    version('2.29.10', sha256='043e2f8470c796d49f05bba3cf95bc163797f38137f843170e5c788054a0f1d9')
+    version('2.29.11', sha256='bf465542d976efb258a8ae17b14de9af7dfc2ecbfd944141bb53009df84ee6fc')
+    version('2.29.10', sha256='043e2f8470c796d49f05bba3cf95bc163797f38137f843170e5c788054a0f1d9')
     version('2.29.09', sha256='cd31bbd303cec9d8e1207c2da11b9eef96a78fe8d14258b367f1e3a1898b6e0f')
     version('2.29.08', sha256='7a59d8c5c91ee59f2b56dd73dcef9f3957e47ebd247e0a9baf5da8ddcd124218')
     version('2.29.07', sha256='372a0f2c46df49c9d86633dbc11bf69213d9749945f160a1f8b50a7badf81e99')
