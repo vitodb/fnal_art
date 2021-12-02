@@ -61,6 +61,7 @@ class Sbncode(CMakePackage):
     depends_on('tbb', type=('build','run'))
     depends_on('gsl', type=('build','run'))
     depends_on('geant4', type=('build','run'))
+    depends_on('zlib', type=('build','run'))
     depends_on('xerces-c', type=('build','run'))
     depends_on('larana', type=('build','run'))
     depends_on('larcoreobj', type=('build','run'))
@@ -121,6 +122,7 @@ class Sbncode(CMakePackage):
                 format(self.spec.variants['cxxstd'].value),
                 '-DCMAKE_PREFIX_PATH={0}/lib/python{1}/site-packages/torch'
                  .format(self.spec['py-torch'].prefix, self.spec['python'].version.up_to(2)),
+                '-DZLIB_ROOT={0}'.format(self.spec['zlib'].prefix),
                 '-DIGNORE_ABSOLUTE_TRANSITIVE_DEPENDENCIES=1' ]
         return args
 
