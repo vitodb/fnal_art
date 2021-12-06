@@ -77,7 +77,6 @@ class Canvas(CMakePackage):
     depends_on('range-v3')
     depends_on('tbb', when='@MVP')
 
-    patch('canvas_new.patch')
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
