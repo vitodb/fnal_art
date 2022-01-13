@@ -35,6 +35,7 @@ class Icaruscode(CMakePackage):
     git_base = 'https://github.com/SBNSoftware/icaruscode.git'
 
     version('develop', commit='84314472f1e206b351fd9b52f1f6800c2a90b4c3', git=git_base, get_full_repo=True)
+    version('09.37.01.02p02', tag='v09_37_01_02p02', git=git_base, get_full_repo=True)
     version('09.35.00', tag='v09_35_00', git=git_base, get_full_repo=True)
     version('08.43.00', tag='v08_43_00', git=git_base, get_full_repo=True)
     version('08.41.00', tag='v08_41_00', git=git_base, get_full_repo=True)
@@ -45,6 +46,7 @@ class Icaruscode(CMakePackage):
 
     patch('cetmodules2.patch', when='@develop')
     patch('v09_35_00.patch', when='@09.35.00')
+    patch('v09_37_01_02p02.patch', when='@09.37.01.02p02')
 
     variant('cxxstd',
             default='17',

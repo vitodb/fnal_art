@@ -28,9 +28,11 @@ class Sbncode(CMakePackage):
     list_url = 'https://api.github.com/repos/SBNSoftware/sbncode/tags'
 
     version('develop', branch='develop', git=git_base, get_full_repo=True)
-    version('09.35.00', sha256='6dc753dcc24e9583a261a70da99a1275835b70091c816dbbb0ddee60ad698686')
+    version('09.37.01.02', sha256='a7811d95c816f112f3e320fbf2a15b199a6af3c385e1f53e14ddb6c04ace54cf')
+    version('09.35.00',    sha256='6dc753dcc24e9583a261a70da99a1275835b70091c816dbbb0ddee60ad698686')
 
     patch('v09_35_00.patch', when='@09.35.00')
+    patch('v09_37_01_02.patch', when='@09.37.01.02')
 
     variant('cxxstd',
             default='17',

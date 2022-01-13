@@ -29,6 +29,7 @@ class IcarusSignalProcessing(CMakePackage):
     git_base = 'https://github.com/SBNSoftware/icarus_signal_processing.git'
     list_url = 'https://api.github/repos/SBNSoftware/icarus_signal_processing/tags'
 
+    version('09.37.01', sha256='a6f09ef0bea681f77061094e5ca9691c8135b7e62e55f7a1b95a5b85f0d6cc57')
     version('09.32.01', sha256='220043d6cee8fd84b37f1cfc0a24e6a8b4b5febbc1cb50a4f56e891eb53d8241')
     version('develop', commit='9f80e32ac3c7c90ad910486205efd5648703751b',
             git=git_base, get_full_repo=True)
@@ -50,6 +51,7 @@ class IcarusSignalProcessing(CMakePackage):
 
     patch('cetmodules2.patch', when='@develop')
     patch('v09_32_01.patch', when='@09.32.01')
+    patch('v09_37_01.patch', when='@09.37.01')
     
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
