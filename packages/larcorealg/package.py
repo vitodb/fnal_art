@@ -28,6 +28,7 @@ class Larcorealg(CMakePackage):
     version('09.30.00.rc1', sha256='6c8be493c1ef8ba349cafefc6304a3c850fef47a87dc593b73662db4da4afc61')
     version('09.30.00.rc0', sha256='9633e3b03c2e411894141d14d8423f0813f114926e4840df18046bd668967a52')
     version('09.11.00.rc0', sha256='0e8d83ea7a6e9386e3e67410e68801d122a3da18715bb83f48c327a36110fca4')
+    version('09.04.00',     sha256='7da808226873972bf97ca9bb3413e2fcbb1d6cf5765f218a4c04a94c236e8462')
     version('09.03.01',     sha256='7280de6bc7949d6c2db1315b8700e518cff11f1527758996b22cb22f6ea7f7fb')
     version('09.03.00',     sha256='343e1b833561912e743c867ccc7699c6fdd2c56d6da78cc5368291662f533d86')
     version('09.02.01.01',  sha256='e17829922747b30a989f97dad123330f34a9b28322159632401144d5591a0044')
@@ -49,9 +50,10 @@ class Larcorealg(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')') ]))
 
     patch('v09_03_01.patch', when='@09.03.01')
+    patch('v09_04_00.patch', when='@09.04.00')
 
     variant('cxxstd',
             default='17',

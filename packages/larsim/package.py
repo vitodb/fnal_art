@@ -26,6 +26,7 @@ class Larsim(CMakePackage):
     list_url = 'https://api.github.com/repos/LArSoft/larsim/tags'
 
     version('09.30.00.rc1', sha256='8371ab32c43b702337d7022fee255eb2a86164a7ee8edc91781f4b0494890142')
+    version('09.19.01.01',  sha256='820397f8aa313f7cd4be341a4a021706ee97aa9b2024d8e29d4db6f8e2f9022d')
     version('09.18.00',     sha256='3dd73c86c5c736838d7e54c39743d341e17413a1713b4214363c8d36d1c04032')
     version('09.17.00',     sha256='a82180a4d6ff1a37543cc55206c8f619c322e8552e9b5370cbed28e28b0e6d89')
     version('09.16.01',     sha256='7aa9adf76f98a2ffafeb3d3ab096304e4ccf25bd8f029c6d723a653e43b74923')
@@ -49,9 +50,10 @@ class Larsim(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     patch('v09_18_00.patch', when='@09.18.00')
+    patch('v09_19_01_01.patch', when='@09.19.01.01')
 
     variant('cxxstd',
             default='17',

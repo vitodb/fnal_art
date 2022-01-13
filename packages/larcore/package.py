@@ -26,6 +26,7 @@ class Larcore(CMakePackage):
     url      = "https://github.com/LArSoft/larcore/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larcore/tags"
 
+    version('09.03.02',     sha256='16f60e05edd620b6a41928f591fe062db2e9d91cf7948fa4f30d688bd547bcbb')
     version('09.03.01',     sha256='bab2aa40e0d796c4f11433ea1096e0b44b1b4d1b09b1c531495ad2b19caf879f')
     version('09.03.00',     sha256='d9f54979c57c94cee142e6b477a5df44a65baf4a132d48cc455f49540bf3d72b')
     version('09.02.04.01',  sha256='efd3ae5d4ea699a383ab481d1efa496f19fbb57e1edf422ad773aa6eb1766876')
@@ -48,9 +49,10 @@ class Larcore(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     patch('v09_03_01.patch', when='@09.03.01')
+    patch('v09_03_02.patch', when='@09.03.02')
 
     variant('cxxstd',
             default='17',

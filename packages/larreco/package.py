@@ -27,6 +27,7 @@ class Larreco(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/larreco/tags"
 
     version('09.30.00.rc1', sha256='3c3c52247075dd8f9c002517168159d7ac2c7319ca246d729a677a91d39149d8')
+    version('09.07.08.01',  sha256='6406a601f3f00ba1626f9f6c5ebbddf8aa6759e95da5b4d409db3131b031445a')
     version('09.07.05',     sha256='991a058854c730d1bcbd7056652669f5c24d37faaa879e85e0befd5f65ff7aa3')
     version('09.07.03',     sha256='03921a26a025361ecda0015c0cb54eb003cf34847fef46beb15a4b60e5e971d6')
     version('09.07.02',     sha256='26f215907727ff0e8567b39fcac65169b5f06948397d775009a39c0c30ed3469')
@@ -49,9 +50,10 @@ class Larreco(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     patch('v09_07_05.patch', when='@09.07.05')
+    patch('v09_07_08_01.patch', when='@09.07.01.01')
 
     variant('cxxstd',
             default='17',

@@ -31,6 +31,7 @@ class Lardataobj(CMakePackage):
     version('09.30.00.rc1', sha256='3423f7f8d4d27785d4f027e5b5a3d135adfe57f2794f57dd24bb76e4803f2f55')
     version('09.30.00.rc0', sha256='dd765bf9bd5c756563c7c0582a26b1147a582ccdadd55a0933601ea7c125bbd3')
     version('09.11.00.rc0', sha256='62ede62f4cb7ea2821a1427598ed41b44d028011eab5e0b07ec83c2b23e73d37')
+    version('09.03.05',     sha256='e111d36911d885c3c7ae287e299896c05c71d516f74f3906ae4190d18030daa0')
     version('09.03.03',     sha256='b594929466ef1f96bf15a4f4348d9b48c2642602314f0c2931fb3b918ddbc8c1')
     version('09.03.02',     sha256='54ef53dcc8f5e323017dd9d192901286152e3af018b82e462229d8def9f992ae')
     version('09.03.01',     sha256='bd77759644eff165ff56f8d19df295e3b0bda8c1b10d93b185622a1bd0c14c72')
@@ -47,6 +48,7 @@ class Lardataobj(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('v09_03_03.patch', when='@09.03.03')
+    patch('v09_03_05.patch', when='@09.03.05')
 
     def url_for_version(self, version):
         url = 'https://github.com/LArSoft/{0}/archive/v{1}.tar.gz'
@@ -59,7 +61,7 @@ class Lardataobj(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     depends_on('nusimdata')
     depends_on('larcorealg')

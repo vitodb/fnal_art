@@ -27,6 +27,7 @@ class Lardata(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/lardata/tags"
 
     version('09.30.00.rc1', sha256='62068b739d636374f56250d944283bda7dbb532d5f4a02dd38e9b105ce51c90c')
+    version('09.04.02',     sha256='ebca1134427b493d7f1a4a278441b59802bd05662ec995dee2ad91e489c8b454')
     version('09.04.00',     sha256='a2495f4427245d6901138439750cf746a7a4bdc3633fbcb9e7c5cdffdb1e4af6')
     version('09.03.02',     sha256='7e48e6caaaf6a49cf9e2b575b0fb253db7ecba9034f9c9b940758df99f25eda6')
     version('09.03.01',     sha256='fb2e4779b6b70816d7c78545694e47d45aaa0eebe50d187df6fe56479d539513')
@@ -50,7 +51,7 @@ class Lardata(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     variant('cxxstd',
             default='17',
@@ -59,6 +60,7 @@ class Lardata(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('v09_04_00.patch', when='@09.04.00')
+    patch('v09_04_02.patch', when='@09.04.02')
 
     depends_on('nutools')
     depends_on('larcore')

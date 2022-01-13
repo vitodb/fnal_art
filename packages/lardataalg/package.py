@@ -29,6 +29,7 @@ class Lardataalg(CMakePackage):
     version('09.30.00.rc1', sha256='2e2df94da944b1b6bf769e683bae718955ed24b42b15618d7b60254e5ad3a385')
     version('09.30.00.rc0', sha256='42f9c9009b64a3374d1586e5bfb0cfe159da7ef693ac689d6a41519aae069627')
     version('09.11.00.rc0', sha256='df723ec1db490fc37398a3e34ef800b191ef185e23b66f93a09adaadbe636179')
+    version('09.07.02',     sha256='bf213045ddb589c2399baee2ecf4374f7953f25b1e3f9fca8443ae27f8eb5460')
     version('09.07.00',     sha256='6dd6974a7f8898e8ba4f7319b9609bd14ec5ebd52b0b7e10ba63ff7fe4d7fb7a')
     version('09.06.02',     sha256='4f2a53a37952af45e1d9e89739aa084364850853c969924b6a5d21f50dcdc1ce')
     version('09.06.01',     sha256='eac9afd40a35e7c1866c3d26796c47ac8c839854d82dec7bbfedfb5153b941aa')
@@ -50,9 +51,10 @@ class Lardataalg(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     patch('v09_07_00.patch', when='@09.07.00')
+    patch('v09_07_02.patch', when='@09.07.02')
 
     variant('cxxstd',
             default='17',

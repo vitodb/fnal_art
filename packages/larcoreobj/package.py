@@ -29,7 +29,7 @@ class Larcoreobj(CMakePackage):
     version('09.30.00.rc1', sha256='01c6095d4123270b5c72cb49edb87d276d6d4955bcbc45b2af209058a2556e44')
     version('09.30.00.rc0', sha256='136e7bcaf395103a437dea51d3fa60201ea0c95c919df271e7e82f698cd2e134')
     version('09.11.00.rc0', sha256='a472f20d85ebcb73125f857fd51669da28f298b9ddf538da0f7a476a7995b920')
-    version('09.03.01', sha256='ba687dc47bf9972f2760ccbfd4d7406f8c54a860cfd9f1459025d58c0901f8a2')
+    version('09.03.01',     sha256='ba687dc47bf9972f2760ccbfd4d7406f8c54a860cfd9f1459025d58c0901f8a2')
     version('09.03.00',     sha256='00142588189c3371b7103a90247dfaf9e8cc5057311d48aeb3eef8d1e8b5f883')
     version('09.02.01.04',  sha256='348ad515af2972f8d1120bb737419faa6a1dfdbde7c2f0360ef3209a2e1dc076')
     version('09.02.01.03',  sha256='4105948a6f66ae4f67c17dca26c45625070c55afc2e944df9fac0d65f96361b8')
@@ -50,7 +50,7 @@ class Larcoreobj(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')') ]))
 
     patch('v09_03_01.patch', when='@09.03.01')
 

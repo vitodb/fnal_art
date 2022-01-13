@@ -40,7 +40,7 @@ class Larpandoracontent(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     patch('v03_26_01.patch', when='@03.26.01')
 

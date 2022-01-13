@@ -27,6 +27,7 @@ class Lareventdisplay(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/lareventdisplay/tags"
 
     version('09.30.00.rc1', sha256='c479c376a2f0be7f4584c8a3d4919ad89f1b9e39a4f11a215f616cc729363d5e')
+    version('09.02.08.01',  sha256='38e397c789b566328c5fb05353a2d4da71d13f9c36c7d131e13eeb0c3f270046')
     version('09.02.05',     sha256='cf8aa4e78162cea4621b858d0603d244e2efe3a030a0fac0977fcb4fad8afdad')
     version('09.02.03',     sha256='8269156d71f25b46c419c1b82f9527957b9a23419865db02bd6f478eabc2ec3d')
     version('09.02.02',     sha256='38f5c75fc7b83899cf8b7c7026ed0a339d8d640f9a2a4bf6618c5b1e3a928c72')
@@ -50,7 +51,7 @@ class Lareventdisplay(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     variant('cxxstd',
             default='17',
@@ -59,6 +60,7 @@ class Lareventdisplay(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('v09_02_05.patch', when='@09.02.05')
+    patch('v09_02_08_01.patch', when='@09.02.08.01')
 
     depends_on('larreco')
     depends_on('nuevdb')

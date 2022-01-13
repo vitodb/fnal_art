@@ -25,6 +25,7 @@ class Larana(CMakePackage):
     url      = "https://github.com/LArSoft/larana/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larana/tags"
 
+    version('09.03.09.01',  sha256='162712cd2506c443799b5e055a63370977ce9384d7a88925f0fda030362b95bf')
     version('09.03.06',     sha256='e0eca0c9cdce510ec552151c5ced3e5821f97b479b632995ea43950e9a58eefc')
     version('09.03.05',     sha256='017796fe891f12d1caaa17a12d753f47b263c0bdc8b44c14934b0d5d70ab82bd')
     version('09.03.04',     sha256='8464e9e96f9dc3822bdd00e0bbad78004799bfab2c6ba066fe6a1770443a8fc0')
@@ -50,9 +51,10 @@ class Larana(CMakePackage):
                               spack.util.web.read_from_url(
                                   self.list_url,
                                   accept_content_type='application/json')[2])
-                          if d['name'].startswith('v') ]))
+                          if d['name'].startswith('v') and not d['name'].endswith(')')] ) )
 
     patch('v09_03_06.patch', when='@09.03.06')
+    patch('v09_03_09_01.patch', when='@09.03.09.01')
 
     variant('cxxstd',
             default='17',
