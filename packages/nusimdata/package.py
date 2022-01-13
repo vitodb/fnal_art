@@ -27,6 +27,7 @@ class Nusimdata(CMakePackage):
     list_url = "https://api.github.com/repos/NuSoftHEP/nusimdata/tags"
 
     version('1.25.00', sha256='5fdc12bce3db71e030c976cc970eccc58df9bf88558bb0ea4dd870d333b6ef10')
+    version('1.24.06', sha256='6eba7f761f491de5d026e76e1b0bbd2d68dc3c2101643a0ef67002416ca1eec4')
     version('1.24.05', sha256='f9a3df9bd7241aa63b68d940fcd0ecdede92a5626d450994fb731aa9db294893')
     version('MVP1a', git=git_base, branch='feature/MVP1a', get_full_repo=True)
     version('develop', git=git_base,
@@ -34,6 +35,7 @@ class Nusimdata(CMakePackage):
 
     patch('cetmodules2.patch', when='@develop')
     patch('v1_24_05.patch', when='@1.24.05')
+    patch('v1_24_06.patch', when='@1.24.06')
 
     def url_for_version(self, version):
         url = 'https://github.com/NuSoftHEP/{0}/archive/v{1}.tar.gz'

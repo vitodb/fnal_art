@@ -27,6 +27,7 @@ class Nuevdb(CMakePackage):
     list_url = "https://api.github.com/repos/NuSoftHEP/nuevdb/tags"
     
     version('1.06.00', sha256='5a9dc5dd235ed4a16f26ebf09070d806f132bb22c6750a019c6ca7a3797d5d51')
+    version('1.05.06', sha256='76050a5dea93202b39ce81e09a4b66411ad845340bef935fe50d6d54e1a90126')
     version('1.05.05', sha256='e5bbd1c523f8befcb63b4a6a529e6eed592519ddefd31a2504ffd25e312e1115')
     version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
     version('develop', commit='92a38ae511d6b4859ba6c79e399eb9c14643b134', git=git_base, get_full_repo=True)
@@ -53,6 +54,7 @@ class Nuevdb(CMakePackage):
 
     patch('cetmodules2.patch', when='@develop')
     patch('v1_05_05.patch', when='@1.05.05')
+    patch('v1_05_06.patch', when='@1.05.06')
 
     depends_on('cetmodules', type='build')
     depends_on('art-root-io')
