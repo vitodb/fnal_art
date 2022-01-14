@@ -53,7 +53,7 @@ class Larreco(CMakePackage):
                           if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
     patch('v09_07_05.patch', when='@09.07.05')
-    patch('v09_07_08_01.patch', when='@09.07.01.01')
+    patch('v09_07_08_01.patch', when='@09.07.08.01')
 
     variant('cxxstd',
             default='17',
