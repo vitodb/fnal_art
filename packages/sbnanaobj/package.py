@@ -44,6 +44,7 @@ class Sbnanaobj(CMakePackage):
     patch('v09_17_02.patch', when='@09.17.02')
 
     depends_on('root')
+    depends_on('py-srproxy')
     depends_on('cetmodules', type='build')
 
     def url_for_version(self, version):
