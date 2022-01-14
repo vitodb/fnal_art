@@ -56,3 +56,7 @@ class Sbnanaobj(CMakePackage):
         args = ['-DCMAKE_CXX_STANDARD={0}'.
                 format(self.spec.variants['cxxstd'].value)]
         return args
+
+    def setup_build_environment(self, spack_env):
+        spack_env.set('SBNANAOBJ_DIR', '%s' % self.stage.source_path)
+        spack_env.set('ROOT_INC', '%s' % self.spec['root'].prefix.include)
