@@ -21,6 +21,7 @@
 # ----------------------------------------------------------------------------
 
 from spack import *
+import os
 
 class PySrproxy(Package):
     """FIXME: Put a proper description of your package here."""
