@@ -34,7 +34,7 @@ class PySrproxy(Package):
 
     # FIXME: Add dependencies if required.
     depends_on('castxml')
-    depends_on('pygccxml')
+    depends_on('py-pygccxml')
 
     def install(self, spec, prefix):
         # FIXME: Unknown build system
