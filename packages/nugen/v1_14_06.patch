@@ -258,6 +258,362 @@ index eeb2909..744a810 100644
 -include(UseCPack)
  
 +cet_cmake_config()
+diff --git a/Modules/CMakeLists.txt b/Modules/CMakeLists.txt
+new file mode 100644
+index 0000000..736f2bd
+--- /dev/null
++++ b/Modules/CMakeLists.txt
+@@ -0,0 +1,2 @@
++install(DIRECTORY ./ DESTINATION Modules
++  FILES_MATCHING PATTERN "*.cmake" PATTERN "[.#]*.cmake" EXCLUDE)
+diff --git a/Modules/FindGENIE.cmake b/Modules/FindGENIE.cmake
+new file mode 100644
+index 0000000..fc955ce
+--- /dev/null
++++ b/Modules/FindGENIE.cmake
+@@ -0,0 +1,78 @@
++#[================================================================[.rst:
++FindGENIE
++----------
++
++Finds GENIE and all its components
++
++
++
++#]================================================================]
++
++# this is the order that GENIE "recommends"
++# genie-config --libs
++#   -lGFwMsg -lGFwReg -lGFwAlg -lGFwInt -lGFwGHEP -lGFwNum -lGFwUtl -lGFwParDat
++#   -lGFwEG -lGFwNtp -lGPhXSIg -lGPhPDF -lGPhNuclSt -lGPhCmn -lGPhDcy -lGPhHadTransp
++#   -lGPhHadnz -lGPhDeEx -lGPhAMNGXS -lGPhAMNGEG -lGPhChmXS -lGPhCohXS -lGPhCohEG
++#   -lGPhDISXS -lGPhDISEG -lGPhDfrcXS -lGPhDfrcEG -lGPhGlwResXS -lGPhGlwResEG
++#   -lGPhIBDXS -lGPhIBDEG -lGPhMNucXS -lGPhMNucEG -lGPhMEL -lGPhNuElXS -lGPhNuElEG
++#   -lGPhQELXS -lGPhQELEG -lGPhResXS -lGPhResEG -lGPhStrXS
++#   -lGPhStrEG -lGPhNDcy -lGTlGeo -lGTlFlx -lGTlRew
++
++# headers
++find_file(_cet_Messenger_h NAMES Messenger.h HINTS ENV GENIE_INC
++  PATH_SUFFIXES GENIE/Framework/Messenger)
++if (_cet_Messenger_h)
++  get_filename_component(_cet_GENIE_include_dir "${_cet_Messenger_h}" PATH)
++  get_filename_component(_cet_GENIE_include_dir "${_cet_GENIE_include_dir}" PATH)
++  get_filename_component(_cet_GENIE_include_dir "${_cet_GENIE_include_dir}" PATH)
++  get_filename_component(_cet_GENIE_include_dir "${_cet_GENIE_include_dir}" PATH)
++  if (_cet_GENIE_include_dir STREQUAL "/")
++    unset(_cet_GENIE_include_dir)
++  endif()
++endif()
++if (EXISTS "${_cet_GENIE_include_dir}")
++  set(GENIE_FOUND TRUE)
++  get_filename_component(_cet_GENIE_dir "${_cet_GENIE_include_dir}" PATH)
++  if (_cet_GENIE_dir STREQUAL "/")
++    unset(_cet_GENIE_dir)
++  endif()
++  set(GENIE_INCLUDE_DIRS "${_cet_GENIE_include_dir}" "${_cet_GENIE_include_dir}/GENIE")
++  set(GENIE_LIBRARY_DIR "${_cet_GENIE_dir}/lib")
++endif()
++if (GENIE_FOUND)
++  set(GENIE_LIB_LIST)
++  set(_cet_genie_libs GFwMsg GFwReg GFwAlg GFwInt GFwGHEP GFwNum GFwUtl GFwParDat
++                  GFwEG GFwNtp GPhXSIg GPhPDF GPhNuclSt GPhCmn GPhDcy GPhHadTransp
++                  GPhHadnz GPhDeEx GPhAMNGXS GPhAMNGEG GPhChmXS GPhCohXS GPhCohEG
++                  GPhDISXS GPhDISEG GPhDfrcXS GPhDfrcEG GPhGlwResXS GPhGlwResEG
++                  GPhIBDXS GPhIBDEG GPhMNucXS GPhMNucEG GPhMEL GPhNuElXS GPhNuElEG
++                  GPhQELXS GPhQELEG GPhResXS GPhResEG GPhStrXS
++                  GPhStrEG GPhNDcy GTlGeo GTlFlx GRwFwk GRwIO GRwClc)
++  foreach (_glib IN LISTS _cet_genie_libs)
++    find_library(${_glib}_LIBRARY NAMES ${_glib} PATHS ${GENIE_LIBRARY_DIR})
++    if(${_glib}_LIBRARY)
++      if (NOT TARGET GENIE::${_glib})
++        add_library(GENIE::${_glib} SHARED IMPORTED)
++        set_target_properties(GENIE::${_glib} PROPERTIES
++          INTERFACE_INCLUDE_DIRECTORIES "${GENIE_INCLUDE_DIRS}"
++          IMPORTED_LOCATION "${${_glib}_LIBRARY}"
++          )
++      endif()
++      list(APPEND GENIE_LIB_LIST GENIE::${_glib})
++    endif()
++  endforeach()
++endif()
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(GENIE
++  REQUIRED_VARS GENIE_FOUND
++  GENIE_INCLUDE_DIRS
++  GENIE_LIB_LIST)
++
++unset(_cet_GENIE_FIND_REQUIRED)
++unset(_cet_GENIE_dir)
++unset(_cet_GENIE_include_dir)
++unset(_glib)
++unset(_cet_genie_libs)
++unset(_cet_Messenger_h CACHE)
++
+diff --git a/Modules/FindLHAPDF.cmake b/Modules/FindLHAPDF.cmake
+new file mode 100644
+index 0000000..857f8e7
+--- /dev/null
++++ b/Modules/FindLHAPDF.cmake
+@@ -0,0 +1,57 @@
++#[================================================================[.rst:
++FindLHAPDF
++----------
++
++Finds LHAPDF library and headers
++
++Imported Targets
++^^^^^^^^^^^^^^^^
++
++This module provides the following imported targets, if found:
++
++``LHAPDF::LHAPDF``
++  The LHAPDF library
++
++
++#]================================================================]
++# headers
++find_file(_cet_LHAPDF_h NAMES LHAPDF.h HINTS ENV LHAPDF_INC
++  PATH_SUFFIXES LHAPDF)
++if (_cet_LHAPDF_h)
++  get_filename_component(_cet_LHAPDF_include_dir "${_cet_LHAPDF_h}" PATH)
++  get_filename_component(_cet_LHAPDF_include_dir "${_cet_LHAPDF_include_dir}" PATH)
++  if (_cet_LHAPDF_include_dir STREQUAL "/")
++    unset(_cet_LHAPDF_include_dir)
++  endif()
++endif()
++if (EXISTS "${_cet_LHAPDF_include_dir}")
++  set(LHAPDF_FOUND TRUE)
++  get_filename_component(_cet_LHAPDF_dir "${_cet_LHAPDF_include_dir}" PATH)
++  if (_cet_LHAPDF_dir STREQUAL "/")
++    unset(_cet_LHAPDF_dir)
++  endif()
++  set(LHAPDF_INCLUDE_DIRS "${_cet_LHAPDF_include_dir}")
++  set(LHAPDF_LIBRARY_DIR "${_cet_LHAPDF_dir}/lib")
++endif()
++if (LHAPDF_FOUND)
++  find_library(LHAPDF_LIBRARY NAMES LHAPDF PATHS ${LHAPDF_LIBRARY_DIR})
++  if (NOT TARGET LHAPDF::LHAPDF)
++    add_library(LHAPDF::LHAPDF SHARED IMPORTED)
++    set_target_properties(LHAPDF::LHAPDF PROPERTIES
++      INTERFACE_INCLUDE_DIRECTORIES "${LHAPDF_INCLUDE_DIRS}"
++      IMPORTED_LOCATION "${LHAPDF_LIBRARY}"
++      )
++  endif()
++endif()
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(LHAPDF
++  REQUIRED_VARS LHAPDF_FOUND
++  LHAPDF_INCLUDE_DIRS
++  LHAPDF_LIBRARY)
++
++unset(_cet_LHAPDF_FIND_REQUIRED)
++unset(_cet_LHAPDF_dir)
++unset(_cet_LHAPDF_include_dir)
++unset(_cet_LHAPDF_h CACHE)
++
+diff --git a/Modules/FindPythia6.cmake b/Modules/FindPythia6.cmake
+new file mode 100644
+index 0000000..0581fac
+--- /dev/null
++++ b/Modules/FindPythia6.cmake
+@@ -0,0 +1,56 @@
++#[================================================================[.rst:
++FindPythia6
++----------
++
++Finds Pythia6 library and headers
++
++Imported Targets
++^^^^^^^^^^^^^^^^
++
++This module provides the following imported targets, if found:
++
++``Pythia6::Pythia6``
++  The Pythia6 library
++
++
++#]================================================================]
++# headers
++find_file(_cet_main60_f NAMES main60.f HINTS ENV PYTHIA_INC
++  PATH_SUFFIXES Pythia6)
++if (_cet_main60_f)
++  get_filename_component(_cet_Pythia6_include_dir "${_cet_main60_f}" PATH)
++  if (_cet_Pythia6_include_dir STREQUAL "/")
++    unset(_cet_Pythia6_include_dir)
++  endif()
++endif()
++if (EXISTS "${_cet_Pythia6_include_dir}")
++  set(Pythia6_FOUND TRUE)
++  get_filename_component(_cet_Pythia6_dir "${_cet_Pythia6_include_dir}" PATH)
++  if (_cet_Pythia6_dir STREQUAL "/")
++    unset(_cet_Pythia6_dir)
++  endif()
++  set(Pythia6_INCLUDE_DIRS "${_cet_Pythia6_include_dir}")
++  set(Pythia6_LIBRARY_DIR "${_cet_Pythia6_dir}/lib")
++endif()
++if (Pythia6_FOUND)
++  find_library(Pythia6_LIBRARY NAMES Pythia6 PATHS ${Pythia6_LIBRARY_DIR})
++  if (NOT TARGET Pythia6::Pythia6)
++    add_library(Pythia6::Pythia6 SHARED IMPORTED)
++    set_target_properties(Pythia6::Pythia6 PROPERTIES
++      INTERFACE_INCLUDE_DIRECTORIES "${Pythia6_INCLUDE_DIRS}"
++      IMPORTED_LOCATION "${Pythia6_LIBRARY}"
++      )
++  endif()
++endif()
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(Pythia6
++  REQUIRED_VARS Pythia6_FOUND
++  Pythia6_INCLUDE_DIRS
++  Pythia6_LIBRARY)
++
++unset(_cet_Pythia6_FIND_REQUIRED)
++unset(_cet_Pythia6_dir)
++unset(_cet_Pythia6_include_dir)
++unset(_cet_main60_f CACHE)
++
+diff --git a/Modules/Finddk2nugenie.cmake b/Modules/Finddk2nugenie.cmake
+new file mode 100644
+index 0000000..fbbad1d
+--- /dev/null
++++ b/Modules/Finddk2nugenie.cmake
+@@ -0,0 +1,70 @@
++#[================================================================[.rst:
++Finddk2nugenie
++----------
++  find dk2nugenie
++
++#]================================================================]
++if (dk2nugenie_FIND_REQUIRED)
++  set(_cet_dk2nugenie_FIND_REQUIRED ${dk2nugenie_FIND_REQUIRED})
++  unset(dk2nugenie_FIND_REQUIRED)
++else()
++  unset(_cet_dk2nugenie_FIND_REQUIRED)
++endif()
++find_package(dk2nugenie CONFIG QUIET)
++if (_cet_dk2nugenie_FIND_REQUIRED)
++  set(dk2nugenie_FIND_REQUIRED ${_cet_dk2nugenie_FIND_REQUIRED})
++  unset(_cet_dk2nugenie_FIND_REQUIRED)
++endif()
++if (dk2nugenie_FOUND)
++  set(_cet_dk2nugenie_config_mode CONFIG_MODE)
++else()
++  unset(_cet_dk2nugenie_config_mode)
++  find_file(_cet_GDk2NuFlux_h NAMES GDk2NuFlux.h HINTS ENV DK2NUGENIE_INC
++    PATH_SUFFIXES dk2nu/genie)
++  if (_cet_GDk2NuFlux_h)
++    get_filename_component(_cet_dk2nugenie_include_dir "${_cet_GDk2NuFlux_h}" PATH)
++    get_filename_component(_cet_dk2nugenie_include_dir "${_cet_dk2nugenie_include_dir}" PATH)
++    get_filename_component(_cet_dk2nugenie_include_dir "${_cet_dk2nugenie_include_dir}" PATH)
++    if (_cet_dk2nugenie_include_dir STREQUAL "/")
++      unset(_cet_dk2nugenie_include_dir)
++    endif()
++  endif()
++  if (EXISTS "${_cet_dk2nugenie_include_dir}")
++    set(dk2nugenie_FOUND TRUE)
++    set(DK2NUGENIE_FOUND TRUE)
++    get_filename_component(_cet_dk2nugenie_dir "${_cet_dk2nugenie_include_dir}" PATH)
++    if (_cet_dk2nugenie_dir STREQUAL "/")
++      unset(_cet_dk2nugenie_dir)
++    endif()
++    set(dk2nugenie_INCLUDE_DIRS "${_cet_dk2nugenie_include_dir}")
++    set(dk2nugenie_LIBRARY_DIR "${_cet_dk2nugenie_dir}/lib")
++    find_library(dk2nugenie_LIBRARY NAMES dk2nuGenie HINTS ${dk2nugenie_LIBRARY_DIR})
++  endif()
++endif()
++if (dk2nugenie_FOUND)
++  if (NOT TARGET dk2nu::Genie)
++    add_library(dk2nu::Genie SHARED IMPORTED)
++    set_target_properties(dk2nu::Genie PROPERTIES
++      INTERFACE_INCLUDE_DIRECTORIES "${dk2nugenie_INCLUDE_DIRS}"
++      IMPORTED_LOCATION "${dk2nugenie_LIBRARY}"
++      )
++    set(dk2nugenie_LIBRARY "dk2nu::Genie")
++  endif()
++  if (CETMODULES_CURRENT_PROJECT_NAME AND
++      ${CETMODULES_CURRENT_PROJECT_NAME}_OLD_STYLE_CONFIG_VARS)
++    include_directories("${dk2nugenie_INCLUDE_DIRS}")
++  endif()
++endif()
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(dk2nugenie ${_cet_dk2nugenie_config_mode}
++  REQUIRED_VARS dk2nugenie_FOUND
++  dk2nugenie_INCLUDE_DIRS
++  dk2nugenie_LIBRARY)
++
++unset(_cet_dk2nugenie_FIND_REQUIRED)
++unset(_cet_dk2nugenie_config_mode)
++unset(_cet_dk2nugenie_dir)
++unset(_cet_dk2nugenie_include_dir)
++unset(_cet_GDk2NuFlux_h CACHE)
++
+diff --git a/Modules/Findlog4cpp.cmake b/Modules/Findlog4cpp.cmake
+new file mode 100644
+index 0000000..9bc37ce
+--- /dev/null
++++ b/Modules/Findlog4cpp.cmake
+@@ -0,0 +1,57 @@
++#[================================================================[.rst:
++Findlog4cpp
++----------
++
++Finds log4cpp library and headers
++
++Imported Targets
++^^^^^^^^^^^^^^^^
++
++This module provides the following imported targets, if found:
++
++``log4cpp::log4cpp``
++  The log4cpp library
++
++
++#]================================================================]
++# headers
++find_file(_cet_LoggingEvent_hh NAMES LoggingEvent.hh HINTS ENV LOG4CPP_INC
++  PATH_SUFFIXES log4cpp)
++if (_cet_LoggingEvent_hh)
++  get_filename_component(_cet_log4cpp_include_dir "${_cet_LoggingEvent_hh}" PATH)
++  get_filename_component(_cet_log4cpp_include_dir "${_cet_log4cpp_include_dir}" PATH)
++  if (_cet_log4cpp_include_dir STREQUAL "/")
++    unset(_cet_log4cpp_include_dir)
++  endif()
++endif()
++if (EXISTS "${_cet_log4cpp_include_dir}")
++  set(log4cpp_FOUND TRUE)
++  get_filename_component(_cet_log4cpp_dir "${_cet_log4cpp_include_dir}" PATH)
++  if (_cet_log4cpp_dir STREQUAL "/")
++    unset(_cet_log4cpp_dir)
++  endif()
++  set(log4cpp_INCLUDE_DIRS "${_cet_log4cpp_include_dir}")
++  set(log4cpp_LIBRARY_DIR "${_cet_log4cpp_dir}/lib")
++endif()
++if (log4cpp_FOUND)
++  find_library(log4cpp_LIBRARY NAMES log4cpp PATHS ${log4cpp_LIBRARY_DIR})
++  if (NOT TARGET log4cpp::log4cpp)
++    add_library(log4cpp::log4cpp SHARED IMPORTED)
++    set_target_properties(log4cpp::log4cpp PROPERTIES
++      INTERFACE_INCLUDE_DIRECTORIES "${log4cpp_INCLUDE_DIRS}"
++      IMPORTED_LOCATION "${log4cpp_LIBRARY}"
++      )
++  endif()
++endif()
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(log4cpp
++  REQUIRED_VARS log4cpp_FOUND
++  log4cpp_INCLUDE_DIRS
++  log4cpp_LIBRARY)
++
++unset(_cet_log4cpp_FIND_REQUIRED)
++unset(_cet_log4cpp_dir)
++unset(_cet_log4cpp_include_dir)
++unset(_cet_LoggingEvent_hh CACHE)
++
 diff --git a/nugen/EventGeneratorBase/GENIE/CMakeLists.txt b/nugen/EventGeneratorBase/GENIE/CMakeLists.txt
 index d59f1b5..3a942d8 100644
 --- a/nugen/EventGeneratorBase/GENIE/CMakeLists.txt
