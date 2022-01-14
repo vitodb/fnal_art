@@ -1383,6 +1383,82 @@ index 50c2809..4ed07db 100644
  
  install_headers()
  install_fhicl()
+diff --git a/larsim/Simulation/LArG4Parameters.cxx b/larsim/Simulation/LArG4Parameters.cxx
+new file mode 100644
+index 0000000..f6c555d
+--- /dev/null
++++ b/larsim/Simulation/LArG4Parameters.cxx
+@@ -0,0 +1,70 @@
++////////////////////////////////////////////////////////////////////////
++/// \file  LArG4Parameters_service.cc
++/// \brief Store parameters for running LArG4
++///
++/// \author bjpjones@mit.edu
++////////////////////////////////////////////////////////////////////////
++// This service exists to pass parameters to various different
++// classes in LArG4, which are not necessary directly called by
++// the LArG4_module class.
++//
++// Ben Jones, MIT, March 2010
++
++
++// Framework includes
++#include "art/Framework/Services/Registry/ServiceDefinitionMacros.h"
++
++#include "larsim/Simulation/LArG4Parameters.h"
++
++namespace sim {
++
++  //--------------------------------------------------------------------------
++  LArG4Parameters::LArG4Parameters(fhicl::ParameterSet const& pset)
++    : fOpVerbosity            {pset.get< int                      >("OpticalSimVerbosity"     )}
++    , fParticleKineticECut    {pset.get< double                   >("ParticleKineticEnergyCut")}
++    , fStoreTrajectories      {pset.get< bool                     >("StoreTrajectories"       )}
++    , fDrawNeutrals           {pset.get< bool                     >("VisualizeNeutrals"       )}
++    , fVisualizationEnergyCut {pset.get< double                   >("VisualizationEnergyCut"  )}
++    , fUseCustomPhysics       {pset.get< bool                     >("UseCustomPhysics"        )}
++    , fModifyProtonCut        {pset.get< bool                     >("ModifyProtonCut"         , false)}
++    , fNewProtonCut           {fModifyProtonCut? pset.get<double>("NewProtonCut") /* for HadronHP */ : 0.0}
++    , fLongitudinalDiffusion  {pset.get< double                   >("LongitudinalDiffusion"   )}
++    , fTransverseDiffusion    {pset.get< double                   >("TransverseDiffusion"     )}
++    , fElectronClusterSize    {pset.get< double                   >("ElectronClusterSize"     )}
++    , fMinNumberOfElCluster   {pset.get< int                      >("MinNumberOfElCluster"    )}
++    , fEnabledPhysics         {pset.get< std::vector<std::string> >("EnabledPhysics"          )}
++    , fK0Bias                 {pset.get< int                      >("CosmogenicK0Bias"        )}
++    , fXSBias                 {pset.get< int                      >("CosmogenicXSMNBiasFactor")}
++    , fXBias                  {pset.get< int                      >("CosmogenicXSMNBiasOn"    )}
++    // First of last 3 flags above turns on secondary particle bias for
++    // K0s,Lambdas,neutrons in MuNuclear.
++    // The 2nd is the enhancement factor for XS bias in MuNuclear. Keep it
++    // <=100.
++    // The 3rd turns on cross-section bias in MuNuclear.
++    , fKeepEMShowerDaughters  {pset.get< bool                     >("KeepEMShowerDaughters"   )}
++    , fDisableWireplanes       {pset.get< bool                     >("DisableWireplanes"       )}
++    , fSkipWireSignalInTPCs    {pset.get< std::vector<unsigned short int> >("SkipWireSignalInTPCs"      )}
++    , fRecombA                 {pset.get< double                   >("RecombA",util::kRecombA)}
++    , fRecombk                 {pset.get< double                   >("Recombk",util::kRecombk)}
++    , fModBoxA                 {pset.get< double                   >("ModBoxA",util::kModBoxA)}
++    , fModBoxB                 {pset.get< double                   >("ModBoxB",util::kModBoxB)}
++    , fLarqlChi0A              {pset.get< double                   >("LarqlChi0A"            )}
++    , fLarqlChi0B              {pset.get< double                   >("LarqlChi0B"            )}
++    , fLarqlChi0C              {pset.get< double                   >("LarqlChi0C"            )}
++    , fLarqlChi0D              {pset.get< double                   >("LarqlChi0D"            )}
++    , fLarqlAlpha              {pset.get< double                   >("LarqlAlpha"            )}
++    , fLarqlBeta               {pset.get< double                   >("LarqlBeta"             )}
++    , fUseModBoxRecomb         {pset.get< bool                     >("UseModBoxRecomb"         )}
++    , fUseModLarqlRecomb       {pset.get< bool                     >("UseModLarqlRecomb"       )}
++    , fIonAndScintCalculator   {pset.get< std::string              >("IonAndScintCalculator", "Separate")}
++    , fOpticalParamVolumes     {pset.get< std::vector<std::string> >("OpticalParamVolumes"     )}
++    , fOpticalParamModels      {pset.get< std::vector<std::string> >("OpticalParamModels"      )}
++    , fOpticalParamOrientations{pset.get< std::vector<int>         >("OpticalParamOrientations")}
++    , fOpticalParamParameters  {pset.get< std::vector<std::vector<std::vector<double> > > >("OpticalParamParameters")}
++    , fLitePhotons             {pset.get< bool                     >("UseLitePhotons"       )}
++    , fFillSimEnergyDeposits   {pset.get< bool                     >("FillSimEnergyDeposits",false)}
++    , fNoElectronPropagation   {pset.get< bool                     >("NoElectronPropagation",false)}
++    , fNoPhotonPropagation     {pset.get< bool                     >("NoPhotonPropagation",false)}
++  {}
++}
++
 diff --git a/larsim/Simulation/LArG4Parameters_service.cc b/larsim/Simulation/LArG4Parameters_service.cc
 index d1fb958..c6fb9f8 100644
 --- a/larsim/Simulation/LArG4Parameters_service.cc
@@ -1444,6 +1520,82 @@ index d1fb958..c6fb9f8 100644
 -}
 -
  DEFINE_ART_SERVICE(sim::LArG4Parameters)
+diff --git a/larsim/Simulation/LArVoxelCalculator.cxx b/larsim/Simulation/LArVoxelCalculator.cxx
+new file mode 100644
+index 0000000..2022e8c
+--- /dev/null
++++ b/larsim/Simulation/LArVoxelCalculator.cxx
+@@ -0,0 +1,70 @@
++////////////////////////////////////////////////////////////////////////
++/// \file  LArVoxelCalculator_service.cc
++/// \brief Encapsulates calculation of LArVoxelID and LArVoxel parameters
++///
++/// \author  brebel@fnal.gov
++////////////////////////////////////////////////////////////////////////
++
++/// This service encapsulates the calculations associated with
++/// computing the LArVoxelID, and provides access to the any LArVoxel
++/// parameters from the input file(s).
++
++/// Definition: "Voxels" are three-dimensional "pixels"; basically
++/// they divide the energy deposition in the LAr into (x,y,z) cubes.
++/// Well, hyper-cubes actually, since we have to potentially include
++/// divisions in time as well.
++
++// Framework includes
++#include "art/Framework/Services/Registry/ServiceDefinitionMacros.h"
++
++#include "larsim/Simulation/LArVoxelCalculator.h"
++
++#include <cmath>
++
++namespace sim {
++
++  //----------------------------------------------------------------------------
++  LArVoxelCalculator::LArVoxelCalculator(fhicl::ParameterSet const& pset)
++    : m_voxelSize{pset.get<double>("VoxelSizeX"),
++                  pset.get<double>("VoxelSizeY"),
++                  pset.get<double>("VoxelSizeZ"),
++                  pset.get<double>("VoxelSizeT")}
++    , m_voxelOffset{pset.get<double>("VoxelOffsetX"),
++                    pset.get<double>("VoxelOffsetY"),
++                    pset.get<double>("VoxelOffsetZ"),
++                    pset.get<double>("VoxelOffsetT")}
++    , m_energyCut{pset.get<double>("VoxelEnergyCut")}
++  {}
++
++  //----------------------------------------------------------------------------
++  /// Returns a Monte-Carlo step size that's reasonable to use so that
++  /// each segment of a track will be contained within a single voxel.
++  double LArVoxelCalculator::SuggestedStepSize() const
++  {
++    return std::min( m_voxelSize[0], std::min( m_voxelSize[1], m_voxelSize[2] ) );
++  }
++
++  //----------------------------------------------------------------------------
++  /// Convert a co-ordinate axis (x, y, z, or t) into a bin number.
++  /// The first argument is the axis (x=0, y=1, z=2, t=3) and the
++  /// second is the value on that axis.
++  int LArVoxelCalculator::AxisToBin( const int axis,
++                                     const double coord ) const
++  {
++    // We have to be careful of how to handle the case when coord -
++    // offset < 0.  The standard floor() function rounds the number in
++    // the correct direction.
++    return static_cast<int>( floor( ( coord - m_voxelOffset[axis] ) / m_voxelSize[axis] ) );
++  }
++
++  //----------------------------------------------------------------------------
++  /// Get the value of an axis at the center of the given bin.  The
++  /// first argument is the axis (x=0, y=1, z=2, t=3) and the second
++  /// is the bin number on that axis.
++  double LArVoxelCalculator::BinToAxis( const int axis,
++                                        const int bin ) const
++  {
++    return ( static_cast<double>(bin) + 0.5 ) * m_voxelSize[axis] + m_voxelOffset[axis];
++  }
++
++} // namespace sim
 diff --git a/larsim/Simulation/LArVoxelCalculator_service.cc b/larsim/Simulation/LArVoxelCalculator_service.cc
 index f8fa00f..f9c0eec 100644
 --- a/larsim/Simulation/LArVoxelCalculator_service.cc
