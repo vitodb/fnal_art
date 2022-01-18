@@ -1,8 +1,8 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index e685b01f..1dad07c4 100644
+index e685b01..02f816c 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -11,10 +11,12 @@
+@@ -11,84 +11,92 @@
  #  make install
  #  make package (builds distribution tarfile)
  # ======================================================================
@@ -12,11 +12,15 @@ index e685b01f..1dad07c4 100644
  
 -cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
  
+-set(${PROJECT_NAME}_CMAKE_PROJECT_VERSION_STRING 09.37.01.02-p02)
 +find_package(cetmodules 2.25.04 REQUIRED)
- set(${PROJECT_NAME}_CMAKE_PROJECT_VERSION_STRING 09.37.01.02-p02)
  
- ##project(icaruscode VERSION 09.37.01.02.02 LANGUAGES CXX)
-@@ -25,70 +27,78 @@ message(STATUS
+-##project(icaruscode VERSION 09.37.01.02.02 LANGUAGES CXX)
+-project(icaruscode LANGUAGES CXX)
++project(icaruscode VERSION 09.37.01.02 LANGUAGES CXX)
+ 
+ message(STATUS
+   "\n-- ============================================================================="
    "\n-- === *** Start of configuration of ${PROJECT_NAME} ***"
    "\n-- ===")
  
@@ -151,7 +155,7 @@ index e685b01f..1dad07c4 100644
  
  # macros for dictionary and simple_plugin
  include(ArtDictionary)
-@@ -107,10 +117,8 @@ add_subdirectory(test)
+@@ -107,10 +115,8 @@ add_subdirectory(test)
  add_subdirectory(fcl)
  
  # ups - table and config files
@@ -162,13 +166,13 @@ index e685b01f..1dad07c4 100644
  
  message(STATUS
    "\n-- ==="
-@@ -120,3 +128,4 @@ message(STATUS
+@@ -120,3 +126,4 @@ message(STATUS
    "\n-- "
    )
  
 +cet_cmake_config()
 diff --git a/icaruscode/Analysis/CMakeLists.txt b/icaruscode/Analysis/CMakeLists.txt
-index 63c9487c..8969fc5f 100644
+index 63c9487..8969fc5 100644
 --- a/icaruscode/Analysis/CMakeLists.txt
 +++ b/icaruscode/Analysis/CMakeLists.txt
 @@ -1,40 +1,42 @@
@@ -249,7 +253,7 @@ index 63c9487c..8969fc5f 100644
  #install_headers()
  install_fhicl()
 diff --git a/icaruscode/Analysis/overburden/CMakeLists.txt b/icaruscode/Analysis/overburden/CMakeLists.txt
-index e3662782..2fc79a7a 100644
+index e366278..2fc79a7 100644
 --- a/icaruscode/Analysis/overburden/CMakeLists.txt
 +++ b/icaruscode/Analysis/overburden/CMakeLists.txt
 @@ -1,36 +1,35 @@
@@ -321,7 +325,7 @@ index e3662782..2fc79a7a 100644
  install_fhicl()
  install_source()
 diff --git a/icaruscode/Analysis/tools/CMakeLists.txt b/icaruscode/Analysis/tools/CMakeLists.txt
-index 705f2cf2..57824add 100644
+index 705f2cf..57824ad 100644
 --- a/icaruscode/Analysis/tools/CMakeLists.txt
 +++ b/icaruscode/Analysis/tools/CMakeLists.txt
 @@ -2,40 +2,39 @@ cet_enable_asserts()
@@ -398,7 +402,7 @@ index 705f2cf2..57824add 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/Analysis/tools/MCTruth/CMakeLists.txt b/icaruscode/Analysis/tools/MCTruth/CMakeLists.txt
-index dffd9bf3..8ab13127 100644
+index dffd9bf..8ab1312 100644
 --- a/icaruscode/Analysis/tools/MCTruth/CMakeLists.txt
 +++ b/icaruscode/Analysis/tools/MCTruth/CMakeLists.txt
 @@ -1,65 +1,63 @@
@@ -525,7 +529,7 @@ index dffd9bf3..8ab13127 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/CRT/CMakeLists.txt b/icaruscode/CRT/CMakeLists.txt
-index e8204533..29b3b96e 100644
+index e820453..29b3b96 100644
 --- a/icaruscode/CRT/CMakeLists.txt
 +++ b/icaruscode/CRT/CMakeLists.txt
 @@ -1,304 +1,304 @@
@@ -1106,7 +1110,7 @@ index e8204533..29b3b96e 100644
  simple_plugin(CRTT0Matching module
                icaruscode_CRTData
 diff --git a/icaruscode/CRT/CRTDecoder/CMakeLists.txt b/icaruscode/CRT/CRTDecoder/CMakeLists.txt
-index c1c10423..344b1818 100644
+index c1c1042..344b181 100644
 --- a/icaruscode/CRT/CRTDecoder/CMakeLists.txt
 +++ b/icaruscode/CRT/CRTDecoder/CMakeLists.txt
 @@ -1,127 +1,129 @@
@@ -1412,7 +1416,7 @@ index c1c10423..344b1818 100644
  
  install_fhicl()
 diff --git a/icaruscode/CRT/CRTUtils/CMakeLists.txt b/icaruscode/CRT/CRTUtils/CMakeLists.txt
-index 07e742f0..b6051505 100644
+index 07e742f..b605150 100644
 --- a/icaruscode/CRT/CRTUtils/CMakeLists.txt
 +++ b/icaruscode/CRT/CRTUtils/CMakeLists.txt
 @@ -1,46 +1,47 @@
@@ -1504,7 +1508,7 @@ index 07e742f0..b6051505 100644
  install_source()
 +
 diff --git a/icaruscode/Decode/CMakeLists.txt b/icaruscode/Decode/CMakeLists.txt
-index 4e6fb232..c34e8239 100644
+index 4e6fb23..c34e823 100644
 --- a/icaruscode/Decode/CMakeLists.txt
 +++ b/icaruscode/Decode/CMakeLists.txt
 @@ -1,83 +1,86 @@
@@ -1663,7 +1667,7 @@ index 4e6fb232..c34e8239 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/Decode/ChannelMapping/CMakeLists.txt b/icaruscode/Decode/ChannelMapping/CMakeLists.txt
-index 291670e8..9c8ffc61 100644
+index 291670e..9c8ffc6 100644
 --- a/icaruscode/Decode/ChannelMapping/CMakeLists.txt
 +++ b/icaruscode/Decode/ChannelMapping/CMakeLists.txt
 @@ -1,63 +1,69 @@
@@ -1792,7 +1796,7 @@ index 291670e8..9c8ffc61 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/Decode/DataProducts/CMakeLists.txt b/icaruscode/Decode/DataProducts/CMakeLists.txt
-index ab30deae..1afc5736 100644
+index ab30dea..1afc573 100644
 --- a/icaruscode/Decode/DataProducts/CMakeLists.txt
 +++ b/icaruscode/Decode/DataProducts/CMakeLists.txt
 @@ -1,8 +1,8 @@
@@ -1809,7 +1813,7 @@ index ab30deae..1afc5736 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/Decode/DecoderTools/CMakeLists.txt b/icaruscode/Decode/DecoderTools/CMakeLists.txt
-index 5014ec63..6e96f3da 100644
+index 5014ec6..6e96f3d 100644
 --- a/icaruscode/Decode/DecoderTools/CMakeLists.txt
 +++ b/icaruscode/Decode/DecoderTools/CMakeLists.txt
 @@ -1,52 +1,56 @@
@@ -1914,7 +1918,7 @@ index 5014ec63..6e96f3da 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/Decode/DecoderTools/Dumpers/CMakeLists.txt b/icaruscode/Decode/DecoderTools/Dumpers/CMakeLists.txt
-index 7adf3063..3ddacad3 100644
+index 7adf306..3ddacad 100644
 --- a/icaruscode/Decode/DecoderTools/Dumpers/CMakeLists.txt
 +++ b/icaruscode/Decode/DecoderTools/Dumpers/CMakeLists.txt
 @@ -1,7 +1,8 @@
@@ -1933,7 +1937,7 @@ index 7adf3063..3ddacad3 100644
 +                icarusalg::Utilities
 +	)
 diff --git a/icaruscode/Filters/CMakeLists.txt b/icaruscode/Filters/CMakeLists.txt
-index d7c31a85..87d9ac5a 100644
+index d7c31a8..87d9ac5 100644
 --- a/icaruscode/Filters/CMakeLists.txt
 +++ b/icaruscode/Filters/CMakeLists.txt
 @@ -1,39 +1,38 @@
@@ -2011,7 +2015,7 @@ index d7c31a85..87d9ac5a 100644
  install_source()
  
 diff --git a/icaruscode/Geometry/CMakeLists.txt b/icaruscode/Geometry/CMakeLists.txt
-index 449df286..b651ee0b 100644
+index 449df28..b651ee0 100644
 --- a/icaruscode/Geometry/CMakeLists.txt
 +++ b/icaruscode/Geometry/CMakeLists.txt
 @@ -1,28 +1,30 @@
@@ -2071,7 +2075,7 @@ index 449df286..b651ee0b 100644
 +	)
  
 diff --git a/icaruscode/PMT/Algorithms/CMakeLists.txt b/icaruscode/PMT/Algorithms/CMakeLists.txt
-index a7b424a1..f531eae7 100644
+index a7b424a..f531eae 100644
 --- a/icaruscode/PMT/Algorithms/CMakeLists.txt
 +++ b/icaruscode/PMT/Algorithms/CMakeLists.txt
 @@ -1,28 +1,24 @@
@@ -2123,7 +2127,7 @@ index a7b424a1..f531eae7 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/PMT/CMakeLists.txt b/icaruscode/PMT/CMakeLists.txt
-index d0b48ec1..33b064e5 100644
+index d0b48ec..33b064e 100644
 --- a/icaruscode/PMT/CMakeLists.txt
 +++ b/icaruscode/PMT/CMakeLists.txt
 @@ -7,129 +7,136 @@ add_subdirectory(Trigger)
@@ -2368,7 +2372,7 @@ index d0b48ec1..33b064e5 100644
 +	)
  
 diff --git a/icaruscode/PMT/LibraryMappingTools/CMakeLists.txt b/icaruscode/PMT/LibraryMappingTools/CMakeLists.txt
-index 0382f835..6ff423ac 100644
+index 0382f83..6ff423a 100644
 --- a/icaruscode/PMT/LibraryMappingTools/CMakeLists.txt
 +++ b/icaruscode/PMT/LibraryMappingTools/CMakeLists.txt
 @@ -1,25 +1,25 @@
@@ -2417,7 +2421,7 @@ index 0382f835..6ff423ac 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/PMT/OpReco/CMakeLists.txt b/icaruscode/PMT/OpReco/CMakeLists.txt
-index 2b4e76ee..72246c7f 100644
+index 2b4e76e..72246c7 100644
 --- a/icaruscode/PMT/OpReco/CMakeLists.txt
 +++ b/icaruscode/PMT/OpReco/CMakeLists.txt
 @@ -1,35 +1,36 @@
@@ -2488,7 +2492,7 @@ index 2b4e76ee..72246c7f 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/PMT/OpReco/FlashFinder/CMakeLists.txt b/icaruscode/PMT/OpReco/FlashFinder/CMakeLists.txt
-index 8367efda..bc95c906 100644
+index 8367efd..bc95c90 100644
 --- a/icaruscode/PMT/OpReco/FlashFinder/CMakeLists.txt
 +++ b/icaruscode/PMT/OpReco/FlashFinder/CMakeLists.txt
 @@ -1,60 +1,61 @@
@@ -2610,7 +2614,7 @@ index 8367efda..bc95c906 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/PMT/OpReco/driver/CMakeLists.txt b/icaruscode/PMT/OpReco/driver/CMakeLists.txt
-index 251e1043..f8bfb379 100644
+index 251e104..f8bfb37 100644
 --- a/icaruscode/PMT/OpReco/driver/CMakeLists.txt
 +++ b/icaruscode/PMT/OpReco/driver/CMakeLists.txt
 @@ -1,3 +1,3 @@
@@ -2620,7 +2624,7 @@ index 251e1043..f8bfb379 100644
 +#FILE(GLOBfcl_files*.fcl)
 +#install_source(EXTRAS${fcl_files})
 diff --git a/icaruscode/PMT/OpReco/fcl/CMakeLists.txt b/icaruscode/PMT/OpReco/fcl/CMakeLists.txt
-index 0361ef33..c51b7b31 100644
+index 0361ef3..c51b7b3 100644
 --- a/icaruscode/PMT/OpReco/fcl/CMakeLists.txt
 +++ b/icaruscode/PMT/OpReco/fcl/CMakeLists.txt
 @@ -1,3 +1,3 @@
@@ -2629,7 +2633,7 @@ index 0361ef33..c51b7b31 100644
 -install_source( EXTRAS ${fcl_files} )
 +install_source(EXTRAS ${fcl_files})
 diff --git a/icaruscode/PMT/OpticalTools/CMakeLists.txt b/icaruscode/PMT/OpticalTools/CMakeLists.txt
-index 5292feb1..9995f9b6 100644
+index 5292feb..9995f9b 100644
 --- a/icaruscode/PMT/OpticalTools/CMakeLists.txt
 +++ b/icaruscode/PMT/OpticalTools/CMakeLists.txt
 @@ -1,36 +1,37 @@
@@ -2702,7 +2706,7 @@ index 5292feb1..9995f9b6 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/PMT/Trigger/Algorithms/CMakeLists.txt b/icaruscode/PMT/Trigger/Algorithms/CMakeLists.txt
-index ef910a79..32ed21c3 100644
+index ef910a7..32ed21c 100644
 --- a/icaruscode/PMT/Trigger/Algorithms/CMakeLists.txt
 +++ b/icaruscode/PMT/Trigger/Algorithms/CMakeLists.txt
 @@ -1,16 +1,19 @@
@@ -2738,7 +2742,7 @@ index ef910a79..32ed21c3 100644
  install_headers(SUBDIRS "details")
  install_source(SUBDIRS "details")
 diff --git a/icaruscode/PMT/Trigger/CMakeLists.txt b/icaruscode/PMT/Trigger/CMakeLists.txt
-index 7abf36b1..1028715e 100644
+index 7abf36b..1028715 100644
 --- a/icaruscode/PMT/Trigger/CMakeLists.txt
 +++ b/icaruscode/PMT/Trigger/CMakeLists.txt
 @@ -3,210 +3,239 @@ add_subdirectory(Utilities)
@@ -3170,7 +3174,7 @@ index 7abf36b1..1028715e 100644
  endforeach()
  
 diff --git a/icaruscode/PMT/Trigger/Utilities/CMakeLists.txt b/icaruscode/PMT/Trigger/Utilities/CMakeLists.txt
-index b5b7ac27..1cab5cef 100644
+index b5b7ac2..1cab5ce 100644
 --- a/icaruscode/PMT/Trigger/Utilities/CMakeLists.txt
 +++ b/icaruscode/PMT/Trigger/Utilities/CMakeLists.txt
 @@ -1,15 +1,16 @@
@@ -3199,7 +3203,7 @@ index b5b7ac27..1cab5cef 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/RecoUtils/CMakeLists.txt b/icaruscode/RecoUtils/CMakeLists.txt
-index aa70ef57..b1a0adee 100644
+index aa70ef5..b1a0ade 100644
 --- a/icaruscode/RecoUtils/CMakeLists.txt
 +++ b/icaruscode/RecoUtils/CMakeLists.txt
 @@ -1,34 +1,33 @@
@@ -3337,7 +3341,7 @@ index aa70ef57..b1a0adee 100644
  #install_headers()
  ##install_fhicl()
 diff --git a/icaruscode/TPC/CMakeLists.txt b/icaruscode/TPC/CMakeLists.txt
-index c7ccb4ed..b10c89d5 100644
+index c7ccb4e..b10c89d 100644
 --- a/icaruscode/TPC/CMakeLists.txt
 +++ b/icaruscode/TPC/CMakeLists.txt
 @@ -1,5 +1,5 @@
@@ -3350,7 +3354,7 @@ index c7ccb4ed..b10c89d5 100644
 diff --git a/icaruscode/TPC/Calorimetry/Algorithms/CMakeLists.txt b/icaruscode/TPC/Calorimetry/Algorithms/CMakeLists.txt
 old mode 100755
 new mode 100644
-index 1b8217c5..c493141c
+index 1b8217c..c493141
 --- a/icaruscode/TPC/Calorimetry/Algorithms/CMakeLists.txt
 +++ b/icaruscode/TPC/Calorimetry/Algorithms/CMakeLists.txt
 @@ -1,68 +1,69 @@
@@ -3488,7 +3492,7 @@ index 1b8217c5..c493141c
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/TPC/Calorimetry/CMakeLists.txt b/icaruscode/TPC/Calorimetry/CMakeLists.txt
-index d84c1aa0..c08fe8f0 100644
+index d84c1aa..c08fe8f 100644
 --- a/icaruscode/TPC/Calorimetry/CMakeLists.txt
 +++ b/icaruscode/TPC/Calorimetry/CMakeLists.txt
 @@ -1,27 +1,27 @@
@@ -3542,7 +3546,7 @@ index d84c1aa0..c08fe8f0 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/TPC/ICARUSWireCell/icarus/CMakeLists.txt b/icaruscode/TPC/ICARUSWireCell/icarus/CMakeLists.txt
-index c15f8559..f7592a11 100644
+index c15f855..f7592a1 100644
 --- a/icaruscode/TPC/ICARUSWireCell/icarus/CMakeLists.txt
 +++ b/icaruscode/TPC/ICARUSWireCell/icarus/CMakeLists.txt
 @@ -1,7 +1,7 @@
@@ -3555,7 +3559,7 @@ index c15f8559..f7592a11 100644
  
  #add_subdirectory(fhicl)
 diff --git a/icaruscode/TPC/SignalProcessing/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/CMakeLists.txt
-index 70284c91..077227a1 100644
+index 70284c9..077227a 100644
 --- a/icaruscode/TPC/SignalProcessing/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/CMakeLists.txt
 @@ -1,5 +1,5 @@
@@ -3566,7 +3570,7 @@ index 70284c91..077227a1 100644
  add_subdirectory(HitFinder)
  add_subdirectory(RawDigitFilter)
 diff --git a/icaruscode/TPC/SignalProcessing/HitFinder/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/HitFinder/CMakeLists.txt
-index 4e507da6..44edef1e 100644
+index 4e507da..44edef1 100644
 --- a/icaruscode/TPC/SignalProcessing/HitFinder/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/HitFinder/CMakeLists.txt
 @@ -1,42 +1,43 @@
@@ -3651,7 +3655,7 @@ index 4e507da6..44edef1e 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/TPC/SignalProcessing/HitFinder/HitFinderTools/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/HitFinder/HitFinderTools/CMakeLists.txt
-index 1601ea83..51f88fdb 100644
+index 1601ea8..51f88fd 100644
 --- a/icaruscode/TPC/SignalProcessing/HitFinder/HitFinderTools/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/HitFinder/HitFinderTools/CMakeLists.txt
 @@ -1,35 +1,33 @@
@@ -3720,7 +3724,7 @@ index 1601ea83..51f88fdb 100644
 diff --git a/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt
 old mode 100755
 new mode 100644
-index 3561a35a..a22323bc
+index 3561a35..a22323b
 --- a/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/RawDigitFilter/Algorithms/CMakeLists.txt
 @@ -1,70 +1,76 @@
@@ -3866,7 +3870,7 @@ index 3561a35a..a22323bc
 diff --git a/icaruscode/TPC/SignalProcessing/RawDigitFilter/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/RawDigitFilter/CMakeLists.txt
 old mode 100755
 new mode 100644
-index 1c0c316a..a778bd94
+index 1c0c316..a778bd9
 --- a/icaruscode/TPC/SignalProcessing/RawDigitFilter/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/RawDigitFilter/CMakeLists.txt
 @@ -2,46 +2,49 @@ add_subdirectory(Algorithms)
@@ -3958,7 +3962,7 @@ index 1c0c316a..a778bd94
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/TPC/SignalProcessing/RecoWire/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/RecoWire/CMakeLists.txt
-index 8d0f1549..f339f1d5 100644
+index 8d0f154..f339f1d 100644
 --- a/icaruscode/TPC/SignalProcessing/RecoWire/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/RecoWire/CMakeLists.txt
 @@ -1,54 +1,54 @@
@@ -4059,7 +4063,7 @@ index 8d0f1549..f339f1d5 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/TPC/SignalProcessing/RecoWire/DeconTools/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/RecoWire/DeconTools/CMakeLists.txt
-index 6b7d4c3f..50ff7626 100644
+index 6b7d4c3..50ff762 100644
 --- a/icaruscode/TPC/SignalProcessing/RecoWire/DeconTools/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/RecoWire/DeconTools/CMakeLists.txt
 @@ -1,38 +1,39 @@
@@ -4134,7 +4138,7 @@ index 6b7d4c3f..50ff7626 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/TPC/SignalProcessing/RecoWire/ROITools/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/RecoWire/ROITools/CMakeLists.txt
-index 753cfd59..1ac9b4a6 100644
+index 753cfd5..1ac9b4a 100644
 --- a/icaruscode/TPC/SignalProcessing/RecoWire/ROITools/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/RecoWire/ROITools/CMakeLists.txt
 @@ -2,40 +2,40 @@ cet_enable_asserts()
@@ -4213,7 +4217,7 @@ index 753cfd59..1ac9b4a6 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/TPC/SignalProcessing/RecoWire/SimTestPulse/CMakeLists.txt b/icaruscode/TPC/SignalProcessing/RecoWire/SimTestPulse/CMakeLists.txt
-index 7de0b723..38733c76 100644
+index 7de0b72..38733c7 100644
 --- a/icaruscode/TPC/SignalProcessing/RecoWire/SimTestPulse/CMakeLists.txt
 +++ b/icaruscode/TPC/SignalProcessing/RecoWire/SimTestPulse/CMakeLists.txt
 @@ -1,49 +1,48 @@
@@ -4310,7 +4314,7 @@ index 7de0b723..38733c76 100644
  
  install_fhicl()
 diff --git a/icaruscode/TPC/Simulation/CMakeLists.txt b/icaruscode/TPC/Simulation/CMakeLists.txt
-index 8d9dc799..082951a0 100644
+index 8d9dc79..082951a 100644
 --- a/icaruscode/TPC/Simulation/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/CMakeLists.txt
 @@ -1,5 +1,5 @@
@@ -4321,7 +4325,7 @@ index 8d9dc799..082951a0 100644
  add_subdirectory(DetSim)
  add_subdirectory(Overlay)
 diff --git a/icaruscode/TPC/Simulation/DetSim/CMakeLists.txt b/icaruscode/TPC/Simulation/DetSim/CMakeLists.txt
-index ef74511d..a2a37d42 100644
+index ef74511..a2a37d4 100644
 --- a/icaruscode/TPC/Simulation/DetSim/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/DetSim/CMakeLists.txt
 @@ -1,72 +1,76 @@
@@ -4466,7 +4470,7 @@ index ef74511d..a2a37d42 100644
  #install_headers()
  install_fhicl()
 diff --git a/icaruscode/TPC/Simulation/DetSim/tools/CMakeLists.txt b/icaruscode/TPC/Simulation/DetSim/tools/CMakeLists.txt
-index 5e85aeff..d277f709 100644
+index 5e85aef..d277f70 100644
 --- a/icaruscode/TPC/Simulation/DetSim/tools/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/DetSim/tools/CMakeLists.txt
 @@ -1,69 +1,41 @@
@@ -4574,7 +4578,7 @@ index 5e85aeff..d277f709 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/TPC/Simulation/Overlay/CMakeLists.txt b/icaruscode/TPC/Simulation/Overlay/CMakeLists.txt
-index ebb83c15..c8beca7d 100644
+index ebb83c1..c8beca7 100644
 --- a/icaruscode/TPC/Simulation/Overlay/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/Overlay/CMakeLists.txt
 @@ -1,37 +1,41 @@
@@ -4652,7 +4656,7 @@ index ebb83c15..c8beca7d 100644
  #install_headers()
  install_fhicl()
 diff --git a/icaruscode/TPC/Simulation/Overlay/tools/CMakeLists.txt b/icaruscode/TPC/Simulation/Overlay/tools/CMakeLists.txt
-index 9ac85139..99d9320d 100644
+index 9ac8513..99d9320 100644
 --- a/icaruscode/TPC/Simulation/Overlay/tools/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/Overlay/tools/CMakeLists.txt
 @@ -1,37 +1,39 @@
@@ -4728,7 +4732,7 @@ index 9ac85139..99d9320d 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/TPC/Simulation/SpaceCharge/CMakeLists.txt b/icaruscode/TPC/Simulation/SpaceCharge/CMakeLists.txt
-index 1ea51845..899e2c05 100644
+index 1ea5184..899e2c0 100644
 --- a/icaruscode/TPC/Simulation/SpaceCharge/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/SpaceCharge/CMakeLists.txt
 @@ -1,26 +1,26 @@
@@ -4782,7 +4786,7 @@ index 1ea51845..899e2c05 100644
  install_fhicl()
  install_source()
 diff --git a/icaruscode/TPC/Simulation/SpaceChargeServices/CMakeLists.txt b/icaruscode/TPC/Simulation/SpaceChargeServices/CMakeLists.txt
-index 1271e0a2..40b1f93d 100644
+index 1271e0a..40b1f93 100644
 --- a/icaruscode/TPC/Simulation/SpaceChargeServices/CMakeLists.txt
 +++ b/icaruscode/TPC/Simulation/SpaceChargeServices/CMakeLists.txt
 @@ -1,20 +1,17 @@
@@ -4820,7 +4824,7 @@ index 1271e0a2..40b1f93d 100644
  install_headers()
  install_fhicl()
 diff --git a/icaruscode/TPC/Tracking/CMakeLists.txt b/icaruscode/TPC/Tracking/CMakeLists.txt
-index 1113d306..cf52317c 100644
+index 1113d30..cf52317 100644
 --- a/icaruscode/TPC/Tracking/CMakeLists.txt
 +++ b/icaruscode/TPC/Tracking/CMakeLists.txt
 @@ -1,5 +1,5 @@
@@ -4831,7 +4835,7 @@ index 1113d306..cf52317c 100644
  add_subdirectory(ICARUSPandora)
  add_subdirectory(cluster3D)
 diff --git a/icaruscode/TPC/Tracking/ICARUSPandora/CMakeLists.txt b/icaruscode/TPC/Tracking/ICARUSPandora/CMakeLists.txt
-index 687f6531..13e99bbd 100644
+index 687f653..13e99bb 100644
 --- a/icaruscode/TPC/Tracking/ICARUSPandora/CMakeLists.txt
 +++ b/icaruscode/TPC/Tracking/ICARUSPandora/CMakeLists.txt
 @@ -1,5 +1,5 @@
@@ -4842,7 +4846,7 @@ index 687f6531..13e99bbd 100644
  install_fhicl()
  
 diff --git a/icaruscode/TPC/Tracking/ICARUSPandora/scripts/CMakeLists.txt b/icaruscode/TPC/Tracking/ICARUSPandora/scripts/CMakeLists.txt
-index 2cfc4126..7e15f7a5 100644
+index 2cfc412..7e15f7a 100644
 --- a/icaruscode/TPC/Tracking/ICARUSPandora/scripts/CMakeLists.txt
 +++ b/icaruscode/TPC/Tracking/ICARUSPandora/scripts/CMakeLists.txt
 @@ -1,7 +1,7 @@
@@ -4859,7 +4863,7 @@ index 2cfc4126..7e15f7a5 100644
 +file(GLOB xml_file*.xml)
 +install_fw(LIST${xml_file})
 diff --git a/icaruscode/TPC/Tracking/MCS/CMakeLists.txt b/icaruscode/TPC/Tracking/MCS/CMakeLists.txt
-index 3a93ab4d..1128ecf9 100644
+index 3a93ab4..1128ecf 100644
 --- a/icaruscode/TPC/Tracking/MCS/CMakeLists.txt
 +++ b/icaruscode/TPC/Tracking/MCS/CMakeLists.txt
 @@ -1,97 +1,98 @@
@@ -5055,7 +5059,7 @@ index 3a93ab4d..1128ecf9 100644
  
  install_headers()
 diff --git a/icaruscode/TPC/Tracking/cluster3D/CMakeLists.txt b/icaruscode/TPC/Tracking/cluster3D/CMakeLists.txt
-index 4dc748b7..bb21323b 100644
+index 4dc748b..bb21323 100644
 --- a/icaruscode/TPC/Tracking/cluster3D/CMakeLists.txt
 +++ b/icaruscode/TPC/Tracking/cluster3D/CMakeLists.txt
 @@ -25,7 +25,10 @@ art_make(LIB_LIBRARIES
@@ -5071,7 +5075,7 @@ index 4dc748b7..bb21323b 100644
  
  install_headers()
 diff --git a/icaruscode/TPC/Utilities/CMakeLists.txt b/icaruscode/TPC/Utilities/CMakeLists.txt
-index 038dc90a..f053b11b 100644
+index 038dc90..f053b11 100644
 --- a/icaruscode/TPC/Utilities/CMakeLists.txt
 +++ b/icaruscode/TPC/Utilities/CMakeLists.txt
 @@ -1,62 +1,64 @@
@@ -5192,7 +5196,7 @@ index 038dc90a..f053b11b 100644
  
  install_headers()
 diff --git a/icaruscode/TPC/Utilities/tools/CMakeLists.txt b/icaruscode/TPC/Utilities/tools/CMakeLists.txt
-index 0bcfeafa..2a413f2c 100644
+index 0bcfeaf..2a413f2 100644
 --- a/icaruscode/TPC/Utilities/tools/CMakeLists.txt
 +++ b/icaruscode/TPC/Utilities/tools/CMakeLists.txt
 @@ -1,38 +1,40 @@
@@ -5268,7 +5272,7 @@ index 0bcfeafa..2a413f2c 100644
  install_headers()
  install_source()
 diff --git a/icaruscode/Utilities/CMakeLists.txt b/icaruscode/Utilities/CMakeLists.txt
-index 13ca4966..d195dc90 100644
+index 13ca496..d195dc9 100644
 --- a/icaruscode/Utilities/CMakeLists.txt
 +++ b/icaruscode/Utilities/CMakeLists.txt
 @@ -1,42 +1,44 @@
@@ -5349,7 +5353,7 @@ index 13ca4966..d195dc90 100644
  simple_plugin(DummyFilter "module")
  simple_plugin(DummyProducer "module")
 diff --git a/test/PMT/Data/CMakeLists.txt b/test/PMT/Data/CMakeLists.txt
-index 7cf465c9..a4ecd693 100644
+index 7cf465c..a4ecd69 100644
 --- a/test/PMT/Data/CMakeLists.txt
 +++ b/test/PMT/Data/CMakeLists.txt
 @@ -1,5 +1,7 @@
@@ -5362,7 +5366,7 @@ index 7cf465c9..a4ecd693 100644
    USE_BOOST_UNIT
    )
 diff --git a/test/PMT/Trigger/Algorithms/CMakeLists.txt b/test/PMT/Trigger/Algorithms/CMakeLists.txt
-index 77195e0b..38265e6a 100644
+index 77195e0..38265e6 100644
 --- a/test/PMT/Trigger/Algorithms/CMakeLists.txt
 +++ b/test/PMT/Trigger/Algorithms/CMakeLists.txt
 @@ -1,5 +1,5 @@
@@ -5373,7 +5377,7 @@ index 77195e0b..38265e6a 100644
    USE_BOOST_UNIT
    )
 diff --git a/test/PMT/Trigger/Data/CMakeLists.txt b/test/PMT/Trigger/Data/CMakeLists.txt
-index 0535746f..aa0aa10e 100644
+index 0535746..aa0aa10 100644
 --- a/test/PMT/Trigger/Data/CMakeLists.txt
 +++ b/test/PMT/Trigger/Data/CMakeLists.txt
 @@ -1,6 +1,7 @@
@@ -5387,7 +5391,7 @@ index 0535746f..aa0aa10e 100644
    USE_BOOST_UNIT
    )
 diff --git a/test/ci/CMakeLists.txt b/test/ci/CMakeLists.txt
-index c63cd6d4..2e547296 100644
+index c63cd6d..2e54729 100644
 --- a/test/ci/CMakeLists.txt
 +++ b/test/ci/CMakeLists.txt
 @@ -6,7 +6,7 @@
