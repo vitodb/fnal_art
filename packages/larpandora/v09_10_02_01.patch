@@ -426,3 +426,16 @@ index 684d2af..f5d5098 100644
  endif()
  
  install_headers()
+diff --git a/larpandora/LArPandoraInterface/Detectors/CMakeLists.txt b/larpandora/LArPandoraInterface/Detectors/CMakeLists.txt
+index 9d6941e..c3f822f 100644
+--- a/larpandora/LArPandoraInterface/Detectors/CMakeLists.txt
++++ b/larpandora/LArPandoraInterface/Detectors/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ art_make( EXCLUDE SimpleNeutrinoId_tool.cc
+-          LIB_LIBRARIES larcorealg_Geometry
+-                        larcore_Geometry_Geometry_service
++          LIB_LIBRARIES larcorealg::Geometry
++                        larcore::Geometry_Geometry_service
+                         PANDORASDK
+                         PANDORAMONITORING
+         )
