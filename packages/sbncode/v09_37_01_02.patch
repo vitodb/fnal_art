@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 886465d9..abb1ea36 100644
+index 886465d..829176e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -1,4 +1,4 @@
@@ -29,7 +29,7 @@ index 886465d9..abb1ea36 100644
  
  include(CetCMakeEnv)
  cet_cmake_env()
-@@ -38,45 +35,49 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
+@@ -38,98 +35,102 @@ cet_set_compiler_flags(DIAGS CAUTIOUS
    ALLOW_DEPRECATIONS
    EXTRA_FLAGS -pedantic -Wno-unused-local-typedefs -Wno-undefined-var-template
  )
@@ -116,6 +116,107 @@ index 886465d9..abb1ea36 100644
  
  
  # GENIE libraries are needed, added Aug2021 by Keng 
+ # genie (copied from nugen)
+   cet_find_library( LOG4CPP      NAMES log4cpp      PATHS ENV LOG4CPP_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWMSG       NAMES GFwMsg       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWREG       NAMES GFwReg       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWALG       NAMES GFwAlg       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWINT       NAMES GFwInt       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWGHEP      NAMES GFwGHEP      PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWNUM       NAMES GFwNum       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWUTL       NAMES GFwUtl       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWPARDAT    NAMES GFwParDat    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWEG        NAMES GFwEG        PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GFWNTP       NAMES GFwNtp       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHXSIG      NAMES GPhXSIg      PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHPDF       NAMES GPhPDF       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHNUCLST    NAMES GPhNuclSt    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHCMN       NAMES GPhCmn       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDCY       NAMES GPhDcy       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHHADTRANSP NAMES GPhHadTransp PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHHADNZ     NAMES GPhHadnz     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDEEX      NAMES GPhDeEx      PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHAMNGXS    NAMES GPhAMNGXS    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHAMNGEG    NAMES GPhAMNGEG    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHCHMXS     NAMES GPhChmXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHCOHXS     NAMES GPhCohXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHCOHEG     NAMES GPhCohEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDISXS     NAMES GPhDISXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDISEG     NAMES GPhDISEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDFRCXS    NAMES GPhDfrcXS    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHDFRCEG    NAMES GPhDfrcEG    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHGLWRESXS  NAMES GPhGlwResXS  PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHGLWRESEG  NAMES GPhGlwResEG  PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHIBDXS     NAMES GPhIBDXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHIBDEG     NAMES GPhIBDEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHMNUCXS    NAMES GPhMNucXS    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHMNUCEG    NAMES GPhMNucEG    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHMEL       NAMES GPhMEL       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHNUELXS    NAMES GPhNuElXS    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHNUELEG    NAMES GPhNuElEG    PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHQELXS     NAMES GPhQELXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHQELEG     NAMES GPhQELEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHRESXS     NAMES GPhResXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHRESEG     NAMES GPhResEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHSTRXS     NAMES GPhStrXS     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHSTREG     NAMES GPhStrEG     PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GPHNDCY      NAMES GPhNDcy      PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GTLGEO       NAMES GTlGeo       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GTLFLX       NAMES GTlFlx       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GRWFWK       NAMES GRwFwk       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GRWIO        NAMES GRwIO        PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
+-  cet_find_library( GRWCLC       NAMES GRwClc       PATHS ENV GENIE_LIB NO_DEFAULT_PATH )
++  set( GFWMSG       ${GFwMsg_LIBRARY}        )
++  set( GFWREG       ${GFwReg_LIBRARY}       )
++  set( GFWALG       ${GFwAlg_LIBRARY}       )
++  set( GFWINT       ${GFwInt_LIBRARY}        )
++  set( GFWGHEP      ${GFwGHEP_LIBRARY}       )
++  set( GFWNUM       ${GFwNum_LIBRARY}        )
++  set( GFWUTL       ${GFwUtl_LIBRARY}        )
++  set( GFWPARDAT    ${GFwParDat_LIBRARY}     )
++  set( GFWEG        ${GFwEG_LIBRARY}         )
++  set( GFWNTP       ${GFwNtp_LIBRARY}        )
++  set( GPHXSIG      ${GPhXSIg_LIBRARY}       )
++  set( GPHPDF       ${GPhPDF_LIBRARY}        )
++  set( GPHNUCLST    ${GPhNuclSt_LIBRARY}     )
++  set( GPHCMN       ${GPhCmn_LIBRARY}        )
++  set( GPHDCY       ${GPhDcy_LIBRARY}        )
++  set( GPHHADTRANSP ${GPhHadTransp_LIBRARY}  )
++  set( GPHHADNZ     ${GPhHadnz_LIBRARY}      )
++  set( GPHDEEX      ${GPhDeEx_LIBRARY}       )
++  set( GPHAMNGXS    ${GPhAMNGXS_LIBRARY}     )
++  set( GPHAMNGEG    ${GPhAMNGEG_LIBRARY}     )
++  set( GPHCHMXS     ${GPhChmXS_LIBRARY}      )
++  set( GPHCOHXS     ${GPhCohXS_LIBRARY}      )
++  set( GPHCOHEG     ${GPhCohEG_LIBRARY}      )
++  set( GPHDISXS     ${GPhDISXS_LIBRARY}      )
++  set( GPHDISEG     ${GPhDISEG_LIBRARY}      )
++  set( GPHDFRCXS    ${GPhDfrcXS_LIBRARY}     )
++  set( GPHDFRCEG    ${GPhDfrcEG_LIBRARY}     )
++  set( GPHGLWRESXS  ${GPhGlwResXS_LIBRARY}   )
++  set( GPHGLWRESEG  ${GPhGlwResEG_LIBRARY}   )
++  set( GPHIBDXS     ${GPhIBDXS_LIBRARY}      )
++  set( GPHIBDEG     ${GPhIBDEG_LIBRARY}      )
++  set( GPHMNUCXS    ${GPhMNucXS_LIBRARY}     )
++  set( GPHMNUCEG    ${GPhMNucEG_LIBRARY}     )
++  set( GPHMEL       ${GPhMEL_LIBRARY}        )
++  set( GPHNUELXS    ${GPhNuElXS_LIBRARY}     )
++  set( GPHNUELEG    ${GPhNuElEG_LIBRARY}     )
++  set( GPHQELXS     ${GPhQELXS_LIBRARY}      )
++  set( GPHQELEG     ${GPhQELEG_LIBRARY}      )
++  set( GPHRESXS     ${GPhResXS_LIBRARY}      )
++  set( GPHRESEG     ${GPhResEG_LIBRARY}      )
++  set( GPHSTRXS     ${GPhStrXS_LIBRARY}      )
++  set( GPHSTREG     ${GPhStrEG_LIBRARY}      )
++  set( GPHNDCY      ${GPhNDcy_LIBRARY}       )
++  set( GTLGEO       ${GTlGeo_LIBRARY}        )
++  set( GTLFLX       ${GTlFlx_LIBRARY}        )
++  set( GRWFWK       ${GRwFwk_LIBRARY}        )
++  set( GRWIO        ${GRwIO_LIBRARY}         )
++  set( GRWCLC       ${GRwClc_LIBRARY}        )
+ 
+ ## (continued) GENIE pre-R-3 used GSL via ROOT's Math libs, now makes direct call not available via that route
+ cet_find_library( GSL NAMES gsl PATHS ENV GSL_LIB NO_DEFAULT_PATH )
 @@ -192,8 +193,7 @@ include(ArtMake)
  include(BuildPlugins)
  
@@ -127,7 +228,7 @@ index 886465d9..abb1ea36 100644
 -include(UseCPack)
 +cet_cmake_config()
 diff --git a/sbncode/BeamSpillInfoRetriever/BNBRetriever/BNBRetriever_module.cc b/sbncode/BeamSpillInfoRetriever/BNBRetriever/BNBRetriever_module.cc
-index d439a5fc..4eea0921 100644
+index d439a5f..4eea092 100644
 --- a/sbncode/BeamSpillInfoRetriever/BNBRetriever/BNBRetriever_module.cc
 +++ b/sbncode/BeamSpillInfoRetriever/BNBRetriever/BNBRetriever_module.cc
 @@ -24,7 +24,7 @@
@@ -140,7 +241,7 @@ index d439a5fc..4eea0921 100644
  #include "MWRData.h"
  
 diff --git a/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt b/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
-index 99ec10d9..5e392b04 100644
+index 99ec10d..5e392b0 100644
 --- a/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
 +++ b/sbncode/BeamSpillInfoRetriever/BNBRetriever/CMakeLists.txt
 @@ -1,16 +1,18 @@
@@ -212,7 +313,7 @@ index 99ec10d9..5e392b04 100644
  
  install_headers()
 diff --git a/sbncode/BeamSpillInfoRetriever/EXTRetriever/CMakeLists.txt b/sbncode/BeamSpillInfoRetriever/EXTRetriever/CMakeLists.txt
-index 4a3ceaf4..12a9289a 100644
+index 4a3ceaf..12a9289 100644
 --- a/sbncode/BeamSpillInfoRetriever/EXTRetriever/CMakeLists.txt
 +++ b/sbncode/BeamSpillInfoRetriever/EXTRetriever/CMakeLists.txt
 @@ -1,24 +1,27 @@
@@ -253,7 +354,7 @@ index 4a3ceaf4..12a9289a 100644
  
  install_headers()
 diff --git a/sbncode/CAFMaker/CAFMaker_module.cc b/sbncode/CAFMaker/CAFMaker_module.cc
-index 60f867b0..679bd073 100644
+index 60f867b..679bd07 100644
 --- a/sbncode/CAFMaker/CAFMaker_module.cc
 +++ b/sbncode/CAFMaker/CAFMaker_module.cc
 @@ -37,7 +37,7 @@
@@ -266,10 +367,10 @@ index 60f867b0..679bd073 100644
  // ROOT includes
  #include "TFile.h"
 diff --git a/sbncode/CAFMaker/CMakeLists.txt b/sbncode/CAFMaker/CMakeLists.txt
-index bb2a2327..4f98c617 100644
+index bb2a232..5bf21ec 100644
 --- a/sbncode/CAFMaker/CMakeLists.txt
 +++ b/sbncode/CAFMaker/CMakeLists.txt
-@@ -1,87 +1,84 @@
+@@ -1,87 +1,85 @@
  # for classes_def.xml
 -include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} )
 +include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
@@ -341,6 +442,7 @@ index bb2a2327..4f98c617 100644
 +		  lardataalg::DetectorInfo
 +                  art::Framework_Services_System_TriggerNamesService_service
 +                  sbncode::Metadata_MetadataSBN_service
++                  larsim::Utils
                    )
  
 -cet_find_library( IFDH NAMES ifdh PATHS ENV IFDHC_LIB NO_DEFAULT_PATH )
@@ -414,7 +516,7 @@ index bb2a2327..4f98c617 100644
                    ${MF_UTILITIES}
                    )
 diff --git a/sbncode/CAFMaker/RecoUtils/CMakeLists.txt b/sbncode/CAFMaker/RecoUtils/CMakeLists.txt
-index fe2ecf7f..e67a4b7b 100644
+index fe2ecf7..e67a4b7 100644
 --- a/sbncode/CAFMaker/RecoUtils/CMakeLists.txt
 +++ b/sbncode/CAFMaker/RecoUtils/CMakeLists.txt
 @@ -2,18 +2,18 @@
@@ -447,7 +549,7 @@ index fe2ecf7f..e67a4b7b 100644
 +                    larcore::Geometry_DumpGeometry_module
                  )
 diff --git a/sbncode/CAFMaker/bin/CMakeLists.txt b/sbncode/CAFMaker/bin/CMakeLists.txt
-index 747d8fce..d68f26cf 100644
+index 747d8fc..d68f26c 100644
 --- a/sbncode/CAFMaker/bin/CMakeLists.txt
 +++ b/sbncode/CAFMaker/bin/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -459,7 +561,7 @@ index 747d8fce..d68f26cf 100644
  
  cet_script(diff_cafs)
 diff --git a/sbncode/CMakeLists.txt b/sbncode/CMakeLists.txt
-index 3c1daf08..37805194 100644
+index 3c1daf0..3780519 100644
 --- a/sbncode/CMakeLists.txt
 +++ b/sbncode/CMakeLists.txt
 @@ -3,7 +3,7 @@ cet_find_library( BOOST_DATE_TIME     NAMES boost_date_time     PATHS ENV BOOST_
@@ -472,7 +574,7 @@ index 3c1daf08..37805194 100644
  add_subdirectory(SBNEventWeight)
  add_subdirectory(NuMuSelection)
 diff --git a/sbncode/Calibration/CMakeLists.txt b/sbncode/Calibration/CMakeLists.txt
-index 827749af..c59ba5ae 100644
+index 827749a..c59ba5a 100644
 --- a/sbncode/Calibration/CMakeLists.txt
 +++ b/sbncode/Calibration/CMakeLists.txt
 @@ -1,88 +1,96 @@
@@ -625,7 +727,7 @@ index 827749af..c59ba5ae 100644
  
  
 diff --git a/sbncode/EventGenerator/MeVPrtl/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/CMakeLists.txt
-index 6d630083..e896bdce 100644
+index 6d63008..e896bdc 100644
 --- a/sbncode/EventGenerator/MeVPrtl/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/CMakeLists.txt
 @@ -1,65 +1,64 @@
@@ -731,7 +833,7 @@ index 6d630083..e896bdce 100644
  
  
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
-index 3f1d1f66..ac61e3e8 100644
+index 3f1d1f6..ac61e3e 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
 @@ -1,150 +1,150 @@
@@ -994,7 +1096,7 @@ index 3f1d1f66..ac61e3e8 100644
  
  add_subdirectory(Higgs)
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/HNL/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/Tools/HNL/CMakeLists.txt
-index 1c2f7981..15fb96b7 100644
+index 1c2f798..15fb96b 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/HNL/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/HNL/CMakeLists.txt
 @@ -1,55 +1,55 @@
@@ -1083,7 +1185,7 @@ index 1c2f7981..15fb96b7 100644
  
  
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/Higgs/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/Tools/Higgs/CMakeLists.txt
-index 97bab078..b4d18d64 100644
+index 97bab07..b4d18d6 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/Higgs/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/Higgs/CMakeLists.txt
 @@ -1,65 +1,65 @@
@@ -1188,7 +1290,7 @@ index 97bab078..b4d18d64 100644
  
  install_headers()
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/NuMiKaonGen_tool.cc b/sbncode/EventGenerator/MeVPrtl/Tools/NuMiKaonGen_tool.cc
-index 1ba28822..4d9633b1 100644
+index 1ba2882..4d9633b 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/NuMiKaonGen_tool.cc
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/NuMiKaonGen_tool.cc
 @@ -13,7 +13,7 @@
@@ -1201,7 +1303,7 @@ index 1ba28822..4d9633b1 100644
  #include "nusimdata/SimulationBase/MCFlux.h"
  
 diff --git a/sbncode/EventGenerator/MultiPart/CMakeLists.txt b/sbncode/EventGenerator/MultiPart/CMakeLists.txt
-index a15df995..dd7226a7 100644
+index a15df99..dd7226a 100644
 --- a/sbncode/EventGenerator/MultiPart/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MultiPart/CMakeLists.txt
 @@ -1,40 +1,40 @@
@@ -1276,7 +1378,7 @@ index a15df995..dd7226a7 100644
  
  install_headers()
 diff --git a/sbncode/FlashMatch/CMakeLists.txt b/sbncode/FlashMatch/CMakeLists.txt
-index ddb15221..f1d41277 100644
+index ddb1522..f1d4127 100644
 --- a/sbncode/FlashMatch/CMakeLists.txt
 +++ b/sbncode/FlashMatch/CMakeLists.txt
 @@ -4,35 +4,36 @@
@@ -1345,7 +1447,7 @@ index ddb15221..f1d41277 100644
    ${FHICLCPP}
    ${ROOT_GEOM}
 diff --git a/sbncode/FluxReader/CMakeLists.txt b/sbncode/FluxReader/CMakeLists.txt
-index 7e11652f..02e6297f 100644
+index 7e11652..02e6297 100644
 --- a/sbncode/FluxReader/CMakeLists.txt
 +++ b/sbncode/FluxReader/CMakeLists.txt
 @@ -1,94 +1,103 @@
@@ -1519,8 +1621,54 @@ index 7e11652f..02e6297f 100644
  )
  
  install_headers()
+diff --git a/sbncode/GeometryTools/CMakeLists.txt b/sbncode/GeometryTools/CMakeLists.txt
+index 9e162ab..cc8796a 100644
+--- a/sbncode/GeometryTools/CMakeLists.txt
++++ b/sbncode/GeometryTools/CMakeLists.txt
+@@ -1,25 +1,25 @@
+ art_make(    LIBRARY_NAME sbncode_GeoWrappers
+-             LIB_LIBRARIES larcorealg_Geometry
+-                           larcore_Geometry_Geometry_service
+-                           larsim_Simulation lardataobj_Simulation
+-                           larsim_MCCheater_BackTrackerService_service
+-                           larsim_MCCheater_ParticleInventoryService_service
+-                           lardata_Utilities
+-                           larevt_Filters
+-                           lardataobj_RawData
+-                           lardataobj_RecoBase
+-                           lardata_RecoObjects  
+-                           larpandora_LArPandoraInterface
+-                           nusimdata_SimulationBase
+-                           cetlib cetlib_except
++             LIB_LIBRARIES larcorealg::Geometry
++                           larcore::Geometry_Geometry_service
++                           larsim::Simulation lardataobj::Simulation
++                           larsim::MCCheater_BackTrackerService_service
++                           larsim::MCCheater_ParticleInventoryService_service
++                           lardata::Utilities
++                           larevt::Filters
++                           lardataobj::RawData
++                           lardataobj::RecoBase
++                           lardata::RecoObjects  
++                           larpandora::LArPandoraInterface
++                           nusimdata::SimulationBase
++                           cetlib::cetlib cetlib_except::cetlib_except
+                            ${ART_FRAMEWORK_CORE}
+                            ${ART_FRAMEWORK_PRINCIPAL}
+                            ${ART_FRAMEWORK_SERVICES_REGISTRY}
+                            ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
+                            ${ART_ROOT_IO_TFILESERVICE_SERVICE}
+-                           art_Persistency_Common canvas
+-                           art_Persistency_Provenance canvas
+-                           art_Utilities canvas
++                           art::Persistency_Common canvas::canvas
++                           art::Persistency_Provenance
++                           art::Utilities
+                            ${MF_MESSAGELOGGER}
+                            
+                            ${FHICLCPP}
 diff --git a/sbncode/LArRecoProducer/CMakeLists.txt b/sbncode/LArRecoProducer/CMakeLists.txt
-index a8b1c01e..2e3ca7b3 100644
+index a8b1c01..2e3ca7b 100644
 --- a/sbncode/LArRecoProducer/CMakeLists.txt
 +++ b/sbncode/LArRecoProducer/CMakeLists.txt
 @@ -1,30 +1,30 @@
@@ -1573,7 +1721,7 @@ index a8b1c01e..2e3ca7b3 100644
  
  install_headers()
 diff --git a/sbncode/LArRecoProducer/LArReco/CMakeLists.txt b/sbncode/LArRecoProducer/LArReco/CMakeLists.txt
-index 0395da49..8a416cf4 100644
+index 0395da4..8a416cf 100644
 --- a/sbncode/LArRecoProducer/LArReco/CMakeLists.txt
 +++ b/sbncode/LArRecoProducer/LArReco/CMakeLists.txt
 @@ -2,18 +2,18 @@
@@ -1606,7 +1754,7 @@ index 0395da49..8a416cf4 100644
 +        ROOT::Graf3d
                  )
 diff --git a/sbncode/Metadata/CMakeLists.txt b/sbncode/Metadata/CMakeLists.txt
-index 0cfa462f..8948112c 100644
+index 0cfa462..8948112 100644
 --- a/sbncode/Metadata/CMakeLists.txt
 +++ b/sbncode/Metadata/CMakeLists.txt
 @@ -1,15 +1,15 @@
@@ -1645,7 +1793,7 @@ index 0cfa462f..8948112c 100644
  
  install_headers()
 diff --git a/sbncode/NuMuSelection/CMakeLists.txt b/sbncode/NuMuSelection/CMakeLists.txt
-index 02bfebb8..f1f69d93 100644
+index 02bfebb..f1f69d9 100644
 --- a/sbncode/NuMuSelection/CMakeLists.txt
 +++ b/sbncode/NuMuSelection/CMakeLists.txt
 @@ -1,86 +1,95 @@
@@ -1802,7 +1950,7 @@ index 02bfebb8..f1f69d93 100644
  
  install_headers()
 diff --git a/sbncode/OpDet/CMakeLists.txt b/sbncode/OpDet/CMakeLists.txt
-index 3a27da65..41191400 100644
+index 3a27da6..4119140 100644
 --- a/sbncode/OpDet/CMakeLists.txt
 +++ b/sbncode/OpDet/CMakeLists.txt
 @@ -1,7 +1,7 @@
@@ -1816,7 +1964,7 @@ index 3a27da65..41191400 100644
  	    ${CETLIB}
  )
 diff --git a/sbncode/OpT0Finder/CMakeLists.txt b/sbncode/OpT0Finder/CMakeLists.txt
-index 3837439e..1e3828ee 100644
+index 3837439..1e3828e 100644
 --- a/sbncode/OpT0Finder/CMakeLists.txt
 +++ b/sbncode/OpT0Finder/CMakeLists.txt
 @@ -1,5 +1,5 @@
@@ -1827,7 +1975,7 @@ index 3837439e..1e3828ee 100644
  add_subdirectory(Products)
  add_subdirectory(flashmatch)
 diff --git a/sbncode/OpT0Finder/Products/CMakeLists.txt b/sbncode/OpT0Finder/Products/CMakeLists.txt
-index 1650113d..66cccf9f 100644
+index 1650113..66cccf9 100644
 --- a/sbncode/OpT0Finder/Products/CMakeLists.txt
 +++ b/sbncode/OpT0Finder/Products/CMakeLists.txt
 @@ -1,11 +1,18 @@
@@ -1855,7 +2003,7 @@ index 1650113d..66cccf9f 100644
  
  install_headers()
 diff --git a/sbncode/OpT0Finder/flashmatch/Algorithms/CMakeLists.txt b/sbncode/OpT0Finder/flashmatch/Algorithms/CMakeLists.txt
-index 8994d760..1e6e55eb 100644
+index 8994d76..1e6e55e 100644
 --- a/sbncode/OpT0Finder/flashmatch/Algorithms/CMakeLists.txt
 +++ b/sbncode/OpT0Finder/flashmatch/Algorithms/CMakeLists.txt
 @@ -1,20 +1,19 @@
@@ -1892,7 +2040,7 @@ index 8994d760..1e6e55eb 100644
          ${ART_PERSISTENCY_PROVENANCE}
          ${ART_UTILITIES}
 diff --git a/sbncode/OpT0Finder/flashmatch/Base/CMakeLists.txt b/sbncode/OpT0Finder/flashmatch/Base/CMakeLists.txt
-index 3742178c..5f083946 100644
+index 3742178..5f08394 100644
 --- a/sbncode/OpT0Finder/flashmatch/Base/CMakeLists.txt
 +++ b/sbncode/OpT0Finder/flashmatch/Base/CMakeLists.txt
 @@ -1,36 +1,32 @@
@@ -1954,7 +2102,7 @@ index 3742178c..5f083946 100644
  
  install_headers()
 diff --git a/sbncode/OpT0Finder/flashmatch/GeoAlgo/CMakeLists.txt b/sbncode/OpT0Finder/flashmatch/GeoAlgo/CMakeLists.txt
-index a7a8eb75..9c054063 100644
+index a7a8eb7..9c05406 100644
 --- a/sbncode/OpT0Finder/flashmatch/GeoAlgo/CMakeLists.txt
 +++ b/sbncode/OpT0Finder/flashmatch/GeoAlgo/CMakeLists.txt
 @@ -1,6 +1,6 @@
@@ -1967,7 +2115,7 @@ index a7a8eb75..9c054063 100644
  
  install_headers()
 diff --git a/sbncode/PID/CMakeLists.txt b/sbncode/PID/CMakeLists.txt
-index a090c6e2..9ab50787 100644
+index a090c6e..9ab5078 100644
 --- a/sbncode/PID/CMakeLists.txt
 +++ b/sbncode/PID/CMakeLists.txt
 @@ -1,41 +1,39 @@
@@ -2035,7 +2183,7 @@ index a090c6e2..9ab50787 100644
    caf_RecoUtils
  )
 diff --git a/sbncode/SBNEventWeight/App/CMakeLists.txt b/sbncode/SBNEventWeight/App/CMakeLists.txt
-index 6d1d2fa1..b7ee9ef9 100644
+index 6d1d2fa..b7ee9ef 100644
 --- a/sbncode/SBNEventWeight/App/CMakeLists.txt
 +++ b/sbncode/SBNEventWeight/App/CMakeLists.txt
 @@ -1,22 +1,8 @@
@@ -2067,7 +2215,7 @@ index 6d1d2fa1..b7ee9ef9 100644
  install_headers()
  install_fhicl()
 diff --git a/sbncode/SBNEventWeight/Base/CMakeLists.txt b/sbncode/SBNEventWeight/Base/CMakeLists.txt
-index c9d79d2c..eece2cd9 100644
+index c9d79d2..eece2cd 100644
 --- a/sbncode/SBNEventWeight/Base/CMakeLists.txt
 +++ b/sbncode/SBNEventWeight/Base/CMakeLists.txt
 @@ -1,15 +1,15 @@
@@ -2095,7 +2243,7 @@ index c9d79d2c..eece2cd9 100644
  
  install_headers()
 diff --git a/sbncode/SBNEventWeight/Calculators/BNBFlux/CMakeLists.txt b/sbncode/SBNEventWeight/Calculators/BNBFlux/CMakeLists.txt
-index 56f20ab0..66ae865d 100644
+index 56f20ab..66ae865 100644
 --- a/sbncode/SBNEventWeight/Calculators/BNBFlux/CMakeLists.txt
 +++ b/sbncode/SBNEventWeight/Calculators/BNBFlux/CMakeLists.txt
 @@ -1,19 +1,20 @@
@@ -2132,7 +2280,7 @@ index 56f20ab0..66ae865d 100644
  
  install_headers()
 diff --git a/sbncode/SBNEventWeight/Calculators/CrossSections/CMakeLists.txt b/sbncode/SBNEventWeight/Calculators/CrossSections/CMakeLists.txt
-index 354a4ccb..5d5644b4 100644
+index 354a4cc..a2d29bc 100644
 --- a/sbncode/SBNEventWeight/Calculators/CrossSections/CMakeLists.txt
 +++ b/sbncode/SBNEventWeight/Calculators/CrossSections/CMakeLists.txt
 @@ -1,33 +1,17 @@
@@ -2178,8 +2326,17 @@ index 354a4ccb..5d5644b4 100644
     #GENIE_LIB_LIST is explicitly listed below:
      LOG4CPP
      GFWMSG
+@@ -81,7 +65,7 @@ art_make(
+ 	GSL
+     #GENIE libraries are above
+     ${MF_MESSAGELOGGER}
+-    cetlib_except
++    cetlib_except::cetlib_except
+ )
+ 
+ install_headers()
 diff --git a/sbncode/TPCReco/CMakeLists.txt b/sbncode/TPCReco/CMakeLists.txt
-index 9c2b25c3..8083effa 100644
+index 9c2b25c..8083eff 100644
 --- a/sbncode/TPCReco/CMakeLists.txt
 +++ b/sbncode/TPCReco/CMakeLists.txt
 @@ -3,56 +3,58 @@ add_subdirectory(TrackSplit)
@@ -2275,7 +2432,7 @@ index 9c2b25c3..8083effa 100644
  )
  
 diff --git a/sbncode/TPCReco/CalorimetryAnalysis/CMakeLists.txt b/sbncode/TPCReco/CalorimetryAnalysis/CMakeLists.txt
-index cae53c3e..3d184e75 100644
+index cae53c3..3d184e7 100644
 --- a/sbncode/TPCReco/CalorimetryAnalysis/CMakeLists.txt
 +++ b/sbncode/TPCReco/CalorimetryAnalysis/CMakeLists.txt
 @@ -1,33 +1,35 @@
@@ -2340,7 +2497,7 @@ index cae53c3e..3d184e75 100644
  
  
 diff --git a/sbncode/TPCReco/KinkExp/CMakeLists.txt b/sbncode/TPCReco/KinkExp/CMakeLists.txt
-index 17e04b17..d61df1d8 100644
+index 17e04b1..d61df1d 100644
 --- a/sbncode/TPCReco/KinkExp/CMakeLists.txt
 +++ b/sbncode/TPCReco/KinkExp/CMakeLists.txt
 @@ -1,4 +1,4 @@
@@ -2480,10 +2637,10 @@ index 17e04b17..d61df1d8 100644
  )
  
 diff --git a/sbncode/TPCReco/TrackHit/CMakeLists.txt b/sbncode/TPCReco/TrackHit/CMakeLists.txt
-index 7ee08b25..c9d1ba2e 100644
+index 7ee08b2..af538c3 100644
 --- a/sbncode/TPCReco/TrackHit/CMakeLists.txt
 +++ b/sbncode/TPCReco/TrackHit/CMakeLists.txt
-@@ -1,73 +1,76 @@
+@@ -1,73 +1,77 @@
  simple_plugin(TrackAreaHit module
 -        ${ART_FRAMEWORK_CORE}
 -        ${ART_FRAMEWORK_SERVICES_REGISTRY}
@@ -2524,6 +2681,7 @@ index 7ee08b25..c9d1ba2e 100644
 +	lardata::DetectorInfoServices_DetectorClocksServiceStandard_service
 +	lardata::DetectorInfoServices_DetectorPropertiesServiceStandard_service
 +	lardataalg::DetectorInfo
++        larsim::Simulation
  )
  
  simple_plugin(TrackHitFilter module
@@ -2604,7 +2762,7 @@ index 7ee08b25..c9d1ba2e 100644
  
  install_headers()
 diff --git a/sbncode/TPCReco/TrackSplit/CMakeLists.txt b/sbncode/TPCReco/TrackSplit/CMakeLists.txt
-index 7e92476a..4470cfdb 100644
+index 7e92476..4470cfd 100644
 --- a/sbncode/TPCReco/TrackSplit/CMakeLists.txt
 +++ b/sbncode/TPCReco/TrackSplit/CMakeLists.txt
 @@ -1,49 +1,49 @@
@@ -2684,7 +2842,7 @@ index 7e92476a..4470cfdb 100644
  
  install_headers()
 diff --git a/sbncode/TPCReco/VertexStub/CMakeLists.txt b/sbncode/TPCReco/VertexStub/CMakeLists.txt
-index 66c0848f..837bdc39 100644
+index 66c0848..837bdc3 100644
 --- a/sbncode/TPCReco/VertexStub/CMakeLists.txt
 +++ b/sbncode/TPCReco/VertexStub/CMakeLists.txt
 @@ -1,121 +1,125 @@
