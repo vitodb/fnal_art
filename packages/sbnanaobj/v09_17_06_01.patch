@@ -61,3 +61,23 @@ index 121c262..34463d7 100644
                  )
  
  build_dictionary( sbnanaobj_StandardRecord
+diff --git a/sbnanaobj/StandardRecord/Flat/CMakeLists.txt b/sbnanaobj/StandardRecord/Flat/CMakeLists.txt
+index 35cfc7c..588aa23 100644
+--- a/sbnanaobj/StandardRecord/Flat/CMakeLists.txt
++++ b/sbnanaobj/StandardRecord/Flat/CMakeLists.txt
+@@ -13,4 +13,4 @@ cet_make_library(LIBRARY_NAME sbnanaobj_StandardRecordFlat
+                  LIBRARIES    ${ROOT_BASIC_LIB_LIST} ROOT::TreePlayer
+                  )
+ 
+-install_headers(EXTRAS $ENV{MRB_BUILDDIR}/sbnanaobj/sbnanaobj/StandardRecord/Flat/FlatRecord.h $ENV{MRB_BUILDDIR}/sbnanaobj/sbnanaobj/StandardRecord/Flat/FwdDeclare.h)
++install_headers(EXTRAS ${CMAKE_BINARY_DIR}/sbnanaobj/StandardRecord/Flat/FlatRecord.h ${CMAKE_BINARY_DIR}/sbnanaobj/StandardRecord/Flat/FwdDeclare.h)
+diff --git a/sbnanaobj/StandardRecord/Proxy/CMakeLists.txt b/sbnanaobj/StandardRecord/Proxy/CMakeLists.txt
+index 310cdae..beb8b37 100644
+--- a/sbnanaobj/StandardRecord/Proxy/CMakeLists.txt
++++ b/sbnanaobj/StandardRecord/Proxy/CMakeLists.txt
+@@ -15,4 +15,4 @@ cet_make_library(LIBRARY_NAME sbnanaobj_StandardRecordProxy
+                  SOURCE       SRProxy.cxx Instantiations.cxx
+                  LIBRARIES    ${ROOT_BASIC_LIB_LIST} ROOT::TreePlayer)
+ 
+-install_headers(EXTRAS $ENV{MRB_BUILDDIR}/sbnanaobj/sbnanaobj/StandardRecord/Proxy/SRProxy.h $ENV{MRB_BUILDDIR}/sbnanaobj/sbnanaobj/StandardRecord/Proxy/FwdDeclare.h)
++install_headers(EXTRAS ${CMAKE_BINARY_DIR}/sbnanaobj/StandardRecord/Proxy/SRProxy.h ${CMAKE_BINARY_DIR}/sbnanaobj/StandardRecord/Proxy/FwdDeclare.h)
