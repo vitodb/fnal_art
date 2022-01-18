@@ -52,7 +52,7 @@ class Sbnobj(CMakePackage):
             description='Use the specified C++ standard when building.')
 
 
-    patch('v09_12_09.patch', when='@09.12.05')
+    patch('v09_12_09.patch', when='@09.12.09')
     patch('v09_12_05.patch', when='@09.12.05')
     patch('v09_12_04.patch', when='@09.12.04')
     patch('cetmodules2.patch', when='@develop')
