@@ -1,5 +1,5 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 854c5dc8..79d813eb 100644
+index 854c5dc..79d813e 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -11,10 +11,11 @@
@@ -83,7 +83,7 @@ index 854c5dc8..79d813eb 100644
    )
 +cet_cmake_config()
 diff --git a/sbnobj/Common/Analysis/CMakeLists.txt b/sbnobj/Common/Analysis/CMakeLists.txt
-index 0fd15e39..23e6a8a2 100644
+index 0fd15e3..23e6a8a 100644
 --- a/sbnobj/Common/Analysis/CMakeLists.txt
 +++ b/sbnobj/Common/Analysis/CMakeLists.txt
 @@ -1,10 +1,10 @@
@@ -101,7 +101,7 @@ index 0fd15e39..23e6a8a2 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/CRT/CMakeLists.txt b/sbnobj/Common/CRT/CMakeLists.txt
-index fc4b0f36..2454a3c1 100644
+index fc4b0f3..2454a3c 100644
 --- a/sbnobj/Common/CRT/CMakeLists.txt
 +++ b/sbnobj/Common/CRT/CMakeLists.txt
 @@ -1,10 +1,11 @@
@@ -120,7 +120,7 @@ index fc4b0f36..2454a3c1 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt b/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
-index d81f1dab..9c8e5595 100644
+index d81f1da..9c8e559 100644
 --- a/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
 +++ b/sbnobj/Common/EventGen/MeVPrtl/CMakeLists.txt
 @@ -1,11 +1,15 @@
@@ -143,7 +143,7 @@ index d81f1dab..9c8e5595 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/PMT/Data/CMakeLists.txt b/sbnobj/Common/PMT/Data/CMakeLists.txt
-index 4208c34c..f1c07e44 100644
+index 4208c34..f1c07e4 100644
 --- a/sbnobj/Common/PMT/Data/CMakeLists.txt
 +++ b/sbnobj/Common/PMT/Data/CMakeLists.txt
 @@ -1,9 +1,10 @@
@@ -160,7 +160,7 @@ index 4208c34c..f1c07e44 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/POTAccounting/CMakeLists.txt b/sbnobj/Common/POTAccounting/CMakeLists.txt
-index e62a34c5..a0dfc05a 100644
+index e62a34c..a0dfc05 100644
 --- a/sbnobj/Common/POTAccounting/CMakeLists.txt
 +++ b/sbnobj/Common/POTAccounting/CMakeLists.txt
 @@ -1,7 +1,7 @@
@@ -174,7 +174,7 @@ index e62a34c5..a0dfc05a 100644
    )
  
 diff --git a/sbnobj/Common/Reco/CMakeLists.txt b/sbnobj/Common/Reco/CMakeLists.txt
-index eb5077f7..6032f15f 100644
+index eb5077f..6032f15 100644
 --- a/sbnobj/Common/Reco/CMakeLists.txt
 +++ b/sbnobj/Common/Reco/CMakeLists.txt
 @@ -1,12 +1,14 @@
@@ -197,7 +197,7 @@ index eb5077f7..6032f15f 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/Common/SBNEventWeight/CMakeLists.txt b/sbnobj/Common/SBNEventWeight/CMakeLists.txt
-index 555921ef..fe555cc4 100644
+index 555921e..fe555cc 100644
 --- a/sbnobj/Common/SBNEventWeight/CMakeLists.txt
 +++ b/sbnobj/Common/SBNEventWeight/CMakeLists.txt
 @@ -1,15 +1,20 @@
@@ -227,7 +227,7 @@ index 555921ef..fe555cc4 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/ICARUS/CRT/CMakeLists.txt b/sbnobj/ICARUS/CRT/CMakeLists.txt
-index f8960f01..1b17f2e2 100644
+index f8960f0..1b17f2e 100644
 --- a/sbnobj/ICARUS/CRT/CMakeLists.txt
 +++ b/sbnobj/ICARUS/CRT/CMakeLists.txt
 @@ -1,10 +1,11 @@
@@ -246,7 +246,7 @@ index f8960f01..1b17f2e2 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/ICARUS/PMT/Data/CMakeLists.txt b/sbnobj/ICARUS/PMT/Data/CMakeLists.txt
-index 73f4279d..54ae6718 100644
+index 73f4279..54ae671 100644
 --- a/sbnobj/ICARUS/PMT/Data/CMakeLists.txt
 +++ b/sbnobj/ICARUS/PMT/Data/CMakeLists.txt
 @@ -1,9 +1,9 @@
@@ -262,7 +262,7 @@ index 73f4279d..54ae6718 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/ICARUS/PMT/Trigger/Data/CMakeLists.txt b/sbnobj/ICARUS/PMT/Trigger/Data/CMakeLists.txt
-index e394eb32..61866b36 100644
+index e394eb3..61866b3 100644
 --- a/sbnobj/ICARUS/PMT/Trigger/Data/CMakeLists.txt
 +++ b/sbnobj/ICARUS/PMT/Trigger/Data/CMakeLists.txt
 @@ -1,11 +1,13 @@
@@ -284,7 +284,7 @@ index e394eb32..61866b36 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/SBND/CRT/CMakeLists.txt b/sbnobj/SBND/CRT/CMakeLists.txt
-index 3de99386..76529996 100644
+index 3de9938..7652999 100644
 --- a/sbnobj/SBND/CRT/CMakeLists.txt
 +++ b/sbnobj/SBND/CRT/CMakeLists.txt
 @@ -1,10 +1,11 @@
@@ -303,7 +303,7 @@ index 3de99386..76529996 100644
  install_headers()
  install_source()
 diff --git a/sbnobj/SBND/Commissioning/CMakeLists.txt b/sbnobj/SBND/Commissioning/CMakeLists.txt
-index d83ec1fb..d67e27ae 100644
+index d83ec1f..d67e27a 100644
 --- a/sbnobj/SBND/Commissioning/CMakeLists.txt
 +++ b/sbnobj/SBND/Commissioning/CMakeLists.txt
 @@ -1,10 +1,10 @@
@@ -320,3 +320,15 @@ index d83ec1fb..d67e27ae 100644
  
  install_headers()
  install_source()
+diff --git a/sbnobj/SBND/Trigger/CMakeLists.txt b/sbnobj/SBND/Trigger/CMakeLists.txt
+index 90adbd4..5df630a 100644
+--- a/sbnobj/SBND/Trigger/CMakeLists.txt
++++ b/sbnobj/SBND/Trigger/CMakeLists.txt
+@@ -1,6 +1,6 @@
+ cet_make( 
+   LIBRARIES
+-    cetlib_except
++    cetlib_except::cetlib_except
+   NO_DICTIONARY
+   )
+ 
