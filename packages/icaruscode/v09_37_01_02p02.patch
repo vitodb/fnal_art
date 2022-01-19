@@ -5202,33 +5202,16 @@ index 1113d30..cf52317 100644
  add_subdirectory(ICARUSPandora)
  add_subdirectory(cluster3D)
 diff --git a/icaruscode/TPC/Tracking/ICARUSPandora/CMakeLists.txt b/icaruscode/TPC/Tracking/ICARUSPandora/CMakeLists.txt
-index 687f653..13e99bb 100644
+index 687f653..2a8d5aa 100644
 --- a/icaruscode/TPC/Tracking/ICARUSPandora/CMakeLists.txt
 +++ b/icaruscode/TPC/Tracking/ICARUSPandora/CMakeLists.txt
 @@ -1,5 +1,5 @@
  
 -# where should the scripts/..xml file be installed?  Perhaps in bin?
-+#whereshouldthescripts/..xmlfilebeinstalled?Perhapsinbin?
++#where should the scripts/..xml file be installed? Perhaps in bin?
  
  install_fhicl()
  
-diff --git a/icaruscode/TPC/Tracking/ICARUSPandora/scripts/CMakeLists.txt b/icaruscode/TPC/Tracking/ICARUSPandora/scripts/CMakeLists.txt
-index 2cfc412..7e15f7a 100644
---- a/icaruscode/TPC/Tracking/ICARUSPandora/scripts/CMakeLists.txt
-+++ b/icaruscode/TPC/Tracking/ICARUSPandora/scripts/CMakeLists.txt
-@@ -1,7 +1,7 @@
- 
--# The xml files here are used to initialize pandora
--# They need to be found via FW_SEARCH_PATH
-+#Thexmlfileshereareusedtoinitializepandora
-+#TheyneedtobefoundviaFW_SEARCH_PATH
- 
--# install xml files
--file(GLOB xml_file *.xml)
--install_fw(LIST ${xml_file})
-+#installxmlfiles
-+file(GLOB xml_file*.xml)
-+install_fw(LIST${xml_file})
 diff --git a/icaruscode/TPC/Tracking/MCS/CMakeLists.txt b/icaruscode/TPC/Tracking/MCS/CMakeLists.txt
 index 3a93ab4..1128ecf 100644
 --- a/icaruscode/TPC/Tracking/MCS/CMakeLists.txt
