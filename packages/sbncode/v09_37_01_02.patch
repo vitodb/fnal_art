@@ -833,10 +833,10 @@ index 6d63008..e896bdc 100644
  
  
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
-index 3f1d1f6..ac61e3e 100644
+index 3f1d1f6..bb50c69 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/CMakeLists.txt
-@@ -1,150 +1,150 @@
+@@ -1,150 +1,155 @@
 -link_directories( $ENV{ROOTSYS}/lib )
  
 -art_make_library( LIBRARY_NAME sbncode_EventGenerator_MeVPrtl_Constants
@@ -895,6 +895,7 @@ index 3f1d1f6..ac61e3e 100644
 +			nurandom::RandomUtils_NuRandomService_service
 +			nusimdata::SimulationBase
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
 -cet_find_library( IFDH NAMES ifdh PATHS ENV IFDHC_LIB NO_DEFAULT_PATH )
@@ -943,6 +944,7 @@ index 3f1d1f6..ac61e3e 100644
 +			nurandom::RandomUtils_NuRandomService_service
 +			nusimdata::SimulationBase
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  simple_plugin( WeightedRayTraceBox tool
@@ -1019,6 +1021,7 @@ index 3f1d1f6..ac61e3e 100644
  			dk2nuTree
 -			sbncode_EventGenerator_MeVPrtl_Constants
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  
@@ -1057,6 +1060,7 @@ index 3f1d1f6..ac61e3e 100644
 +			larcorealg::Geometry
 +			nurandom::RandomUtils_NuRandomService_service
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  simple_plugin( RayTraceBox tool
@@ -1092,6 +1096,7 @@ index 3f1d1f6..ac61e3e 100644
 +			larcorealg::Geometry
 +			nurandom::RandomUtils_NuRandomService_service
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  add_subdirectory(Higgs)
