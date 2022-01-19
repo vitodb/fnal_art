@@ -157,6 +157,8 @@ class Icaruscode(CMakePackage):
         # Perl modules.
         spack_env.prepend_path('PERL5LIB',
                                os.path.join(self.build_directory, 'perllib'))
+        # FW search path
+        spack_env.append_path('FW_SEARCH_PATH', os.path.join(self.build_directory, 'fw'))
         # Cleaup.
         sanitize_environments(spack_env)
 
@@ -170,6 +172,8 @@ class Icaruscode(CMakePackage):
                                  str(self.spec[d.name].prefix.include))
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # FW search path
+        run_env.append_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'fw'))
         # Cleaup.
         sanitize_environments(run_env)
 
@@ -182,6 +186,8 @@ class Icaruscode(CMakePackage):
         spack_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         spack_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # FW search path
+        spack_env.append_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'fw'))
         # Cleanup.
         sanitize_environments(spack_env)
 
@@ -194,5 +200,7 @@ class Icaruscode(CMakePackage):
         run_env.prepend_path('ROOT_INCLUDE_PATH', self.prefix.include)
         # Perl modules.
         run_env.prepend_path('PERL5LIB', os.path.join(self.prefix, 'perllib'))
+        # FW search path
+        run_env.append_path('FW_SEARCH_PATH', os.path.join(self.prefix, 'fw'))
         # Cleanup.
         sanitize_environments(run_env)
