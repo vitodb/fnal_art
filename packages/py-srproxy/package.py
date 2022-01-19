@@ -5,7 +5,7 @@
 
 from spack import *
 
-class PySrproxy(PythonPackage):
+class PySrproxy(Package):
     """FIXME: Put a proper description of your package here."""
 
     homepage = "https://github.com/cafana/SRProxy/"
