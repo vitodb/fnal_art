@@ -36,6 +36,7 @@ class PyPygccxml(PythonPackage):
     version('1.9.1', sha256='2fb4e18f7a3ae039a05230ca58f11e1fc925c8643f926a1be481bb4338414a95')
 
     depends_on('python', type=('build', 'run'))
+    depends_on('castxml', type=('build', 'run'))
     depends_on('py-setuptools', type='build')
 
     def build_args(self, spec, prefix):
