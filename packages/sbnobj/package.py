@@ -105,6 +105,7 @@ class Sbnobj(CMakePackage):
     depends_on('sbndaq-artdaq-core', type=('build','run'))
     depends_on('sqlite', type=('build','run'))
     depends_on('trace', type=('build','run'))
+    depends_on('py-srproxy', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
