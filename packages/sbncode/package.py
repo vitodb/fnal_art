@@ -97,6 +97,7 @@ class Sbncode(CMakePackage):
     depends_on('trace', type=('build','run'))
     depends_on('dk2nudata', type=('build','run'))
     depends_on('dk2nugenie', type=('build','run'))
+    depends_on('py-srproxy', type=('build','run'))
 
     if 'SPACKDEV_GENERATOR' in os.environ:
         generator = os.environ['SPACKDEV_GENERATOR']
