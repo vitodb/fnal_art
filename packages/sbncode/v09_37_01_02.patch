@@ -1101,10 +1101,10 @@ index 3f1d1f6..bb50c69 100644
  
  add_subdirectory(Higgs)
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/HNL/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/Tools/HNL/CMakeLists.txt
-index 1c2f798..15fb96b 100644
+index 1c2f798..368b4c6 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/HNL/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/HNL/CMakeLists.txt
-@@ -1,55 +1,55 @@
+@@ -1,55 +1,58 @@
 -art_make_library( LIBRARY_NAME sbncode_EventGenerator_MeVPrtl_Dalitz
 +art_make_library( LIBRARY_NAME sbncode::EventGenerator_MeVPrtl_Dalitz
            SOURCE HNLDecayDalitz.cpp
@@ -1114,6 +1114,7 @@ index 1c2f798..15fb96b 100644
                          ${ROOT_X3d}
 -			sbncode_EventGenerator_MeVPrtl_Constants
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
          )
  
  simple_plugin( Kaon2HNLFlux tool
@@ -1151,6 +1152,7 @@ index 1c2f798..15fb96b 100644
 +			nurandom::RandomUtils_NuRandomService_service
 +			gsl
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  simple_plugin( HNLMakeDecay tool
@@ -1186,6 +1188,7 @@ index 1c2f798..15fb96b 100644
 +			${GSL}
 +			sbncode::EventGenerator_MeVPrtl_Dalitz
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  
