@@ -45,6 +45,8 @@ class Sbnanaobj(CMakePackage):
 
     depends_on('root')
     depends_on('py-srproxy')
+    depends_on('castxml')
+    depends_on('py-pygccxml')
     depends_on('cetmodules', type='build')
 
     def url_for_version(self, version):
