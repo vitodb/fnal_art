@@ -1190,10 +1190,10 @@ index 1c2f798..15fb96b 100644
  
  
 diff --git a/sbncode/EventGenerator/MeVPrtl/Tools/Higgs/CMakeLists.txt b/sbncode/EventGenerator/MeVPrtl/Tools/Higgs/CMakeLists.txt
-index 97bab07..b4d18d6 100644
+index 97bab07..638b7a1 100644
 --- a/sbncode/EventGenerator/MeVPrtl/Tools/Higgs/CMakeLists.txt
 +++ b/sbncode/EventGenerator/MeVPrtl/Tools/Higgs/CMakeLists.txt
-@@ -1,65 +1,65 @@
+@@ -1,65 +1,68 @@
  simple_plugin( MonoEnergyHiggsFlux tool
 -                            ${ART_FRAMEWORK_CORE}
 -                            ${ART_FRAMEWORK_SERVICES_REGISTRY}
@@ -1223,6 +1223,7 @@ index 97bab07..b4d18d6 100644
 +			nugen::EventGeneratorBase_GENIE
 +			nurandom::RandomUtils_NuRandomService_service
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  
@@ -1260,6 +1261,7 @@ index 97bab07..b4d18d6 100644
 +			nurandom::RandomUtils_NuRandomService_service
 +			${GSL}
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  simple_plugin( HiggsMakeDecay tool
@@ -1291,6 +1293,7 @@ index 97bab07..b4d18d6 100644
 +			nurandom::RandomUtils_NuRandomService_service
 +			nusimdata::SimulationBase
 +			sbncode::EventGenerator_MeVPrtl_Constants
++                        sbnobj::Common_EventGen_MeVPrtl
  )
  
  install_headers()
