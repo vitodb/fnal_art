@@ -6,7 +6,7 @@
 from spack import *
 import os
 import sys
-
+import spack.util.spack_json as sjson
 
 def sanitize_environments(*args):
     for env in args:

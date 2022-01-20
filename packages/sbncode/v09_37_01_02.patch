@@ -367,10 +367,10 @@ index 60f867b..679bd07 100644
  // ROOT includes
  #include "TFile.h"
 diff --git a/sbncode/CAFMaker/CMakeLists.txt b/sbncode/CAFMaker/CMakeLists.txt
-index bb2a232..5bf21ec 100644
+index bb2a232..3b4e823 100644
 --- a/sbncode/CAFMaker/CMakeLists.txt
 +++ b/sbncode/CAFMaker/CMakeLists.txt
-@@ -1,87 +1,85 @@
+@@ -1,87 +1,86 @@
  # for classes_def.xml
 -include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} )
 +include_directories ( ${CMAKE_CURRENT_SOURCE_DIR} ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
@@ -450,6 +450,7 @@ index bb2a232..5bf21ec 100644
 -##include_directories( $ENV{IFDH_ART_FQ_DIR}/inc )
 +include_directories( $ENV{IFDHC_DIR}/inc ) ### MIGRATE-ACTION-RECOMMENDED: use target_link_directories() with target semantics
 +link_directories( $ENV{IFDHC_DIR}/lib )
++include_directories( $ENV{SRPROXY_DIR}/include )
  
 -include_directories( $ENV{SRPROXY_INC} )
 -

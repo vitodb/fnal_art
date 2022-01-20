@@ -26,3 +26,6 @@ class PySrproxy(Package):
         copy(join_path(self.stage.source_path, 'gen_srproxy'), self.prefix.bin)
         copy(join_path(self.stage.source_path, '*.h'), '%s/SRProxy' % self.prefix.include)
         copy(join_path(self.stage.source_path, '*.cxx'), '%s/SRProxy' % self.prefix.include)
+
+    def setup_dependent_build_env(self, spack_env, dspec):
+        spack_env.set('SRPROXY_DIR', self.prefix)        
