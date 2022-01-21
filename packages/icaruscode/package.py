@@ -77,6 +77,7 @@ class Icaruscode(CMakePackage):
     depends_on('fhicl-cpp', type=('build','run'))
     depends_on('hep-concurrency', type=('build','run'))
     depends_on('ifdh-art', type=('build','run'))
+    depends_on('ifdhc', type=('build','run'))
     depends_on('ifbeam', type=('build','run'))
     depends_on('tbb', type=('build','run'))
     depends_on('geant4', type=('build','run'))
