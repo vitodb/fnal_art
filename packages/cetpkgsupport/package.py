@@ -15,7 +15,7 @@ class Cetpkgsupport(CMakePackage):
 
     homepage = 'https://cdcvs.fnal.gov/projects/cetpkgsupport'
 
-    version('develop', branch='develop', git=homepage)
+    version('develop', branch='develop', git=homepage, get_full_repo=True)
     version('v1_14_01', sha256='c834b6b439f05cee811989f1877c8862b4962bd8ddf61e7e4e80616396bdee34')
     version('1.14.01', sha256='c834b6b439f05cee811989f1877c8862b4962bd8ddf61e7e4e80616396bdee34')
 

@@ -33,6 +33,7 @@ class Artg4(CMakePackage):
 
     variant('cxxstd',default='17')
 
+    depends_on('cetbuildtools', type=('build'))
     depends_on('cetpkgsupport', type=('build','run'))
     depends_on('art', type=('build','run'))
     depends_on('geant4', type=('build','run'))

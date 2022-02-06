@@ -29,6 +29,7 @@ class Gm2db(CMakePackage):
     depends_on('cetpkgsupport', type=('build','run'))
     depends_on('art', type=('build','run'))
     depends_on('art-cpp-db-interfaces', type=('build','run'))
+    depends_on('boost',  type=('build','run'))
     depends_on('libwda', type=('build','run'))
 
 

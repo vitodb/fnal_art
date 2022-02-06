@@ -11,7 +11,8 @@ import os
 
 #
 # works with build_directory() below to let us run the
-# stage (build, install, etc.) in each subdirectory...
+# stage (build, install, etc.) in each subdirectory, and
+# try a second time if it seems to fail the first time
 #
 def subdir_decorator(f):
     def repl(self, *args):
@@ -21,9 +22,13 @@ def subdir_decorator(f):
             subdirlist = glob.glob('*')
             subdirlist.sort(reverse=True)
             for d in subdirlist:
-                if os.path.exists(os.path.join(d,'Makefile')):
+                if d != 'doc' and os.path.exists(os.path.join(d,'Makefile')):
                     self.build_subdir = d
-                    f(self, *args)
+                    try:
+                        f(self, *args)
+                    except:
+                        f(self, *args)
+        self.build_subdir = None
     return repl
             
 
@@ -68,10 +73,18 @@ class Gm2midas(MakefilePackage):
             'LIBS  = -lusb-1.0',
             'LIBS = ${MSCB_LDFLAGS}',
             'mscb/Makefile')
+        filter_file( 
+            'mkdir',
+            'mkdir -p',
+            'midas/Makefile')
 
     build = subdir_decorator(MakefilePackage.build)
-    install = subdir_decorator(MakefilePackage.install)
+
+    def install(self, spec, prefix):
+        self.build_subdir = 'midas'
+        with working_dir(self.build_directory):
+             make('install')
+         
     check = subdir_decorator(MakefilePackage.check)
-    installcheck = subdir_decorator(MakefilePackage.installcheck)
 
     

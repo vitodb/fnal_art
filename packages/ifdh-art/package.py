@@ -29,7 +29,7 @@ from the ifdhc package."""
     version('2.13.00', sha256='d9b59c4181051d6b86ee346c562faaac7d4c5c0eeef37f159e2b1757859d4516')
     version('2.12.05', sha256='f783e6e06d6d26f58b44c68d76d6b404bfe80a57918f4d7490090495f3ef35d1')
     version('2.12.04', sha256='10999a6cbf1f55f51dcba91c9631a2dc06d04ffc6230bfe3b3421f84ccb207b1')
-    version('develop', git=git_base, commit='fbddccf791ef86c7a2c96242031f79833a5cc9d0', get_full_rep=True)
+    version('develop', git=git_base, branch='develop', get_full_rep=True)
     version('MVP1a', git='https://github.com/art-framework-suite/ifdh-art.git', branch='feature/Spack-MVP1a')
 
     def url_for_version(self, version):

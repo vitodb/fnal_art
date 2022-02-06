@@ -37,7 +37,7 @@ class ArtdaqCore(CMakePackage):
     version('3.07.03', tag='v3_07_04', git=git_base, git_full_repo=True)
     version('3.07.05', tag='v3_07_05', git=git_base, git_full_repo=True)
     version('3.08.00', commit='46ce70268203ac4eceb2940adbc687bd7ea707ad', git=git_base, git_full_repo=True)
-    version('develop', branch='develop', git=git_base, git_full_repo=True)
+    version('develop', branch='develop', git=git_base, get_full_repo=True)
 
     variant('cxxstd',
             default='17',
