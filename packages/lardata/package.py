@@ -26,6 +26,7 @@ class Lardata(CMakePackage):
     url      = "https://github.com/LArSoft/lardata/archive/v01_02_03.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/lardata/tags"
 
+    version('09.04.vec02', branch='larvecutils-v09_37_01_01', git='https://github.com/cerati/lardata.git')
     version('09.30.00.rc1', sha256='62068b739d636374f56250d944283bda7dbb532d5f4a02dd38e9b105ce51c90c')
     version('09.04.02',     sha256='ebca1134427b493d7f1a4a278441b59802bd05662ec995dee2ad91e489c8b454')
     version('09.04.00',     sha256='a2495f4427245d6901138439750cf746a7a4bdc3633fbcb9e7c5cdffdb1e4af6')
@@ -60,12 +61,14 @@ class Lardata(CMakePackage):
             description='Use the specified C++ standard when building.')
 
     patch('v09_04_00.patch', when='@09.04.00')
+    patch('v09_04_02_larvecutils.patch', when='@09.04.vec02')
     patch('v09_04_02.patch', when='@09.04.02')
 
     depends_on('nutools')
     depends_on('larcore')
     depends_on('lardataobj')
     depends_on('lardataalg')
+    depends_on('larvecutils', when='@09.04.vec02')
     depends_on('range-v3')
     depends_on('fftw')
     depends_on('cetmodules', type='build')
