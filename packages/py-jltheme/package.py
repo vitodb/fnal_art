@@ -17,7 +17,7 @@ class PyJltheme(PythonPackage):
 
     depends_on('py-jupyter', type=('run'))
 
-    @run_before('install')
+    @run_before('build')
     def ensure_readme_rst(self):
         with working_dir(self.stage.source_path):
             if not os.path.exists("README.rst"):

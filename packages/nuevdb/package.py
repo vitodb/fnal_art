@@ -30,7 +30,7 @@ class Nuevdb(CMakePackage):
     version('1.05.06', sha256='76050a5dea93202b39ce81e09a4b66411ad845340bef935fe50d6d54e1a90126')
     version('1.05.05', sha256='e5bbd1c523f8befcb63b4a6a529e6eed592519ddefd31a2504ffd25e312e1115')
     version('mwm1', tag='mwm1', git=git_base, get_full_repo=True)
-    version('develop', commit='92a38ae511d6b4859ba6c79e399eb9c14643b134', git=git_base, get_full_repo=True)
+    version('develop', branch='develop',  git=git_base, get_full_repo=True)
 
 
     def url_for_version(self, version):
