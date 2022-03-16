@@ -35,6 +35,8 @@ class Icaruscode(CMakePackage):
     git_base = 'https://github.com/SBNSoftware/icaruscode.git'
 
     version('develop', commit='84314472f1e206b351fd9b52f1f6800c2a90b4c3', git=git_base, get_full_repo=True)
+    version('09.37.01.03p02', tag='v09_37_01_03p02', git=git_base, get_full_repo=True)
+    version('09.37.01.vec03p02', tag='v09_37_01_03p02', git=git_base, get_full_repo=True)
     version('09.37.01.02p02', tag='v09_37_01_02p02', git=git_base, get_full_repo=True)
     version('09.37.01.vec02p02', tag='v09_37_01_02p02', git=git_base, get_full_repo=True)
     version('09.35.00', tag='v09_35_00', git=git_base, get_full_repo=True)
@@ -47,8 +49,10 @@ class Icaruscode(CMakePackage):
 
     patch('cetmodules2.patch', when='@develop')
     patch('v09_35_00.patch', when='@09.35.00')
+    patch('v09_37_01_03p02.patch', when='@09.37.01.03p02')
     patch('v09_37_01_02p02.patch', when='@09.37.01.02p02')
     patch('v09_37_01_02p02_larvecutils.patch', when='@09.37.01.vec02p02')
+    patch('v09_37_01_03p02_larvecutils.patch', when='@09.37.01.vec03p02')
 
     variant('cxxstd',
             default='17',
@@ -97,6 +101,7 @@ class Icaruscode(CMakePackage):
     depends_on('larpandoracontent', type=('build','run'))
     depends_on('larreco', type=('build','run'))
     depends_on('larvecutils', type=('build','run'), when='@09.37.01.vec02p02')
+    depends_on('larvecutils', type=('build','run'), when='@09.37.01.vec03p02')
     depends_on('larsim', type=('build','run'))
     depends_on('libwda', type=('build','run'))
     depends_on('marley', type=('build','run'))
