@@ -27,6 +27,7 @@ class Larrecodnn(CMakePackage):
 
 
     version('09.30.00.rc1', sha256='c69b810f4a7027268d60f52e73da67f797491a8a0d20b80db5c9cdfe615a2e4f')
+    version('09.09.09.02', sha256='e820f2c50899979584456bfbfcab9abe27a022bd3ad50c9436167373bda9e9af')
     version('09.09.09.01',  sha256='6fcb6e8dc331d3b0885f66b17f1147b852347b594f20435b9061bca0af8d7e65')
     version('09.09.06',     sha256='776c70ee0368c6d02d61382a5663494ac365eb8a595671a5efaff172aeb369da')
     version('09.09.03',     sha256='c86c64e78c64fa2081f1299d0f09d3bcccafb944e34ec9c894f5e3568a8ef683')
@@ -61,6 +62,7 @@ class Larrecodnn(CMakePackage):
 
     patch('v09_09_06.patch', when='@09.09.06')
     patch('v09_09_09_01.patch', when='@09.09.09.01')
+    patch('v09_09_09_02.patch', when='@09.09.09.02')
 
     depends_on('cetmodules', type='build')
     depends_on('larcoreobj')

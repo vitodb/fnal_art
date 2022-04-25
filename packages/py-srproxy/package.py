@@ -11,6 +11,7 @@ class PySrproxy(Package):
     homepage = "https://github.com/cafana/SRProxy/"
     url      = "https://github.com/cafana/SRProxy/archive/v00.16.tar.gz"
 
+    version('00.35', sha256='dc78f8fe8b188728c361d8d02ce5aada9ddaf0b89713bd56feb83a1135cf2b37')
     version('00.32', sha256='ef1c1ebb61e6c8eb79dcaf5633d379cda36439792a6e5ed61e3bf11a1166295c')
     version('00.31', sha256='6a4b191add1ae1637b75f95da4dd56db8139c8dcf4504897d3f20e4d6d98d528')
     version('00.16', sha256='98507bf7adfe7b7ddfbfb043ef40c5c3eed55b3818be0c62766b759f06fc0b59')

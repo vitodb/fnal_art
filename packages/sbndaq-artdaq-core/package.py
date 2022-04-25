@@ -22,6 +22,7 @@ class SbndaqArtdaqCore(CMakePackage):
     version('develop', git=git_base,
              commit='e80441a707b42befe641002440421b4d2ea572d4', get_full_repo=True)
     version('v1_00_00of0', git=git_base, tag='v1_00_00of0', get_full_repo=True)
+    version('v1_00_00of2', git=git_base, tag='v1_00_00of2', get_full_repo=True)
 
     variant('cxxstd',
             default='17',
@@ -44,6 +45,7 @@ class SbndaqArtdaqCore(CMakePackage):
 
     patch('cetmodules2.patch', when='@develop')
     patch('v1_00_00of0.patch', when='@v1_00_00of0')
+    patch('v1_00_00of2.patch', when='@v1_00_00of2')
 
 
     depends_on('messagefacility')

@@ -27,6 +27,7 @@ class Larpandora(CMakePackage):
     list_url = "https://api.github.com/repos/LArSoft/larpandora/tags"
 
     version('09.30.00.rc1', sha256='13e428169579c7e45246920abb1f9165c067a8b662938a372633f4522ca5d084')
+    version('09.10.02.02', sha256='593b9702723987060ac957127e23e306a651a1768221d513e9b437f11d5125eb')
     version('09.10.02.01',  sha256='52c2e4e4356aa2ba75eb13e95df2b737a058d63063a538903d2611796d25acf5')
     version('09.09.05',     sha256='fee068f0d7b3d4056aeacd6bb40beabc470b0f3bf0a9c1e236de0930971700e0')
     version('09.09.03',     sha256='5b6b1198509427b3b79b34c9b33066a84f446b1dbc4a0645052ea33171d89a1e')
@@ -61,6 +62,7 @@ class Larpandora(CMakePackage):
 
     patch('v09_09_05.patch', when='@09.09.05')
     patch('v09_10_02_01.patch', when='@09.10.02.01')
+    patch('v09_10_02_02.patch', when='@09.10.02.02')
 
     depends_on('messagefacility')
     depends_on('canvas')

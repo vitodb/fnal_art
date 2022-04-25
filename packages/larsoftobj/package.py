@@ -28,6 +28,7 @@ class Larsoftobj(CMakePackage):
     version('09.30.00.rc1', sha256='5acb66660d6650fefb4c936885c1ea96cdd55bff80ef0207bf28b92a9660553f')
     version('09.30.00.rc0', sha256='79016314a80ce17633b157e7ce201385f88bbc94ab2bd6a9973edf74358e20c1')
     version('09.11.00.rc0', sha256='47954fde11089c0277505a8a7deea9ac10428cfa204994fb209003c12efd45cf')
+    version('09.12.00.01', sha256='c3e9a901fca51f521fa2299182a15b50eacdc702ae0018d6e458627122b5b147')
     version('09.12.00',     sha256='be05f4b4c9a91ace38d8f993b886e812686bd4d9877c93ffe9029acb4f01cae7')
     version('09.11.00',     sha256='fdb18a29201f8361c7b5c8a923dbfecdeb13ec774d760aabbb7b1d4ef1ff3e87')
     version('09.10.02',     sha256='6baa83ca84a93738bdb732ab7d77e94278e7e2bbc2c846be3bf4c42e922d6803')
@@ -52,8 +53,9 @@ class Larsoftobj(CMakePackage):
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
-    patch('v09_11_00.patch', when='@09.11.00')
-    patch('v09_12_00.patch', when='@09.12.00')
+    #patch('v09_11_00.patch', when='@09.11.00')
+    #patch('v09_12_00.patch', when='@09.12.00')
+    patch('v09_12_00_01.patch', when='@09.12.00.01')
 
     variant('cxxstd',
             default='17',

@@ -29,6 +29,7 @@ class Sbnanaobj(CMakePackage):
     homepage = "https://www.example.com"
     url      = "https://github.com/SBNSoftware/sbnanaobj/archive/refs/tags/v09_17_04.tar.gz"
 
+    version('09.17.06.06', sha256='e943ca9411282fdd1d3d8b635b706d777722857426488188b39d2bb6c9cd3947')
     version('09.17.06.02', checksum='9a052bf48c90d48009c9cbdc789831b8')
     version('09.17.06.01', sha256='4b74e17e5051af8f9c3f324199e69fbe1872a50a6f188bee205f334cac646ced')
     version('09.17.04', sha256='06f4534f5b5022162fae07581a53d16ca3a7b3bd27e42738c8ce33558ca0b348')
@@ -40,6 +41,7 @@ class Sbnanaobj(CMakePackage):
             multi=False,
             description='Use the specified C++ standard when building.')
 
+    patch('v09_17_06_06.patch', when='@09.17.06.06')
     patch('v09_17_06_02.patch', when='@09.17.06.02')
     patch('v09_17_06_01.patch', when='@09.17.06.01')
     patch('v09_17_04.patch', when='@09.17.04')

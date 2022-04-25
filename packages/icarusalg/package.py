@@ -30,6 +30,7 @@ class Icarusalg(CMakePackage):
     list_url = 'https://api.github.com/repos/SBNSoftware/icarusalg/tags'
 
     version('develop', commit='357823a14d1f655f620bb288f6dc373b5685664f', git=git_base, get_full_repo=True)
+    version('09.37.02.01', sha256='717678d1015441349b892bb19efd2b09c5b5f6349dfb25a484bc9101d761b4eb')
     version('09.37.01', sha256='048f3a88ebd66dd8ba6b8fbc536ea68bb58b7b48b3ffaa5ff555a301a838b11d')
     version('09.34.00', sha256='b55ab020b0a3239e0492183d7eb55501102693ee8123ca5ccef0d40a4f11b1d9')
     version('09.33.00', sha256='b61f8a2eb23405d151b69b3ee2d7d76f30ed35da9ff12426e680994cf7a3461a')
@@ -47,6 +48,7 @@ class Icarusalg(CMakePackage):
     patch('cetmodules2.patch', when='@develop')
     patch('v09_34_00.patch', when='@09.34.00')
     patch('v09_37_01.patch', when='@09.37.01')
+    patch('v09_37_02_01.patch', when='@09.37.02.01')
 
     variant('cxxstd',
             default='17',

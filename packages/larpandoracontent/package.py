@@ -24,7 +24,7 @@ class Larpandoracontent(CMakePackage):
     url      = "https://github.com/LArSoft/larpandoracontent/archive/refs/tags/v03_26_01.tar.gz"
     list_url = "https://api.github.com/repos/LArSoft/larpandoracontent/tags"
 
-
+    version('03.26.01.01', sha256='f7c38678f3b7631df1287ca63ee3479d62c33b6d82134e9b98b7e6de90c4ce5c')
     version('03.26.01', sha256='fdd00d2b3954fe2388ed5e754ffe2f82bea6f627bf037e6d6b799555b0afef96')
     version('mwm1', tag='mwm1', git='https://github.com/marcmengel/larpandoracontent.git', get_full_repo=True)
     version('03.22.11.01', tag='v03_22_11_01', git='https://github.com/LArSoft/larpandoracontent.git', get_full_repo=True)
@@ -42,7 +42,8 @@ class Larpandoracontent(CMakePackage):
                                   accept_content_type='application/json')[2])
                           if d['name'].startswith('v') and not d['name'].endswith(')')]))
 
-    patch('v03_26_01.patch', when='@03.26.01')
+    #patch('v03_26_01.patch', when='@03.26.01')
+    patch('v03_26_01_01.patch', when='@03.26.01.01')
 
     variant('cxxstd',
             default='17',
