@@ -3,13 +3,16 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
-from spack import *
 import os
+from spack.package import *
+
 
 class PyJltheme(PythonPackage):
-    """FIXME: Put a proper description of your package here."""
+    """Change Matplotlib rcParams to match the current JupyterLab theme.
 
-    # FIXME: Add a proper url for your package's homepage here.
+Adjusts Matplotlib axis labels, edge, face, and tick colors based upon which JupyterLab theme is in use.
+"""
+
     homepage = "https://github.com/CGCFAD/jltheme"
     pypi     = "jltheme/jltheme-0.1.2.tar.gz"
 
@@ -24,9 +27,3 @@ class PyJltheme(PythonPackage):
                 f = open("README.rst","w")
                 f.write("description")
                 f.close()
-
-    def build_args(self, spec, prefix):
-        # FIXME: Add arguments other than --prefix
-        # FIXME: If not needed delete this function
-        args = []
-        return args
