@@ -7,7 +7,12 @@
 import glob
 import os
 
-from spack import *
+from spack.package import *
+
+try:
+    from spack.build_systems.makefile import MakefileBuilder as builder
+except ImportError:
+    from spack.build_systems.makefile import MakefilePackage as builder
 
 
 #
@@ -79,11 +84,11 @@ class Gm2midas(MakefilePackage):
         filter_file("LIBS  = -lusb-1.0", "LIBS = ${MSCB_LDFLAGS}", "mscb/Makefile")
         filter_file("mkdir", "mkdir -p", "midas/Makefile")
 
-    build = subdir_decorator(MakefilePackage.build)
+    build = subdir_decorator(builder.build)
 
     def install(self, spec, prefix):
         self.build_subdir = "midas"
         with working_dir(self.build_directory):
             make("install")
 
-    check = subdir_decorator(MakefilePackage.check)
+    check = subdir_decorator(builder.check)

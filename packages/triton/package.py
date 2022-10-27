@@ -6,7 +6,12 @@
 import glob
 import os
 
-from spack import *
+from spack.package import *
+
+try:
+    from spack.build_systems.cmake import CMakeBuilder as builder
+except ImportError:
+    from spack.build_systems.cmake import CMakePackage as builder
 
 
 # decorator to try a method twice...
@@ -72,7 +77,7 @@ class Triton(CMakePackage):
     patch("proto.patch", when="@2.3.0")
 
     # trying doubled build...
-    build = tryagain(CMakePackage.build)
+    build = tryagain(builder.build)
 
     @run_before("cmake")
     def patch_version(self):
