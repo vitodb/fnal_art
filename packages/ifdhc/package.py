@@ -63,6 +63,7 @@ class Ifdhc(MakefilePackage):
 
     @property
     def build_targets(self):
+        print("in build_targets...")
         uuidflags = " -L %s -I %s " % (
             self.spec["uuid"].prefix.lib,
             self.spec["uuid"].prefix.include,
@@ -71,12 +72,18 @@ class Ifdhc(MakefilePackage):
         cxxstdflag = (
             "" if cxxstd == "default" else getattr(self.compiler, "cxx{0}_flag".format(cxxstd))
         )
+
+       
+        with when("@2.6.9"):
+            # sshbuildshims build_ifdhc.sh:311
+            cxxstdflag = "%s -Wno-unused-but-set-variable" % cxxstdflag
+
         return ("SHELL=/bin/bash", 
                 "PYMAJOR=%s" % self.spec["python"].version[0],
                 "PYTHON=%s" % self.spec["python"].command.path,
                 "PYTHON_LIB=%s" % self.spec["python"].libs.directories[0],
                 "PYTHON_INCLUDE=%s" % self.spec["python"].headers.directories[0],
-                "ARCH=-g -O3 -DNDEBUG %s %s" % (cxxstdflag, uuidflags), 
+                "ARCH=-g -DNDEBUG %s %s" % (cxxstdflag, uuidflags), 
                 "all"
                )
 
@@ -89,6 +96,14 @@ class Ifdhc(MakefilePackage):
         cmd = "cp {0}/ifdh.cfg {1}/ifdh.cfg".format(self.stage.source_path, self.spec.prefix)
         tty.warn("installing ifdh.cfg: {0}".format(cmd))
         os.system(cmd)
+
+    @run_after("install")
+    def is_built(self):
+        ''' replicate build-shims checks '''
+        assert os.path.exists(self.prefix.bin.ifdh)
+        assert os.path.exists(self.prefix.inc + "/ifdh.h")
+        assert os.path.exists(self.prefix.lib + "/libifdh.so")
+        assert os.path.exists(self.prefix.lib + "/python/ifdh.so")
 
     def setup_build_environment(self, spack_env):
         spack_env.set("PYTHON_INCLUDE", self.spec["python"].prefix.include)
