@@ -41,18 +41,17 @@ class IfdhcConfig(Package):
         return url.format(version.underscored)
 
     def install(self, a, b):
-        cplist=[
-                ['ifdh.cfg', 'ifdh.cfg'], 
-                ['ifdh/www_cp.sh', 'bin/www_cp.sh'],
-                ['ifdh/auth_session.sh', 'bin/auth_session.sh'], 
-                ['ifdh/decode_token.sh', 'bin/decode_token.sh'],
+        instlist=[
+                ['ifdh.cfg', ''], 
+                ['ifdh/www_cp.sh', '/bin'],
+                ['ifdh/auth_session.sh', '/bin'], 
+                ['ifdh/decode_token.sh', '/bin'],
                ]
-        for fnpair in cplist:
-            cmd = "cp {0}/{2} {1}/{3}".format(
-                 self.stage.source_path, self.spec.prefix, fnpair[0],fnpair[1]
-            )
-            tty.warn("installing {0}: {1} ".format(fnpair[0], cmd))
-            os.system(cmd)
+        mkdir(self.spec.prefix.bin)
+        for fnpair in instlist:
+            install("{0}/{1}".format( self.stage.source_path, fnpair[0]),
+                    "{0}{1}".format( self.spec.prefix, fnpair[1]))
+            tty.warn("installing {0}".format(fnpair[0]))
 
     def setup_build_environment(self, spack_env):
         spack_env.set("IFDHC_CONFIG_DIR", self.spec.prefix)
