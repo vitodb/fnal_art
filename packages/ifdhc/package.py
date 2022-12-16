@@ -103,7 +103,7 @@ class Ifdhc(MakefilePackage):
         assert os.path.exists(self.prefix.bin.ifdh)
         assert os.path.exists(self.prefix.inc + "/ifdh.h")
         assert os.path.exists(self.prefix.lib + "/libifdh.so")
-        assert os.path.exists(self.prefix.lib + "/python/ifdh.so")
+        assert os.path.exists(self.prefix.lib + "/python/_ifdh.so")
 
     def setup_build_environment(self, spack_env):
         spack_env.set("PYTHON_INCLUDE", self.spec["python"].prefix.include)
