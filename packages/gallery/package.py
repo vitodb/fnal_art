@@ -48,7 +48,13 @@ class Gallery(CMakePackage):
             depends_on("ninja@1.10:", type="build")
 
     def cmake_args(self):
-        return ["--preset", "default", self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")]
+        return [
+           "--preset", "default", 
+           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
+           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
+           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
+           self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+        ]
 
     def setup_dependent_build_environment(self, env, dependent_spec):
         prefix = self.prefix

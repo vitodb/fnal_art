@@ -66,7 +66,12 @@ class Cetmodules(CMakePackage):
         filter_file(r"exit \$status", "exit 0", "%s/libexec/fix-man-dirs" % self.stage.source_path)
 
     def cmake_args(self):
-        options = ["--preset", "default"]
+        options = [
+           "--preset", "default", 
+           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
+           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
+           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
+        ]
         if not any(
             [
                 self.spec.variants[doc_opt].value
