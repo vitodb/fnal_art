@@ -1,0 +1,11 @@
+*** spack-src/cetlib/CMakeLists.txt.orig	2022-12-17 06:01:28.761005000 +0000
+--- spack-src/cetlib/CMakeLists.txt	2022-12-17 06:02:13.073329000 +0000
+***************
+*** 111,114 ****
+--- 111,116 ----
+  add_subdirectory(sqlite)
+  
+  # Tests
++ if (BUILD_TESTING)
+  add_subdirectory(test)
++ endif()

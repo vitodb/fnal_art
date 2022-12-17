@@ -12,10 +12,13 @@ class Ifbeam(MakefilePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifbeam"
     url = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/ifdhc-ifbeam.v2_5_2.tbz2"
 
+    version("2.5.17", sha256="7ecba2c84c585d3775a984a7de4a1152afc2ed60468cdce45bb380b6e28cab68")
+    version("2.5.16", sha256="827c0acbe670818fdc91283c1f4e90719c2d873a3f46459e3ed65d6d0e96297c")
     version("2.5.2", sha256="7c1bac69dae5d3130741d9dd79295eb917e74eaadde9f808f10599db94a6a488")
     version("2.4.8", sha256="676b43be56c51f68c189d19e8c23a68e9bc489a7e3aaedb632e7600a168d9448")
     version("2.3.0", sha256="4b6a29443b631957ca2a7712b5c577620c6543e542ee9c77d246cef1e10f7324")
     version("2.2.13", sha256="b341ffc73421b7187b06c205f9feaccf117bdba06509e9b1b8f491fdc182029c")
+
 
     parallel = False
 
@@ -31,6 +34,9 @@ class Ifbeam(MakefilePackage):
 
     depends_on("ifdhc")
     depends_on("libwda")
+
+    def patch(self):
+        filter_file(r'catch \(WebAPIException e\)','catch (WebAPIException &e)','src/ifbeam.cc') 
 
     def url_for_version(self, version):
         url = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/{0}.v{1}.tbz2"

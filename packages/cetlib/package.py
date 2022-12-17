@@ -21,6 +21,9 @@ class Cetlib(CMakePackage):
     git = "https://github.com/art-framework-suite/cetlib.git"
     url = "https://github.com/art-framework-suite/cetlib/archive/refs/tags/v3_09_01.tar.gz"
 
+    
+    version("3.16.00", sha256="a0e670a5144b215c9a6641d0b9b35512790d9ba4b638e213651f5040417f4070")
+    version("3.13.04", sha256="40ca829cfb172f6cbf516bd3427fc7b7e893f9c916d969800261194610c45edf")
     version("develop", branch="develop", get_full_repo=True)
 
     variant(
@@ -31,6 +34,8 @@ class Cetlib(CMakePackage):
         sticky=True,
         description="C++ standard",
     )
+
+    patch("test_build.patch")
 
     depends_on("boost+regex+program_options+filesystem+system+test")
     depends_on("catch2", type=("build", "test"))
@@ -47,6 +52,10 @@ class Cetlib(CMakePackage):
         generator = os.environ["SPACK_CMAKE_GENERATOR"]
         if generator.endswith("Ninja"):
             depends_on("ninja@1.10:", type="build")
+
+    def url_for_version(self, version):
+        url = "https://github.com/art-framework-suite/cetlib/archive/refs/tags/v{0}.tar.gz"
+        return url.format(version.underscored)
 
     def cmake_args(self):
         return ["--preset", "default", self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")]

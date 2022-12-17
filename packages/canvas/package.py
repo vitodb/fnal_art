@@ -22,6 +22,9 @@ class Canvas(CMakePackage):
     url = "https://github.com/art-framework-suite/canvas/archive/refs/tags/v3_09_01.tar.gz"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("3.12.05", sha256="e0a0506528ab1f4db4b76bd3b68f0ea1ea97a627a68930abbfa1b2bfea069ee9")
+    version("3.12.04", sha256="bcbb9680000a0f1eec4ec3983b49d8a89f6820d4abdee2ffcb7bd769a0799974")
+
 
     variant(
         "cxxstd",
@@ -47,6 +50,10 @@ class Canvas(CMakePackage):
         generator = os.environ["SPACK_CMAKE_GENERATOR"]
         if generator.endswith("Ninja"):
             depends_on("ninja@1.10:", type="build")
+
+    def url_for_version(self, version):
+        url = "https://github.com/art-framework-suite/canvas/archive/refs/tags/v{0}.tar.gz"
+        return url.format(version.underscored)
 
     def cmake_args(self):
         return ["--preset", "default", self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")]

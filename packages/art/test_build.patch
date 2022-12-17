@@ -1,0 +1,9 @@
+--- spack-src/art/CMakeLists.txt.orig	2022-12-17 15:30:56.270458000 +0000
++++ spack-src/art/CMakeLists.txt	2022-12-17 15:31:13.460807000 +0000
+@@ -49,4 +49,6 @@
+ cet_collect_plugin_builders(Modules ArtPlugins)
+ 
+ # Testing
++if(BUILD_TESTING)
+ add_subdirectory(test)
++endif()

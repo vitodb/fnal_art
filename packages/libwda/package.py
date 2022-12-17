@@ -15,6 +15,7 @@ class Libwda(MakefilePackage):
     git_base = "https://cdcvs.fnal.gov/projects/ifdhc-libwda"
     url = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/libwda.v2_22_2.tbz2"
 
+    version("2.30.0", sha256="016fe0f12f1ded114b0ab09d1bdd0ea2374faff47b1226ee5035453fdc750329")
     version("2.29.1", tag="v2_29_1", git=git_base, get_full_repo=True)
     version("develop", git=git_base, branch="develop", get_full_repo=True)
     version("2.26.0", sha256="4df374bbf36030241a9714d5e08cd9b2b5e1b3374da1a97ec793cd37eba40fc2")
@@ -38,6 +39,7 @@ class Libwda(MakefilePackage):
     def build_targets(self):
         tlist = [
             "LIBWDA_VERSION=v{0}".format(self.version.underscored),
+            "LDFLAGS=-lcrypto", # rather than bigger Makefile patch
         ]
         return tlist
 
@@ -62,6 +64,8 @@ class Libwda(MakefilePackage):
 
     def setup_dependent_build_environment(self, spack_env, dspec):
         spack_env.set("LIBWDA_DIR", self.prefix)
+        spack_env.set("LIBWDA_LIB", self.prefix.lib)
+        spack_env.set("LIBWDA_INC", self.prefix.include)
 
     def setup_dependent_run_environment(self, run_env, dspec):
         run_env.set("LIBWDA_DIR", self.prefix)
