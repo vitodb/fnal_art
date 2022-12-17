@@ -54,6 +54,7 @@ class ArtRootIo(CMakePackage):
 
     def cmake_args(self):
         return [
+           "--trace-expand",
            "--preset", "default", 
            "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
            "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
