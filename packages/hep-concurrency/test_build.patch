@@ -1,0 +1,9 @@
+--- spack-src/hep_concurrency/CMakeLists.txt.orig	2022-12-17 05:49:58.733968000 +0000
++++ spack-src/hep_concurrency/CMakeLists.txt	2022-12-17 05:47:31.325351000 +0000
+@@ -44,4 +44,6 @@
+ install_headers(SUBDIRS detail)
+ install_source(SUBDIRS detail)
+ 
++if (BUILD_TESTING)
+ add_subdirectory(test)
++endif()

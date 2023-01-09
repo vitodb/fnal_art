@@ -1,0 +1,11 @@
+*** spack-src/fhiclcpp/CMakeLists.txt.orig	2022-12-17 06:14:46.873533000 +0000
+--- spack-src/fhiclcpp/CMakeLists.txt	2022-12-17 06:15:20.805239000 +0000
+***************
+*** 50,53 ****
+--- 50,55 ----
+  install_source(SUBDIRS detail)
+  
+  add_subdirectory(types)
++ if (TEST_BUILDING)
+  add_subdirectory(test)
++ endif()

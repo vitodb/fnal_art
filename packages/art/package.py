@@ -23,6 +23,14 @@ class Art(CMakePackage):
     git = "https://github.com/art-framework-suite/art.git"
     url = "https://github.com/art-framework-suite/art/archive/refs/tags/v3_09_01.tar.gz"
 
+
+
+    version("3.12.00", sha256="d47c6fb30f5b5c93fe8ceea495e245c294bbc8166fcaccbd314d535fe12eb059")
+    version("3.11.00", sha256="4c3076577de227c705f2ba057abcc3923f37c9b4d5a2165fbc0536598e0f671a")
+    version("3.10.00", sha256="128fccc84c7a953ed0a0a28c6cdee86299851dbe402f78e7f1230501cc23e1e4")
+    version("3.09.00", sha256="d2a49e529da4f744df0fc3f9be9e44a908dbedd08fcdcd4e2e9ba2e08521c1b2")
+    version("3.05.00", sha256="3f307b4fdaf113388d49e603cb29eeb99f5f0f3fd1186f0a9950e7ab793baa90")
+    version("3.04.00", sha256="38d27e1776adad157ad2d4e8c073ecda67ec4677fff9ebbffef6e37d7ed1d8ff")
     version("develop", branch="develop", get_full_repo=True)
 
     variant(
@@ -33,6 +41,8 @@ class Art(CMakePackage):
         sticky=True,
         description="C++ standard",
     )
+
+    patch('test_build.patch')
 
     depends_on("boost+date_time+graph+program_options+regex")
     depends_on("boost+filesystem+json+test+thread", type=("build"))
@@ -57,8 +67,18 @@ class Art(CMakePackage):
         if generator.endswith("Ninja"):
             depends_on("ninja@1.10:", type="build")
 
+    def url_for_version(self, version):
+        url = "https://github.com/art-framework-suite/art/archive/refs/tags/v{0}.tar.gz"
+        return url.format(version.underscored)
+
     def cmake_args(self):
-        return ["--preset", "default", self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd")]
+        return [
+           "--preset", "default", 
+           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
+           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
+           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
+           self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
+        ]
 
     def setup_build_environment(self, env):
         prefix = self.build_directory
