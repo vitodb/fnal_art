@@ -1,0 +1,30 @@
+diff --git extern/asyncresolv/Makefile extern/asyncresolv/Makefile
+index 1e10f1303..6991985af 100755
+--- spack-src/extern/asyncresolv/Makefile
++++ spack-src/extern/asyncresolv/Makefile
+@@ -71,6 +71,7 @@
+ 	patch -p0 < sf1672525.patch
+ 	patch -p0 < cmsos550.patch
+ 	patch -p0 < cmsos698.patch
++	patch -p0 < configure.patch
+ ifeq ($(XDAQ_ARCH),aarch64)
+ 	cp /usr/share/automake-1.16/config.guess asyncresolv-0.0.4 
+ endif
+
+diff --git extern/asyncresolv/configure.patch extern/asyncresolv/configure.patch
+new file mode 100755
+index 000000000..ec95da338
+--- /dev/null
++++ spack-src/extern/asyncresolv/configure.patch
+@@ -0,0 +1,11 @@
++--- asyncresolv-0.0.4.new/configure.in	2019-04-18 11:45:20.680886145 -0500
+++++ asyncresolv-0.0.4/configure.in	2004-07-13 04:58:59.000000000 -0500
++@@ -70,7 +70,7 @@
++ # Compiling options
++ CXXFLAGS="${CXXFLAGS} -pipe"
++ # Warning options 
++-CXXFLAGS="${CXXFLAGS} -Werror -Wall -Winline"
+++CXXFLAGS="${CXXFLAGS} -Werror -Winline"
++ # 
++ CXXFLAGS="${CXXFLAGS} -D_REENTRANT -D_THREAD_SAFE"
++ 

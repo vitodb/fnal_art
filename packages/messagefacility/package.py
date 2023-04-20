@@ -21,9 +21,10 @@ class Messagefacility(CMakePackage):
     homepage = "https://art.fnal.gov/"
     git = "https://github.com/art-framework-suite/messagefacility.git"
     url = (
-        "https://github.com/art-framework-suite/messagefacility/archive/refs/tags/v3_09_01.tar.gz"
+        "https://github.com/art-framework-suite/messagefacility/archive/refs/tags/v2_10_01.tar.gz"
     )
 
+    version("2.10.01", sha256="b9572b4ccf0e61edcaf4fc4548d616be00754c9ae04aa594640d992c1047c315")
     version("2.09.00", sha256="0d596b10691d92b73a396c974846211ea7d65e819685a39b3fa1d9d4126746f0")
     version("2.08.04", sha256="dcf71449b0f73b01e2d32d1dc5b8eefa09a4462d1c766902d916ed6869b6c682")
     version("2.08.03", sha256="bf10264d94e77e14c488e02107e36e676615fa12c9e2795c4caccf0c913ba7b9")
@@ -41,7 +42,7 @@ class Messagefacility(CMakePackage):
     )
 
     depends_on("boost+filesystem+program_options+system")
-    depends_on("catch2", type=("build", "test"))
+    depends_on("catch2") #, type=("build", "test"))
     depends_on("cetlib")
     depends_on("cetlib-except")
     depends_on("cetmodules", type="build")

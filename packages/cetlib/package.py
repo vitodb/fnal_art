@@ -19,9 +19,9 @@ class Cetlib(CMakePackage):
 
     homepage = "https://art.fnal.gov/"
     git = "https://github.com/art-framework-suite/cetlib.git"
-    url = "https://github.com/art-framework-suite/cetlib/archive/refs/tags/v3_09_01.tar.gz"
+    url = "https://github.com/art-framework-suite/cetlib/archive/refs/tags/v3_17_00.tar.gz"
 
-    
+    version("3.17.00", sha256="04160b9607948b329465b60271ca735c449f3bf7d53e31a44ec3107cc6aafe26")    
     version("3.16.00", sha256="a0e670a5144b215c9a6641d0b9b35512790d9ba4b638e213651f5040417f4070")
     version("3.13.04", sha256="40ca829cfb172f6cbf516bd3427fc7b7e893f9c916d969800261194610c45edf")
     version("develop", branch="develop", get_full_repo=True)
@@ -35,7 +35,7 @@ class Cetlib(CMakePackage):
         description="C++ standard",
     )
 
-    patch("test_build.patch")
+    patch("test_build.patch",when="@:3.16.00")
 
     depends_on("boost+regex+program_options+filesystem+system+test")
     depends_on("catch2", type=("build", "test"))

@@ -21,13 +21,15 @@ class Art(CMakePackage):
 
     homepage = "https://art.fnal.gov/"
     git = "https://github.com/art-framework-suite/art.git"
-    url = "https://github.com/art-framework-suite/art/archive/refs/tags/v3_09_01.tar.gz"
+    url = "https://github.com/art-framework-suite/art/archive/refs/tags/v3_13_01.tar.gz"
 
 
-
+    version("3.13.01", sha256="bb81d781f2e6e6bd223c9008c8b36b9dc6ed0138e173325f2ef218c798017258")
     version("3.12.00", sha256="d47c6fb30f5b5c93fe8ceea495e245c294bbc8166fcaccbd314d535fe12eb059")
     version("3.11.00", sha256="4c3076577de227c705f2ba057abcc3923f37c9b4d5a2165fbc0536598e0f671a")
     version("3.10.00", sha256="128fccc84c7a953ed0a0a28c6cdee86299851dbe402f78e7f1230501cc23e1e4")
+    version("3.09.04", sha256="01a3f88f0c4b179dcfe8492ea356832df23bf974d35faa1c1d6f220789768e4f")
+    version("3.09.03", sha256="f185fecd5593217185d2852d2ecf0a818326e7b4784180237461316b1c11f60d")
     version("3.09.00", sha256="d2a49e529da4f744df0fc3f9be9e44a908dbedd08fcdcd4e2e9ba2e08521c1b2")
     version("3.05.00", sha256="3f307b4fdaf113388d49e603cb29eeb99f5f0f3fd1186f0a9950e7ab793baa90")
     version("3.04.00", sha256="38d27e1776adad157ad2d4e8c073ecda67ec4677fff9ebbffef6e37d7ed1d8ff")
@@ -42,7 +44,7 @@ class Art(CMakePackage):
         description="C++ standard",
     )
 
-    patch('test_build.patch')
+    patch('test_build.patch',when="@:3.12.00")
 
     depends_on("boost+date_time+graph+program_options+regex")
     depends_on("boost+filesystem+json+test+thread", type=("build"))
@@ -58,7 +60,7 @@ class Art(CMakePackage):
     depends_on("hep-concurrency")
     depends_on("messagefacility")
     depends_on("perl")
-    depends_on("range-v3@0.12.0:", type="build")
+    depends_on("range-v3@0.11.0:", type="build")
     depends_on("sqlite@3.8.2:")
     depends_on("tbb")
 

@@ -19,9 +19,14 @@ class CanvasRootIo(CMakePackage):
 
     homepage = "https://art.fnal.gov/"
     git = "https://github.com/art-framework-suite/canvas-root-io.git"
-    url = "https://github.com/art-framework-suite/canvas-root-io/archive/refs/tags/v3_09_01.tar.gz"
+    url = "https://github.com/art-framework-suite/canvas-root-io/archive/refs/tags/v1_12_01.tar.gz"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("1.12.01", sha256="244dde7f035ef142c42f8bdb8cd80bda2e39ef4e1bd0f45d16614d495221358a")
+    version("1.11.00", sha256="950ccf0277f7315d396ae49f6421fd613a7bb34cf7cba68c1c2dfb062b990b6c")
+    version("1.09.04", sha256="cb854b4fdc72be24856886d985f96ceb3b0049729df0b4a11fb501ff7c48847b")
+
+    patch("test_build.patch",when="@:1.11.00")
 
     variant(
         "cxxstd",
@@ -41,8 +46,10 @@ class CanvasRootIo(CMakePackage):
     depends_on("cmake@3.21:", type="build")
     depends_on("fhicl-cpp")
     depends_on("hep-concurrency")
+    depends_on("catch2", type=("build", "test"))
     depends_on("messagefacility")
-    depends_on("root@6.26:+python")
+    depends_on("root@6.26:+python", when="@1.11:")
+    depends_on("root@6.22:+python", when="@1.09:")
 
     if "SPACK_CMAKE_GENERATOR" in os.environ:
         generator = os.environ["SPACK_CMAKE_GENERATOR"]
@@ -57,6 +64,10 @@ class CanvasRootIo(CMakePackage):
            "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
         ]
+
+    def url_for_version(self, version):
+        url = "https://github.com/art-framework-suite/canvas-root-io/archive/refs/tags/v{0}.tar.gz"
+        return url.format(version.underscored)
 
     def setup_build_environment(self, env):
         prefix = self.build_directory

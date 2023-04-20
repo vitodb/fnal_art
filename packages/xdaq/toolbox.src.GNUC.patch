@@ -1,0 +1,117 @@
+diff --git toolbox/src/common/Runtime.cc toolbox/src/common/Runtime.cc
+index a1d86dcd6..ba2452f50 100755
+--- spack-src/toolbox/src/common/Runtime.cc
++++ spack-src/toolbox/src/common/Runtime.cc
+@@ -139,10 +139,10 @@ static void terminate_mainhandler()
+ {
+         Logger rootLogger = Logger::getRoot();
+ 	LOG4CPLUS_FATAL(rootLogger, "Uncaught exception in main thread");
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__clang__)
+ 	__gnu_cxx::__verbose_terminate_handler();
+ #else
+-	abort()
++	abort();
+ #endif /* __GNUC__ */
+ }
+ 
+@@ -150,10 +150,10 @@ static void unexpected_mainhandler()
+ {
+         Logger rootLogger = Logger::getRoot();
+ 	LOG4CPLUS_FATAL(rootLogger, "Unexpected exception in main thread");
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__clang__)
+ 	__gnu_cxx::__verbose_terminate_handler();
+ #else
+-	abort()
++	abort();
+ #endif /* __GNUC__ */
+ }
+ 
+diff --git toolbox/src/common/task/WorkLoop.cc toolbox/src/common/task/WorkLoop.cc
+index 56af86656..da9ad7ce1 100755
+--- spack-src/toolbox/src/common/task/WorkLoop.cc
++++ spack-src/toolbox/src/common/task/WorkLoop.cc
+@@ -28,20 +28,20 @@
+ static void terminate_workloophandler()
+ {
+ 	std::cout << "Uncaught exception in workloop thread" << std::endl;
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__clang__)
+ 	__gnu_cxx::__verbose_terminate_handler();
+ #else
+-	abort()
++	abort();
+ #endif /* __GNUC__ */
+ }
+ 
+ static void unexpected_workloophandler()
+ {
+ 	std::cout << "Unexpected exception in workloop thread" << std::endl;
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__clang__)
+ 	__gnu_cxx::__verbose_terminate_handler();
+ #else
+-	abort()
++	abort();
+ #endif /* __GNUC__ */
+ }
+ 
+diff --git toolbox/src/linux/common/Task.cc toolbox/src/linux/common/Task.cc
+index b9989df36..bc544b5f4 100755
+--- spack-src/toolbox/src/linux/common/Task.cc
++++ spack-src/toolbox/src/linux/common/Task.cc
+@@ -56,20 +56,20 @@ toolbox::Task::~Task()
+ static void terminate_taskhandler()
+ {
+ 	std::cout << "Uncaught exception in toolbox::task thread" << std::endl;
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__clang__)
+ 	__gnu_cxx::__verbose_terminate_handler();
+ #else
+-	abort()
++	abort();
+ #endif /* __GNUC__ */
+ }
+ 
+ static void unexpected_taskhandler()
+ {
+ 	std::cout << "Unexpected exception in toolbox::task thread" << std::endl;
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__clang__)
+ 	__gnu_cxx::__verbose_terminate_handler();
+ #else
+-	abort()
++	abort();
+ #endif /* __GNUC__ */
+ }
+ 
+diff --git toolbox/src/macosx/common/Task.cc toolbox/src/macosx/common/Task.cc
+index 5dd8183d6..1697f633f 100755
+--- spack-src/toolbox/src/macosx/common/Task.cc
++++ spack-src/toolbox/src/macosx/common/Task.cc
+@@ -54,20 +54,20 @@ toolbox::Task::~Task()
+ static void terminate_taskhandler()
+ {
+ 	std::cout << "Uncaught exception in toolbox::task thread" << std::endl;
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__clang__)
+ 	__gnu_cxx::__verbose_terminate_handler();
+ #else
+-	abort()
++	abort();
+ #endif /* __GNUC__ */
+ }
+ 
+ static void unexpected_taskhandler()
+ {
+ 	std::cout << "Unexpected exception in toolbox::task thread" << std::endl;
+-#ifdef __GNUC__
++#if defined(__GNUC__) && !defined(__clang__)
+ 	__gnu_cxx::__verbose_terminate_handler();
+ #else
+-	abort()
++	abort();
+ #endif /* __GNUC__ */
+ }
+ 

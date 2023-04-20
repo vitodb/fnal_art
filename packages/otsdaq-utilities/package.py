@@ -9,7 +9,7 @@ import sys
 from spack import *
 
 
-class ArtdaqCore(CMakePackage):
+class OtsdaqUtilities(CMakePackage):
     """The toolkit currently provides functionality for data transfer,
     event building, event reconstruction and analysis (using the art analysis
     framework), process management, system and process state behavior, control
@@ -18,15 +18,15 @@ class ArtdaqCore(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_core/archive/refs/tags/v3_09_04.tar.gz"
-    git = "https://github.com/art-daq/artdaq_core.git"
+    url = "https://github.com/art-daq/otsdaq_utilities/archive/refs/tags/v2_06_08.tar.gz"
+    git = "https://github.com/art-daq/otsdaq_utilities.git"
 
     version("develop", branch="develop", get_full_repo=True)
-    version("v3_09_08", sha256="5689cdf8384276835be9dfd50489917d3729242833f9f2da115445d9245978b2")
-    version("v3_09_04", sha256="8d4315e0ebe7b663d171352d8e08dd87393d34319f672837eb8c93ea83b8ba63")
+    version("v2_06_09", sha256="852b4e051fe418786c3c161a548a8eb46d45c59578c9954f2ce68c6a62e2fc47")
+    version("v2_06_08", sha256="cb024d6b7d98b343b74b9837d1a1161cc9d0bd92f027fffe56ae6d156e952a64")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_core/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/otsdaq_utilities/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
@@ -37,9 +37,6 @@ class ArtdaqCore(CMakePackage):
         description="Use the specified C++ standard when building.",
     )
 
-    # art dependencies
-    depends_on("canvas-root-io")
     depends_on("cetmodules", type="build")
 
-    # artdaq dependencies
-    depends_on("trace+mf")
+    depends_on("otsdaq")

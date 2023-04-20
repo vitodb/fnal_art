@@ -19,9 +19,9 @@ class Canvas(CMakePackage):
 
     homepage = "https://art.fnal.gov/"
     git = "https://github.com/art-framework-suite/canvas.git"
-    url = "https://github.com/art-framework-suite/canvas/archive/refs/tags/v3_09_01.tar.gz"
+    url = "https://github.com/art-framework-suite/canvas/archive/refs/tags/v3_15_01.tar.gz"
 
-
+    version("3.15.01", sha256="7a2b839f5c564c1a9d719203c4bb68b2feb95019c9e2a92bf30302adbba09047")
     version("3.14.00", sha256="f3dd81aa1770c62e3329409a3849db13c7b7818d4927a52ceb82f5e7f3f0ebf4")
     version("3.13.01", sha256="ad84161ad37b30675664994ba37a8f4ee5001d5936ebabc24b79b9a3c9419515")
     version("3.13.00", sha256="6d5d6d817907fada8504514d5c9009f6b48a7afd606fa4bed3793d30aad347b7")
@@ -46,9 +46,10 @@ class Canvas(CMakePackage):
     depends_on("clhep")
     depends_on("cmake@3.21:", type="build")
     depends_on("fhicl-cpp")
+    depends_on("catch2", type=("build", "test"))
     depends_on("hep-concurrency", type="test")
     depends_on("messagefacility")
-    depends_on("range-v3@0.12:")
+    depends_on("range-v3@0.11:")
 
     if "SPACK_CMAKE_GENERATOR" in os.environ:
         generator = os.environ["SPACK_CMAKE_GENERATOR"]

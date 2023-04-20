@@ -9,7 +9,7 @@ import sys
 from spack import *
 
 
-class ArtdaqCore(CMakePackage):
+class Artdaq(CMakePackage):
     """The toolkit currently provides functionality for data transfer,
     event building, event reconstruction and analysis (using the art analysis
     framework), process management, system and process state behavior, control
@@ -18,15 +18,16 @@ class ArtdaqCore(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq_core/archive/refs/tags/v3_09_04.tar.gz"
-    git = "https://github.com/art-daq/artdaq_core.git"
+    url = "https://github.com/art-daq/artdaq/archive/refs/tags/v3_12_03.tar.gz"
+    git = "https://github.com/art-daq/artdaq.git"
 
     version("develop", branch="develop", get_full_repo=True)
-    version("v3_09_08", sha256="5689cdf8384276835be9dfd50489917d3729242833f9f2da115445d9245978b2")
-    version("v3_09_04", sha256="8d4315e0ebe7b663d171352d8e08dd87393d34319f672837eb8c93ea83b8ba63")
+    version("v3_12_03", sha256="2300fd0c78d33b411cfd05b552242e1a816e457e6d13880c35e7167df77b114f")
+    version("v3_12_02", sha256="98baad840c49be9b16d8dc819a708505fa8601fcb42844c17c1013f9d75b728e")
+    version("v3_12_01", sha256="558945c67974b3bb6a1b8d8a28089f2f33d13183f21d49c0e916204896453c53")
 
     def url_for_version(self, version):
-        url = "https://github.com/art-daq/artdaq_core/archive/refs/tags/{0}.tar.gz"
+        url = "https://github.com/art-daq/artdaq/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
 
     variant(
@@ -37,9 +38,15 @@ class ArtdaqCore(CMakePackage):
         description="Use the specified C++ standard when building.",
     )
 
-    # art dependencies
-    depends_on("canvas-root-io")
+    depends_on("art-root-io")
+    
     depends_on("cetmodules", type="build")
+    depends_on("xmlrpc-c+curl")
+    depends_on("swig", type="build")
+    depends_on("node-js", type="build")
 
-    # artdaq dependencies
-    depends_on("trace+mf")
+    depends_on("artdaq-core")
+    depends_on("artdaq-utilities")
+    depends_on("artdaq-mfextensions")
+
+    

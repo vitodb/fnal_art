@@ -1,0 +1,13 @@
+diff --git toolbox/Makefile toolbox/Makefile
+index 493cb8681..0e97647b7 100755
+--- spack-src/toolbox/Makefile
++++ spack-src/toolbox/Makefile
+@@ -42,7 +42,7 @@ endif
+ Project=$(PROJECT_NAME)
+ Package=toolbox
+ 
+-UserCCFlags = -O1 -fthread-jumps -falign-functions  -falign-jumps -falign-loops  -falign-labels -fcaller-saves -fcrossjumping -fcse-follow-jumps -fcse-skip-blocks -fdelete-null-pointer-checks -fexpensive-optimizations -fgcse  -fgcse-lm -findirect-inlining -foptimize-sibling-calls -fpeephole2 -fregmove -freorder-blocks  -freorder-functions -frerun-cse-after-loop -fsched-interblock  -fsched-spec  -fschedule-insns2 -fstrict-overflow -ftree-switch-conversion -ftree-pre -ftree-vrp
++# UserCCFlags = -O1 -fthread-jumps -falign-functions  -falign-jumps -falign-loops  -falign-labels -fcaller-saves -fcrossjumping -fcse-follow-jumps -fcse-skip-blocks -fdelete-null-pointer-checks -fexpensive-optimizations -fgcse  -fgcse-lm -findirect-inlining -foptimize-sibling-calls -fpeephole2 -fregmove -freorder-blocks  -freorder-functions -frerun-cse-after-loop -fsched-interblock  -fsched-spec  -fschedule-insns2 -fstrict-overflow -ftree-switch-conversion -ftree-pre -ftree-vrp
+ 
+ ifeq ($(XDAQ_OS),linux)
+ 

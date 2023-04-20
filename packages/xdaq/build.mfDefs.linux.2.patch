@@ -1,0 +1,58 @@
+diff --git build/mfDefs.linux build/mfDefs.linux
+index e22e01e50..3be64de92 100755
+--- spack-src/build/mfDefs.linux
++++ spack-src/build/mfDefs.linux
+@@ -24,12 +24,24 @@ DependencyFlags  	= -MM
+ 
+ # Compiler and linker commands
+ #
++ifndef CC
+ CC		     = gcc
++endif
++ifndef CXX
+ CXX		     = g++
++endif
++ifndef LD
+ LD		     = g++
++endif
++ifndef AR
+ AR		     = ar
++endif
++ifndef NM
+ NM		     = nm
++endif
++ifndef RANLIB
+ RANLIB		     = ranlib
++endif
+ 
+ # Compile flags
+ #
+diff --git build/mfDefs.macosx build/mfDefs.macosx
+index 6f7788ed6..6ae53eb69 100755
+--- spack-src/build/mfDefs.macosx
++++ spack-src/build/mfDefs.macosx
+@@ -23,12 +23,24 @@ DependencyFlags  	= -MM
+ 
+ # Compiler and linker commands
+ #
++ifndef CC
+ CC		     = gcc
++endif
++ifndef CXX
+ CXX		     = g++
++endif
++ifndef LD
+ LD		     = g++
++endif
++ifndef AR
+ AR		     = ar
++endif
++ifndef NM
+ NM		     = nm
++endif
++ifndef RANLIB
+ RANLIB		     = ranlib
++endif
+ 
+ # Compile flags
+ #

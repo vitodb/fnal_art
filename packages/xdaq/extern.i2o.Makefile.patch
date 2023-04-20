@@ -1,0 +1,14 @@
+--- spack-src/extern/i2o/Makefile.orig	2022-09-21 05:11:48.000000000 -0500
++++ spack-src/extern/i2o/Makefile	2022-10-04 21:05:04.760663907 -0500
+@@ -53,6 +53,11 @@
+ 	cp -r include $(XDAQ_PLATFORM)
+ 	mkdir -p $(PACKING_DIR)
+ 	cp -r include $(PACKING_DIR)
++	
++_installall: install
++
++install:
++	cp -r include ${INSTALL_PREFIX}/${XDAQ_PLATFORM}
+ 
+ _cleanall: clean
+ 

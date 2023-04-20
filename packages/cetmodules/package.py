@@ -15,12 +15,14 @@ class Cetmodules(CMakePackage):
 
     homepage = "https://fnalssi.github.io/cetmodules/"
     git = "https://github.com/FNALssi/cetmodules.git"
-    url = "https://github.com/FNALssi/cetmodules/archive/refs/tags/3.19.02.tar.gz"
+    url = "https://github.com/FNALssi/cetmodules/archive/refs/tags/3.21.01.tar.gz"
 
     maintainers = ["chissg", "gartung", "marcmengel", "vitodb"]
 
     version("develop", branch="develop", get_full_repo=True)
     version("3.19.02", sha256="214172a59f4c3875a5d7c2617b9f50ed471c86404d85e2e5c72cadf5b499cdc6")
+    version("3.21.00", sha256="429ddecf2e905a6a3156c267005d17cd6e160533f28bcef0be40a9d0057e95e4")
+    version("3.21.01", sha256="9f4b845f9ed09fb3a8ee7864ac487afd08a5b3e64abf394831ee927f91b08ebc")
 
     variant(
         "versioned-docs", default=False, description="build versioned docs with a landing page"
@@ -51,8 +53,8 @@ class Cetmodules(CMakePackage):
         "perl-task-perl-critic": ("build", "test"),
     }
 
-    for pkg, types in perl_deps.items():
-        depends_on(pkg, type=types)
+#    for pkg, types in perl_deps.items():
+#        depends_on(pkg, type=types)
 
     conflicts("@:3.19.01", when="^cmake@3.24.0:")
 

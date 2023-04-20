@@ -1,0 +1,14 @@
+--- spack-src/extern/log4cplus/Makefile.orig	2018-03-16 12:44:22.630803277 -0500
++++ spack-src/extern/log4cplus/Makefile	2018-03-16 12:45:01.541007980 -0500
+@@ -43,6 +43,11 @@
+ Link=http://log4cplus.sourceforge.net
+ 
+ 
++CFLAGS:=${CFlags}
++CXXFLAGS:=${CCFlags}
++export CFLAGS
++export CXXFLAGS
++
+ export CC
+ export CXX
+ LD:=$(LDD)

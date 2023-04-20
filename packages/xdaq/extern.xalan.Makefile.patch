@@ -1,0 +1,11 @@
+--- spack-src/extern/xalan/Makefile.orig	2022-09-21 05:11:48.000000000 -0500
++++ spack-src/extern/xalan/Makefile	2022-10-04 20:50:05.698659057 -0500
+@@ -56,7 +56,7 @@
+ export CFLAGS
+ export CXXFLAGS
+ 
+-export XERCESCROOT=$(XERCES_PREFIX)
++export XERCESCROOT=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM)
+ export XALANCROOT=$(BUILD_HOME)/extern/xalan/$(PACKING_DIR)/c
+ 
+ 

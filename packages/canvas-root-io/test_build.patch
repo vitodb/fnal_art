@@ -1,0 +1,9 @@
+--- spack-src/canvas_root_io/CMakeLists.txt	2023-04-10 12:42:02.953301077 -0500
++++ spack-src/canvas_root_io/CMakeLists.txt	2023-04-10 12:41:41.818145801 -0500
+@@ -39,4 +39,6 @@
+ )
+ 
+ # Testing
++if (BUILD_TESTING)
+ add_subdirectory(test)
++endif()

@@ -1,0 +1,37 @@
+--- spack-src/build/Makefile.rules	2021-05-12 02:16:00.000000000 -0500
++++ spack-src/build/Makefile.rules	2021-05-12 18:42:09.230215641 -0500
+@@ -50,6 +50,7 @@
+ #Package		= $(subst $(SourceDir)/,,$(CurrentDir))
+ 
+ PackageList		= $(Package)
++endif
+ PackageSourceDir 	= $(SourceDir)/$(Package)/src
+ 
+ 
+@@ -105,7 +106,6 @@
+ PackageTargetDir 	= $(PackageSourceDir)/$(XDAQ_OS)/$(XDAQ_PLATFORM)
+ PackageIncludeDirs	= $(BuildSupportDir) $(SourceDir)/$(Package)/include/$(XDAQ_OS) $(SourceDir)/$(Package)/include $(IncludeDirs) \
+ 			 $(InstallationIncludeDirs)
+-endif
+ 
+ INSTALL_CROSS_PLATFORM = yes
+ ifeq ($(INSTALL_CROSS_PLATFORM),yes)
+@@ -133,7 +133,8 @@
+ 
+ 
+ # look in installation dirs if libraries are not found in development dirs.
+-#LibraryDirs += $(LibInstallDir)
++LibraryDirs += $(LibInstallDir)
++DependentLibraryDirs += $(LibInstallDir)
+ 
+ ifeq ($(XDAQ_OS),macosx)
+ Copy			= cp -p
+@@ -156,7 +157,7 @@
+ 
+ 
+ # Add -I in front of every include directory
+-IncludePaths		= $(PackageIncludeDirs:%=-I%)
++IncludePaths		= $(PackageIncludeDirs:%=-I%) -I$(IncludeInstallDir) -I$(IncludeInstallDir)/$(XDAQ_OS)
+ 
+ # Add -L in front of every library directory
+ LibraryPaths		=-L$(PackageLibDir) $(LibraryDirs:%=-L%) $(InstallationLibraryDirs:%=-L%)

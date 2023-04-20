@@ -1,0 +1,13 @@
+diff --git toolbox/include/toolbox/stl.h toolbox/include/toolbox/stl.h
+index dac7f63b6..886cbbd67 100755
+--- spack-src/toolbox/include/toolbox/stl.h
++++ spack-src/toolbox/include/toolbox/stl.h
+@@ -16,6 +16,8 @@
+ #include <set>
+ #include <algorithm>
+ #include <iterator>
++#include <string>
++#include <locale>
+ 
+ namespace toolbox 
+ {

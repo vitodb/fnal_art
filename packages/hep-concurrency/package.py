@@ -20,9 +20,10 @@ class HepConcurrency(CMakePackage):
     homepage = "https://art.fnal.gov/"
     git = "https://github.com/art-framework-suite/hep-concurrency.git"
     url = (
-        "https://github.com/art-framework-suite/hep-concurrency/archive/refs/tags/v1_07_04.tar.gz"
+        "https://github.com/art-framework-suite/hep-concurrency/archive/refs/tags/v1_09_00.tar.gz"
     )
 
+    version("1.09.00", sha256="075d24af843f76a8559dc1fdc91b076b91ab3152c618aed9ba6bdad61d745846")
     version("1.08.00", sha256="24e893550e6897a4f7959869f751ec6611814b696c9eebd8597b7a59ae4e7758")
     version("1.07.04", sha256="442db7ea3c0057e86165a001ef77c1fc0e5ed65c62fd1dd53e68fb8fe9a5fef3")
     version("develop", branch="develop", get_full_repo=True)
@@ -42,7 +43,7 @@ class HepConcurrency(CMakePackage):
     depends_on("catch2", type=("build", "test"))
     depends_on("tbb")
 
-    patch("test_build.patch")
+    patch("test_build.patch", when="@:1.08.00")
 
     if "SPACK_CMAKE_GENERATOR" in os.environ:
         generator = os.environ["SPACK_CMAKE_GENERATOR"]

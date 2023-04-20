@@ -1,0 +1,17 @@
+--- spack-src/build/mfDefs.linux.orig	2018-03-13 13:59:23.513042083 -0500
++++ spack-src/build/mfDefs.linux	2018-03-13 14:00:55.049871051 -0500
+@@ -54,10 +54,10 @@
+ #
+ ifneq (,$(findstring x86_64,$(XDAQ_PLATFORM)))
+-CFlags			= $(DebugFlags) -O2 -fPIC
+-CCFlags			= -g -O2 -Wall -fPIC -fno-omit-frame-pointer -std=c++17
++CFlags			= $(DebugFlags) -O2 -fPIC $(ExtraCFlags)
++CCFlags			= -g -O2 -Wall -fPIC -fno-omit-frame-pointer -std=c++17 $(ExtraCCFlags)
+ else
+-CFlags			= $(DebugFlags) -O2 -fPIC
+-CCFlags			= -g -O2 -Wall -fPIC -fno-omit-frame-pointer -std=c++17
++CFlags			= $(DebugFlags) -O2 -fPIC $(ExtraCFlags)
++CCFlags			= -g -O2 -Wall -fPIC -fno-omit-frame-pointer -std=c++17 $(ExtraCCFlags)
+ endif
+ 
+ #

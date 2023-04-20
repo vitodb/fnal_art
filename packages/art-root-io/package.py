@@ -19,9 +19,14 @@ class ArtRootIo(CMakePackage):
 
     homepage = "https://art.fnal.gov/"
     git = "https://github.com/art-framework-suite/art-root-io.git"
-    url = "https://github.com/art-framework-suite/art-root-io/archive/refs/tags/v3_09_01.tar.gz"
+    url = "https://github.com/art-framework-suite/art-root-io/archive/refs/tags/v1_12_02.tar.gz"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("1.12.02", sha256="f7fa60cad2947fa135cdd52cb5d39d3e871cca246181288734745067c7c3f555")
+    version("1.11.00", sha256="1134d1c1e69045249bf678e6e07728f06035ee2ee982af5155184d1c271468ae")
+    version("1.08.05", sha256="77f58e4200f699dcb324a3a9fc9e59562d2a1721a34a6db43fdb435853890d21")
+    version("1.08.03", sha256="fefdb0803bc139a65339d9fa1509f2e9be1c5613b64ec1ec84e99f404663e4bf")
+
 
     variant(
         "cxxstd",
@@ -52,6 +57,10 @@ class ArtRootIo(CMakePackage):
         if generator.endswith("Ninja"):
             depends_on("ninja@1.10:", type="build")
 
+    def url_for_version(self, version):
+        url = "https://github.com/art-framework-suite/art-root-io/archive/refs/tags/v{0}.tar.gz"
+        return url.format(version.underscored)
+    
     def cmake_args(self):
         return [
            "--trace-expand",
