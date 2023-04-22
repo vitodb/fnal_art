@@ -38,15 +38,15 @@ class Cetlib(CMakePackage):
     patch("test_build.patch",when="@:3.16.00")
 
     depends_on("boost+regex+program_options+filesystem+system+test")
-    depends_on("catch2", type=("build", "test"))
     depends_on("cetlib-except")
-    depends_on("cetmodules@3.19.02:", type="build")
-    depends_on("cmake@3.21:", type="build")
     depends_on("hep-concurrency")
     depends_on("openssl")
     depends_on("perl", type=("build", "run"))
     depends_on("sqlite@3.8.2:")
     depends_on("tbb")
+    depends_on("catch2@3:", type=("build", "test"))
+    depends_on('cetmodules', type='build')
+    conflicts("cetmodules@:3.21.00", when="catch2@3:")
 
     if "SPACK_CMAKE_GENERATOR" in os.environ:
         generator = os.environ["SPACK_CMAKE_GENERATOR"]
@@ -60,9 +60,6 @@ class Cetlib(CMakePackage):
     def cmake_args(self):
         return [
            "--preset", "default", 
-           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
-           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
-           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
         ]
 

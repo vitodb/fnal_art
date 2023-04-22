@@ -44,18 +44,17 @@ class Art(CMakePackage):
         description="C++ standard",
     )
 
-    patch('test_build.patch',when="@:3.12.00")
-
     depends_on("boost+date_time+graph+program_options+regex")
     depends_on("boost+filesystem+json+test+thread", type=("build"))
     depends_on("boost+graph+test", type=("test"))
     depends_on("canvas")
-    depends_on("catch2@2.3.0:", type=("build", "test"))
+    depends_on("catch2@2.3.0", type=("build", "test"), when="@:3.12.99")
+    depends_on("catch2@3:", type=("build", "test"), when="@3.13:")
     depends_on("cetlib")
     depends_on("cetlib-except")
     depends_on("cetmodules", type="build")
+    conflicts("cetmodules@:3.21.00", when="catch2@3:")
     depends_on("clhep")
-    depends_on("cmake@3.4:", type="build")
     depends_on("fhicl-cpp")
     depends_on("hep-concurrency")
     depends_on("messagefacility")
@@ -76,9 +75,6 @@ class Art(CMakePackage):
     def cmake_args(self):
         return [
            "--preset", "default", 
-           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
-           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
-           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
         ]
 

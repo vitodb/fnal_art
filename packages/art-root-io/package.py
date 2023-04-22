@@ -41,11 +41,11 @@ class ArtRootIo(CMakePackage):
     depends_on("boost+filesystem+date_time+program_options")
     depends_on("canvas")
     depends_on("canvas-root-io")
-    depends_on("catch2", type=("build", "test"))
+    depends_on("catch2@3:", type=("build", "test"))
     depends_on("cetlib")
     depends_on("cetlib-except")
     depends_on("cetmodules@3.19.02:", type="build")
-    depends_on("cmake@3.21:", type="build")
+    conflicts("cetmodules@:3.21.00", when="catch2@3:")
     depends_on("fhicl-cpp")
     depends_on("hep-concurrency")
     depends_on("messagefacility")
@@ -65,9 +65,6 @@ class ArtRootIo(CMakePackage):
         return [
            "--trace-expand",
            "--preset", "default", 
-           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
-           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
-           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
         ]
 

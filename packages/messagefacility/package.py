@@ -42,11 +42,11 @@ class Messagefacility(CMakePackage):
     )
 
     depends_on("boost+filesystem+program_options+system")
-    depends_on("catch2") #, type=("build", "test"))
+    depends_on("catch2")
     depends_on("cetlib")
     depends_on("cetlib-except")
     depends_on("cetmodules", type="build")
-    depends_on("cmake@3.21:", type="build")
+    conflicts("cetmodules@:3.21.00", when="catch2@3:")
     depends_on("fhicl-cpp")
     depends_on("hep-concurrency")
     depends_on("perl", type=("build", "run"))
@@ -64,9 +64,6 @@ class Messagefacility(CMakePackage):
     def cmake_args(self):
         return [
            "--preset", "default", 
-           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
-           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
-           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
         ]
 

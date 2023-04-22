@@ -34,7 +34,6 @@ class Cetmodules(CMakePackage):
     docs_deps = (
         "git@2.22:",
         "py-sphinxcontrib-moderncmakedomain",
-        "py-sphinx-rtd-theme",
         "py-sphinx-design@0.2.0:",
         "py-sphinx@5:5.999",
     )
@@ -68,27 +67,24 @@ class Cetmodules(CMakePackage):
         filter_file(r"exit \$status", "exit 0", "%s/libexec/fix-man-dirs" % self.stage.source_path)
 
     def cmake_args(self):
-        options = [
-           "--preset", "default", 
-           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
-           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
-           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
-        ]
+        spec = self.spec
+        define = self.define
+        options = ["--preset", "default"]
         if not any(
             [
-                self.spec.variants[doc_opt].value
+                spec.variants[doc_opt].value
                 for doc_opt in ("docs", "versioned-docs")
-                if doc_opt in self.spec.variants
+                if doc_opt in spec.variants
             ]
         ):
-            options.append(self.define("BUILD_DOCS", False))
-        elif self.spec.variants["versioned-docs"].value:
+            options.append(define("BUILD_DOCS", False))
+        elif spec.variants["versioned-docs"].value:
             options += [
-                self.define(
-                    "{0}_SPHINX_DOC_PUBLISH_VERSION_BRANCH".format(self.name), self.spec.version
+                define(
+                    f"{self.name}_SPHINX_DOC_PUBLISH_VERSION_BRANCH", spec.version
                 ),
-                self.define(
-                    "{0}_SPHINX_DOC_PUBLISH_ROOT".format(self.name),
+                define(
+                    f"{self.name}_SPHINX_DOC_PUBLISH_ROOT",
                     join_path(self.stage.path, "doc_root"),
                 ),
             ]

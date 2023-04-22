@@ -36,12 +36,9 @@ class CetlibExcept(CMakePackage):
         description="C++ standard",
     )
 
-    depends_on("cmake@3.21:", type="build")
+    depends_on("catch2@2.3.0:", type=("build", "test"))
     depends_on("cetmodules@3.19.02:", type="build")
-#    depends_on("cetpkgsupport", type=("build", "run"))
-    depends_on("catch2@:2.99", type="build", when="cetmodules@:3.20.01")
-    depends_on("catch2", type="build")
-
+    conflicts("cetmodules@:3.21.00", when="catch2@3:")
 
     if "SPACK_CMAKE_GENERATOR" in os.environ:
         generator = os.environ["SPACK_CMAKE_GENERATOR"]
@@ -55,9 +52,6 @@ class CetlibExcept(CMakePackage):
     def cmake_args(self):
         return [
            "--preset", "default", 
-           "-DCMAKE_CXX_COMPILER={0}".format(self.compiler.cxx_names[0]),
-           "-DCMAKE_C_COMPILER={0}".format(self.compiler.cc_names[0]),
-           "-DCMAKE_Fortran_COMPILER={0}".format(self.compiler.f77_names[0]),
            self.define_from_variant("CMAKE_CXX_STANDARD", "cxxstd"),
         ]
 
