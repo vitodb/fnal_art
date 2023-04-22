@@ -11,6 +11,7 @@ def sanitize_environments(*args):
         for var in (
             "PATH",
             "CET_PLUGIN_PATH",
+            "LDSHARED",
             "LD_LIBRARY_PATH",
             "DYLD_LIBRARY_PATH",
             "LIBRARY_PATH",
