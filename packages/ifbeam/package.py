@@ -12,6 +12,7 @@ class Ifbeam(MakefilePackage):
     homepage = "https://cdcvs.fnal.gov/redmine/projects/ifbeam"
     url = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/ifdhc-ifbeam.v2_5_2.tbz2"
 
+    version("2.5.22", sha256="202b29e64aef1852310f0e4a550dcb47e5c6c86d6d162683f319ff4999460d12")
     version("2.5.17", sha256="7ecba2c84c585d3775a984a7de4a1152afc2ed60468cdce45bb380b6e28cab68")
     version("2.5.16", sha256="827c0acbe670818fdc91283c1f4e90719c2d873a3f46459e3ed65d6d0e96297c")
     version("2.5.2", sha256="7c1bac69dae5d3130741d9dd79295eb917e74eaadde9f808f10599db94a6a488")

@@ -13,6 +13,7 @@ class Nucondb(MakefilePackage):
     url = "https://cdcvs.fnal.gov/cgi-bin/git_archive.cgi/cvs/projects/nucondb.v2_2_10.tbz2"
     git_base = "https://cdcvs.fnal.gov/projects/ifdhc-nucondb"
 
+    version("2.5.22", sha256="bd468d5b64909e3951342eacef30440e1eaca5d32add991fe6cc36b46f1c5f65")
     version("2.5.17", sha256="5b9bd0e8e6359edb594416847a946214376f013afedebbd861ebd6556d45823f")
     version("2.5.16", sha256="2de3a199407a378ea62f76652bc0945065d6636c7f7a02e5fafa9667f4ae833a")
     version("2.5.2", tag="v2_5_2", git=git_base, get_full_repo=True)
