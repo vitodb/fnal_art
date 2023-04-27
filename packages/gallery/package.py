@@ -20,10 +20,11 @@ class Gallery(CMakePackage):
     """
 
     homepage = "https://art.fnal.gov/"
-    git = "https://github.com/art-framework-suite/gallery"
-    url = "https://github.com/art-framework-suite/gallery/archive/refs/tags/v1_18_05.tar.gz"
+    git = "https://github.com/art-framework-suite/gallery.git"
+    url = "https://github.com/art-framework-suite/gallery/archive/refs/tags/v1_21_01.tar.gz"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("1.21.01", sha256="e932c2469de4abb87527defe7357ea6423e8dbc18ef9d9b5148e5e658c3ffc91")
 
     variant(
         "cxxstd",
@@ -46,6 +47,10 @@ class Gallery(CMakePackage):
         generator = os.environ["SPACK_CMAKE_GENERATOR"]
         if generator.endswith("Ninja"):
             depends_on("ninja@1.10:", type="build")
+
+    def url_for_version(self, version):
+        url = "https://github.com/art-framework-suite/gallery/archive/refs/tags/v{0}.tar.gz"
+        return url.format(version.underscored)
 
     def cmake_args(self):
         return [
