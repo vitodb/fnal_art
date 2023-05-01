@@ -23,6 +23,7 @@ class ArtdaqCore(CMakePackage):
 
     version("develop", branch="develop", get_full_repo=True)
     version("v3_09_08", sha256="5689cdf8384276835be9dfd50489917d3729242833f9f2da115445d9245978b2")
+    version("v3_09_07", sha256="3bf9285171c86e9f039e5d48a99b577544ab4a17d6f4a4f1a79d6bfb797eeede")
     version("v3_09_04", sha256="8d4315e0ebe7b663d171352d8e08dd87393d34319f672837eb8c93ea83b8ba63")
 
     def url_for_version(self, version):
