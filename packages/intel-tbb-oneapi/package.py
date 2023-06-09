@@ -18,6 +18,7 @@ class IntelTbbOneapi(CMakePackage):
 
     # Note: when adding new versions, please check and update the
     # patches, filters and url_for_version() below as needed.
+    version("2021.9.0", sha256="1ce48f34dada7837f510735ff1172f6e2c261b09460e3bf773b49791d247d24e")
     version(
         "2021.7.0-rc1", sha256="20449198579f2f5321c46a0b07b4d100af771018451629a8db38cc331178b17d"
     )

@@ -23,6 +23,7 @@ class FhiclCpp(CMakePackage):
     git = "https://github.com/art-framework-suite/fhicl-cpp.git"
     url = "https://github.com/art-framework-suite/fhicl-cpp/archive/refs/tags/v4_18_00.tar.gz"
 
+    version("4.18.01", sha256="ad99cdf48b912fc51852229e04896c04db6db55a7c49f873156dae6665d8bfa7")
     version("4.18.00", sha256="cd5c7c0bef5e235264bf22819db283bd3ebfd512ecab06fb3722142cec0a0a5e")
     version("4.17.00", sha256="07fbba4aed129fcc5edbd9a7304dc3ccd53d2405830779e7c2d71a8b73a99247")
     version("4.15.03", sha256="99ae2b7557c671d0207dea96529e7c0fca2274974b6609cc7c6bf7e8d04bd12b")

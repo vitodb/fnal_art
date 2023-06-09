@@ -23,6 +23,7 @@ class HepConcurrency(CMakePackage):
         "https://github.com/art-framework-suite/hep-concurrency/archive/refs/tags/v1_09_00.tar.gz"
     )
 
+    version("1.09.01", sha256="1fb91a35c244013f48cb1dd34c39ece87431ce23ee383f9be23773e0a585ae43")
     version("1.09.00", sha256="075d24af843f76a8559dc1fdc91b076b91ab3152c618aed9ba6bdad61d745846")
     version("1.08.00", sha256="24e893550e6897a4f7959869f751ec6611814b696c9eebd8597b7a59ae4e7758")
     version("1.07.04", sha256="442db7ea3c0057e86165a001ef77c1fc0e5ed65c62fd1dd53e68fb8fe9a5fef3")

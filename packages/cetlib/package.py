@@ -21,6 +21,7 @@ class Cetlib(CMakePackage):
     git = "https://github.com/art-framework-suite/cetlib.git"
     url = "https://github.com/art-framework-suite/cetlib/archive/refs/tags/v3_17_00.tar.gz"
 
+    version("3.17.01", sha256="c29add5c9085e1fadc8f5fbdb1cd9b666d2290bd252022cef1feb0c30368d597")
     version("3.17.00", sha256="04160b9607948b329465b60271ca735c449f3bf7d53e31a44ec3107cc6aafe26")    
     version("3.16.00", sha256="a0e670a5144b215c9a6641d0b9b35512790d9ba4b638e213651f5040417f4070")
     version("3.13.04", sha256="40ca829cfb172f6cbf516bd3427fc7b7e893f9c916d969800261194610c45edf")

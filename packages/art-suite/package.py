@@ -47,7 +47,7 @@ class ArtSuite(BundlePackage):
         depends_on("root@6.28.00 cxxstd=17", when="+root")
         depends_on("sqlite@3.40.1")
         depends_on("tbb@2021.8.0 cxxstd=17")
-        depends_on("xrootd@5.5.1 cxxstd=17")
+        depends_on("xrootd@5.5.1 cxxstd=14")
     with when("@s118"):
         depends_on("art@3.12.00 cxxstd=17")
         depends_on("art-root-io@1.11.00 cxxstd=17", when="+root")
