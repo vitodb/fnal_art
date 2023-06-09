@@ -24,6 +24,7 @@ class Messagefacility(CMakePackage):
         "https://github.com/art-framework-suite/messagefacility/archive/refs/tags/v2_10_01.tar.gz"
     )
 
+    version("2.10.02", sha256="1dfed808595316ce1d619e48a20b3f0cfd18afa32d807d6c3e822fd41b042fa2")
     version("2.10.01", sha256="b9572b4ccf0e61edcaf4fc4548d616be00754c9ae04aa594640d992c1047c315")
     version("2.09.00", sha256="0d596b10691d92b73a396c974846211ea7d65e819685a39b3fa1d9d4126746f0")
     version("2.08.04", sha256="dcf71449b0f73b01e2d32d1dc5b8eefa09a4462d1c766902d916ed6869b6c682")

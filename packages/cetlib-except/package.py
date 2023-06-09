@@ -21,6 +21,7 @@ class CetlibExcept(CMakePackage):
     git = "https://github.com/art-framework-suite/cetlib-except.git"
     url = "https://github.com/art-framework-suite/cetlib-except/archive/refs/tags/v1_09_00.tar.gz"
 
+    version("1.09.01", sha256="72ed76819ce98c1629e55931a939374d386070b77070b849e029d095097240fd")
     version("1.09.00", sha256="49d28d96fe2ae96aeb1c636b356e731dda60c4b69b0c7759de484225f4e4a380")
     version("1.08.00", sha256="2951be7cd7b58c05c09a89fdd8b2b287262447d7e69e13bef7a15a98040d4efd")
     version("1.07.06", sha256="49324dcd254dcd1183715d4bb6ea5ccf394231e717ebb4c08cf0ab0c1d976bdf")

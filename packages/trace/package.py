@@ -35,7 +35,6 @@ class Trace(CMakePackage):
     version("v3_17_06", sha256="1fffcb4450b543469d811a05bc00a3beca46e5a1b90954d1d47796e1e9334032")
     version("v3_17_05", sha256="6d22f37eca399e8c34ad0b79f29a8d95772279cbd2d47a3d1fd38496913bdcef")
 
-
     def url_for_version(self, version):
         url = "https://github.com/art-daq/trace/archive/refs/tags/{0}.tar.gz"
         return url.format(version)
@@ -47,6 +46,8 @@ class Trace(CMakePackage):
 
     variant("kmod", default=True, description="Create Linux kernel module")
     variant("mf", default=False, description="Compile MessageFacility library")
+
+    patch("stronger_want_kmod.patch")
 
     depends_on("messagefacility", when="+mf")
 

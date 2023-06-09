@@ -24,6 +24,7 @@ class Art(CMakePackage):
     url = "https://github.com/art-framework-suite/art/archive/refs/tags/v3_13_01.tar.gz"
 
 
+    version("3.13.02", sha256="c0a39ef326daee1e77cfb73d56ea08533be0e8d281e9e937814e258622758158")
     version("3.13.01", sha256="bb81d781f2e6e6bd223c9008c8b36b9dc6ed0138e173325f2ef218c798017258")
     version("3.12.00", sha256="d47c6fb30f5b5c93fe8ceea495e245c294bbc8166fcaccbd314d535fe12eb059")
     version("3.11.00", sha256="4c3076577de227c705f2ba057abcc3923f37c9b4d5a2165fbc0536598e0f671a")
@@ -48,8 +49,8 @@ class Art(CMakePackage):
     depends_on("boost+filesystem+json+test+thread", type=("build"))
     depends_on("boost+graph+test", type=("test"))
     depends_on("canvas")
-    depends_on("catch2@2.3.0", type=("build", "test"), when="@:3.12.99")
-    depends_on("catch2@3:", type=("build", "test"), when="@3.13:")
+    depends_on("catch2@2.3.0", type=("build", "test"), when="@:3.11.99")
+    depends_on("catch2@3:", type=("build", "test"), when="@3.12:")
     depends_on("cetlib")
     depends_on("cetlib-except")
     depends_on("cetmodules", type="build")
