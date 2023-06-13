@@ -22,6 +22,7 @@ class ArtdaqMfextensions(CMakePackage):
     git = "https://github.com/art-daq/artdaq_mfextensions.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v1_08_04", sha256="2f6cdcd0dd083d91761df06d203487613723d770051e17b967f499e4348de7c9")
     version("v1_08_03", sha256="c83c8c3c0bb525ae504b5efee910d5a2e7c0278ddc46b04461c76425e652de62")
     version("v1_08_02", sha256="d03b4261491bc879a34908c70f7f49cd64624ec889bfb8f486f7ce9fd1bd7f6b")
 
@@ -32,8 +33,9 @@ class ArtdaqMfextensions(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17"),
+        values=("14", "17", conditional("20",when="@v1_08_04:")),
         multi=False,
+        sticky=True,
         description="Use the specified C++ standard when building.",
     )
 

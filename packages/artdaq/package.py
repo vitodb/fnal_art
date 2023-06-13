@@ -18,10 +18,11 @@ class Artdaq(CMakePackage):
     format."""
 
     homepage = "https://cdcvs.fnal.gov/redmine/projects/artdaq/wiki"
-    url = "https://github.com/art-daq/artdaq/archive/refs/tags/v3_12_03.tar.gz"
+    url = "https://github.com/art-daq/artdaq/archive/refs/tags/v3_12_04.tar.gz"
     git = "https://github.com/art-daq/artdaq.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v3_12_04", sha256="0221d41878d3e99b7b40ff46e3d4a9542f07bb81bb21d4cfbb223e06f2a57502")
     version("v3_12_03", sha256="2300fd0c78d33b411cfd05b552242e1a816e457e6d13880c35e7167df77b114f")
     version("v3_12_02", sha256="98baad840c49be9b16d8dc819a708505fa8601fcb42844c17c1013f9d75b728e")
     version("v3_12_01", sha256="558945c67974b3bb6a1b8d8a28089f2f33d13183f21d49c0e916204896453c53")
@@ -33,8 +34,9 @@ class Artdaq(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17"),
+        values=("14", "17", conditional("20",when="@v3_12_04:")),
         multi=False,
+        sticky=True,
         description="Use the specified C++ standard when building.",
     )
 

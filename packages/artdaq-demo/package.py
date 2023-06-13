@@ -22,6 +22,7 @@ class ArtdaqDemo(CMakePackage):
     git = "https://github.com/art-daq/artdaq_demo.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v3_12_04", sha256="959a5926951199a3a19d5f29213cb4eae42899fca32e3c4e8f2b17ceea0a8e42")
     version("v3_12_03", sha256="e068ea0cd09e94fc9e4ad6fce067ca716db82fd79480c07c1e16cd2659325ee2")
     version("v3_12_02", sha256="3044f14e28f2c54318d06a64c22685839d4dba1a85a30d92ebaa9fe2e8f86055")
 
@@ -32,8 +33,9 @@ class ArtdaqDemo(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17"),
+        values=("14", "17", conditional("20",when="@v3_12_04:")),
         multi=False,
+        sticky=True,
         description="Use the specified C++ standard when building.",
     )
 

@@ -22,6 +22,7 @@ class ArtdaqDatabase(CMakePackage):
     git = "https://github.com/art-daq/artdaq_database.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v1_07_04", sha256="700b63d849b235216e83315958bc83e08b03293425a7011235ee6bf269c73473")
     version("v1_07_03", sha256="670a5d44236091bdb85ca643e27dc59fd263fdb2a7dcbeaa7ec04e2b5f67df40")
     version("v1_07_02", sha256="8cb937967d16f25b59ee8e7104cd968956d892dbe24b29e393c5db982969e432")
 
@@ -32,8 +33,9 @@ class ArtdaqDatabase(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17"),
+        values=("14", "17", conditional("20",when="@v1_07_04:")),
         multi=False,
+        sticky=True,
         description="Use the specified C++ standard when building.",
     )
     variant("builtin_fhicl", default=True, description="Use built-in FHiCL-cpp with database fixes")

@@ -22,6 +22,7 @@ class ArtdaqEpicsPlugin(CMakePackage):
     git = "https://github.com/art-daq/artdaq_epics_plugin.git"
 
     version("develop", branch="develop", get_full_repo=True)
+    version("v1_05_04", sha256="b59d8022b00935e4d4fcfcc2a853113c7551473b6f7bdd19ade8e42363062ab8")
     version("v1_05_03", sha256="68937458d87d53ac20607b9e62ac13616c143f3f074675b047897a0b10cf20f0")
     version("v1_05_02", sha256="8a8d12f29a357c2426c16c3aef1a745b6bf3308ede38aae2300584eff582a3cf")
 
@@ -32,8 +33,9 @@ class ArtdaqEpicsPlugin(CMakePackage):
     variant(
         "cxxstd",
         default="17",
-        values=("14", "17"),
+        values=("14", "17", conditional("20",when="@v1_05_04:")),
         multi=False,
+        sticky=True,
         description="Use the specified C++ standard when building.",
     )
 
