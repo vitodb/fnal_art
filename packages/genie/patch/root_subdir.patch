@@ -1,0 +1,11 @@
+--- spack-src/configure.orig	2023-06-23 02:37:08.014322000 +0000
++++ spack-src/configure	2023-06-23 02:37:20.528322000 +0000
+@@ -104,7 +104,7 @@
+ # (GENIE uses GSL via ROOT's MathMore library.)
+ #
+ {
+-  $mathmore_lib = "$ROOTSYS/lib/libMathMore.so";
++  $mathmore_lib = "$ROOTSYS/lib/root/libMathMore.so";
+   if( ! -f $mathmore_lib ) {
+      die ("*** Error *** ROOT needs to be built with GSL/MathMore enabled.");
+   }
