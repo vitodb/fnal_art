@@ -23,6 +23,8 @@ class Cetmodules(CMakePackage):
     version("3.19.02", sha256="214172a59f4c3875a5d7c2617b9f50ed471c86404d85e2e5c72cadf5b499cdc6")
     version("3.21.00", sha256="429ddecf2e905a6a3156c267005d17cd6e160533f28bcef0be40a9d0057e95e4")
     version("3.21.01", sha256="9f4b845f9ed09fb3a8ee7864ac487afd08a5b3e64abf394831ee927f91b08ebc")
+    version("3.21.02", sha256="255d6d6c2455217734b208fc90919b90bc7c0f9a59a4706d329c642bff51f004")
+    version("3.22.01", sha256="c72c47328adc0c95f905aae119c76d35513a0677f20163f0ef25a82bd0f72082")
 
     variant(
         "versioned-docs", default=False, description="build versioned docs with a landing page"
